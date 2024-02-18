@@ -1,8 +1,8 @@
 {
-    "name": "Input Mapping",
+    "name": "InputMapping",
     "maps": [
         {
-            "name": "WASD + Arrows",
+            "name": "ZQSD + Arrows",
             "id": "7bd83120-7d3a-4308-ac88-900fe35187f6",
             "actions": [
                 {
@@ -76,6 +76,42 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Toggle Vertical Stabilize",
+                    "type": "Button",
+                    "id": "5ef24009-9dde-43c9-a732-4b72275d29f8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Toggle Independent Camera",
+                    "type": "Button",
+                    "id": "8d4ede18-1c50-4e17-b587-f07151b854ba",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Toggle Move Camera",
+                    "type": "Button",
+                    "id": "5d50bb60-8866-44dd-861c-f6b0da551441",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Test",
+                    "type": "Button",
+                    "id": "604889ad-762b-4677-8340-6279757872e1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -166,17 +202,61 @@
                     "action": "LeftRoll",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2c87ed31-091a-4d5c-ab42-658834f2985d",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Vertical Stabilize",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a9c87a8c-bf6c-4296-be76-dfb480be2e67",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Independent Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8aecac74-623e-434b-92e7-4739cd2b0ff7",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Move Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2e80692a-be11-440b-bc1d-326b5d30267f",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Test",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
         {
-            "name": "WASD + Mouse",
-            "id": "87286a30-ae3c-4774-992c-98e2100ae91e",
+            "name": "ZQSD + Mouse",
+            "id": "f27fbeb5-c302-494b-9d01-6bebf6ba123b",
             "actions": [
                 {
                     "name": "ThrottleUp",
                     "type": "Button",
-                    "id": "d40aa272-74dd-49a0-a667-f6d8566bfdf5",
+                    "id": "1bba1ff5-c54b-4249-a789-6b9507108812",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -185,7 +265,7 @@
                 {
                     "name": "ThrottleDown",
                     "type": "Button",
-                    "id": "bcf64656-8a07-4f83-a7aa-828162313509",
+                    "id": "7b1d48e0-359c-4d5b-874a-39b78b65d863",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -194,7 +274,7 @@
                 {
                     "name": "YawLeft",
                     "type": "Button",
-                    "id": "f76d826c-50fe-423d-8a24-4c7070686dd5",
+                    "id": "fd3ab132-7d86-434c-98ef-2b565c34c8a5",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -203,7 +283,7 @@
                 {
                     "name": "YawRight",
                     "type": "Button",
-                    "id": "db90b90c-80a1-4d5d-80a4-93ffa2cc1dfe",
+                    "id": "ba4a1465-bb80-447a-a2ef-88407b1696c1",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -212,7 +292,7 @@
                 {
                     "name": "ForwardTilt",
                     "type": "Button",
-                    "id": "fd02c233-7179-48e0-8ec5-22847d26a9dd",
+                    "id": "2999e75a-04f8-41d8-836e-d108af00eb7e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -221,7 +301,7 @@
                 {
                     "name": "BackwardTilt",
                     "type": "Button",
-                    "id": "791140da-a3f8-4471-a084-5ad302340ad8",
+                    "id": "23931ef8-3980-49f2-bf65-5f7c42ca0a59",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -230,7 +310,7 @@
                 {
                     "name": "LeftRoll",
                     "type": "Button",
-                    "id": "35aa67c7-1c0a-413f-9709-ab6564be26f9",
+                    "id": "62de34f1-3320-4180-bdae-9a571eaddea0",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -239,17 +319,53 @@
                 {
                     "name": "RightRoll",
                     "type": "Button",
-                    "id": "b5ab8d01-2d6f-422c-91ee-a566ec7f4212",
+                    "id": "a82391fc-6880-4ec1-85c7-f6f43874725a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Toggle Vertical Stabilize",
+                    "type": "Button",
+                    "id": "ddf1a379-5469-497b-b14d-845c758db91d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Toggle Independent Camera",
+                    "type": "Button",
+                    "id": "65d05a87-27cb-4afa-8899-6a20280cb3a8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Toggle Move Camera",
+                    "type": "Button",
+                    "id": "e7d6faa9-6aab-4481-b5b2-92ff5e01ec9e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Test",
+                    "type": "Button",
+                    "id": "a25c0a52-bb01-4c96-b71d-4dd1e465ebae",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
                 {
                     "name": "",
-                    "id": "ae18f67c-49ee-4cef-a53d-fabbb26b0b4e",
+                    "id": "91513954-1067-44fc-aaad-56981df8a906",
                     "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
@@ -260,7 +376,7 @@
                 },
                 {
                     "name": "",
-                    "id": "a19c0974-8f5d-4852-bd18-9f10cf48d6a2",
+                    "id": "31983887-a5ae-4e04-9d7a-80b41db50390",
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
@@ -271,8 +387,8 @@
                 },
                 {
                     "name": "",
-                    "id": "d596245f-1f55-48f8-b34a-9a35c1496510",
-                    "path": "<Keyboard>/q",
+                    "id": "311d2e6a-3340-49dd-83a3-9c52c429888a",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -282,7 +398,7 @@
                 },
                 {
                     "name": "",
-                    "id": "8ed27022-3b66-4c78-88f7-08eabbdd3e42",
+                    "id": "fd696dda-e1af-4cb4-a745-02d9cce06f2f",
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
@@ -293,7 +409,7 @@
                 },
                 {
                     "name": "",
-                    "id": "ec93d223-5f81-41fb-8502-5dde22eeee90",
+                    "id": "65633c77-5a20-4f7c-a8a6-efbd1f7b5ff3",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
@@ -304,8 +420,8 @@
                 },
                 {
                     "name": "",
-                    "id": "2c1467ce-a6b9-4206-90ee-da400984bfa6",
-                    "path": "<Keyboard>/d",
+                    "id": "60b0dd06-7e1a-439c-a4b4-c151811da282",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -315,7 +431,7 @@
                 },
                 {
                     "name": "",
-                    "id": "573cf06d-50b7-4dad-a824-588305f20477",
+                    "id": "6d65e2a9-ddec-40fe-9405-122cbadd7933",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
@@ -326,12 +442,56 @@
                 },
                 {
                     "name": "",
-                    "id": "b7304047-342f-4085-9305-ceefe742d535",
+                    "id": "cfb7c5c3-2664-4e85-ae23-d1c34468a022",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "LeftRoll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c07e5a6a-c428-49ff-91e7-edd40b79bb9b",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Vertical Stabilize",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8895b471-cd2d-49e4-a595-65572f59afc2",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Independent Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f96161cf-dd0e-4f2b-ba0a-d0b469bae68e",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Move Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7209cc4e-2179-4fb1-aed0-f02300d135c6",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Test",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
