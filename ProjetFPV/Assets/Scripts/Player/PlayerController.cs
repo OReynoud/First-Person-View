@@ -37,16 +37,28 @@ public class PlayerController : Singleton<PlayerController>
     [BoxGroup("Movement")][Tooltip("Limit to the camera being able to look up or down")][SerializeField] private float lookXLimit;
     [BoxGroup("Movement")][Tooltip("How effective horizontal movement is in the air")][SerializeField][Range(0,1)] private float airMobilityFactor;
     [BoxGroup("Movement")][Tooltip("How much fast the avatar slows down when no inputs are given")][SerializeField] [Range(0,1)]private float drag;
+
+    [BoxGroup("Bobbing")] [SerializeField] private float amplitude;
+    [BoxGroup("Bobbing")] [SerializeField] private float frequeny;
+    [BoxGroup("Bobbing")] [SerializeField] private bool bobbing;
+    [BoxGroup("Bobbing")] [SerializeField] private float toggleSpeed;
+    [BoxGroup("Bobbing")] [SerializeField] private Vector3 startPos;
+    [BoxGroup("Bobbing")] [SerializeField] private Transform hands;
     
     [Foldout("Debug")][Tooltip("")][SerializeField]private bool appliedForce;
     [Foldout("Debug")][Tooltip("")][SerializeField] private bool canMove = true;
     [Foldout("Debug")][Tooltip("")][SerializeField] private bool isRunning = false;
     [Foldout("Debug")][Tooltip("")][SerializeField] private bool isJumping = false;
     [Foldout("Debug")][Tooltip("")][SerializeField] private bool isGrounded = false;
+    
+    
+    
 
 
     private float rotationX;
     private Vector3 playerDir;
+    private float jumpTime;
+    private Vector2 horizontalVelocity;
     // private void OnDrawGizmosSelected()
     // {
     //     Gizmos.color = Color.blue;
@@ -83,12 +95,13 @@ public class PlayerController : Singleton<PlayerController>
         currentControls.Enable();
         //currentControls.FindAction("Test",true).Enable();
         currentControls.FindAction("Jump",true).performed += Jump;
-        
         currentControls.FindAction("ToggleSprint",true).performed += ToggleSprint;
         currentControls.FindAction("ToggleSprint",true).canceled += ToggleSprint;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        startPos = hands.localPosition;
     }
 
     
@@ -103,6 +116,9 @@ public class PlayerController : Singleton<PlayerController>
         ForwardMovement();
         SidewaysMovement();
         Rotate();
+        
+        
+        ArmBobbing();
         playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
         playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
             playerCam.position.z);
@@ -113,30 +129,47 @@ public class PlayerController : Singleton<PlayerController>
         
     }
 
-    private float jumpTime;
-    private Vector2 horizontalVelocity;
     private void FixedUpdate()
     {
+        HorizontalMovement();
+        VerticalMovement();
+        
+        ClampVelocity();
+
+    }
+
+
+
+
+
+
+    #region Physics
+
+    private void HorizontalMovement()
+    {
         playerDir.Normalize();
-        //expectedForce = playerDir * (runSpeed or walkSpeed, depending on the state of isRunning) * (1 or airMobilityFactor[value between 0 and 1] depending on the player being grounded)
+
         var expectedForce = playerDir * ((isRunning ? runAccel : walkAccel) * (isGrounded ? 1 : airMobilityFactor));
 
         var dirDiff = Vector3.Angle(playerDir, rb.velocity.normalized);
-        Debug.Log(dirDiff);
         var finalDir = Vector3.Lerp(expectedForce, rb.velocity, (1 - (dirDiff / 180))) * drag;
-        rb.velocity = new Vector3(finalDir.x,rb.velocity.y,finalDir.z);
-        
-        
+        rb.velocity = new Vector3(finalDir.x, rb.velocity.y, finalDir.z);
+
+
         if (expectedForce.magnitude < 1)
         {
             appliedForce = false;
         }
+
         rb.AddForce(expectedForce);
         if (!appliedForce)
         {
             rb.velocity = new Vector3(rb.velocity.x * drag, rb.velocity.y, rb.velocity.z * drag);
         }
-
+    }
+    
+    private void VerticalMovement()
+    {
         if (isJumping)
         {
             jumpTime += Time.deltaTime;
@@ -150,17 +183,22 @@ public class PlayerController : Singleton<PlayerController>
         }
 
         horizontalVelocity = new Vector2(rb.velocity.x, rb.velocity.z);
+    }
+    private void ClampVelocity()
+    {
         if (!isRunning)
         {
-            horizontalVelocity = Vector2.ClampMagnitude(horizontalVelocity , maxHorizontalVelocity);
+            horizontalVelocity = Vector2.ClampMagnitude(horizontalVelocity, maxHorizontalVelocity);
         }
         else
         {
-            horizontalVelocity = Vector2.ClampMagnitude(horizontalVelocity , maxHorizontalVelocity * runMaxVelocityFactor);
+            horizontalVelocity = Vector2.ClampMagnitude(horizontalVelocity, maxHorizontalVelocity * runMaxVelocityFactor);
         }
+
         //Clamp horizontal speed with a min and max speed
-        rb.velocity = new Vector3(horizontalVelocity.x,rb.velocity.y,horizontalVelocity.y);
+        rb.velocity = new Vector3(horizontalVelocity.x, rb.velocity.y, horizontalVelocity.y);
     }
+    #endregion
 
     #region Controls
     
@@ -198,14 +236,10 @@ public class PlayerController : Singleton<PlayerController>
         rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCam.localEulerAngles = new Vector3(rotationX,playerCam.localEulerAngles.y,playerCam.localEulerAngles.z);
-        // float angle = Mathf.Atan2(transform.rotation.z,transform.rotation.x) * Mathf.Rad2Deg;
-        // if (angle < 0) angle += 360;
-        // if (angle > 360) angle -= 360;
-        // angle += Input.GetAxis("Mouse X") * lookSpeed;
-        // transform.localEulerAngles += new Vector3(0,angle,0);
-        // playerCam.transform.localEulerAngles = new Vector3(playerCam.transform.localEulerAngles.x,angle,playerCam.transform.localEulerAngles.z);
+        
         transform.rotation *= Quaternion.Euler(0,Input.GetAxis("Mouse X") * lookSpeed,0);
-        playerCam.localEulerAngles = new Vector3(playerCam.localEulerAngles.x,transform.localEulerAngles.y,playerCam.localEulerAngles.z);
+        var camRotation = new Vector3(playerCam.localEulerAngles.x, transform.localEulerAngles.y, playerCam.localEulerAngles.z);
+        playerCam.localEulerAngles = Vector3.Lerp(playerCam.localEulerAngles,camRotation,0.8f);
 
     }
     
@@ -224,5 +258,36 @@ public class PlayerController : Singleton<PlayerController>
         isRunning = !isRunning;
     }
     
+    #endregion
+
+    #region Bobbing
+
+    Vector3 FootStepMotion()
+    {
+        Vector3 pos = Vector3.zero;
+        pos.y += Mathf.Sin(Time.time * frequeny) * amplitude;
+        pos.x += Mathf.Cos(Time.time * frequeny/2) * amplitude;
+        
+        return pos;
+    }
+    
+    private void PlayMotion(Vector3 motion)
+    {
+        hands.localPosition += motion;
+    }
+
+    void ResetBobbing()
+    {
+        hands.localPosition = Vector3.Lerp(hands.localPosition, startPos, 1 * Time.deltaTime);
+    }
+    private void ArmBobbing()
+    {
+        if (appliedForce && isGrounded)
+        {
+            PlayMotion(FootStepMotion());
+        }
+
+        ResetBobbing();
+    }
     #endregion
 }
