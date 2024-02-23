@@ -2,42 +2,56 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.Serialization;
 
 public class PlayerController : Singleton<PlayerController>
 {
-    [SerializeField] private Camera playerCam;
+    [BoxGroup("Refs")][SerializeField] private Transform playerCam;
 
-    [SerializeField] private Vector3 cameraOffset;
+//    [SerializeField] private Vector3 cameraOffset;
 
-    [SerializeField] private bool autoStabiliseVertical = true;
-    [SerializeField] private bool independentCam = true;
-    [SerializeField] private float verticalSpeedModifier;
-    [SerializeField] private float horizontalSpeedModifier;
-    [SerializeField] private float rotationSpeed;
-    [SerializeField] [Range(0,1)]private float drag;
     private bool moveCam = false;
-    [SerializeField] private Transform playerModel;
     private Rigidbody rb;
 
-    public InputMapping controls;
     private InputActionMap currentControls;
     [Dropdown("GetInputMaps")]
-    public string currentInputMap;
+    [BoxGroup("Refs")]public string currentInputMap;
 
-    public PlayerInput inputs;
+    [BoxGroup("Refs")]public PlayerInput inputs;
 
-    private Vector3 playerDir;
 
-    private bool appliedForce;
     // Start is called before the first frame update
+    
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(transform.position + cameraOffset, 0.2f);
-    }
+    [BoxGroup("Movement")][Tooltip("Acceleration when walking")][SerializeField] private float walkAccel;
+    [BoxGroup("Movement")][Tooltip("Acceleration when running")][SerializeField] private float runAccel;
+    [BoxGroup("Movement")][Tooltip("Force applied on a jump")][SerializeField] private float jumpForce;
+    [BoxGroup("Movement")][Tooltip("Maximum Horizontal Velocity when walking")][SerializeField] private float maxHorizontalVelocity;
+    [BoxGroup("Movement")][Tooltip("Multiplies with maxHorizontalVelocity when running")][SerializeField] private float runMaxVelocityFactor;
+    [BoxGroup("Movement")][Tooltip("To make a jump more or less floaty")][SerializeField] private AnimationCurve jumpCurve;
+    [BoxGroup("Movement")][Tooltip("Camera sensitivity")][SerializeField] private float lookSpeed;
+    [BoxGroup("Movement")][Tooltip("Limit to the camera being able to look up or down")][SerializeField] private float lookXLimit;
+    [BoxGroup("Movement")][Tooltip("How effective horizontal movement is in the air")][SerializeField][Range(0,1)] private float airMobilityFactor;
+    [BoxGroup("Movement")][Tooltip("How much fast the avatar slows down when no inputs are given")][SerializeField] [Range(0,1)]private float drag;
+    
+    [Foldout("Debug")][Tooltip("")][SerializeField]private bool appliedForce;
+    [Foldout("Debug")][Tooltip("")][SerializeField] private bool canMove = true;
+    [Foldout("Debug")][Tooltip("")][SerializeField] private bool isRunning = false;
+    [Foldout("Debug")][Tooltip("")][SerializeField] private bool isJumping = false;
+    [Foldout("Debug")][Tooltip("")][SerializeField] private bool isGrounded = false;
+
+
+    private float rotationX;
+    private Vector3 playerDir;
+    // private void OnDrawGizmosSelected()
+    // {
+    //     Gizmos.color = Color.blue;
+    //     Gizmos.DrawSphere(transform.position + cameraOffset, 0.2f);
+    // }
 
     private void OnValidate()
     {
@@ -58,7 +72,6 @@ public class PlayerController : Singleton<PlayerController>
     public override void Awake()
     {
         base.Awake();
-        playerCam = Camera.main;
         rb = GetComponent<Rigidbody>();
     }
     void Start()
@@ -69,87 +82,96 @@ public class PlayerController : Singleton<PlayerController>
         Debug.Log(currentControls);
         currentControls.Enable();
         //currentControls.FindAction("Test",true).Enable();
-        currentControls.FindAction("Toggle Vertical Stabilize",true).performed += ToggleVerticalStabilize;
-        currentControls.FindAction("Toggle Independent Camera",true).performed += ToggleIndependentCamera;
-        currentControls.FindAction("Toggle Move Camera",true).performed += ToggleMoveCamera;
-        currentControls.FindAction("Toggle Move Camera",true).canceled += ToggleMoveCamera;
+        currentControls.FindAction("Jump",true).performed += Jump;
+        
+        currentControls.FindAction("ToggleSprint",true).performed += ToggleSprint;
+        currentControls.FindAction("ToggleSprint",true).canceled += ToggleSprint;
 
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
-    private void ToggleMoveCamera(InputAction.CallbackContext obj)
-    {
-        moveCam = !moveCam;
-    }
+    
 
-    private void ToggleIndependentCamera(InputAction.CallbackContext obj)
-    {
-        independentCam = !independentCam;
-    }
 
-    private void ToggleVerticalStabilize(InputAction.CallbackContext obj)
-    {
-        autoStabiliseVertical = !autoStabiliseVertical;
-    }
-
+    private Vector2Control lastmousePos = new Vector2Control();
     // Update is called once per frame
     void Update()
     {
+        
         playerDir = Vector3.zero;
-        if (currentControls.FindAction("Test", true).IsPressed())
-        {
-            Debug.Log("Testing");
-        }
-        UpAndDown();
         ForwardMovement();
         SidewaysMovement();
         Rotate();
+        playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
+        playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
+            playerCam.position.z);
+        if (Physics.Raycast(transform.position,Vector3.down, out RaycastHit hit, 1.1f,LayerMask.GetMask("Ground")) && !isJumping)
+        {
+            isGrounded = true;
+        }
         
     }
 
+    private float jumpTime;
+    private Vector2 horizontalVelocity;
     private void FixedUpdate()
     {
         playerDir.Normalize();
-        
-        rb.AddForce(playerDir);
+        //expectedForce = playerDir * (runSpeed or walkSpeed, depending on the state of isRunning) * (1 or airMobilityFactor[value between 0 and 1] depending on the player being grounded)
+        var expectedForce = playerDir * ((isRunning ? runAccel : walkAccel) * (isGrounded ? 1 : airMobilityFactor));
 
+        var dirDiff = Vector3.Angle(playerDir, rb.velocity.normalized);
+        Debug.Log(dirDiff);
+        var finalDir = Vector3.Lerp(expectedForce, rb.velocity, (1 - (dirDiff / 180))) * drag;
+        rb.velocity = new Vector3(finalDir.x,rb.velocity.y,finalDir.z);
+        
+        
+        if (expectedForce.magnitude < 1)
+        {
+            appliedForce = false;
+        }
+        rb.AddForce(expectedForce);
         if (!appliedForce)
         {
-            if (autoStabiliseVertical)
-            {
-                rb.AddForce(0,9.81f,0);
-                Debug.Log("oui?");
-            }
-            
-            rb.velocity = new Vector3(rb.velocity.x * drag, rb.velocity.y * drag, rb.velocity.z * drag);
-            
+            rb.velocity = new Vector3(rb.velocity.x * drag, rb.velocity.y, rb.velocity.z * drag);
         }
-        appliedForce = false;
+
+        if (isJumping)
+        {
+            jumpTime += Time.deltaTime;
+            rb.AddForce(Vector3.up * jumpForce * jumpCurve.Evaluate(jumpTime));
+        }
+
+        if (jumpTime > jumpCurve.keys[^1].time)
+        {
+            isJumping = false;
+            jumpTime = 0;
+        }
+
+        horizontalVelocity = new Vector2(rb.velocity.x, rb.velocity.z);
+        if (!isRunning)
+        {
+            horizontalVelocity = Vector2.ClampMagnitude(horizontalVelocity , maxHorizontalVelocity);
+        }
+        else
+        {
+            horizontalVelocity = Vector2.ClampMagnitude(horizontalVelocity , maxHorizontalVelocity * runMaxVelocityFactor);
+        }
+        //Clamp horizontal speed with a min and max speed
+        rb.velocity = new Vector3(horizontalVelocity.x,rb.velocity.y,horizontalVelocity.y);
     }
 
     #region Controls
-
-    void UpAndDown()
-    {
-        if (currentControls.FindAction("ThrottleUp", true).IsPressed())
-        {
-            playerDir += Vector3.up;
-            appliedForce = true;
-        }
-        if (currentControls.FindAction("ThrottleDown", true).IsPressed())
-        {
-            playerDir += Vector3.down;
-            appliedForce = true;
-        }
-    }
-
+    
     void ForwardMovement()
     {
-        if (currentControls.FindAction("ForwardTilt", true).IsPressed())
+        if (currentControls.FindAction("Forward", true).IsPressed())
         {
             playerDir += transform.forward;
             appliedForce = true;
         }
-        if (currentControls.FindAction("BackwardTilt", true).IsPressed())
+        if (currentControls.FindAction("Backward", true).IsPressed())
         {
             playerDir -= transform.forward;
             appliedForce = true;
@@ -158,30 +180,49 @@ public class PlayerController : Singleton<PlayerController>
 
     void SidewaysMovement()
     {
-        if (currentControls.FindAction("RightRoll", true).IsPressed())
+        if (currentControls.FindAction("Right", true).IsPressed())
         {
             playerDir += transform.right;
             appliedForce = true;
         }
-        if (currentControls.FindAction("LeftRoll", true).IsPressed())
+        if (currentControls.FindAction("Left", true).IsPressed())
         {
-            playerDir -= transform.forward;
+            playerDir -= transform.right;
             appliedForce = true;
         }
     }
 
+
     void Rotate()
     {
-        if (currentControls.FindAction("YawRight", true).IsPressed())
+        rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+        rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+        playerCam.localEulerAngles = new Vector3(rotationX,playerCam.localEulerAngles.y,playerCam.localEulerAngles.z);
+        // float angle = Mathf.Atan2(transform.rotation.z,transform.rotation.x) * Mathf.Rad2Deg;
+        // if (angle < 0) angle += 360;
+        // if (angle > 360) angle -= 360;
+        // angle += Input.GetAxis("Mouse X") * lookSpeed;
+        // transform.localEulerAngles += new Vector3(0,angle,0);
+        // playerCam.transform.localEulerAngles = new Vector3(playerCam.transform.localEulerAngles.x,angle,playerCam.transform.localEulerAngles.z);
+        transform.rotation *= Quaternion.Euler(0,Input.GetAxis("Mouse X") * lookSpeed,0);
+        playerCam.localEulerAngles = new Vector3(playerCam.localEulerAngles.x,transform.localEulerAngles.y,playerCam.localEulerAngles.z);
+
+    }
+    
+    private void Jump(InputAction.CallbackContext obj)
+    {
+        if (isGrounded)
         {
-            transform.rotation = Quaternion.Euler(0,rotationSpeed,0);
-        }
-        if (currentControls.FindAction("YawLeft", true).IsPressed())
-        {
-            transform.rotation = Quaternion.Euler(0,-rotationSpeed,0);
+            isGrounded = false;
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isJumping = true;
         }
     }
     
-
+    private void ToggleSprint(InputAction.CallbackContext obj)
+    {
+        isRunning = !isRunning;
+    }
+    
     #endregion
 }

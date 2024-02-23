@@ -24,496 +24,128 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     ""name"": ""InputMapping"",
     ""maps"": [
         {
-            ""name"": ""ZQSD + Arrows"",
-            ""id"": ""7bd83120-7d3a-4308-ac88-900fe35187f6"",
+            ""name"": ""Controls"",
+            ""id"": ""fd6646f9-e396-4d43-82b1-0c9536a2d666"",
             ""actions"": [
                 {
-                    ""name"": ""ThrottleUp"",
+                    ""name"": ""Forward"",
                     ""type"": ""Button"",
-                    ""id"": ""29e56f6c-3889-43d6-8c1f-58bc4e8e99b1"",
+                    ""id"": ""26674d78-524c-47eb-8d52-56a53016e983"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ThrottleDown"",
+                    ""name"": ""Backward"",
                     ""type"": ""Button"",
-                    ""id"": ""81c5f2c4-49a9-4fa7-a3b9-43852df2eefe"",
+                    ""id"": ""98fe5cc8-bb30-4017-bff0-586f9dd733b1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""YawLeft"",
+                    ""name"": ""Right"",
                     ""type"": ""Button"",
-                    ""id"": ""a8794b04-1dbf-47ac-8615-c3f3c2fd458d"",
+                    ""id"": ""ed5db918-c669-4a7f-bf13-694c93fb13d2"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""YawRight"",
+                    ""name"": ""Left"",
                     ""type"": ""Button"",
-                    ""id"": ""6673047f-2985-4b8a-acc5-58529452d7f7"",
+                    ""id"": ""c317b51a-553b-4788-9f3b-79353c52a7ef"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ForwardTilt"",
+                    ""name"": ""Jump"",
                     ""type"": ""Button"",
-                    ""id"": ""20c3bc30-4d99-4a7b-b3b5-110378165343"",
+                    ""id"": ""46539186-0e6b-490d-939d-62aa1e127874"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""BackwardTilt"",
+                    ""name"": ""ToggleSprint"",
                     ""type"": ""Button"",
-                    ""id"": ""30f274e8-3e24-40d5-af2e-d938ce7bdc6d"",
+                    ""id"": ""6261dffc-8265-46ba-b04c-044a2a20e77e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""LeftRoll"",
-                    ""type"": ""Button"",
-                    ""id"": ""357dbb54-a1cd-447d-93f7-677eca336b6c"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""RightRoll"",
-                    ""type"": ""Button"",
-                    ""id"": ""c0a4c291-65ae-4d89-a411-adc4a9f44d17"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Toggle Vertical Stabilize"",
-                    ""type"": ""Button"",
-                    ""id"": ""5ef24009-9dde-43c9-a732-4b72275d29f8"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Toggle Independent Camera"",
-                    ""type"": ""Button"",
-                    ""id"": ""8d4ede18-1c50-4e17-b587-f07151b854ba"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Toggle Move Camera"",
-                    ""type"": ""Button"",
-                    ""id"": ""5d50bb60-8866-44dd-861c-f6b0da551441"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Test"",
-                    ""type"": ""Button"",
-                    ""id"": ""604889ad-762b-4677-8340-6279757872e1"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""38ea1ba3-8b15-4c27-8760-b87c438b1602"",
-                    ""path"": ""<Keyboard>/z"",
+                    ""id"": ""ee6345f7-c4ce-4637-8121-cc9f8cd47e21"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ThrottleUp"",
+                    ""action"": ""Forward"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e8c1d540-85de-4ae5-b744-cea38da408f7"",
+                    ""id"": ""1e32bd68-dd71-4432-999a-97db3c9b1d43"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ThrottleDown"",
+                    ""action"": ""Backward"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""889253e3-852a-49de-97ca-63f0b5374261"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""YawLeft"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""691419f8-3a2d-469e-baa6-13adf530da1e"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""BackwardTilt"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""db277b18-186c-4ac4-97a1-bdfe006ebb68"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ForwardTilt"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ae3a1ac1-e7a6-4aaf-ae29-fe766b953070"",
+                    ""id"": ""c33627b1-34b5-45f4-8ce7-5648cd8b904c"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""YawRight"",
+                    ""action"": ""Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ac52cb4e-7a19-480f-a139-e9bfa9a019a4"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""id"": ""c398b83f-84ee-4b30-bdf0-d7cc6ad10033"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""RightRoll"",
+                    ""action"": ""Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0d1a36bd-f93f-4822-b7c1-c92af6ed0af4"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""id"": ""6827cb36-6119-4a82-b939-7947e52b6fd2"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""LeftRoll"",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2c87ed31-091a-4d5c-ab42-658834f2985d"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Toggle Vertical Stabilize"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a9c87a8c-bf6c-4296-be76-dfb480be2e67"",
-                    ""path"": ""<Keyboard>/g"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Toggle Independent Camera"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8aecac74-623e-434b-92e7-4739cd2b0ff7"",
+                    ""id"": ""14823f61-26eb-46c1-b964-e08829c2c634"",
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Toggle Move Camera"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2e80692a-be11-440b-bc1d-326b5d30267f"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Test"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""ZQSD + Mouse"",
-            ""id"": ""f27fbeb5-c302-494b-9d01-6bebf6ba123b"",
-            ""actions"": [
-                {
-                    ""name"": ""ThrottleUp"",
-                    ""type"": ""Button"",
-                    ""id"": ""1bba1ff5-c54b-4249-a789-6b9507108812"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ThrottleDown"",
-                    ""type"": ""Button"",
-                    ""id"": ""7b1d48e0-359c-4d5b-874a-39b78b65d863"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""YawLeft"",
-                    ""type"": ""Button"",
-                    ""id"": ""fd3ab132-7d86-434c-98ef-2b565c34c8a5"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""YawRight"",
-                    ""type"": ""Button"",
-                    ""id"": ""ba4a1465-bb80-447a-a2ef-88407b1696c1"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ForwardTilt"",
-                    ""type"": ""Button"",
-                    ""id"": ""2999e75a-04f8-41d8-836e-d108af00eb7e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""BackwardTilt"",
-                    ""type"": ""Button"",
-                    ""id"": ""23931ef8-3980-49f2-bf65-5f7c42ca0a59"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""LeftRoll"",
-                    ""type"": ""Button"",
-                    ""id"": ""62de34f1-3320-4180-bdae-9a571eaddea0"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""RightRoll"",
-                    ""type"": ""Button"",
-                    ""id"": ""a82391fc-6880-4ec1-85c7-f6f43874725a"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Toggle Vertical Stabilize"",
-                    ""type"": ""Button"",
-                    ""id"": ""ddf1a379-5469-497b-b14d-845c758db91d"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Toggle Independent Camera"",
-                    ""type"": ""Button"",
-                    ""id"": ""65d05a87-27cb-4afa-8899-6a20280cb3a8"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Toggle Move Camera"",
-                    ""type"": ""Button"",
-                    ""id"": ""e7d6faa9-6aab-4481-b5b2-92ff5e01ec9e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Test"",
-                    ""type"": ""Button"",
-                    ""id"": ""a25c0a52-bb01-4c96-b71d-4dd1e465ebae"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""91513954-1067-44fc-aaad-56981df8a906"",
-                    ""path"": ""<Keyboard>/z"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ThrottleUp"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""31983887-a5ae-4e04-9d7a-80b41db50390"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ThrottleDown"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""311d2e6a-3340-49dd-83a3-9c52c429888a"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""YawLeft"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""fd696dda-e1af-4cb4-a745-02d9cce06f2f"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""BackwardTilt"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""65633c77-5a20-4f7c-a8a6-efbd1f7b5ff3"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ForwardTilt"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""60b0dd06-7e1a-439c-a4b4-c151811da282"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""YawRight"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6d65e2a9-ddec-40fe-9405-122cbadd7933"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RightRoll"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""cfb7c5c3-2664-4e85-ae23-d1c34468a022"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""LeftRoll"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c07e5a6a-c428-49ff-91e7-edd40b79bb9b"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Toggle Vertical Stabilize"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8895b471-cd2d-49e4-a595-65572f59afc2"",
-                    ""path"": ""<Keyboard>/g"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Toggle Independent Camera"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f96161cf-dd0e-4f2b-ba0a-d0b469bae68e"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Toggle Move Camera"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7209cc4e-2179-4fb1-aed0-f02300d135c6"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Test"",
+                    ""action"": ""ToggleSprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -522,34 +154,14 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // ZQSD + Arrows
-        m_ZQSDArrows = asset.FindActionMap("ZQSD + Arrows", throwIfNotFound: true);
-        m_ZQSDArrows_ThrottleUp = m_ZQSDArrows.FindAction("ThrottleUp", throwIfNotFound: true);
-        m_ZQSDArrows_ThrottleDown = m_ZQSDArrows.FindAction("ThrottleDown", throwIfNotFound: true);
-        m_ZQSDArrows_YawLeft = m_ZQSDArrows.FindAction("YawLeft", throwIfNotFound: true);
-        m_ZQSDArrows_YawRight = m_ZQSDArrows.FindAction("YawRight", throwIfNotFound: true);
-        m_ZQSDArrows_ForwardTilt = m_ZQSDArrows.FindAction("ForwardTilt", throwIfNotFound: true);
-        m_ZQSDArrows_BackwardTilt = m_ZQSDArrows.FindAction("BackwardTilt", throwIfNotFound: true);
-        m_ZQSDArrows_LeftRoll = m_ZQSDArrows.FindAction("LeftRoll", throwIfNotFound: true);
-        m_ZQSDArrows_RightRoll = m_ZQSDArrows.FindAction("RightRoll", throwIfNotFound: true);
-        m_ZQSDArrows_ToggleVerticalStabilize = m_ZQSDArrows.FindAction("Toggle Vertical Stabilize", throwIfNotFound: true);
-        m_ZQSDArrows_ToggleIndependentCamera = m_ZQSDArrows.FindAction("Toggle Independent Camera", throwIfNotFound: true);
-        m_ZQSDArrows_ToggleMoveCamera = m_ZQSDArrows.FindAction("Toggle Move Camera", throwIfNotFound: true);
-        m_ZQSDArrows_Test = m_ZQSDArrows.FindAction("Test", throwIfNotFound: true);
-        // ZQSD + Mouse
-        m_ZQSDMouse = asset.FindActionMap("ZQSD + Mouse", throwIfNotFound: true);
-        m_ZQSDMouse_ThrottleUp = m_ZQSDMouse.FindAction("ThrottleUp", throwIfNotFound: true);
-        m_ZQSDMouse_ThrottleDown = m_ZQSDMouse.FindAction("ThrottleDown", throwIfNotFound: true);
-        m_ZQSDMouse_YawLeft = m_ZQSDMouse.FindAction("YawLeft", throwIfNotFound: true);
-        m_ZQSDMouse_YawRight = m_ZQSDMouse.FindAction("YawRight", throwIfNotFound: true);
-        m_ZQSDMouse_ForwardTilt = m_ZQSDMouse.FindAction("ForwardTilt", throwIfNotFound: true);
-        m_ZQSDMouse_BackwardTilt = m_ZQSDMouse.FindAction("BackwardTilt", throwIfNotFound: true);
-        m_ZQSDMouse_LeftRoll = m_ZQSDMouse.FindAction("LeftRoll", throwIfNotFound: true);
-        m_ZQSDMouse_RightRoll = m_ZQSDMouse.FindAction("RightRoll", throwIfNotFound: true);
-        m_ZQSDMouse_ToggleVerticalStabilize = m_ZQSDMouse.FindAction("Toggle Vertical Stabilize", throwIfNotFound: true);
-        m_ZQSDMouse_ToggleIndependentCamera = m_ZQSDMouse.FindAction("Toggle Independent Camera", throwIfNotFound: true);
-        m_ZQSDMouse_ToggleMoveCamera = m_ZQSDMouse.FindAction("Toggle Move Camera", throwIfNotFound: true);
-        m_ZQSDMouse_Test = m_ZQSDMouse.FindAction("Test", throwIfNotFound: true);
+        // Controls
+        m_Controls = asset.FindActionMap("Controls", throwIfNotFound: true);
+        m_Controls_Forward = m_Controls.FindAction("Forward", throwIfNotFound: true);
+        m_Controls_Backward = m_Controls.FindAction("Backward", throwIfNotFound: true);
+        m_Controls_Right = m_Controls.FindAction("Right", throwIfNotFound: true);
+        m_Controls_Left = m_Controls.FindAction("Left", throwIfNotFound: true);
+        m_Controls_Jump = m_Controls.FindAction("Jump", throwIfNotFound: true);
+        m_Controls_ToggleSprint = m_Controls.FindAction("ToggleSprint", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -608,301 +220,98 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // ZQSD + Arrows
-    private readonly InputActionMap m_ZQSDArrows;
-    private List<IZQSDArrowsActions> m_ZQSDArrowsActionsCallbackInterfaces = new List<IZQSDArrowsActions>();
-    private readonly InputAction m_ZQSDArrows_ThrottleUp;
-    private readonly InputAction m_ZQSDArrows_ThrottleDown;
-    private readonly InputAction m_ZQSDArrows_YawLeft;
-    private readonly InputAction m_ZQSDArrows_YawRight;
-    private readonly InputAction m_ZQSDArrows_ForwardTilt;
-    private readonly InputAction m_ZQSDArrows_BackwardTilt;
-    private readonly InputAction m_ZQSDArrows_LeftRoll;
-    private readonly InputAction m_ZQSDArrows_RightRoll;
-    private readonly InputAction m_ZQSDArrows_ToggleVerticalStabilize;
-    private readonly InputAction m_ZQSDArrows_ToggleIndependentCamera;
-    private readonly InputAction m_ZQSDArrows_ToggleMoveCamera;
-    private readonly InputAction m_ZQSDArrows_Test;
-    public struct ZQSDArrowsActions
+    // Controls
+    private readonly InputActionMap m_Controls;
+    private List<IControlsActions> m_ControlsActionsCallbackInterfaces = new List<IControlsActions>();
+    private readonly InputAction m_Controls_Forward;
+    private readonly InputAction m_Controls_Backward;
+    private readonly InputAction m_Controls_Right;
+    private readonly InputAction m_Controls_Left;
+    private readonly InputAction m_Controls_Jump;
+    private readonly InputAction m_Controls_ToggleSprint;
+    public struct ControlsActions
     {
         private @InputMapping m_Wrapper;
-        public ZQSDArrowsActions(@InputMapping wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ThrottleUp => m_Wrapper.m_ZQSDArrows_ThrottleUp;
-        public InputAction @ThrottleDown => m_Wrapper.m_ZQSDArrows_ThrottleDown;
-        public InputAction @YawLeft => m_Wrapper.m_ZQSDArrows_YawLeft;
-        public InputAction @YawRight => m_Wrapper.m_ZQSDArrows_YawRight;
-        public InputAction @ForwardTilt => m_Wrapper.m_ZQSDArrows_ForwardTilt;
-        public InputAction @BackwardTilt => m_Wrapper.m_ZQSDArrows_BackwardTilt;
-        public InputAction @LeftRoll => m_Wrapper.m_ZQSDArrows_LeftRoll;
-        public InputAction @RightRoll => m_Wrapper.m_ZQSDArrows_RightRoll;
-        public InputAction @ToggleVerticalStabilize => m_Wrapper.m_ZQSDArrows_ToggleVerticalStabilize;
-        public InputAction @ToggleIndependentCamera => m_Wrapper.m_ZQSDArrows_ToggleIndependentCamera;
-        public InputAction @ToggleMoveCamera => m_Wrapper.m_ZQSDArrows_ToggleMoveCamera;
-        public InputAction @Test => m_Wrapper.m_ZQSDArrows_Test;
-        public InputActionMap Get() { return m_Wrapper.m_ZQSDArrows; }
+        public ControlsActions(@InputMapping wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Forward => m_Wrapper.m_Controls_Forward;
+        public InputAction @Backward => m_Wrapper.m_Controls_Backward;
+        public InputAction @Right => m_Wrapper.m_Controls_Right;
+        public InputAction @Left => m_Wrapper.m_Controls_Left;
+        public InputAction @Jump => m_Wrapper.m_Controls_Jump;
+        public InputAction @ToggleSprint => m_Wrapper.m_Controls_ToggleSprint;
+        public InputActionMap Get() { return m_Wrapper.m_Controls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ZQSDArrowsActions set) { return set.Get(); }
-        public void AddCallbacks(IZQSDArrowsActions instance)
+        public static implicit operator InputActionMap(ControlsActions set) { return set.Get(); }
+        public void AddCallbacks(IControlsActions instance)
         {
-            if (instance == null || m_Wrapper.m_ZQSDArrowsActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_ZQSDArrowsActionsCallbackInterfaces.Add(instance);
-            @ThrottleUp.started += instance.OnThrottleUp;
-            @ThrottleUp.performed += instance.OnThrottleUp;
-            @ThrottleUp.canceled += instance.OnThrottleUp;
-            @ThrottleDown.started += instance.OnThrottleDown;
-            @ThrottleDown.performed += instance.OnThrottleDown;
-            @ThrottleDown.canceled += instance.OnThrottleDown;
-            @YawLeft.started += instance.OnYawLeft;
-            @YawLeft.performed += instance.OnYawLeft;
-            @YawLeft.canceled += instance.OnYawLeft;
-            @YawRight.started += instance.OnYawRight;
-            @YawRight.performed += instance.OnYawRight;
-            @YawRight.canceled += instance.OnYawRight;
-            @ForwardTilt.started += instance.OnForwardTilt;
-            @ForwardTilt.performed += instance.OnForwardTilt;
-            @ForwardTilt.canceled += instance.OnForwardTilt;
-            @BackwardTilt.started += instance.OnBackwardTilt;
-            @BackwardTilt.performed += instance.OnBackwardTilt;
-            @BackwardTilt.canceled += instance.OnBackwardTilt;
-            @LeftRoll.started += instance.OnLeftRoll;
-            @LeftRoll.performed += instance.OnLeftRoll;
-            @LeftRoll.canceled += instance.OnLeftRoll;
-            @RightRoll.started += instance.OnRightRoll;
-            @RightRoll.performed += instance.OnRightRoll;
-            @RightRoll.canceled += instance.OnRightRoll;
-            @ToggleVerticalStabilize.started += instance.OnToggleVerticalStabilize;
-            @ToggleVerticalStabilize.performed += instance.OnToggleVerticalStabilize;
-            @ToggleVerticalStabilize.canceled += instance.OnToggleVerticalStabilize;
-            @ToggleIndependentCamera.started += instance.OnToggleIndependentCamera;
-            @ToggleIndependentCamera.performed += instance.OnToggleIndependentCamera;
-            @ToggleIndependentCamera.canceled += instance.OnToggleIndependentCamera;
-            @ToggleMoveCamera.started += instance.OnToggleMoveCamera;
-            @ToggleMoveCamera.performed += instance.OnToggleMoveCamera;
-            @ToggleMoveCamera.canceled += instance.OnToggleMoveCamera;
-            @Test.started += instance.OnTest;
-            @Test.performed += instance.OnTest;
-            @Test.canceled += instance.OnTest;
+            if (instance == null || m_Wrapper.m_ControlsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ControlsActionsCallbackInterfaces.Add(instance);
+            @Forward.started += instance.OnForward;
+            @Forward.performed += instance.OnForward;
+            @Forward.canceled += instance.OnForward;
+            @Backward.started += instance.OnBackward;
+            @Backward.performed += instance.OnBackward;
+            @Backward.canceled += instance.OnBackward;
+            @Right.started += instance.OnRight;
+            @Right.performed += instance.OnRight;
+            @Right.canceled += instance.OnRight;
+            @Left.started += instance.OnLeft;
+            @Left.performed += instance.OnLeft;
+            @Left.canceled += instance.OnLeft;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @ToggleSprint.started += instance.OnToggleSprint;
+            @ToggleSprint.performed += instance.OnToggleSprint;
+            @ToggleSprint.canceled += instance.OnToggleSprint;
         }
 
-        private void UnregisterCallbacks(IZQSDArrowsActions instance)
+        private void UnregisterCallbacks(IControlsActions instance)
         {
-            @ThrottleUp.started -= instance.OnThrottleUp;
-            @ThrottleUp.performed -= instance.OnThrottleUp;
-            @ThrottleUp.canceled -= instance.OnThrottleUp;
-            @ThrottleDown.started -= instance.OnThrottleDown;
-            @ThrottleDown.performed -= instance.OnThrottleDown;
-            @ThrottleDown.canceled -= instance.OnThrottleDown;
-            @YawLeft.started -= instance.OnYawLeft;
-            @YawLeft.performed -= instance.OnYawLeft;
-            @YawLeft.canceled -= instance.OnYawLeft;
-            @YawRight.started -= instance.OnYawRight;
-            @YawRight.performed -= instance.OnYawRight;
-            @YawRight.canceled -= instance.OnYawRight;
-            @ForwardTilt.started -= instance.OnForwardTilt;
-            @ForwardTilt.performed -= instance.OnForwardTilt;
-            @ForwardTilt.canceled -= instance.OnForwardTilt;
-            @BackwardTilt.started -= instance.OnBackwardTilt;
-            @BackwardTilt.performed -= instance.OnBackwardTilt;
-            @BackwardTilt.canceled -= instance.OnBackwardTilt;
-            @LeftRoll.started -= instance.OnLeftRoll;
-            @LeftRoll.performed -= instance.OnLeftRoll;
-            @LeftRoll.canceled -= instance.OnLeftRoll;
-            @RightRoll.started -= instance.OnRightRoll;
-            @RightRoll.performed -= instance.OnRightRoll;
-            @RightRoll.canceled -= instance.OnRightRoll;
-            @ToggleVerticalStabilize.started -= instance.OnToggleVerticalStabilize;
-            @ToggleVerticalStabilize.performed -= instance.OnToggleVerticalStabilize;
-            @ToggleVerticalStabilize.canceled -= instance.OnToggleVerticalStabilize;
-            @ToggleIndependentCamera.started -= instance.OnToggleIndependentCamera;
-            @ToggleIndependentCamera.performed -= instance.OnToggleIndependentCamera;
-            @ToggleIndependentCamera.canceled -= instance.OnToggleIndependentCamera;
-            @ToggleMoveCamera.started -= instance.OnToggleMoveCamera;
-            @ToggleMoveCamera.performed -= instance.OnToggleMoveCamera;
-            @ToggleMoveCamera.canceled -= instance.OnToggleMoveCamera;
-            @Test.started -= instance.OnTest;
-            @Test.performed -= instance.OnTest;
-            @Test.canceled -= instance.OnTest;
+            @Forward.started -= instance.OnForward;
+            @Forward.performed -= instance.OnForward;
+            @Forward.canceled -= instance.OnForward;
+            @Backward.started -= instance.OnBackward;
+            @Backward.performed -= instance.OnBackward;
+            @Backward.canceled -= instance.OnBackward;
+            @Right.started -= instance.OnRight;
+            @Right.performed -= instance.OnRight;
+            @Right.canceled -= instance.OnRight;
+            @Left.started -= instance.OnLeft;
+            @Left.performed -= instance.OnLeft;
+            @Left.canceled -= instance.OnLeft;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @ToggleSprint.started -= instance.OnToggleSprint;
+            @ToggleSprint.performed -= instance.OnToggleSprint;
+            @ToggleSprint.canceled -= instance.OnToggleSprint;
         }
 
-        public void RemoveCallbacks(IZQSDArrowsActions instance)
+        public void RemoveCallbacks(IControlsActions instance)
         {
-            if (m_Wrapper.m_ZQSDArrowsActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_ControlsActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IZQSDArrowsActions instance)
+        public void SetCallbacks(IControlsActions instance)
         {
-            foreach (var item in m_Wrapper.m_ZQSDArrowsActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_ControlsActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_ZQSDArrowsActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_ControlsActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public ZQSDArrowsActions @ZQSDArrows => new ZQSDArrowsActions(this);
-
-    // ZQSD + Mouse
-    private readonly InputActionMap m_ZQSDMouse;
-    private List<IZQSDMouseActions> m_ZQSDMouseActionsCallbackInterfaces = new List<IZQSDMouseActions>();
-    private readonly InputAction m_ZQSDMouse_ThrottleUp;
-    private readonly InputAction m_ZQSDMouse_ThrottleDown;
-    private readonly InputAction m_ZQSDMouse_YawLeft;
-    private readonly InputAction m_ZQSDMouse_YawRight;
-    private readonly InputAction m_ZQSDMouse_ForwardTilt;
-    private readonly InputAction m_ZQSDMouse_BackwardTilt;
-    private readonly InputAction m_ZQSDMouse_LeftRoll;
-    private readonly InputAction m_ZQSDMouse_RightRoll;
-    private readonly InputAction m_ZQSDMouse_ToggleVerticalStabilize;
-    private readonly InputAction m_ZQSDMouse_ToggleIndependentCamera;
-    private readonly InputAction m_ZQSDMouse_ToggleMoveCamera;
-    private readonly InputAction m_ZQSDMouse_Test;
-    public struct ZQSDMouseActions
+    public ControlsActions @Controls => new ControlsActions(this);
+    public interface IControlsActions
     {
-        private @InputMapping m_Wrapper;
-        public ZQSDMouseActions(@InputMapping wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ThrottleUp => m_Wrapper.m_ZQSDMouse_ThrottleUp;
-        public InputAction @ThrottleDown => m_Wrapper.m_ZQSDMouse_ThrottleDown;
-        public InputAction @YawLeft => m_Wrapper.m_ZQSDMouse_YawLeft;
-        public InputAction @YawRight => m_Wrapper.m_ZQSDMouse_YawRight;
-        public InputAction @ForwardTilt => m_Wrapper.m_ZQSDMouse_ForwardTilt;
-        public InputAction @BackwardTilt => m_Wrapper.m_ZQSDMouse_BackwardTilt;
-        public InputAction @LeftRoll => m_Wrapper.m_ZQSDMouse_LeftRoll;
-        public InputAction @RightRoll => m_Wrapper.m_ZQSDMouse_RightRoll;
-        public InputAction @ToggleVerticalStabilize => m_Wrapper.m_ZQSDMouse_ToggleVerticalStabilize;
-        public InputAction @ToggleIndependentCamera => m_Wrapper.m_ZQSDMouse_ToggleIndependentCamera;
-        public InputAction @ToggleMoveCamera => m_Wrapper.m_ZQSDMouse_ToggleMoveCamera;
-        public InputAction @Test => m_Wrapper.m_ZQSDMouse_Test;
-        public InputActionMap Get() { return m_Wrapper.m_ZQSDMouse; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ZQSDMouseActions set) { return set.Get(); }
-        public void AddCallbacks(IZQSDMouseActions instance)
-        {
-            if (instance == null || m_Wrapper.m_ZQSDMouseActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_ZQSDMouseActionsCallbackInterfaces.Add(instance);
-            @ThrottleUp.started += instance.OnThrottleUp;
-            @ThrottleUp.performed += instance.OnThrottleUp;
-            @ThrottleUp.canceled += instance.OnThrottleUp;
-            @ThrottleDown.started += instance.OnThrottleDown;
-            @ThrottleDown.performed += instance.OnThrottleDown;
-            @ThrottleDown.canceled += instance.OnThrottleDown;
-            @YawLeft.started += instance.OnYawLeft;
-            @YawLeft.performed += instance.OnYawLeft;
-            @YawLeft.canceled += instance.OnYawLeft;
-            @YawRight.started += instance.OnYawRight;
-            @YawRight.performed += instance.OnYawRight;
-            @YawRight.canceled += instance.OnYawRight;
-            @ForwardTilt.started += instance.OnForwardTilt;
-            @ForwardTilt.performed += instance.OnForwardTilt;
-            @ForwardTilt.canceled += instance.OnForwardTilt;
-            @BackwardTilt.started += instance.OnBackwardTilt;
-            @BackwardTilt.performed += instance.OnBackwardTilt;
-            @BackwardTilt.canceled += instance.OnBackwardTilt;
-            @LeftRoll.started += instance.OnLeftRoll;
-            @LeftRoll.performed += instance.OnLeftRoll;
-            @LeftRoll.canceled += instance.OnLeftRoll;
-            @RightRoll.started += instance.OnRightRoll;
-            @RightRoll.performed += instance.OnRightRoll;
-            @RightRoll.canceled += instance.OnRightRoll;
-            @ToggleVerticalStabilize.started += instance.OnToggleVerticalStabilize;
-            @ToggleVerticalStabilize.performed += instance.OnToggleVerticalStabilize;
-            @ToggleVerticalStabilize.canceled += instance.OnToggleVerticalStabilize;
-            @ToggleIndependentCamera.started += instance.OnToggleIndependentCamera;
-            @ToggleIndependentCamera.performed += instance.OnToggleIndependentCamera;
-            @ToggleIndependentCamera.canceled += instance.OnToggleIndependentCamera;
-            @ToggleMoveCamera.started += instance.OnToggleMoveCamera;
-            @ToggleMoveCamera.performed += instance.OnToggleMoveCamera;
-            @ToggleMoveCamera.canceled += instance.OnToggleMoveCamera;
-            @Test.started += instance.OnTest;
-            @Test.performed += instance.OnTest;
-            @Test.canceled += instance.OnTest;
-        }
-
-        private void UnregisterCallbacks(IZQSDMouseActions instance)
-        {
-            @ThrottleUp.started -= instance.OnThrottleUp;
-            @ThrottleUp.performed -= instance.OnThrottleUp;
-            @ThrottleUp.canceled -= instance.OnThrottleUp;
-            @ThrottleDown.started -= instance.OnThrottleDown;
-            @ThrottleDown.performed -= instance.OnThrottleDown;
-            @ThrottleDown.canceled -= instance.OnThrottleDown;
-            @YawLeft.started -= instance.OnYawLeft;
-            @YawLeft.performed -= instance.OnYawLeft;
-            @YawLeft.canceled -= instance.OnYawLeft;
-            @YawRight.started -= instance.OnYawRight;
-            @YawRight.performed -= instance.OnYawRight;
-            @YawRight.canceled -= instance.OnYawRight;
-            @ForwardTilt.started -= instance.OnForwardTilt;
-            @ForwardTilt.performed -= instance.OnForwardTilt;
-            @ForwardTilt.canceled -= instance.OnForwardTilt;
-            @BackwardTilt.started -= instance.OnBackwardTilt;
-            @BackwardTilt.performed -= instance.OnBackwardTilt;
-            @BackwardTilt.canceled -= instance.OnBackwardTilt;
-            @LeftRoll.started -= instance.OnLeftRoll;
-            @LeftRoll.performed -= instance.OnLeftRoll;
-            @LeftRoll.canceled -= instance.OnLeftRoll;
-            @RightRoll.started -= instance.OnRightRoll;
-            @RightRoll.performed -= instance.OnRightRoll;
-            @RightRoll.canceled -= instance.OnRightRoll;
-            @ToggleVerticalStabilize.started -= instance.OnToggleVerticalStabilize;
-            @ToggleVerticalStabilize.performed -= instance.OnToggleVerticalStabilize;
-            @ToggleVerticalStabilize.canceled -= instance.OnToggleVerticalStabilize;
-            @ToggleIndependentCamera.started -= instance.OnToggleIndependentCamera;
-            @ToggleIndependentCamera.performed -= instance.OnToggleIndependentCamera;
-            @ToggleIndependentCamera.canceled -= instance.OnToggleIndependentCamera;
-            @ToggleMoveCamera.started -= instance.OnToggleMoveCamera;
-            @ToggleMoveCamera.performed -= instance.OnToggleMoveCamera;
-            @ToggleMoveCamera.canceled -= instance.OnToggleMoveCamera;
-            @Test.started -= instance.OnTest;
-            @Test.performed -= instance.OnTest;
-            @Test.canceled -= instance.OnTest;
-        }
-
-        public void RemoveCallbacks(IZQSDMouseActions instance)
-        {
-            if (m_Wrapper.m_ZQSDMouseActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(IZQSDMouseActions instance)
-        {
-            foreach (var item in m_Wrapper.m_ZQSDMouseActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_ZQSDMouseActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public ZQSDMouseActions @ZQSDMouse => new ZQSDMouseActions(this);
-    public interface IZQSDArrowsActions
-    {
-        void OnThrottleUp(InputAction.CallbackContext context);
-        void OnThrottleDown(InputAction.CallbackContext context);
-        void OnYawLeft(InputAction.CallbackContext context);
-        void OnYawRight(InputAction.CallbackContext context);
-        void OnForwardTilt(InputAction.CallbackContext context);
-        void OnBackwardTilt(InputAction.CallbackContext context);
-        void OnLeftRoll(InputAction.CallbackContext context);
-        void OnRightRoll(InputAction.CallbackContext context);
-        void OnToggleVerticalStabilize(InputAction.CallbackContext context);
-        void OnToggleIndependentCamera(InputAction.CallbackContext context);
-        void OnToggleMoveCamera(InputAction.CallbackContext context);
-        void OnTest(InputAction.CallbackContext context);
-    }
-    public interface IZQSDMouseActions
-    {
-        void OnThrottleUp(InputAction.CallbackContext context);
-        void OnThrottleDown(InputAction.CallbackContext context);
-        void OnYawLeft(InputAction.CallbackContext context);
-        void OnYawRight(InputAction.CallbackContext context);
-        void OnForwardTilt(InputAction.CallbackContext context);
-        void OnBackwardTilt(InputAction.CallbackContext context);
-        void OnLeftRoll(InputAction.CallbackContext context);
-        void OnRightRoll(InputAction.CallbackContext context);
-        void OnToggleVerticalStabilize(InputAction.CallbackContext context);
-        void OnToggleIndependentCamera(InputAction.CallbackContext context);
-        void OnToggleMoveCamera(InputAction.CallbackContext context);
-        void OnTest(InputAction.CallbackContext context);
+        void OnForward(InputAction.CallbackContext context);
+        void OnBackward(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnToggleSprint(InputAction.CallbackContext context);
     }
 }
