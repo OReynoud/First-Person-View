@@ -150,6 +150,262 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Test1"",
+            ""id"": ""32663b91-7c0e-47e0-846e-8292efebcfaf"",
+            ""actions"": [
+                {
+                    ""name"": ""Forward"",
+                    ""type"": ""Button"",
+                    ""id"": ""5019c21d-4e2a-4759-98ff-57328562ae26"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Backward"",
+                    ""type"": ""Button"",
+                    ""id"": ""96419b00-424b-4fbc-85d7-c4c7de3dd337"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""93eec767-260e-464c-a38c-8539dea6804a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""81e52d58-c838-4803-88da-090f0ae10694"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""6cf6a448-79d1-44b5-bb42-8b72557fdc25"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleSprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""4c2d230e-936c-405e-b04a-9797a7357705"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""652071d8-b12f-4147-9c03-2526c443fef4"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""916949f6-ee5f-45b3-8226-7a1f9f202d4e"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Backward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f548a65-dfae-4a6d-a0ce-fe3481a06a3d"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9da1f105-66b8-4154-b306-7c83d29f3137"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ecae9b70-816c-422b-8546-657f4855646f"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8f31f942-1457-4d62-88bc-94c3ecfabe80"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleSprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Test2@"",
+            ""id"": ""80d01650-3365-400b-8e2c-487c02f8fa1c"",
+            ""actions"": [
+                {
+                    ""name"": ""Forward"",
+                    ""type"": ""Button"",
+                    ""id"": ""4e77651e-ebc8-4ce8-8737-fa819212dea0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Backward"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca141432-cf14-46f2-895d-6db079b077a1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d30190f-f4d1-4948-8e23-5ae22f6975ce"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""07d7f068-913c-4eda-8f6d-ceef924849e1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""71613a0b-713d-4a74-94f6-4730c16de6eb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleSprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""95a46929-a611-42f9-b9bc-5bb407be3088"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""fe37ff60-0568-4b9a-8acf-f0ce488d789d"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Forward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c630b5b1-313a-41de-8c1d-c22561db39cf"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Backward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""017f336f-d1f9-4364-90c6-6661b7619a6b"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16efd822-2370-4fbf-87c9-158836b6cd37"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a1351475-fac6-4c37-b7f1-9e406c98f0c9"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""492209f8-dc83-4c35-b80a-51332eb69a2d"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleSprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -162,6 +418,22 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         m_Controls_Left = m_Controls.FindAction("Left", throwIfNotFound: true);
         m_Controls_Jump = m_Controls.FindAction("Jump", throwIfNotFound: true);
         m_Controls_ToggleSprint = m_Controls.FindAction("ToggleSprint", throwIfNotFound: true);
+        // Test1
+        m_Test1 = asset.FindActionMap("Test1", throwIfNotFound: true);
+        m_Test1_Forward = m_Test1.FindAction("Forward", throwIfNotFound: true);
+        m_Test1_Backward = m_Test1.FindAction("Backward", throwIfNotFound: true);
+        m_Test1_Right = m_Test1.FindAction("Right", throwIfNotFound: true);
+        m_Test1_Left = m_Test1.FindAction("Left", throwIfNotFound: true);
+        m_Test1_Jump = m_Test1.FindAction("Jump", throwIfNotFound: true);
+        m_Test1_ToggleSprint = m_Test1.FindAction("ToggleSprint", throwIfNotFound: true);
+        // Test2@
+        m_Test2 = asset.FindActionMap("Test2@", throwIfNotFound: true);
+        m_Test2_Forward = m_Test2.FindAction("Forward", throwIfNotFound: true);
+        m_Test2_Backward = m_Test2.FindAction("Backward", throwIfNotFound: true);
+        m_Test2_Right = m_Test2.FindAction("Right", throwIfNotFound: true);
+        m_Test2_Left = m_Test2.FindAction("Left", throwIfNotFound: true);
+        m_Test2_Jump = m_Test2.FindAction("Jump", throwIfNotFound: true);
+        m_Test2_ToggleSprint = m_Test2.FindAction("ToggleSprint", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -305,7 +577,197 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         }
     }
     public ControlsActions @Controls => new ControlsActions(this);
+
+    // Test1
+    private readonly InputActionMap m_Test1;
+    private List<ITest1Actions> m_Test1ActionsCallbackInterfaces = new List<ITest1Actions>();
+    private readonly InputAction m_Test1_Forward;
+    private readonly InputAction m_Test1_Backward;
+    private readonly InputAction m_Test1_Right;
+    private readonly InputAction m_Test1_Left;
+    private readonly InputAction m_Test1_Jump;
+    private readonly InputAction m_Test1_ToggleSprint;
+    public struct Test1Actions
+    {
+        private @InputMapping m_Wrapper;
+        public Test1Actions(@InputMapping wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Forward => m_Wrapper.m_Test1_Forward;
+        public InputAction @Backward => m_Wrapper.m_Test1_Backward;
+        public InputAction @Right => m_Wrapper.m_Test1_Right;
+        public InputAction @Left => m_Wrapper.m_Test1_Left;
+        public InputAction @Jump => m_Wrapper.m_Test1_Jump;
+        public InputAction @ToggleSprint => m_Wrapper.m_Test1_ToggleSprint;
+        public InputActionMap Get() { return m_Wrapper.m_Test1; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(Test1Actions set) { return set.Get(); }
+        public void AddCallbacks(ITest1Actions instance)
+        {
+            if (instance == null || m_Wrapper.m_Test1ActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_Test1ActionsCallbackInterfaces.Add(instance);
+            @Forward.started += instance.OnForward;
+            @Forward.performed += instance.OnForward;
+            @Forward.canceled += instance.OnForward;
+            @Backward.started += instance.OnBackward;
+            @Backward.performed += instance.OnBackward;
+            @Backward.canceled += instance.OnBackward;
+            @Right.started += instance.OnRight;
+            @Right.performed += instance.OnRight;
+            @Right.canceled += instance.OnRight;
+            @Left.started += instance.OnLeft;
+            @Left.performed += instance.OnLeft;
+            @Left.canceled += instance.OnLeft;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @ToggleSprint.started += instance.OnToggleSprint;
+            @ToggleSprint.performed += instance.OnToggleSprint;
+            @ToggleSprint.canceled += instance.OnToggleSprint;
+        }
+
+        private void UnregisterCallbacks(ITest1Actions instance)
+        {
+            @Forward.started -= instance.OnForward;
+            @Forward.performed -= instance.OnForward;
+            @Forward.canceled -= instance.OnForward;
+            @Backward.started -= instance.OnBackward;
+            @Backward.performed -= instance.OnBackward;
+            @Backward.canceled -= instance.OnBackward;
+            @Right.started -= instance.OnRight;
+            @Right.performed -= instance.OnRight;
+            @Right.canceled -= instance.OnRight;
+            @Left.started -= instance.OnLeft;
+            @Left.performed -= instance.OnLeft;
+            @Left.canceled -= instance.OnLeft;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @ToggleSprint.started -= instance.OnToggleSprint;
+            @ToggleSprint.performed -= instance.OnToggleSprint;
+            @ToggleSprint.canceled -= instance.OnToggleSprint;
+        }
+
+        public void RemoveCallbacks(ITest1Actions instance)
+        {
+            if (m_Wrapper.m_Test1ActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ITest1Actions instance)
+        {
+            foreach (var item in m_Wrapper.m_Test1ActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_Test1ActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public Test1Actions @Test1 => new Test1Actions(this);
+
+    // Test2@
+    private readonly InputActionMap m_Test2;
+    private List<ITest2Actions> m_Test2ActionsCallbackInterfaces = new List<ITest2Actions>();
+    private readonly InputAction m_Test2_Forward;
+    private readonly InputAction m_Test2_Backward;
+    private readonly InputAction m_Test2_Right;
+    private readonly InputAction m_Test2_Left;
+    private readonly InputAction m_Test2_Jump;
+    private readonly InputAction m_Test2_ToggleSprint;
+    public struct Test2Actions
+    {
+        private @InputMapping m_Wrapper;
+        public Test2Actions(@InputMapping wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Forward => m_Wrapper.m_Test2_Forward;
+        public InputAction @Backward => m_Wrapper.m_Test2_Backward;
+        public InputAction @Right => m_Wrapper.m_Test2_Right;
+        public InputAction @Left => m_Wrapper.m_Test2_Left;
+        public InputAction @Jump => m_Wrapper.m_Test2_Jump;
+        public InputAction @ToggleSprint => m_Wrapper.m_Test2_ToggleSprint;
+        public InputActionMap Get() { return m_Wrapper.m_Test2; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(Test2Actions set) { return set.Get(); }
+        public void AddCallbacks(ITest2Actions instance)
+        {
+            if (instance == null || m_Wrapper.m_Test2ActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_Test2ActionsCallbackInterfaces.Add(instance);
+            @Forward.started += instance.OnForward;
+            @Forward.performed += instance.OnForward;
+            @Forward.canceled += instance.OnForward;
+            @Backward.started += instance.OnBackward;
+            @Backward.performed += instance.OnBackward;
+            @Backward.canceled += instance.OnBackward;
+            @Right.started += instance.OnRight;
+            @Right.performed += instance.OnRight;
+            @Right.canceled += instance.OnRight;
+            @Left.started += instance.OnLeft;
+            @Left.performed += instance.OnLeft;
+            @Left.canceled += instance.OnLeft;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @ToggleSprint.started += instance.OnToggleSprint;
+            @ToggleSprint.performed += instance.OnToggleSprint;
+            @ToggleSprint.canceled += instance.OnToggleSprint;
+        }
+
+        private void UnregisterCallbacks(ITest2Actions instance)
+        {
+            @Forward.started -= instance.OnForward;
+            @Forward.performed -= instance.OnForward;
+            @Forward.canceled -= instance.OnForward;
+            @Backward.started -= instance.OnBackward;
+            @Backward.performed -= instance.OnBackward;
+            @Backward.canceled -= instance.OnBackward;
+            @Right.started -= instance.OnRight;
+            @Right.performed -= instance.OnRight;
+            @Right.canceled -= instance.OnRight;
+            @Left.started -= instance.OnLeft;
+            @Left.performed -= instance.OnLeft;
+            @Left.canceled -= instance.OnLeft;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @ToggleSprint.started -= instance.OnToggleSprint;
+            @ToggleSprint.performed -= instance.OnToggleSprint;
+            @ToggleSprint.canceled -= instance.OnToggleSprint;
+        }
+
+        public void RemoveCallbacks(ITest2Actions instance)
+        {
+            if (m_Wrapper.m_Test2ActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ITest2Actions instance)
+        {
+            foreach (var item in m_Wrapper.m_Test2ActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_Test2ActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public Test2Actions @Test2 => new Test2Actions(this);
     public interface IControlsActions
+    {
+        void OnForward(InputAction.CallbackContext context);
+        void OnBackward(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnToggleSprint(InputAction.CallbackContext context);
+    }
+    public interface ITest1Actions
+    {
+        void OnForward(InputAction.CallbackContext context);
+        void OnBackward(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnToggleSprint(InputAction.CallbackContext context);
+    }
+    public interface ITest2Actions
     {
         void OnForward(InputAction.CallbackContext context);
         void OnBackward(InputAction.CallbackContext context);
