@@ -22,6 +22,12 @@ public class PlayerController : Singleton<PlayerController>
     [BoxGroup("Refs")]public string currentInputMap;
 
     [BoxGroup("Refs")]public PlayerInput inputs;
+    [BoxGroup("Refs")]public LineRenderer shootTrail;
+    
+    [BoxGroup("Refs")] [SerializeField] private Transform hands;
+    [BoxGroup("Refs")] [SerializeField] private Transform leftHand;
+    [BoxGroup("Refs")] [SerializeField] private Transform rightHand; 
+    [Foldout("Debug")][Tooltip("")][SerializeField] private Transform shootingHand;
 
 
     // Start is called before the first frame update
@@ -37,19 +43,29 @@ public class PlayerController : Singleton<PlayerController>
     [BoxGroup("Movement")][Tooltip("Limit to the camera being able to look up or down")][SerializeField] private float lookXLimit;
     [BoxGroup("Movement")][Tooltip("How effective horizontal movement is in the air")][SerializeField][Range(0,1)] private float airMobilityFactor;
     [BoxGroup("Movement")][Tooltip("How much fast the avatar slows down when no inputs are given")][SerializeField] [Range(0,1)]private float drag;
+    
+    [BoxGroup("Shoot")][Tooltip("")][SerializeField]private LayerMask shootMask;
+    [BoxGroup("Shoot")][Tooltip("")][SerializeField]private int bulletDmg;
+    [BoxGroup("Shoot")][Tooltip("")][SerializeField]private int magSize;
+    [BoxGroup("Shoot")][Tooltip("")][SerializeField]private float shootSpeed;
+    [BoxGroup("Shoot")][Tooltip("")][SerializeField]private float maxRange;
+    [BoxGroup("Shoot")][Tooltip("")][SerializeField]private float trailTime;
+    
+    
 
     [BoxGroup("Bobbing")] [SerializeField] private float amplitude;
     [BoxGroup("Bobbing")] [SerializeField] private float frequeny;
     [BoxGroup("Bobbing")] [SerializeField] private bool bobbing;
     [BoxGroup("Bobbing")] [SerializeField] private float toggleSpeed;
     [BoxGroup("Bobbing")] [SerializeField] private Vector3 startPos;
-    [BoxGroup("Bobbing")] [SerializeField] private Transform hands;
+    [BoxGroup("Bobbing")] [SerializeField] private float sideTilting;
     
     [Foldout("Debug")][Tooltip("")][SerializeField]private bool appliedForce;
     [Foldout("Debug")][Tooltip("")][SerializeField] private bool canMove = true;
     [Foldout("Debug")][Tooltip("")][SerializeField] private bool isRunning = false;
     [Foldout("Debug")][Tooltip("")][SerializeField] private bool isJumping = false;
     [Foldout("Debug")][Tooltip("")][SerializeField] private bool isGrounded = false;
+    [Foldout("Debug")][Tooltip("")][SerializeField] private float shootReload;
     
     
     
@@ -86,6 +102,12 @@ public class PlayerController : Singleton<PlayerController>
         base.Awake();
         rb = GetComponent<Rigidbody>();
     }
+
+    private void OnDisable()
+    {
+        currentControls.Disable();
+    }
+
     void Start()
     {
         inputs = GetComponent<PlayerInput>();
@@ -97,14 +119,61 @@ public class PlayerController : Singleton<PlayerController>
         currentControls.FindAction("Jump",true).performed += Jump;
         currentControls.FindAction("ToggleSprint",true).performed += ToggleSprint;
         currentControls.FindAction("ToggleSprint",true).canceled += ToggleSprint;
-
+        currentControls.FindAction("Shoot",true).performed += Shoot;
+        //currentControls.FindAction("Telekinesis",true).performed += ;
+        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         startPos = hands.localPosition;
+        
+        CheckShootingHand();
+    }
+    
+    void CheckShootingHand()
+    {
+        if (currentControls.FindAction("Shoot",true).bindings[0].path == "<Mouse>/leftButton")
+        {
+            Debug.Log("Shooting with left hand");
+            shootingHand = leftHand;
+        }
+        else
+        {
+            
+            Debug.Log("Shooting with right hand");
+            shootingHand = rightHand;
+        }
     }
 
-    
+    private LineRenderer currentTrail;
+    private void Shoot(InputAction.CallbackContext obj)
+    {
+        if (shootReload > 0) return;
+        shootReload = shootSpeed;
+        currentTrail = Instantiate(shootTrail);
+        Destroy(currentTrail.gameObject,trailTime);
+        currentTrail.SetPosition(0,shootingHand.position);
+        if (Physics.Raycast(playerCam.position,playerCam.forward,out RaycastHit hit, maxRange, shootMask))
+        {
+            Debug.Log("Hit something");
+            /*if (hit.collider.TryGetComponent(typeof(Enemy) out enemy))
+            {
+                //enemy.TakeDamage();
+            }
+            if (hit.collider.TryGetComponent(typeof(Destructible) out target))
+            {
+                //target.GetHit();
+            }*/
+            
+            currentTrail.SetPosition(1,hit.point);
+        }
+        else
+        {
+            Debug.Log("Hit some air");
+            currentTrail.SetPosition(1,playerCam.forward * maxRange);
+        }
+        
+    }
 
 
     private Vector2Control lastmousePos = new Vector2Control();
@@ -113,12 +182,16 @@ public class PlayerController : Singleton<PlayerController>
     {
         
         playerDir = Vector3.zero;
-        ForwardMovement();
-        SidewaysMovement();
+        ForwardInput();
+        SidewaysInput();
         Rotate();
-        
-        
         ArmBobbing();
+
+        if (shootReload >= 0)
+        {
+            shootReload -= Time.deltaTime;
+        }
+        
         playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
         playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
             playerCam.position.z);
@@ -138,8 +211,7 @@ public class PlayerController : Singleton<PlayerController>
 
     }
 
-
-
+    
 
 
 
@@ -202,7 +274,7 @@ public class PlayerController : Singleton<PlayerController>
 
     #region Controls
     
-    void ForwardMovement()
+    void ForwardInput()
     {
         if (currentControls.FindAction("Forward", true).IsPressed())
         {
@@ -216,7 +288,7 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
-    void SidewaysMovement()
+    void SidewaysInput()
     {
         if (currentControls.FindAction("Right", true).IsPressed())
         {
@@ -258,6 +330,8 @@ public class PlayerController : Singleton<PlayerController>
         isRunning = !isRunning;
     }
     
+    
+    
     #endregion
 
     #region Bobbing
@@ -266,7 +340,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         Vector3 pos = Vector3.zero;
         pos.y += Mathf.Sin(Time.time * frequeny) * amplitude;
-        pos.x += Mathf.Cos(Time.time * frequeny/2) * amplitude;
+        //pos.x += Mathf.Cos(Time.time * frequeny/2) * amplitude;
         
         return pos;
     }
@@ -286,8 +360,10 @@ public class PlayerController : Singleton<PlayerController>
         {
             PlayMotion(FootStepMotion());
         }
-
-        ResetBobbing();
+        else
+        {
+            ResetBobbing();
+        }
     }
     #endregion
 }

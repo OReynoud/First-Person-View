@@ -24,7 +24,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     ""name"": ""InputMapping"",
     ""maps"": [
         {
-            ""name"": ""Controls"",
+            ""name"": ""ControlsLeftShoot"",
             ""id"": ""fd6646f9-e396-4d43-82b1-0c9536a2d666"",
             ""actions"": [
                 {
@@ -76,6 +76,24 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""name"": ""ToggleSprint"",
                     ""type"": ""Button"",
                     ""id"": ""6261dffc-8265-46ba-b04c-044a2a20e77e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""531c8648-5b2c-494d-a87e-36b2821fb193"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Telekinesis"",
+                    ""type"": ""Button"",
+                    ""id"": ""1695d28f-d191-4966-bbfd-a478a6eafdb6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -148,17 +166,39 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleSprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e432fc3-bc1d-4fe3-8291-a9a358862bde"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""089bc123-ee2d-4b0b-8bf2-aed5a0afa3cd"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Telekinesis"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
         {
-            ""name"": ""Test1"",
-            ""id"": ""32663b91-7c0e-47e0-846e-8292efebcfaf"",
+            ""name"": ""ControlsRightShoot"",
+            ""id"": ""bedeea23-e5f3-424a-b90c-7a4962ca7052"",
             ""actions"": [
                 {
                     ""name"": ""Forward"",
                     ""type"": ""Button"",
-                    ""id"": ""5019c21d-4e2a-4759-98ff-57328562ae26"",
+                    ""id"": ""bf1c9578-b4f9-41db-b96d-d15afa0f156e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -167,7 +207,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Backward"",
                     ""type"": ""Button"",
-                    ""id"": ""96419b00-424b-4fbc-85d7-c4c7de3dd337"",
+                    ""id"": ""9f079e25-b074-46a9-ba4e-461c0f97fd1a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -176,7 +216,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Right"",
                     ""type"": ""Button"",
-                    ""id"": ""93eec767-260e-464c-a38c-8539dea6804a"",
+                    ""id"": ""8d295bc4-b36f-48de-958b-e150e0992ca7"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -185,7 +225,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Left"",
                     ""type"": ""Button"",
-                    ""id"": ""81e52d58-c838-4803-88da-090f0ae10694"",
+                    ""id"": ""68992aa0-c57c-479d-900f-ed230cda7e1e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -194,7 +234,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
-                    ""id"": ""6cf6a448-79d1-44b5-bb42-8b72557fdc25"",
+                    ""id"": ""d223c02d-be10-4c86-bdcf-d7169c1d3025"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -203,7 +243,25 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""ToggleSprint"",
                     ""type"": ""Button"",
-                    ""id"": ""4c2d230e-936c-405e-b04a-9797a7357705"",
+                    ""id"": ""a99613d8-8de7-424d-b1cd-d4b208e93c09"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""8185337f-8ae7-4416-83a4-eb122b3bdafb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Telekinesis"",
+                    ""type"": ""Button"",
+                    ""id"": ""31afc33a-42d0-42db-b206-b634e9baa744"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -213,7 +271,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""652071d8-b12f-4147-9c03-2526c443fef4"",
+                    ""id"": ""f0b11d9d-fb05-4488-9e93-0ad5ad395998"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -224,7 +282,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""916949f6-ee5f-45b3-8226-7a1f9f202d4e"",
+                    ""id"": ""cafd1f49-1f43-4cf4-9e2f-eabba66253f4"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -235,7 +293,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""5f548a65-dfae-4a6d-a0ce-fe3481a06a3d"",
+                    ""id"": ""9155e63c-a4c9-4966-9443-22f40eefc198"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -246,7 +304,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9da1f105-66b8-4154-b306-7c83d29f3137"",
+                    ""id"": ""d29d18f0-ce54-486f-b122-493a7b6a77fa"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -257,7 +315,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ecae9b70-816c-422b-8546-657f4855646f"",
+                    ""id"": ""79af3f48-d9d5-4cc8-8aa2-60c831b941dd"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -268,7 +326,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""8f31f942-1457-4d62-88bc-94c3ecfabe80"",
+                    ""id"": ""aea66730-1eee-4c8b-8aa2-ceddef3dc051"",
                     ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -276,132 +334,26 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleSprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Test2@"",
-            ""id"": ""80d01650-3365-400b-8e2c-487c02f8fa1c"",
-            ""actions"": [
-                {
-                    ""name"": ""Forward"",
-                    ""type"": ""Button"",
-                    ""id"": ""4e77651e-ebc8-4ce8-8737-fa819212dea0"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 },
-                {
-                    ""name"": ""Backward"",
-                    ""type"": ""Button"",
-                    ""id"": ""ca141432-cf14-46f2-895d-6db079b077a1"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Right"",
-                    ""type"": ""Button"",
-                    ""id"": ""9d30190f-f4d1-4948-8e23-5ae22f6975ce"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Left"",
-                    ""type"": ""Button"",
-                    ""id"": ""07d7f068-913c-4eda-8f6d-ceef924849e1"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Jump"",
-                    ""type"": ""Button"",
-                    ""id"": ""71613a0b-713d-4a74-94f6-4730c16de6eb"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ToggleSprint"",
-                    ""type"": ""Button"",
-                    ""id"": ""95a46929-a611-42f9-b9bc-5bb407be3088"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""fe37ff60-0568-4b9a-8acf-f0ce488d789d"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""id"": ""267ec26a-5ccf-4fe0-b6a7-ad276ba27e05"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Forward"",
+                    ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c630b5b1-313a-41de-8c1d-c22561db39cf"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""id"": ""abb4caf2-8f90-464a-ae2d-dfb10023b497"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Backward"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""017f336f-d1f9-4364-90c6-6661b7619a6b"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Right"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""16efd822-2370-4fbf-87c9-158836b6cd37"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Left"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a1351475-fac6-4c37-b7f1-9e406c98f0c9"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""492209f8-dc83-4c35-b80a-51332eb69a2d"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ToggleSprint"",
+                    ""action"": ""Telekinesis"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -410,30 +362,26 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // Controls
-        m_Controls = asset.FindActionMap("Controls", throwIfNotFound: true);
-        m_Controls_Forward = m_Controls.FindAction("Forward", throwIfNotFound: true);
-        m_Controls_Backward = m_Controls.FindAction("Backward", throwIfNotFound: true);
-        m_Controls_Right = m_Controls.FindAction("Right", throwIfNotFound: true);
-        m_Controls_Left = m_Controls.FindAction("Left", throwIfNotFound: true);
-        m_Controls_Jump = m_Controls.FindAction("Jump", throwIfNotFound: true);
-        m_Controls_ToggleSprint = m_Controls.FindAction("ToggleSprint", throwIfNotFound: true);
-        // Test1
-        m_Test1 = asset.FindActionMap("Test1", throwIfNotFound: true);
-        m_Test1_Forward = m_Test1.FindAction("Forward", throwIfNotFound: true);
-        m_Test1_Backward = m_Test1.FindAction("Backward", throwIfNotFound: true);
-        m_Test1_Right = m_Test1.FindAction("Right", throwIfNotFound: true);
-        m_Test1_Left = m_Test1.FindAction("Left", throwIfNotFound: true);
-        m_Test1_Jump = m_Test1.FindAction("Jump", throwIfNotFound: true);
-        m_Test1_ToggleSprint = m_Test1.FindAction("ToggleSprint", throwIfNotFound: true);
-        // Test2@
-        m_Test2 = asset.FindActionMap("Test2@", throwIfNotFound: true);
-        m_Test2_Forward = m_Test2.FindAction("Forward", throwIfNotFound: true);
-        m_Test2_Backward = m_Test2.FindAction("Backward", throwIfNotFound: true);
-        m_Test2_Right = m_Test2.FindAction("Right", throwIfNotFound: true);
-        m_Test2_Left = m_Test2.FindAction("Left", throwIfNotFound: true);
-        m_Test2_Jump = m_Test2.FindAction("Jump", throwIfNotFound: true);
-        m_Test2_ToggleSprint = m_Test2.FindAction("ToggleSprint", throwIfNotFound: true);
+        // ControlsLeftShoot
+        m_ControlsLeftShoot = asset.FindActionMap("ControlsLeftShoot", throwIfNotFound: true);
+        m_ControlsLeftShoot_Forward = m_ControlsLeftShoot.FindAction("Forward", throwIfNotFound: true);
+        m_ControlsLeftShoot_Backward = m_ControlsLeftShoot.FindAction("Backward", throwIfNotFound: true);
+        m_ControlsLeftShoot_Right = m_ControlsLeftShoot.FindAction("Right", throwIfNotFound: true);
+        m_ControlsLeftShoot_Left = m_ControlsLeftShoot.FindAction("Left", throwIfNotFound: true);
+        m_ControlsLeftShoot_Jump = m_ControlsLeftShoot.FindAction("Jump", throwIfNotFound: true);
+        m_ControlsLeftShoot_ToggleSprint = m_ControlsLeftShoot.FindAction("ToggleSprint", throwIfNotFound: true);
+        m_ControlsLeftShoot_Shoot = m_ControlsLeftShoot.FindAction("Shoot", throwIfNotFound: true);
+        m_ControlsLeftShoot_Telekinesis = m_ControlsLeftShoot.FindAction("Telekinesis", throwIfNotFound: true);
+        // ControlsRightShoot
+        m_ControlsRightShoot = asset.FindActionMap("ControlsRightShoot", throwIfNotFound: true);
+        m_ControlsRightShoot_Forward = m_ControlsRightShoot.FindAction("Forward", throwIfNotFound: true);
+        m_ControlsRightShoot_Backward = m_ControlsRightShoot.FindAction("Backward", throwIfNotFound: true);
+        m_ControlsRightShoot_Right = m_ControlsRightShoot.FindAction("Right", throwIfNotFound: true);
+        m_ControlsRightShoot_Left = m_ControlsRightShoot.FindAction("Left", throwIfNotFound: true);
+        m_ControlsRightShoot_Jump = m_ControlsRightShoot.FindAction("Jump", throwIfNotFound: true);
+        m_ControlsRightShoot_ToggleSprint = m_ControlsRightShoot.FindAction("ToggleSprint", throwIfNotFound: true);
+        m_ControlsRightShoot_Shoot = m_ControlsRightShoot.FindAction("Shoot", throwIfNotFound: true);
+        m_ControlsRightShoot_Telekinesis = m_ControlsRightShoot.FindAction("Telekinesis", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -492,34 +440,38 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Controls
-    private readonly InputActionMap m_Controls;
-    private List<IControlsActions> m_ControlsActionsCallbackInterfaces = new List<IControlsActions>();
-    private readonly InputAction m_Controls_Forward;
-    private readonly InputAction m_Controls_Backward;
-    private readonly InputAction m_Controls_Right;
-    private readonly InputAction m_Controls_Left;
-    private readonly InputAction m_Controls_Jump;
-    private readonly InputAction m_Controls_ToggleSprint;
-    public struct ControlsActions
+    // ControlsLeftShoot
+    private readonly InputActionMap m_ControlsLeftShoot;
+    private List<IControlsLeftShootActions> m_ControlsLeftShootActionsCallbackInterfaces = new List<IControlsLeftShootActions>();
+    private readonly InputAction m_ControlsLeftShoot_Forward;
+    private readonly InputAction m_ControlsLeftShoot_Backward;
+    private readonly InputAction m_ControlsLeftShoot_Right;
+    private readonly InputAction m_ControlsLeftShoot_Left;
+    private readonly InputAction m_ControlsLeftShoot_Jump;
+    private readonly InputAction m_ControlsLeftShoot_ToggleSprint;
+    private readonly InputAction m_ControlsLeftShoot_Shoot;
+    private readonly InputAction m_ControlsLeftShoot_Telekinesis;
+    public struct ControlsLeftShootActions
     {
         private @InputMapping m_Wrapper;
-        public ControlsActions(@InputMapping wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Forward => m_Wrapper.m_Controls_Forward;
-        public InputAction @Backward => m_Wrapper.m_Controls_Backward;
-        public InputAction @Right => m_Wrapper.m_Controls_Right;
-        public InputAction @Left => m_Wrapper.m_Controls_Left;
-        public InputAction @Jump => m_Wrapper.m_Controls_Jump;
-        public InputAction @ToggleSprint => m_Wrapper.m_Controls_ToggleSprint;
-        public InputActionMap Get() { return m_Wrapper.m_Controls; }
+        public ControlsLeftShootActions(@InputMapping wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Forward => m_Wrapper.m_ControlsLeftShoot_Forward;
+        public InputAction @Backward => m_Wrapper.m_ControlsLeftShoot_Backward;
+        public InputAction @Right => m_Wrapper.m_ControlsLeftShoot_Right;
+        public InputAction @Left => m_Wrapper.m_ControlsLeftShoot_Left;
+        public InputAction @Jump => m_Wrapper.m_ControlsLeftShoot_Jump;
+        public InputAction @ToggleSprint => m_Wrapper.m_ControlsLeftShoot_ToggleSprint;
+        public InputAction @Shoot => m_Wrapper.m_ControlsLeftShoot_Shoot;
+        public InputAction @Telekinesis => m_Wrapper.m_ControlsLeftShoot_Telekinesis;
+        public InputActionMap Get() { return m_Wrapper.m_ControlsLeftShoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ControlsActions set) { return set.Get(); }
-        public void AddCallbacks(IControlsActions instance)
+        public static implicit operator InputActionMap(ControlsLeftShootActions set) { return set.Get(); }
+        public void AddCallbacks(IControlsLeftShootActions instance)
         {
-            if (instance == null || m_Wrapper.m_ControlsActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_ControlsActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_ControlsLeftShootActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ControlsLeftShootActionsCallbackInterfaces.Add(instance);
             @Forward.started += instance.OnForward;
             @Forward.performed += instance.OnForward;
             @Forward.canceled += instance.OnForward;
@@ -538,9 +490,15 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @ToggleSprint.started += instance.OnToggleSprint;
             @ToggleSprint.performed += instance.OnToggleSprint;
             @ToggleSprint.canceled += instance.OnToggleSprint;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
+            @Telekinesis.started += instance.OnTelekinesis;
+            @Telekinesis.performed += instance.OnTelekinesis;
+            @Telekinesis.canceled += instance.OnTelekinesis;
         }
 
-        private void UnregisterCallbacks(IControlsActions instance)
+        private void UnregisterCallbacks(IControlsLeftShootActions instance)
         {
             @Forward.started -= instance.OnForward;
             @Forward.performed -= instance.OnForward;
@@ -560,52 +518,62 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @ToggleSprint.started -= instance.OnToggleSprint;
             @ToggleSprint.performed -= instance.OnToggleSprint;
             @ToggleSprint.canceled -= instance.OnToggleSprint;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
+            @Telekinesis.started -= instance.OnTelekinesis;
+            @Telekinesis.performed -= instance.OnTelekinesis;
+            @Telekinesis.canceled -= instance.OnTelekinesis;
         }
 
-        public void RemoveCallbacks(IControlsActions instance)
+        public void RemoveCallbacks(IControlsLeftShootActions instance)
         {
-            if (m_Wrapper.m_ControlsActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_ControlsLeftShootActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IControlsActions instance)
+        public void SetCallbacks(IControlsLeftShootActions instance)
         {
-            foreach (var item in m_Wrapper.m_ControlsActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_ControlsLeftShootActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_ControlsActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_ControlsLeftShootActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public ControlsActions @Controls => new ControlsActions(this);
+    public ControlsLeftShootActions @ControlsLeftShoot => new ControlsLeftShootActions(this);
 
-    // Test1
-    private readonly InputActionMap m_Test1;
-    private List<ITest1Actions> m_Test1ActionsCallbackInterfaces = new List<ITest1Actions>();
-    private readonly InputAction m_Test1_Forward;
-    private readonly InputAction m_Test1_Backward;
-    private readonly InputAction m_Test1_Right;
-    private readonly InputAction m_Test1_Left;
-    private readonly InputAction m_Test1_Jump;
-    private readonly InputAction m_Test1_ToggleSprint;
-    public struct Test1Actions
+    // ControlsRightShoot
+    private readonly InputActionMap m_ControlsRightShoot;
+    private List<IControlsRightShootActions> m_ControlsRightShootActionsCallbackInterfaces = new List<IControlsRightShootActions>();
+    private readonly InputAction m_ControlsRightShoot_Forward;
+    private readonly InputAction m_ControlsRightShoot_Backward;
+    private readonly InputAction m_ControlsRightShoot_Right;
+    private readonly InputAction m_ControlsRightShoot_Left;
+    private readonly InputAction m_ControlsRightShoot_Jump;
+    private readonly InputAction m_ControlsRightShoot_ToggleSprint;
+    private readonly InputAction m_ControlsRightShoot_Shoot;
+    private readonly InputAction m_ControlsRightShoot_Telekinesis;
+    public struct ControlsRightShootActions
     {
         private @InputMapping m_Wrapper;
-        public Test1Actions(@InputMapping wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Forward => m_Wrapper.m_Test1_Forward;
-        public InputAction @Backward => m_Wrapper.m_Test1_Backward;
-        public InputAction @Right => m_Wrapper.m_Test1_Right;
-        public InputAction @Left => m_Wrapper.m_Test1_Left;
-        public InputAction @Jump => m_Wrapper.m_Test1_Jump;
-        public InputAction @ToggleSprint => m_Wrapper.m_Test1_ToggleSprint;
-        public InputActionMap Get() { return m_Wrapper.m_Test1; }
+        public ControlsRightShootActions(@InputMapping wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Forward => m_Wrapper.m_ControlsRightShoot_Forward;
+        public InputAction @Backward => m_Wrapper.m_ControlsRightShoot_Backward;
+        public InputAction @Right => m_Wrapper.m_ControlsRightShoot_Right;
+        public InputAction @Left => m_Wrapper.m_ControlsRightShoot_Left;
+        public InputAction @Jump => m_Wrapper.m_ControlsRightShoot_Jump;
+        public InputAction @ToggleSprint => m_Wrapper.m_ControlsRightShoot_ToggleSprint;
+        public InputAction @Shoot => m_Wrapper.m_ControlsRightShoot_Shoot;
+        public InputAction @Telekinesis => m_Wrapper.m_ControlsRightShoot_Telekinesis;
+        public InputActionMap Get() { return m_Wrapper.m_ControlsRightShoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(Test1Actions set) { return set.Get(); }
-        public void AddCallbacks(ITest1Actions instance)
+        public static implicit operator InputActionMap(ControlsRightShootActions set) { return set.Get(); }
+        public void AddCallbacks(IControlsRightShootActions instance)
         {
-            if (instance == null || m_Wrapper.m_Test1ActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_Test1ActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_ControlsRightShootActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ControlsRightShootActionsCallbackInterfaces.Add(instance);
             @Forward.started += instance.OnForward;
             @Forward.performed += instance.OnForward;
             @Forward.canceled += instance.OnForward;
@@ -624,9 +592,15 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @ToggleSprint.started += instance.OnToggleSprint;
             @ToggleSprint.performed += instance.OnToggleSprint;
             @ToggleSprint.canceled += instance.OnToggleSprint;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
+            @Telekinesis.started += instance.OnTelekinesis;
+            @Telekinesis.performed += instance.OnTelekinesis;
+            @Telekinesis.canceled += instance.OnTelekinesis;
         }
 
-        private void UnregisterCallbacks(ITest1Actions instance)
+        private void UnregisterCallbacks(IControlsRightShootActions instance)
         {
             @Forward.started -= instance.OnForward;
             @Forward.performed -= instance.OnForward;
@@ -646,110 +620,30 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @ToggleSprint.started -= instance.OnToggleSprint;
             @ToggleSprint.performed -= instance.OnToggleSprint;
             @ToggleSprint.canceled -= instance.OnToggleSprint;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
+            @Telekinesis.started -= instance.OnTelekinesis;
+            @Telekinesis.performed -= instance.OnTelekinesis;
+            @Telekinesis.canceled -= instance.OnTelekinesis;
         }
 
-        public void RemoveCallbacks(ITest1Actions instance)
+        public void RemoveCallbacks(IControlsRightShootActions instance)
         {
-            if (m_Wrapper.m_Test1ActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_ControlsRightShootActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(ITest1Actions instance)
+        public void SetCallbacks(IControlsRightShootActions instance)
         {
-            foreach (var item in m_Wrapper.m_Test1ActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_ControlsRightShootActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_Test1ActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_ControlsRightShootActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public Test1Actions @Test1 => new Test1Actions(this);
-
-    // Test2@
-    private readonly InputActionMap m_Test2;
-    private List<ITest2Actions> m_Test2ActionsCallbackInterfaces = new List<ITest2Actions>();
-    private readonly InputAction m_Test2_Forward;
-    private readonly InputAction m_Test2_Backward;
-    private readonly InputAction m_Test2_Right;
-    private readonly InputAction m_Test2_Left;
-    private readonly InputAction m_Test2_Jump;
-    private readonly InputAction m_Test2_ToggleSprint;
-    public struct Test2Actions
-    {
-        private @InputMapping m_Wrapper;
-        public Test2Actions(@InputMapping wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Forward => m_Wrapper.m_Test2_Forward;
-        public InputAction @Backward => m_Wrapper.m_Test2_Backward;
-        public InputAction @Right => m_Wrapper.m_Test2_Right;
-        public InputAction @Left => m_Wrapper.m_Test2_Left;
-        public InputAction @Jump => m_Wrapper.m_Test2_Jump;
-        public InputAction @ToggleSprint => m_Wrapper.m_Test2_ToggleSprint;
-        public InputActionMap Get() { return m_Wrapper.m_Test2; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(Test2Actions set) { return set.Get(); }
-        public void AddCallbacks(ITest2Actions instance)
-        {
-            if (instance == null || m_Wrapper.m_Test2ActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_Test2ActionsCallbackInterfaces.Add(instance);
-            @Forward.started += instance.OnForward;
-            @Forward.performed += instance.OnForward;
-            @Forward.canceled += instance.OnForward;
-            @Backward.started += instance.OnBackward;
-            @Backward.performed += instance.OnBackward;
-            @Backward.canceled += instance.OnBackward;
-            @Right.started += instance.OnRight;
-            @Right.performed += instance.OnRight;
-            @Right.canceled += instance.OnRight;
-            @Left.started += instance.OnLeft;
-            @Left.performed += instance.OnLeft;
-            @Left.canceled += instance.OnLeft;
-            @Jump.started += instance.OnJump;
-            @Jump.performed += instance.OnJump;
-            @Jump.canceled += instance.OnJump;
-            @ToggleSprint.started += instance.OnToggleSprint;
-            @ToggleSprint.performed += instance.OnToggleSprint;
-            @ToggleSprint.canceled += instance.OnToggleSprint;
-        }
-
-        private void UnregisterCallbacks(ITest2Actions instance)
-        {
-            @Forward.started -= instance.OnForward;
-            @Forward.performed -= instance.OnForward;
-            @Forward.canceled -= instance.OnForward;
-            @Backward.started -= instance.OnBackward;
-            @Backward.performed -= instance.OnBackward;
-            @Backward.canceled -= instance.OnBackward;
-            @Right.started -= instance.OnRight;
-            @Right.performed -= instance.OnRight;
-            @Right.canceled -= instance.OnRight;
-            @Left.started -= instance.OnLeft;
-            @Left.performed -= instance.OnLeft;
-            @Left.canceled -= instance.OnLeft;
-            @Jump.started -= instance.OnJump;
-            @Jump.performed -= instance.OnJump;
-            @Jump.canceled -= instance.OnJump;
-            @ToggleSprint.started -= instance.OnToggleSprint;
-            @ToggleSprint.performed -= instance.OnToggleSprint;
-            @ToggleSprint.canceled -= instance.OnToggleSprint;
-        }
-
-        public void RemoveCallbacks(ITest2Actions instance)
-        {
-            if (m_Wrapper.m_Test2ActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(ITest2Actions instance)
-        {
-            foreach (var item in m_Wrapper.m_Test2ActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_Test2ActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public Test2Actions @Test2 => new Test2Actions(this);
-    public interface IControlsActions
+    public ControlsRightShootActions @ControlsRightShoot => new ControlsRightShootActions(this);
+    public interface IControlsLeftShootActions
     {
         void OnForward(InputAction.CallbackContext context);
         void OnBackward(InputAction.CallbackContext context);
@@ -757,8 +651,10 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         void OnLeft(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnToggleSprint(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
+        void OnTelekinesis(InputAction.CallbackContext context);
     }
-    public interface ITest1Actions
+    public interface IControlsRightShootActions
     {
         void OnForward(InputAction.CallbackContext context);
         void OnBackward(InputAction.CallbackContext context);
@@ -766,14 +662,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         void OnLeft(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnToggleSprint(InputAction.CallbackContext context);
-    }
-    public interface ITest2Actions
-    {
-        void OnForward(InputAction.CallbackContext context);
-        void OnBackward(InputAction.CallbackContext context);
-        void OnRight(InputAction.CallbackContext context);
-        void OnLeft(InputAction.CallbackContext context);
-        void OnJump(InputAction.CallbackContext context);
-        void OnToggleSprint(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
+        void OnTelekinesis(InputAction.CallbackContext context);
     }
 }
