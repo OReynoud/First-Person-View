@@ -245,12 +245,12 @@ public class PlayerController : Singleton<PlayerController>
         {
             Debug.Log("Shooting with left hand");
             shootingHand = leftHand;
-            restingPosOffset = new Vector3(-restingPosOffset.x, restingPosOffset.y, restingPosOffset.z);
         }
         else
         {
             Debug.Log("Shooting with right hand");
             shootingHand = rightHand;
+            restingPosOffset = new Vector3(-restingPosOffset.x, restingPosOffset.y, restingPosOffset.z);
         }
     }
 
