@@ -92,10 +92,13 @@ public class PlayerController : Singleton<PlayerController>
 
     [BoxGroup("Telekinesis")]
     [Tooltip("")]
-    [InfoBox("Blue ball indicates the resting Position")]
+    [InfoBox(
+        "Blue ball indicates the resting Position (Must be updated manually via the button 'Update Resting Pos' at the bottom)")]
     [Label("RestingPos")]
     [SerializeField]
     private Vector3 restingPosOffset;
+
+    [SerializeField] private Transform offsetPosition;
 
     [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
     private float travelSpeed;
@@ -151,23 +154,22 @@ public class PlayerController : Singleton<PlayerController>
     private ControllableProp controlledProp;
 
 
-    private Vector3 RestingPos()
-    {
-        return transform.localPosition +
-               transform.forward * restingPosOffset.z +
-               transform.up * restingPosOffset.y +
-               transform.right * restingPosOffset.x;
-    }
-
     private float rotationX;
     private Vector3 playerDir;
     private float jumpTime;
     private Vector2 horizontalVelocity;
 
+    [Button]
+    void UpdateRestingPos()
+    {
+        offsetPosition.position = restingPosOffset;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(RestingPos(), 0.2f);
+        //offsetPosition.position = restingPosOffset;
+        Gizmos.DrawSphere(offsetPosition.position, 0.2f);
     }
 
     private void OnValidate()
@@ -222,22 +224,6 @@ public class PlayerController : Singleton<PlayerController>
         CheckShootingHand();
     }
 
-    private void ReleaseProp(InputAction.CallbackContext obj)
-    {
-        if (!controlledProp) return;
-        controlledProp.ApplyTelekinesis();
-        if (!controlledProp.isGrabbed)
-        {
-            controlledProp.body.velocity *= 0.1f;
-            controlledProp = null;
-            return;
-        }
-
-        controlledProp.isGrabbed = false;
-        controlledProp.body.velocity = Vector3.zero;
-        controlledProp.body.AddForce(playerCam.forward * throwForce, ForceMode.Impulse);
-        controlledProp = null;
-    }
 
     void CheckShootingHand()
     {
@@ -252,6 +238,8 @@ public class PlayerController : Singleton<PlayerController>
             shootingHand = rightHand;
             restingPosOffset = new Vector3(-restingPosOffset.x, restingPosOffset.y, restingPosOffset.z);
         }
+
+        UpdateRestingPos();
     }
 
     // Update is called once per frame
@@ -282,81 +270,27 @@ public class PlayerController : Singleton<PlayerController>
         {
             CheckTelekinesisTarget();
         }
-        else
-        {
+        else if (telekinesisPointer.gameObject.activeSelf)
             telekinesisPointer.gameObject.SetActive(false);
-        }
     }
 
     private void CheckTelekinesisTarget()
     {
-        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange, shootMask))
+        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange, shootMask)
+            && hit.collider.TryGetComponent(out ControllableProp prop))
         {
-            if (hit.collider.TryGetComponent(out ControllableProp prop))
-            {
+            if (!telekinesisPointer.gameObject.activeSelf)
                 telekinesisPointer.gameObject.SetActive(true);
-                telekinesisPointer.position = Camera.main.WorldToScreenPoint(prop.transform.position);
-                telekinesisPointer.rotation *= Quaternion.Euler(0, 0, 2);
-                return;
-            }
+
+            telekinesisPointer.position = Camera.main.WorldToScreenPoint(prop.transform.position);
+            telekinesisPointer.rotation *= Quaternion.Euler(0, 0, 2);
+            return;
         }
 
-        telekinesisPointer.gameObject.SetActive(false);
+        if (telekinesisPointer.gameObject.activeSelf)
+            telekinesisPointer.gameObject.SetActive(false);
     }
 
-    private void TelekinesisInput()
-    {
-        if (currentControls.FindAction("Telekinesis", true).IsPressed())
-        {
-            if (!controlledProp)
-            {
-                if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange, shootMask))
-                {
-                    if (hit.collider.TryGetComponent(out ControllableProp prop))
-                    {
-                        controlledProp = prop;
-                        prop.ApplyTelekinesis();
-                    }
-                }
-
-                return;
-            }
-
-            TelekinesisPhysics();
-        }
-    }
-
-    private void TelekinesisPhysics()
-    {
-        switch (controlledProp)
-        {
-            case TelekinesisObject:
-                var dir = RestingPos() - controlledProp.transform.position;
-                dir.Normalize();
-                if (!controlledProp.isGrabbed)
-                {
-                    controlledProp.body.velocity = dir * travelSpeed;
-                }
-                else
-                {
-                    // controlledProp.body.velocity = Vector3.zero;
-                    // controlledProp.transform.position = Vector3.Lerp(controlledProp.transform.position, RestingPos(), 0.1f);
-
-                    controlledProp.body.velocity = dir * (travelSpeed *
-                                                          (Vector3.Distance(controlledProp.transform.position,
-                                                              RestingPos()) / grabDistanceBuffer));
-                }
-
-                if (grabDistanceBuffer > Vector3.Distance(controlledProp.transform.position, RestingPos()))
-                {
-                    controlledProp.isGrabbed = true;
-                }
-
-                break;
-            case Enemy:
-                break;
-        }
-    }
 
     private void FixedUpdate()
     {
@@ -425,6 +359,57 @@ public class PlayerController : Singleton<PlayerController>
         rb.velocity = new Vector3(horizontalVelocity.x, rb.velocity.y, horizontalVelocity.y);
     }
 
+
+    private void TelekinesisPhysics()
+    {
+        switch (controlledProp)
+        {
+            case TelekinesisObject:
+                var dir = offsetPosition.position - controlledProp.transform.position;
+                dir.Normalize();
+                if (!controlledProp.isGrabbed)
+                {
+                    controlledProp.body.velocity = dir * travelSpeed;
+                }
+                else
+                {
+                    // controlledProp.body.velocity = Vector3.zero;
+                    // controlledProp.transform.position = Vector3.Lerp(controlledProp.transform.position, RestingPos(), 0.1f);
+
+                    controlledProp.body.velocity = dir * (travelSpeed *
+                                                          (Vector3.Distance(controlledProp.transform.position,
+                                                              offsetPosition.position) / grabDistanceBuffer));
+                }
+
+                if (grabDistanceBuffer > Vector3.Distance(controlledProp.transform.position, offsetPosition.position))
+                {
+                    controlledProp.isGrabbed = true;
+                }
+
+                break;
+            case Enemy:
+                break;
+        }
+    }
+
+
+    private void ReleaseProp(InputAction.CallbackContext obj)
+    {
+        if (!controlledProp) return;
+        controlledProp.ApplyTelekinesis();
+        if (!controlledProp.isGrabbed)
+        {
+            controlledProp.body.velocity *= 0.1f;
+            controlledProp = null;
+            return;
+        }
+
+        controlledProp.isGrabbed = false;
+        controlledProp.body.velocity = Vector3.zero;
+        controlledProp.body.AddForce(playerCam.forward * throwForce, ForceMode.Impulse);
+        controlledProp = null;
+    }
+
     #endregion
 
     #region Controls
@@ -467,7 +452,7 @@ public class PlayerController : Singleton<PlayerController>
         playerCam.localEulerAngles = new Vector3(rotationX, playerCam.localEulerAngles.y, playerCam.localEulerAngles.z);
 
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
-        
+
         var camRotation = new Vector3(playerCam.localEulerAngles.x, transform.localEulerAngles.y,
             playerCam.localEulerAngles.z);
         //playerCam.localEulerAngles = Vector3.Lerp(playerCam.localEulerAngles, camRotation, 0.8f);
@@ -502,14 +487,27 @@ public class PlayerController : Singleton<PlayerController>
         if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange, shootMask))
         {
             Debug.Log("Hit something");
-            /*if (hit.collider.TryGetComponent(typeof(Enemy) out enemy))
+            if (hit.collider.CompareTag("Head"))
             {
-                //enemy.TakeDamage();
+                if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
+                {
+                    enemy.TakeDamage(bulletDmg, true);
+                    GameManager.instance.HitMark(true);
+                }
             }
-            if (hit.collider.TryGetComponent(typeof(Destructible) out target))
+            if (hit.collider.CompareTag("Body"))
             {
-                //target.GetHit();
-            }*/
+                if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
+                {
+                    enemy.TakeDamage(bulletDmg, false);
+                    GameManager.instance.HitMark(false);
+                }
+            }
+
+            if (hit.collider.TryGetComponent(out Destructible target))
+            {
+                target.GetHit();
+            }
 
             currentTrail.SetPosition(1, hit.point);
         }
@@ -517,6 +515,28 @@ public class PlayerController : Singleton<PlayerController>
         {
             Debug.Log("Hit some air");
             currentTrail.SetPosition(1, playerCam.forward * maxRange);
+        }
+    }
+
+    private void TelekinesisInput()
+    {
+        if (currentControls.FindAction("Telekinesis", true).IsPressed())
+        {
+            if (!controlledProp)
+            {
+                if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange, shootMask))
+                {
+                    if (hit.collider.TryGetComponent(out ControllableProp prop))
+                    {
+                        controlledProp = prop;
+                        prop.ApplyTelekinesis();
+                    }
+                }
+
+                return;
+            }
+
+            TelekinesisPhysics();
         }
     }
 
