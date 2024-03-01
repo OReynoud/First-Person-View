@@ -30,6 +30,7 @@ public class PlayerController : Singleton<PlayerController>
     [BoxGroup("Refs")] [SerializeField] private Transform rightHand;
 
     [BoxGroup("Refs")] [SerializeField] private RectTransform telekinesisPointer;
+    [BoxGroup("Refs")] [SerializeField] private Transform offsetPosition;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private Transform shootingHand;
@@ -98,7 +99,6 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField]
     private Vector3 restingPosOffset;
 
-    [SerializeField] private Transform offsetPosition;
 
     [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
     private float travelSpeed;
