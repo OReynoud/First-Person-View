@@ -109,7 +109,7 @@ public class PlayerController : Singleton<PlayerController>
     [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
     private float maxStamina;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField] [ProgressBar("maxStamina", EColor.Green)]
     private float currentStamina;
 
     [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
@@ -220,7 +220,7 @@ public class PlayerController : Singleton<PlayerController>
         Cursor.visible = false;
 
         startPos = hands.localPosition;
-
+        currentStamina = maxStamina;
         CheckShootingHand();
     }
 
@@ -365,6 +365,8 @@ public class PlayerController : Singleton<PlayerController>
         switch (controlledProp)
         {
             case TelekinesisObject:
+                currentStamina -= holdObjectCost * Time.deltaTime;
+                
                 var dir = offsetPosition.position - controlledProp.transform.position;
                 dir.Normalize();
                 if (!controlledProp.isGrabbed)
@@ -390,6 +392,13 @@ public class PlayerController : Singleton<PlayerController>
             case Enemy:
                 break;
         }
+
+        if (currentStamina < 0)
+        {
+            controlledProp.ApplyTelekinesis();
+            controlledProp.isGrabbed = false;
+            controlledProp = null;
+        }
     }
 
 
@@ -405,6 +414,11 @@ public class PlayerController : Singleton<PlayerController>
         }
 
         controlledProp.isGrabbed = false;
+        currentStamina -= throwCost;
+        
+        if (currentStamina < 0) currentStamina = 0;
+        
+        
         controlledProp.body.velocity = Vector3.zero;
         controlledProp.body.AddForce(playerCam.forward * throwForce, ForceMode.Impulse);
         controlledProp = null;

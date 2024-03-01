@@ -30,7 +30,8 @@ public class Enemy : ControllableProp
 
     private void Die()
     {
-        
+        GameManager.instance.HitMark(true);
+        Destroy(gameObject);
     }
     // Update is called once per frame
     void Update()
