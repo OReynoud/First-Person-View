@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -72,6 +73,15 @@ public class PlayerController : Singleton<PlayerController>
     [Range(0, 1)]
     private float drag;
 
+    [BoxGroup("Movement")] [Tooltip("CameraFOV when Player is walking")] [SerializeField]
+    private float normalFOV;
+
+    [BoxGroup("Movement")] [Tooltip("CameraFOV when player is running")] [SerializeField]
+    private float runningFOV;
+
+    [BoxGroup("Movement")] [Tooltip("How fast the FOV changes")] [SerializeField] [Range(0, 1)]
+    private float lerpFOV;
+
     [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
     private LayerMask shootMask;
 
@@ -89,6 +99,9 @@ public class PlayerController : Singleton<PlayerController>
 
     [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
     private float trailTime;
+
+    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
+    private float baseKnockBack;
 
 
     [BoxGroup("Telekinesis")]
@@ -202,6 +215,7 @@ public class PlayerController : Singleton<PlayerController>
 
     void Start()
     {
+        camera1 = Camera.main;
         inputs = GetComponent<PlayerInput>();
         inputs.actions.Enable();
         currentControls = inputs.actions.FindActionMap(currentInputMap);
@@ -245,6 +259,7 @@ public class PlayerController : Singleton<PlayerController>
     // Update is called once per frame
     void Update()
     {
+        DisplaceRestingPosHeight();
         playerDir = Vector3.zero;
         ForwardInput();
         SidewaysInput();
@@ -272,6 +287,15 @@ public class PlayerController : Singleton<PlayerController>
         }
         else if (telekinesisPointer.gameObject.activeSelf)
             telekinesisPointer.gameObject.SetActive(false);
+
+        if (isRunning && isGrounded)
+        {
+            camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, runningFOV, lerpFOV);
+        }
+        else
+        {
+            camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, normalFOV, lerpFOV);
+        }
     }
 
     private void CheckTelekinesisTarget()
@@ -291,6 +315,31 @@ public class PlayerController : Singleton<PlayerController>
             telekinesisPointer.gameObject.SetActive(false);
     }
 
+    void DisplaceRestingPosHeight()
+    {
+        var theta = playerCam.localEulerAngles.x;
+        if (theta < 359 - lookXLimit)
+        {
+            theta = 0;
+        }
+        else
+        {
+            theta = 360 - theta;
+        }
+        Debug.Log(theta);
+        
+        var adjacent = Vector2.Distance(
+            new Vector2(playerCam.position.x, playerCam.position.z),
+            new Vector2(offsetPosition.position.x, offsetPosition.position.z));
+        
+        var hypotenuse = adjacent / Mathf.Cos(theta);
+        
+        var opposite = hypotenuse * Mathf.Sin(theta) * Mathf.Deg2Rad;
+        offsetPosition.position = 
+            new Vector3(offsetPosition.position.x, 
+            restingPosOffset.y + opposite,
+            offsetPosition.position.z);
+    }
 
     private void FixedUpdate()
     {
@@ -366,7 +415,7 @@ public class PlayerController : Singleton<PlayerController>
         {
             case TelekinesisObject:
                 currentStamina -= holdObjectCost * Time.deltaTime;
-                
+
                 var dir = offsetPosition.position - controlledProp.transform.position;
                 dir.Normalize();
                 if (!controlledProp.isGrabbed)
@@ -415,10 +464,10 @@ public class PlayerController : Singleton<PlayerController>
 
         controlledProp.isGrabbed = false;
         currentStamina -= throwCost;
-        
+
         if (currentStamina < 0) currentStamina = 0;
-        
-        
+
+
         controlledProp.body.velocity = Vector3.zero;
         controlledProp.body.AddForce(playerCam.forward * throwForce, ForceMode.Impulse);
         controlledProp = null;
@@ -490,6 +539,7 @@ public class PlayerController : Singleton<PlayerController>
 
 
     private LineRenderer currentTrail;
+    private Camera camera1;
 
     private void Shoot(InputAction.CallbackContext obj)
     {
@@ -505,15 +555,16 @@ public class PlayerController : Singleton<PlayerController>
             {
                 if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                 {
-                    enemy.TakeDamage(bulletDmg, true);
+                    enemy.TakeDamage(bulletDmg, true, baseKnockBack, transform.forward);
                     GameManager.instance.HitMark(true);
                 }
             }
+
             if (hit.collider.CompareTag("Body"))
             {
                 if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                 {
-                    enemy.TakeDamage(bulletDmg, false);
+                    enemy.TakeDamage(bulletDmg, false, baseKnockBack, transform.forward);
                     GameManager.instance.HitMark(false);
                 }
             }

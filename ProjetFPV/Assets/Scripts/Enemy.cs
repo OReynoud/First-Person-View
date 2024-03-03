@@ -14,18 +14,24 @@ public class Enemy : ControllableProp
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(int damage, bool headHit)
+    public void TakeDamage(int damage, bool headHit, float knockBackValue, Vector3 knockBackDir)
     {
+        var totalDmg = 0f;
         if (headHit)
         {
-            currentHealth -= damage * headShotMultiplier;
+            totalDmg = damage * headShotMultiplier;
+            currentHealth -= totalDmg;
         }
         else
         {
-            currentHealth -= damage * bodyShotMultiplier;
+            totalDmg = damage * bodyShotMultiplier;
+            currentHealth -= totalDmg;
         }
 
         if (currentHealth < 0)Die();
+        if (isGrabbed)return;
+        
+        body.AddForce(knockBackDir * knockBackValue * totalDmg);
     }
 
     private void Die()
