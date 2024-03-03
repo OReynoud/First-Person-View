@@ -1011,6 +1011,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
+      propertyPath: drag
+      value: 0.717
+      objectReference: {fileID: 0}
+    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: lerpFOV
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
       propertyPath: runAccel
       value: 200
       objectReference: {fileID: 0}
@@ -1032,7 +1042,7 @@ PrefabInstance:
     - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
       propertyPath: runningFOV
-      value: 30
+      value: 58
       objectReference: {fileID: 0}
     - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
@@ -1092,17 +1102,27 @@ PrefabInstance:
     - target: {fileID: 5747994813939177046, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
       propertyPath: field of view
-      value: 60.000004
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747994813939177046, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: m_FOVAxisMode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5747994813939177046, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
       propertyPath: m_FocalLength
-      value: 20.78461
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5747994813939177046, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: near clip plane
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 5747994813939177046, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
       propertyPath: m_projectionMatrixMode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6597579908083111336, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
@@ -1115,6 +1135,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 13400000, guid: 7b7369d8753a117469134f2471270a43,
         type: 2}
+    - target: {fileID: 9193785742561202658, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000,
+        type: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
