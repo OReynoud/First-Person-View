@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private CanvasGroup bodyHitMarker;
     [SerializeField] private CanvasGroup headHitMarker;
+    [SerializeField] private Image staminaBar;
     
     [SerializeField] private float hitMarkerFadeTime;
 
@@ -32,6 +34,17 @@ public class GameManager : Singleton<GameManager>
             if (bodyHit != null)StopCoroutine(bodyHit);
             headHit = StartCoroutine(FadeHitMark(false));
         }
+    }
+
+    public float UpdatePlayerStamina(float current, float max, float increment)
+    {
+        current += increment;
+        
+        if (current > max) current = max;
+        if (current < 0) current = 0;
+        
+        staminaBar.fillAmount = current / max;
+        return current;
     }
     
     // Update is called once per frame

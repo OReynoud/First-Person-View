@@ -25,7 +25,6 @@ public class ControllableProp : MonoBehaviour
 
     public virtual void ApplyTelekinesis()
     {
-        Debug.Log("Generic");
         body.useGravity = !body.useGravity;
     }
 }

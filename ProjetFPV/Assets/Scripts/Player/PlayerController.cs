@@ -124,6 +124,9 @@ public class PlayerController : Singleton<PlayerController>
 
     [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField] [ProgressBar("maxStamina", EColor.Green)]
     private float currentStamina;
+    
+    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    private float staminaRegen;
 
     [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
     private float holdObjectCost;
@@ -175,7 +178,16 @@ public class PlayerController : Singleton<PlayerController>
     [Button]
     void UpdateRestingPos()
     {
-        offsetPosition.position = restingPosOffset;
+        if (playerCam.forward.y < 0)
+        {
+            offsetPosition.position = transform.position;
+            offsetPosition.localPosition += restingPosOffset;
+        }
+        else
+        {
+            offsetPosition.position = transform.position;
+            offsetPosition.localPosition += new Vector3(restingPosOffset.x,restingPosOffset.y * (playerCam.forward.y + 1),restingPosOffset.z * (playerCam.forward.z));
+        }
     }
 
     private void OnDrawGizmosSelected()
@@ -259,7 +271,7 @@ public class PlayerController : Singleton<PlayerController>
     // Update is called once per frame
     void Update()
     {
-        DisplaceRestingPosHeight();
+        UpdateRestingPos();
         playerDir = Vector3.zero;
         ForwardInput();
         SidewaysInput();
@@ -284,6 +296,10 @@ public class PlayerController : Singleton<PlayerController>
         if (!controlledProp)
         {
             CheckTelekinesisTarget();
+            
+            currentStamina =
+                GameManager.instance.UpdatePlayerStamina(currentStamina,maxStamina,Time.deltaTime * staminaRegen);
+            
         }
         else if (telekinesisPointer.gameObject.activeSelf)
             telekinesisPointer.gameObject.SetActive(false);
@@ -315,31 +331,7 @@ public class PlayerController : Singleton<PlayerController>
             telekinesisPointer.gameObject.SetActive(false);
     }
 
-    void DisplaceRestingPosHeight()
-    {
-        var theta = playerCam.localEulerAngles.x;
-        if (theta < 359 - lookXLimit)
-        {
-            theta = 0;
-        }
-        else
-        {
-            theta = 360 - theta;
-        }
-        Debug.Log(theta);
-        
-        var adjacent = Vector2.Distance(
-            new Vector2(playerCam.position.x, playerCam.position.z),
-            new Vector2(offsetPosition.position.x, offsetPosition.position.z));
-        
-        var hypotenuse = adjacent / Mathf.Cos(theta);
-        
-        var opposite = hypotenuse * Mathf.Sin(theta) * Mathf.Deg2Rad;
-        offsetPosition.position = 
-            new Vector3(offsetPosition.position.x, 
-            restingPosOffset.y + opposite,
-            offsetPosition.position.z);
-    }
+
 
     private void FixedUpdate()
     {
@@ -414,7 +406,9 @@ public class PlayerController : Singleton<PlayerController>
         switch (controlledProp)
         {
             case TelekinesisObject:
-                currentStamina -= holdObjectCost * Time.deltaTime;
+                
+                currentStamina =
+                    GameManager.instance.UpdatePlayerStamina(currentStamina,maxStamina,Time.deltaTime * -holdEnemyCost);
 
                 var dir = offsetPosition.position - controlledProp.transform.position;
                 dir.Normalize();
@@ -424,8 +418,6 @@ public class PlayerController : Singleton<PlayerController>
                 }
                 else
                 {
-                    // controlledProp.body.velocity = Vector3.zero;
-                    // controlledProp.transform.position = Vector3.Lerp(controlledProp.transform.position, RestingPos(), 0.1f);
 
                     controlledProp.body.velocity = dir * (travelSpeed *
                                                           (Vector3.Distance(controlledProp.transform.position,
@@ -463,7 +455,9 @@ public class PlayerController : Singleton<PlayerController>
         }
 
         controlledProp.isGrabbed = false;
-        currentStamina -= throwCost;
+        
+        currentStamina =
+            GameManager.instance.UpdatePlayerStamina(currentStamina,maxStamina,-throwCost);
 
         if (currentStamina < 0) currentStamina = 0;
 
@@ -585,6 +579,8 @@ public class PlayerController : Singleton<PlayerController>
 
     private void TelekinesisInput()
     {
+        if (currentStamina < throwCost * 1.5f)return;
+        
         if (currentControls.FindAction("Telekinesis", true).IsPressed())
         {
             if (!controlledProp)

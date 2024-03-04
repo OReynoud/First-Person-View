@@ -13,7 +13,6 @@ public class TelekinesisObject : ControllableProp
     // Update is called once per frame
     public override void ApplyTelekinesis()
     {
-        Debug.Log("Object");
         body.useGravity = !body.useGravity;
     }
 }
