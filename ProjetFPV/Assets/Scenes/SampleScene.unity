@@ -1041,7 +1041,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -94.4, y: 18.6}
+  m_AnchoredPosition: {x: -94.399994, y: 18.599976}
   m_SizeDelta: {x: 194.9, y: 16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2032705258
@@ -1093,7 +1093,7 @@ PrefabInstance:
     - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
       propertyPath: drag
-      value: 0.717
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
@@ -1102,8 +1102,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
+      propertyPath: maxRange
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
       propertyPath: runAccel
-      value: 200
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
@@ -1127,8 +1132,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
+      propertyPath: shootSpeed
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: throwForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: travelSpeed
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
       propertyPath: staminaRegen
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: baseKnockBack
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: airMobilityFactor
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}

@@ -82,75 +82,74 @@ public class PlayerController : Singleton<PlayerController>
     [BoxGroup("Movement")] [Tooltip("How fast the FOV changes")] [SerializeField] [Range(0, 1)]
     private float lerpFOV;
 
-    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Shoot")] [Tooltip("Which layers will get hit by the hit scan")] [SerializeField]
     private LayerMask shootMask;
 
-    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Shoot")] [Tooltip("Base damage of a bullet")] [SerializeField]
     private int bulletDmg;
 
-    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Shoot")] [Tooltip("(Not yet used) Max ammo before player has to reload")] [SerializeField]
     private int magSize;
 
-    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Shoot")] [Tooltip("How fast player can shoot")] [SerializeField]
     private float shootSpeed;
 
-    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Shoot")] [Tooltip("Range of the hit scan")] [SerializeField]
     private float maxRange;
 
-    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Shoot")] [Tooltip("How long the trail of the shot stays visible")] [SerializeField]
     private float trailTime;
 
-    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Shoot")] [Tooltip("base knockback inflicted on enemies")] [SerializeField]
     private float baseKnockBack;
 
 
     [BoxGroup("Telekinesis")]
-    [Tooltip("")]
     [InfoBox(
-        "Blue ball indicates the resting Position (Must be updated manually via the button 'Update Resting Pos' at the bottom)")]
+        "Blue ball indicates the resting Position (Must be updated manually in editor via the button 'Update Resting Pos' at the bottom, otherwise updates automatically in play mode)")]
     [Label("RestingPos")]
     [SerializeField]
     private Vector3 restingPosOffset;
 
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Telekinesis")] [Tooltip("How fast the targeted object travels to the resting position")] [SerializeField]
     private float travelSpeed;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Telekinesis")] [Tooltip("*KEEP THIS VARIABLE LOW* Minimum distance between the grabbed object and the resting position before the object is considered as 'grabbed'")] [SerializeField]
     private float grabDistanceBuffer;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Telekinesis")] [Tooltip("Maximum stamina of the player")] [SerializeField]
     private float maxStamina;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField] [ProgressBar("maxStamina", EColor.Green)]
+    [BoxGroup("Telekinesis")] [Tooltip("How much stamina the player currently has")] [SerializeField] [ProgressBar("maxStamina", EColor.Green)]
     private float currentStamina;
     
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Telekinesis")] [Tooltip("How fast stamina regenerates when player is not using telekinesis")] [SerializeField]
     private float staminaRegen;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Telekinesis")] [Tooltip("Cost per second of using telekinesis on an object")] [SerializeField]
     private float holdObjectCost;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Telekinesis")] [Tooltip("Cost per second of using telekinesis on an enemy")] [SerializeField]
     private float holdEnemyCost;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Telekinesis")] [Tooltip("Cost of releasing an object from telekinesis")] [SerializeField]
     private float throwCost;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [BoxGroup("Telekinesis")] [Tooltip("Force applied to grabbed object when released from telekinesis")] [SerializeField]
     private float throwForce;
 
 
-    [BoxGroup("Bobbing")] [SerializeField] private float amplitude;
-    [BoxGroup("Bobbing")] [SerializeField] private float frequeny;
-    [BoxGroup("Bobbing")] [SerializeField] private bool bobbing;
-    [BoxGroup("Bobbing")] [SerializeField] private float toggleSpeed;
-    [BoxGroup("Bobbing")] [SerializeField] private Vector3 startPos;
-    [BoxGroup("Bobbing")] [SerializeField] private float sideTilting;
+    [BoxGroup("Bobbing")] [Tooltip("How big the arm bobbing is")] [SerializeField] private float amplitude;
+    [BoxGroup("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField] private float frequeny;
+    [BoxGroup("Bobbing")] [Tooltip("(NOT USED YET) Minimum velocity for bobbing to start")][SerializeField] private float toggleSpeed;
+    [BoxGroup("Bobbing")] [Tooltip("(NOT USED YET) Camera tilting (in degrees) when player is moving left or right")][SerializeField] private float sideTilting;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool appliedForce;
 
+    [Foldout("Debug")] [SerializeField] private bool bobbing;
+    
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool canMove = true;
 
@@ -174,6 +173,7 @@ public class PlayerController : Singleton<PlayerController>
     private Vector3 playerDir;
     private float jumpTime;
     private Vector2 horizontalVelocity;
+    private Vector3 startPos;
 
     [Button]
     void UpdateRestingPos()
@@ -408,7 +408,7 @@ public class PlayerController : Singleton<PlayerController>
             case TelekinesisObject:
                 
                 currentStamina =
-                    GameManager.instance.UpdatePlayerStamina(currentStamina,maxStamina,Time.deltaTime * -holdEnemyCost);
+                    GameManager.instance.UpdatePlayerStamina(currentStamina,maxStamina,Time.deltaTime * -holdObjectCost);
 
                 var dir = offsetPosition.position - controlledProp.transform.position;
                 dir.Normalize();
