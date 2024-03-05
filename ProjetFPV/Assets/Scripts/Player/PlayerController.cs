@@ -287,10 +287,16 @@ public class PlayerController : Singleton<PlayerController>
         playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
         playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
             playerCam.position.z);
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.1f, LayerMask.GetMask("Ground")) &&
-            !isJumping)
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.1f, LayerMask.GetMask("Ground")))
         {
-            isGrounded = true;
+            if (!isJumping)
+            {
+                isGrounded = true;
+            }
+        }
+        else
+        {
+            isGrounded = false;
         }
 
         if (!controlledProp)
@@ -299,7 +305,7 @@ public class PlayerController : Singleton<PlayerController>
             
             currentStamina =
                 GameManager.instance.UpdatePlayerStamina(currentStamina,maxStamina,Time.deltaTime * staminaRegen);
-            
+
         }
         else if (telekinesisPointer.gameObject.activeSelf)
             telekinesisPointer.gameObject.SetActive(false);
