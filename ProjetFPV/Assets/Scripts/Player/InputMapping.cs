@@ -98,6 +98,15 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""9a5134f0-1b38-46e8-976e-e549252aaa79"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -188,6 +197,17 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""action"": ""Telekinesis"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""78235cf0-3219-4430-a3c8-54f28f02fdc8"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -262,6 +282,15 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""name"": ""Telekinesis"",
                     ""type"": ""Button"",
                     ""id"": ""31afc33a-42d0-42db-b206-b634e9baa744"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""0eb52c6f-da4e-47a5-88db-39c530de42f7"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -356,6 +385,17 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""action"": ""Telekinesis"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fd334bb4-c938-4e6c-900b-4d42dc33ccce"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -372,6 +412,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         m_ControlsLeftShoot_ToggleSprint = m_ControlsLeftShoot.FindAction("ToggleSprint", throwIfNotFound: true);
         m_ControlsLeftShoot_Shoot = m_ControlsLeftShoot.FindAction("Shoot", throwIfNotFound: true);
         m_ControlsLeftShoot_Telekinesis = m_ControlsLeftShoot.FindAction("Telekinesis", throwIfNotFound: true);
+        m_ControlsLeftShoot_Reload = m_ControlsLeftShoot.FindAction("Reload", throwIfNotFound: true);
         // ControlsRightShoot
         m_ControlsRightShoot = asset.FindActionMap("ControlsRightShoot", throwIfNotFound: true);
         m_ControlsRightShoot_Forward = m_ControlsRightShoot.FindAction("Forward", throwIfNotFound: true);
@@ -382,6 +423,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         m_ControlsRightShoot_ToggleSprint = m_ControlsRightShoot.FindAction("ToggleSprint", throwIfNotFound: true);
         m_ControlsRightShoot_Shoot = m_ControlsRightShoot.FindAction("Shoot", throwIfNotFound: true);
         m_ControlsRightShoot_Telekinesis = m_ControlsRightShoot.FindAction("Telekinesis", throwIfNotFound: true);
+        m_ControlsRightShoot_Reload = m_ControlsRightShoot.FindAction("Reload", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -451,6 +493,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     private readonly InputAction m_ControlsLeftShoot_ToggleSprint;
     private readonly InputAction m_ControlsLeftShoot_Shoot;
     private readonly InputAction m_ControlsLeftShoot_Telekinesis;
+    private readonly InputAction m_ControlsLeftShoot_Reload;
     public struct ControlsLeftShootActions
     {
         private @InputMapping m_Wrapper;
@@ -463,6 +506,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         public InputAction @ToggleSprint => m_Wrapper.m_ControlsLeftShoot_ToggleSprint;
         public InputAction @Shoot => m_Wrapper.m_ControlsLeftShoot_Shoot;
         public InputAction @Telekinesis => m_Wrapper.m_ControlsLeftShoot_Telekinesis;
+        public InputAction @Reload => m_Wrapper.m_ControlsLeftShoot_Reload;
         public InputActionMap Get() { return m_Wrapper.m_ControlsLeftShoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -496,6 +540,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Telekinesis.started += instance.OnTelekinesis;
             @Telekinesis.performed += instance.OnTelekinesis;
             @Telekinesis.canceled += instance.OnTelekinesis;
+            @Reload.started += instance.OnReload;
+            @Reload.performed += instance.OnReload;
+            @Reload.canceled += instance.OnReload;
         }
 
         private void UnregisterCallbacks(IControlsLeftShootActions instance)
@@ -524,6 +571,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Telekinesis.started -= instance.OnTelekinesis;
             @Telekinesis.performed -= instance.OnTelekinesis;
             @Telekinesis.canceled -= instance.OnTelekinesis;
+            @Reload.started -= instance.OnReload;
+            @Reload.performed -= instance.OnReload;
+            @Reload.canceled -= instance.OnReload;
         }
 
         public void RemoveCallbacks(IControlsLeftShootActions instance)
@@ -553,6 +603,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     private readonly InputAction m_ControlsRightShoot_ToggleSprint;
     private readonly InputAction m_ControlsRightShoot_Shoot;
     private readonly InputAction m_ControlsRightShoot_Telekinesis;
+    private readonly InputAction m_ControlsRightShoot_Reload;
     public struct ControlsRightShootActions
     {
         private @InputMapping m_Wrapper;
@@ -565,6 +616,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         public InputAction @ToggleSprint => m_Wrapper.m_ControlsRightShoot_ToggleSprint;
         public InputAction @Shoot => m_Wrapper.m_ControlsRightShoot_Shoot;
         public InputAction @Telekinesis => m_Wrapper.m_ControlsRightShoot_Telekinesis;
+        public InputAction @Reload => m_Wrapper.m_ControlsRightShoot_Reload;
         public InputActionMap Get() { return m_Wrapper.m_ControlsRightShoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -598,6 +650,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Telekinesis.started += instance.OnTelekinesis;
             @Telekinesis.performed += instance.OnTelekinesis;
             @Telekinesis.canceled += instance.OnTelekinesis;
+            @Reload.started += instance.OnReload;
+            @Reload.performed += instance.OnReload;
+            @Reload.canceled += instance.OnReload;
         }
 
         private void UnregisterCallbacks(IControlsRightShootActions instance)
@@ -626,6 +681,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Telekinesis.started -= instance.OnTelekinesis;
             @Telekinesis.performed -= instance.OnTelekinesis;
             @Telekinesis.canceled -= instance.OnTelekinesis;
+            @Reload.started -= instance.OnReload;
+            @Reload.performed -= instance.OnReload;
+            @Reload.canceled -= instance.OnReload;
         }
 
         public void RemoveCallbacks(IControlsRightShootActions instance)
@@ -653,6 +711,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         void OnToggleSprint(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnTelekinesis(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
     public interface IControlsRightShootActions
     {
@@ -664,5 +723,6 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         void OnToggleSprint(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnTelekinesis(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
 }

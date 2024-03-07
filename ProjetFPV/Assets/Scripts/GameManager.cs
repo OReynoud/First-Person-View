@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +10,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private CanvasGroup bodyHitMarker;
     [SerializeField] private CanvasGroup headHitMarker;
     [SerializeField] private Image staminaBar;
+    [SerializeField] private List<TextMeshProUGUI> ammoText;
     
     [SerializeField] private float hitMarkerFadeTime;
 
@@ -20,6 +23,18 @@ public class GameManager : Singleton<GameManager>
         base.Awake();
         bodyHitMarker.alpha = 0;
         headHitMarker.alpha = 0;
+    }
+
+    public void Update()
+    {
+        UpdateAmmoUI();
+    }
+
+    private void UpdateAmmoUI()
+    {
+        ammoText[0].text = PlayerController.instance.currentAmmo.ToString();
+        ammoText[1].text = PlayerController.instance.magSize.ToString();
+        ammoText[2].text = PlayerController.instance.inventoryAmmo.ToString();
     }
 
     public void HitMark(bool headshot)

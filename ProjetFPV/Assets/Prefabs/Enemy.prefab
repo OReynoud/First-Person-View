@@ -162,10 +162,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &3695781019607296251
 MonoBehaviour:
@@ -180,11 +180,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGrabbed: 0
-  body: {fileID: 0}
-  maxHealth: 0
+  body: {fileID: 7143357708314217432}
+  maxHealth: 6
   currentHealth: 0
-  headShotMultiplier: 0
-  bodyShotMultiplier: 0
+  headShotMultiplier: 2
+  bodyShotMultiplier: 1
+  isImmobile: 0
+  waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  translationSpeed: 0.1
 --- !u!1 &7561002305878562183
 GameObject:
   m_ObjectHideFlags: 0
