@@ -1,11 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private CanvasGroup bodyHitMarker;
     [SerializeField] private CanvasGroup headHitMarker;
+    [SerializeField] private Image staminaBar;
+    [SerializeField] private List<TextMeshProUGUI> ammoText;
     
     [SerializeField] private float hitMarkerFadeTime;
 
@@ -20,6 +25,18 @@ public class GameManager : Singleton<GameManager>
         headHitMarker.alpha = 0;
     }
 
+    public void Update()
+    {
+        UpdateAmmoUI();
+    }
+
+    private void UpdateAmmoUI()
+    {
+        ammoText[0].text = PlayerController.instance.currentAmmo.ToString();
+        ammoText[1].text = PlayerController.instance.magSize.ToString();
+        ammoText[2].text = PlayerController.instance.inventoryAmmo.ToString();
+    }
+
     public void HitMark(bool headshot)
     {
         if (headshot)
@@ -32,6 +49,17 @@ public class GameManager : Singleton<GameManager>
             if (bodyHit != null)StopCoroutine(bodyHit);
             headHit = StartCoroutine(FadeHitMark(false));
         }
+    }
+
+    public float UpdatePlayerStamina(float current, float max, float increment)
+    {
+        current += increment;
+        
+        if (current > max) current = max;
+        if (current < 0) current = 0;
+        
+        staminaBar.fillAmount = current / max;
+        return current;
     }
     
     // Update is called once per frame

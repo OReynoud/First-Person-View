@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using NaughtyAttributes;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,8 +12,6 @@ using UnityEngine.Serialization;
 
 public class PlayerController : Singleton<PlayerController>
 {
-    [BoxGroup("Refs")] [SerializeField] private Transform playerCam;
-
 //    [SerializeField] private Vector3 cameraOffset;
 
     private bool moveCam = false;
@@ -19,121 +19,179 @@ public class PlayerController : Singleton<PlayerController>
 
     private InputActionMap currentControls;
 
+    #region Deprecated
+
+    [Foldout("Obsolete")] [Tooltip("Acceleration when running")] [SerializeField]
+    private float runAccel;
+    [Foldout("Obsolete")] [Tooltip("Multiplies with maxHorizontalVelocity when running")] [SerializeField]
+    private float runMaxVelocityFactor;
+
+    [Foldout("Obsolete")] [Tooltip("To make a jump more or less floaty")] [SerializeField]
+    private AnimationCurve jumpCurve;
+    [Foldout("Obsolete")] [Tooltip("CameraFOV when player is running")] [SerializeField]
+    private float runningFOV;
+    #endregion
+    
+    #region Refs
+
     [Dropdown("GetInputMaps")] [BoxGroup("Refs")]
     public string currentInputMap;
 
-    [BoxGroup("Refs")] public PlayerInput inputs;
-    [BoxGroup("Refs")] public LineRenderer shootTrail;
+    [Foldout("Refs")] public PlayerInput inputs;
+    [Foldout("Refs")] public LineRenderer shootTrail;
+    [Foldout("Refs")] [SerializeField] private Transform playerCam;
+    [Foldout("Refs")] [SerializeField] private Transform hands;
+    [Foldout("Refs")] [SerializeField] private Transform leftHand;
+    [Foldout("Refs")] [SerializeField] private Transform rightHand;
+    [Foldout("Refs")] [SerializeField] private RectTransform telekinesisPointer;
+    [Foldout("Refs")] [SerializeField] private Transform offsetPosition;
+    [Foldout("Debug")] [SerializeField] private Transform shootingHand;
 
-    [BoxGroup("Refs")] [SerializeField] private Transform hands;
-    [BoxGroup("Refs")] [SerializeField] private Transform leftHand;
-    [BoxGroup("Refs")] [SerializeField] private Transform rightHand;
+    #endregion
 
-    [BoxGroup("Refs")] [SerializeField] private RectTransform telekinesisPointer;
-    [BoxGroup("Refs")] [SerializeField] private Transform offsetPosition;
+    #region Movement Variables
 
-    [Foldout("Debug")] [Tooltip("")] [SerializeField]
-    private Transform shootingHand;
-
-
-    // Start is called before the first frame update
-
-
-    [BoxGroup("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
+    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private float walkAccel;
 
-    [BoxGroup("Movement")] [Tooltip("Acceleration when running")] [SerializeField]
-    private float runAccel;
 
-    [BoxGroup("Movement")] [Tooltip("Force applied on a jump")] [SerializeField]
+
+    [Foldout("Movement")] [Tooltip("Force applied on a jump")] [SerializeField]
     private float jumpForce;
 
-    [BoxGroup("Movement")] [Tooltip("Maximum Horizontal Velocity when walking")] [SerializeField]
+    [Foldout("Movement")] [Tooltip("Maximum Horizontal Velocity when walking")] [SerializeField]
     private float maxHorizontalVelocity;
 
-    [BoxGroup("Movement")] [Tooltip("Multiplies with maxHorizontalVelocity when running")] [SerializeField]
-    private float runMaxVelocityFactor;
 
-    [BoxGroup("Movement")] [Tooltip("To make a jump more or less floaty")] [SerializeField]
-    private AnimationCurve jumpCurve;
 
-    [BoxGroup("Movement")] [Tooltip("Camera sensitivity")] [SerializeField]
+    [Foldout("Movement")] [Tooltip("Camera sensitivity")] [SerializeField]
     private float lookSpeed;
 
-    [BoxGroup("Movement")] [Tooltip("Limit to the camera being able to look up or down")] [SerializeField]
+    [Foldout("Movement")] [Tooltip("Limit to the camera being able to look up or down")] [SerializeField]
     private float lookXLimit;
 
-    [BoxGroup("Movement")] [Tooltip("How effective horizontal movement is in the air")] [SerializeField] [Range(0, 1)]
+    [Foldout("Movement")] [Tooltip("How effective horizontal movement is in the air")] [SerializeField] [Range(0, 1)]
     private float airMobilityFactor;
 
-    [BoxGroup("Movement")]
+    [Foldout("Movement")]
     [Tooltip("How much fast the avatar slows down when no inputs are given")]
     [SerializeField]
     [Range(0, 1)]
     private float drag;
 
-    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
+    [Foldout("Movement")] [Tooltip("CameraFOV when Player is walking")] [SerializeField]
+    private float normalFOV;
+
+
+    [Foldout("Movement")] [Tooltip("How fast the FOV changes")] [SerializeField] [Range(0, 1)]
+    private float lerpFOV;
+
+    #endregion
+
+    #region Shoot variables
+
+    [Foldout("Shoot")] [Tooltip("Which layers will get hit by the hit scan")] [SerializeField]
     private LayerMask shootMask;
 
-    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
+    [Foldout("Shoot")] [Tooltip("Base damage of a bullet")] [SerializeField]
     private int bulletDmg;
+    
+    [Foldout("Shoot")] [Tooltip("How much ammo can the player carry? (Current mag not included)")] [SerializeField]
+    private int maxStoredAmmo;
 
-    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
-    private int magSize;
+    [Foldout("Shoot")] [Tooltip("(Not yet used) Max ammo before player has to reload")] [SerializeField]
+    public int magSize;
 
-    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
+    [Foldout("Shoot")] [Tooltip("How fast player can shoot")] [SerializeField]
     private float shootSpeed;
+    
+    [Foldout("Shoot")] [Tooltip("Time needed to reload")] [SerializeField]
+    private float reloadSpeed;
 
-    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
+    [Foldout("Shoot")] [Tooltip("Range of the hit scan")] [SerializeField]
     private float maxRange;
 
-    [BoxGroup("Shoot")] [Tooltip("")] [SerializeField]
+    [Foldout("Shoot")] [Tooltip("How long the trail of the shot stays visible")] [SerializeField]
     private float trailTime;
 
+    [Foldout("Shoot")] [Tooltip("base knockback inflicted on enemies")] [SerializeField]
+    private float baseKnockBack;
 
-    [BoxGroup("Telekinesis")]
-    [Tooltip("")]
+    #endregion
+
+    #region Telekinesis Variables
+
+    [Foldout("Telekinesis")]
     [InfoBox(
-        "Blue ball indicates the resting Position (Must be updated manually via the button 'Update Resting Pos' at the bottom)")]
+        "Blue ball indicates the resting Position (Must be updated manually in editor via the button 'Update Resting Pos' at the bottom, otherwise updates automatically in play mode)")]
     [Label("RestingPos")]
     [SerializeField]
     private Vector3 restingPosOffset;
 
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [Foldout("Telekinesis")] [Tooltip("How fast the targeted object travels to the resting position")] [SerializeField]
     private float travelSpeed;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [Foldout("Telekinesis")]
+    [Tooltip(
+        "*KEEP THIS VARIABLE LOW* Minimum distance between the grabbed object and the resting position before the object is considered as 'grabbed'")]
+    [SerializeField]
     private float grabDistanceBuffer;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [Foldout("Telekinesis")] [Tooltip("Maximum stamina of the player")] [SerializeField]
     private float maxStamina;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField] [ProgressBar("maxStamina", EColor.Green)]
+    [Foldout("Telekinesis")]
+    [Tooltip("How much stamina the player currently has")]
+    [SerializeField]
+    [ProgressBar("maxStamina", EColor.Green)]
     private float currentStamina;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [Foldout("Telekinesis")]
+    [Tooltip("How fast stamina regenerates when player is not using telekinesis")]
+    [SerializeField]
+    private float staminaRegen;
+
+    [Foldout("Telekinesis")] [Tooltip("Cost per second of using telekinesis on an object")] [SerializeField]
     private float holdObjectCost;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [Foldout("Telekinesis")] [Tooltip("Cost per second of using telekinesis on an enemy")] [SerializeField]
     private float holdEnemyCost;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [Foldout("Telekinesis")] [Tooltip("Cost of releasing an object from telekinesis")] [SerializeField]
     private float throwCost;
 
-    [BoxGroup("Telekinesis")] [Tooltip("")] [SerializeField]
+    [Foldout("Telekinesis")]
+    [Tooltip("Force applied to grabbed object when released from telekinesis")]
+    [SerializeField]
     private float throwForce;
 
+    #endregion
 
-    [BoxGroup("Bobbing")] [SerializeField] private float amplitude;
-    [BoxGroup("Bobbing")] [SerializeField] private float frequeny;
-    [BoxGroup("Bobbing")] [SerializeField] private bool bobbing;
-    [BoxGroup("Bobbing")] [SerializeField] private float toggleSpeed;
-    [BoxGroup("Bobbing")] [SerializeField] private Vector3 startPos;
-    [BoxGroup("Bobbing")] [SerializeField] private float sideTilting;
+    #region Bobbing Variables
+
+    [Foldout("Bobbing")] [Tooltip("How big the arm bobbing is")] [SerializeField]
+    private float amplitude;
+
+    [Foldout("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField]
+    private float frequeny;
+
+    [Foldout("Bobbing")] [Tooltip("(NOT USED YET) Minimum velocity for bobbing to start")] [SerializeField]
+    private float toggleSpeed;
+
+    [Foldout("Bobbing")]
+    [Tooltip("(NOT USED YET) Camera tilting (in degrees) when player is moving left or right")]
+    [SerializeField]
+    private float sideTilting;
+
+    #endregion
+
+    #region Debug
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool appliedForce;
+
+    [Foldout("Debug")] [SerializeField] private bool bobbing;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool canMove = true;
@@ -148,21 +206,43 @@ public class PlayerController : Singleton<PlayerController>
     private bool isGrounded = false;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
-    private float shootReload;
+    private float shootSpeedTimer;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private ControllableProp controlledProp;
+    
+    [Foldout("Debug")] [Tooltip("")] [SerializeField]
+    public int currentAmmo;
+    
+    [Foldout("Debug")] [Tooltip("")] [SerializeField]
+    public int inventoryAmmo;
 
+    #endregion
+
+    #region Misc
 
     private float rotationX;
     private Vector3 playerDir;
     private float jumpTime;
     private Vector2 horizontalVelocity;
+    private Vector3 startPos;
+
+    #endregion
 
     [Button]
     void UpdateRestingPos()
     {
-        offsetPosition.position = restingPosOffset;
+        if (playerCam.forward.y < 0)
+        {
+            offsetPosition.position = transform.position;
+            offsetPosition.localPosition += restingPosOffset;
+        }
+        else
+        {
+            offsetPosition.position = transform.position;
+            offsetPosition.localPosition += new Vector3(restingPosOffset.x,
+                restingPosOffset.y * (playerCam.forward.y + 1), restingPosOffset.z * (playerCam.forward.z));
+        }
     }
 
     private void OnDrawGizmosSelected()
@@ -193,15 +273,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         base.Awake();
         rb = GetComponent<Rigidbody>();
-    }
-
-    private void OnDisable()
-    {
-        currentControls.Disable();
-    }
-
-    void Start()
-    {
+        camera1 = Camera.main;
         inputs = GetComponent<PlayerInput>();
         inputs.actions.Enable();
         currentControls = inputs.actions.FindActionMap(currentInputMap);
@@ -212,8 +284,9 @@ public class PlayerController : Singleton<PlayerController>
         currentControls.FindAction("ToggleSprint", true).performed += ToggleSprint;
         currentControls.FindAction("ToggleSprint", true).canceled += ToggleSprint;
         currentControls.FindAction("Shoot", true).performed += Shoot;
-
         currentControls.FindAction("Telekinesis", true).canceled += ReleaseProp;
+        currentControls.FindAction("Reload", true).performed += Reload;
+        
         //currentControls.FindAction("Telekinesis",true).performed += ;
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -221,7 +294,50 @@ public class PlayerController : Singleton<PlayerController>
 
         startPos = hands.localPosition;
         currentStamina = maxStamina;
+        currentAmmo = magSize;
+        inventoryAmmo = maxStoredAmmo;
+    }
+
+    private void OnDisable()
+    {
+        currentControls.Disable();
+    }
+
+    void Start()
+    {
+
         CheckShootingHand();
+    }
+
+    private Coroutine reloadCoroutine;
+    private void Reload(InputAction.CallbackContext obj)
+    {
+        Debug.Log(reloadCoroutine);
+        if (reloadCoroutine != null || currentAmmo == magSize || inventoryAmmo == 0)
+            return;
+        
+        reloadCoroutine = StartCoroutine(Reload2());
+        
+    }
+    
+    private const float reloadHandMove = 1f;
+    private IEnumerator Reload2()
+    {
+        shootingHand.DOMove(shootingHand.position - hands.up * reloadHandMove, 0.4f);
+        yield return new WaitForSeconds(reloadSpeed);
+        shootingHand.DOMove(shootingHand.position + hands.up * reloadHandMove, 0.4f);
+        if (inventoryAmmo < magSize - currentAmmo)
+        {
+            currentAmmo = inventoryAmmo;
+            inventoryAmmo = 0;
+        }
+        else
+        {
+            inventoryAmmo -= magSize - currentAmmo;
+            currentAmmo = magSize;
+        }
+
+        reloadCoroutine = null;
     }
 
 
@@ -245,33 +361,63 @@ public class PlayerController : Singleton<PlayerController>
     // Update is called once per frame
     void Update()
     {
+        UpdateRestingPos();
         playerDir = Vector3.zero;
+
+        isGrounded = GroundCheck();
+
         ForwardInput();
         SidewaysInput();
         Rotate();
         ArmBobbing();
         TelekinesisInput();
 
-        if (shootReload >= 0)
+        if (shootSpeedTimer >= 0)
         {
-            shootReload -= Time.deltaTime;
+            shootSpeedTimer -= Time.deltaTime;
         }
 
         playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
         playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
             playerCam.position.z);
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.1f, LayerMask.GetMask("Ground")) &&
-            !isJumping)
-        {
-            isGrounded = true;
-        }
+
 
         if (!controlledProp)
         {
             CheckTelekinesisTarget();
+
+            currentStamina =
+                GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina, Time.deltaTime * staminaRegen);
         }
         else if (telekinesisPointer.gameObject.activeSelf)
             telekinesisPointer.gameObject.SetActive(false);
+
+        if (isRunning && isGrounded)
+        {
+            camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, runningFOV, lerpFOV);
+        }
+        else
+        {
+            camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, normalFOV, lerpFOV);
+        }
+    }
+
+    private bool GroundCheck()
+    {
+        bool check = false;
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.1f, LayerMask.GetMask("Ground")))
+        {
+            if (!isJumping)
+            {
+                check = true;
+            }
+        }
+        else
+        {
+            check = false;
+        }
+
+        return check;
     }
 
     private void CheckTelekinesisTarget()
@@ -365,8 +511,11 @@ public class PlayerController : Singleton<PlayerController>
         switch (controlledProp)
         {
             case TelekinesisObject:
-                currentStamina -= holdObjectCost * Time.deltaTime;
-                
+
+                currentStamina =
+                    GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina,
+                        Time.deltaTime * -holdObjectCost);
+
                 var dir = offsetPosition.position - controlledProp.transform.position;
                 dir.Normalize();
                 if (!controlledProp.isGrabbed)
@@ -375,9 +524,6 @@ public class PlayerController : Singleton<PlayerController>
                 }
                 else
                 {
-                    // controlledProp.body.velocity = Vector3.zero;
-                    // controlledProp.transform.position = Vector3.Lerp(controlledProp.transform.position, RestingPos(), 0.1f);
-
                     controlledProp.body.velocity = dir * (travelSpeed *
                                                           (Vector3.Distance(controlledProp.transform.position,
                                                               offsetPosition.position) / grabDistanceBuffer));
@@ -414,11 +560,13 @@ public class PlayerController : Singleton<PlayerController>
         }
 
         controlledProp.isGrabbed = false;
-        currentStamina -= throwCost;
-        
+
+        currentStamina =
+            GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina, -throwCost);
+
         if (currentStamina < 0) currentStamina = 0;
-        
-        
+
+
         controlledProp.body.velocity = Vector3.zero;
         controlledProp.body.AddForce(playerCam.forward * throwForce, ForceMode.Impulse);
         controlledProp = null;
@@ -490,11 +638,14 @@ public class PlayerController : Singleton<PlayerController>
 
 
     private LineRenderer currentTrail;
+    private Camera camera1;
 
     private void Shoot(InputAction.CallbackContext obj)
     {
-        if (shootReload > 0) return;
-        shootReload = shootSpeed;
+        if (shootSpeedTimer > 0) return;
+        if (currentAmmo == 0) return;
+        currentAmmo--;
+        shootSpeedTimer = shootSpeed;
         currentTrail = Instantiate(shootTrail);
         Destroy(currentTrail.gameObject, trailTime);
         currentTrail.SetPosition(0, shootingHand.position);
@@ -505,15 +656,16 @@ public class PlayerController : Singleton<PlayerController>
             {
                 if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                 {
-                    enemy.TakeDamage(bulletDmg, true);
+                    enemy.TakeDamage(bulletDmg, true, baseKnockBack, transform.forward);
                     GameManager.instance.HitMark(true);
                 }
             }
+
             if (hit.collider.CompareTag("Body"))
             {
                 if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                 {
-                    enemy.TakeDamage(bulletDmg, false);
+                    enemy.TakeDamage(bulletDmg, false, baseKnockBack, transform.forward);
                     GameManager.instance.HitMark(false);
                 }
             }
@@ -534,6 +686,8 @@ public class PlayerController : Singleton<PlayerController>
 
     private void TelekinesisInput()
     {
+        if (currentStamina < throwCost * 1.5f) return;
+
         if (currentControls.FindAction("Telekinesis", true).IsPressed())
         {
             if (!controlledProp)
