@@ -19,22 +19,9 @@ public class PlayerController : Singleton<PlayerController>
 
     private InputActionMap currentControls;
 
-    #region Deprecated
-
-    [Foldout("Obsolete")] [Tooltip("Acceleration when running")] [SerializeField]
-    private float runAccel;
-    [Foldout("Obsolete")] [Tooltip("Multiplies with maxHorizontalVelocity when running")] [SerializeField]
-    private float runMaxVelocityFactor;
-
-    [Foldout("Obsolete")] [Tooltip("To make a jump more or less floaty")] [SerializeField]
-    private AnimationCurve jumpCurve;
-    [Foldout("Obsolete")] [Tooltip("CameraFOV when player is running")] [SerializeField]
-    private float runningFOV;
-    #endregion
-    
     #region Refs
 
-    [Dropdown("GetInputMaps")] [BoxGroup("Refs")]
+    [Dropdown("GetInputMaps")] [Foldout("Refs")]
     public string currentInputMap;
 
     [Foldout("Refs")] public PlayerInput inputs;
@@ -45,7 +32,6 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Refs")] [SerializeField] private Transform rightHand;
     [Foldout("Refs")] [SerializeField] private RectTransform telekinesisPointer;
     [Foldout("Refs")] [SerializeField] private Transform offsetPosition;
-    [Foldout("Debug")] [SerializeField] private Transform shootingHand;
 
     #endregion
 
@@ -188,6 +174,8 @@ public class PlayerController : Singleton<PlayerController>
 
     #region Debug
 
+    [Foldout("Debug")] [SerializeField] private Transform shootingHand;
+    
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool appliedForce;
 
@@ -241,7 +229,7 @@ public class PlayerController : Singleton<PlayerController>
         {
             offsetPosition.position = transform.position;
             offsetPosition.localPosition += new Vector3(restingPosOffset.x,
-                restingPosOffset.y * (playerCam.forward.y + 1), restingPosOffset.z * (playerCam.forward.z));
+                restingPosOffset.y * (playerCam.forward.y + 1), restingPosOffset.z );
         }
     }
 
@@ -310,22 +298,24 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     private Coroutine reloadCoroutine;
+    private bool reloading = false;
     private void Reload(InputAction.CallbackContext obj)
     {
-        Debug.Log(reloadCoroutine);
-        if (reloadCoroutine != null || currentAmmo == magSize || inventoryAmmo == 0)
+        if (reloading || currentAmmo == magSize || inventoryAmmo == 0)
             return;
-        
+        reloading = true;
         reloadCoroutine = StartCoroutine(Reload2());
         
     }
     
-    private const float reloadHandMove = 1f;
+    private const float reloadHandMove = 2f;
+    private Vector3 reloadBasePos;
     private IEnumerator Reload2()
     {
-        shootingHand.DOMove(shootingHand.position - hands.up * reloadHandMove, 0.4f);
+        reloadBasePos = shootingHand.localPosition;
+        shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * reloadHandMove, 0.4f);
         yield return new WaitForSeconds(reloadSpeed);
-        shootingHand.DOMove(shootingHand.position + hands.up * reloadHandMove, 0.4f);
+        shootingHand.DOLocalMove(reloadBasePos, 0.4f);
         if (inventoryAmmo < magSize - currentAmmo)
         {
             currentAmmo = inventoryAmmo;
@@ -337,7 +327,7 @@ public class PlayerController : Singleton<PlayerController>
             currentAmmo = magSize;
         }
 
-        reloadCoroutine = null;
+        reloading = false;
     }
 
 
@@ -346,13 +336,13 @@ public class PlayerController : Singleton<PlayerController>
         if (currentControls.FindAction("Shoot", true).bindings[0].path == "<Mouse>/leftButton")
         {
             Debug.Log("Shooting with left hand");
-            shootingHand = leftHand;
+            shootingHand = rightHand;
+            restingPosOffset = new Vector3(-restingPosOffset.x, restingPosOffset.y, restingPosOffset.z);
         }
         else
         {
             Debug.Log("Shooting with right hand");
-            shootingHand = rightHand;
-            restingPosOffset = new Vector3(-restingPosOffset.x, restingPosOffset.y, restingPosOffset.z);
+            shootingHand = leftHand;
         }
 
         UpdateRestingPos();
@@ -643,7 +633,12 @@ public class PlayerController : Singleton<PlayerController>
     private void Shoot(InputAction.CallbackContext obj)
     {
         if (shootSpeedTimer > 0) return;
+        
         if (currentAmmo == 0) return;
+        
+        if (reloading) return;
+        
+        
         currentAmmo--;
         shootSpeedTimer = shootSpeed;
         currentTrail = Instantiate(shootTrail);
@@ -681,6 +676,12 @@ public class PlayerController : Singleton<PlayerController>
         {
             Debug.Log("Hit some air");
             currentTrail.SetPosition(1, playerCam.forward * maxRange);
+        }
+
+        if (currentAmmo == 0)
+        {
+            reloading = true;
+            reloadCoroutine = StartCoroutine(Reload2());
         }
     }
 
@@ -744,4 +745,29 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     #endregion
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    #region Deprecated
+
+    [Foldout("Obsolete")] [Tooltip("Acceleration when running")] [SerializeField]
+    private float runAccel;
+    [Foldout("Obsolete")] [Tooltip("Multiplies with maxHorizontalVelocity when running")] [SerializeField]
+    private float runMaxVelocityFactor;
+
+    [Foldout("Obsolete")] [Tooltip("To make a jump more or less floaty")] [SerializeField]
+    private AnimationCurve jumpCurve;
+    [Foldout("Obsolete")] [Tooltip("CameraFOV when player is running")] [SerializeField]
+    private float runningFOV;
+    #endregion
+
 }
