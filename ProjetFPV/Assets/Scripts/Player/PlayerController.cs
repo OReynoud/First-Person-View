@@ -32,6 +32,9 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Refs")] [SerializeField] private Transform rightHand;
     [Foldout("Refs")] [SerializeField] private RectTransform telekinesisPointer;
     [Foldout("Refs")] [SerializeField] private Transform offsetPosition;
+    
+    [Foldout("Refs")] [SerializeField] private CapsuleCollider standingCollider;
+    [Foldout("Refs")] [SerializeField] private CapsuleCollider crouchedCollider;
 
     #endregion
 
@@ -47,8 +50,9 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Movement")] [Tooltip("Maximum Horizontal Velocity when walking")] [SerializeField]
     private float maxHorizontalVelocity;
-
-
+    
+    [Foldout("Movement")] [Tooltip("Maximum Horizontal Velocity when crouched")] [SerializeField]
+    private float crouchMaxVelocity;
 
     [Foldout("Movement")] [Tooltip("Camera sensitivity")] [SerializeField]
     private float lookSpeed;
@@ -184,8 +188,8 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool canMove = true;
 
-    [Foldout("Debug")] [Tooltip("")] [SerializeField]
-    private bool isRunning = false;
+    [FormerlySerializedAs("isRunning")] [Foldout("Debug")] [Tooltip("")] [SerializeField]
+    private bool isCrouched = false;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool isJumping = false;
@@ -268,9 +272,7 @@ public class PlayerController : Singleton<PlayerController>
         Debug.Log(currentControls);
         currentControls.Enable();
         //currentControls.FindAction("Test",true).Enable();
-        currentControls.FindAction("Jump", true).performed += Jump;
-        currentControls.FindAction("ToggleSprint", true).performed += ToggleSprint;
-        currentControls.FindAction("ToggleSprint", true).canceled += ToggleSprint;
+        currentControls.FindAction("ToggleSprint", true).performed += ToggleCrouch;
         currentControls.FindAction("Shoot", true).performed += Shoot;
         currentControls.FindAction("Telekinesis", true).canceled += ReleaseProp;
         currentControls.FindAction("Reload", true).performed += Reload;
@@ -367,10 +369,17 @@ public class PlayerController : Singleton<PlayerController>
             shootSpeedTimer -= Time.deltaTime;
         }
 
-        playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
-        playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
-            playerCam.position.z);
 
+        if (isCrouched)
+        {
+            playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center,0.1f);
+        }
+        else
+        {
+            playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
+            playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
+                playerCam.position.z);
+        }
 
         if (!controlledProp)
         {
@@ -382,14 +391,14 @@ public class PlayerController : Singleton<PlayerController>
         else if (telekinesisPointer.gameObject.activeSelf)
             telekinesisPointer.gameObject.SetActive(false);
 
-        if (isRunning && isGrounded)
-        {
-            camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, runningFOV, lerpFOV);
-        }
-        else
-        {
-            camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, normalFOV, lerpFOV);
-        }
+        // if (isCrouched && isGrounded)
+        // {
+        //     camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, runningFOV, lerpFOV);
+        // }
+        // else
+        // {
+        //     camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, normalFOV, lerpFOV);
+        // }
     }
 
     private bool GroundCheck()
@@ -443,7 +452,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         playerDir.Normalize();
 
-        var expectedForce = playerDir * ((isRunning ? runAccel : walkAccel) * (isGrounded ? 1 : airMobilityFactor));
+        var expectedForce = playerDir * ( walkAccel * (isGrounded ? 1 : airMobilityFactor));
 
         var dirDiff = Vector3.Angle(playerDir, rb.velocity.normalized);
         var finalDir = Vector3.Lerp(expectedForce, rb.velocity, (1 - (dirDiff / 180))) * drag;
@@ -481,18 +490,25 @@ public class PlayerController : Singleton<PlayerController>
 
     private void ClampVelocity()
     {
-        if (!isRunning)
+        if (!isCrouched)
         {
             horizontalVelocity = Vector2.ClampMagnitude(horizontalVelocity, maxHorizontalVelocity);
         }
         else
         {
             horizontalVelocity =
-                Vector2.ClampMagnitude(horizontalVelocity, maxHorizontalVelocity * runMaxVelocityFactor);
+                Vector2.ClampMagnitude(horizontalVelocity, crouchMaxVelocity);
         }
 
         //Clamp horizontal speed with a min and max speed
-        rb.velocity = new Vector3(horizontalVelocity.x, rb.velocity.y, horizontalVelocity.y);
+        if (isGrounded)
+        {
+            rb.velocity = new Vector3(horizontalVelocity.x, 0, horizontalVelocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector3(horizontalVelocity.x, rb.velocity.y, horizontalVelocity.y);
+        }
     }
 
 
@@ -621,9 +637,14 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
-    private void ToggleSprint(InputAction.CallbackContext obj)
+    private void ToggleCrouch(InputAction.CallbackContext obj)
     {
-        isRunning = !isRunning;
+        isCrouched = !isCrouched;
+
+        crouchedCollider.enabled = isCrouched;
+        standingCollider.enabled = !isCrouched;
+
+        
     }
 
 
