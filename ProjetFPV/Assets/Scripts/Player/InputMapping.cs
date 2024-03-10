@@ -64,15 +64,6 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Jump"",
-                    ""type"": ""Button"",
-                    ""id"": ""46539186-0e6b-490d-939d-62aa1e127874"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""ToggleSprint"",
                     ""type"": ""Button"",
                     ""id"": ""6261dffc-8265-46ba-b04c-044a2a20e77e"",
@@ -151,17 +142,6 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Left"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6827cb36-6119-4a82-b939-7947e52b6fd2"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -408,7 +388,6 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         m_ControlsLeftShoot_Backward = m_ControlsLeftShoot.FindAction("Backward", throwIfNotFound: true);
         m_ControlsLeftShoot_Right = m_ControlsLeftShoot.FindAction("Right", throwIfNotFound: true);
         m_ControlsLeftShoot_Left = m_ControlsLeftShoot.FindAction("Left", throwIfNotFound: true);
-        m_ControlsLeftShoot_Jump = m_ControlsLeftShoot.FindAction("Jump", throwIfNotFound: true);
         m_ControlsLeftShoot_ToggleSprint = m_ControlsLeftShoot.FindAction("ToggleSprint", throwIfNotFound: true);
         m_ControlsLeftShoot_Shoot = m_ControlsLeftShoot.FindAction("Shoot", throwIfNotFound: true);
         m_ControlsLeftShoot_Telekinesis = m_ControlsLeftShoot.FindAction("Telekinesis", throwIfNotFound: true);
@@ -489,7 +468,6 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     private readonly InputAction m_ControlsLeftShoot_Backward;
     private readonly InputAction m_ControlsLeftShoot_Right;
     private readonly InputAction m_ControlsLeftShoot_Left;
-    private readonly InputAction m_ControlsLeftShoot_Jump;
     private readonly InputAction m_ControlsLeftShoot_ToggleSprint;
     private readonly InputAction m_ControlsLeftShoot_Shoot;
     private readonly InputAction m_ControlsLeftShoot_Telekinesis;
@@ -502,7 +480,6 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         public InputAction @Backward => m_Wrapper.m_ControlsLeftShoot_Backward;
         public InputAction @Right => m_Wrapper.m_ControlsLeftShoot_Right;
         public InputAction @Left => m_Wrapper.m_ControlsLeftShoot_Left;
-        public InputAction @Jump => m_Wrapper.m_ControlsLeftShoot_Jump;
         public InputAction @ToggleSprint => m_Wrapper.m_ControlsLeftShoot_ToggleSprint;
         public InputAction @Shoot => m_Wrapper.m_ControlsLeftShoot_Shoot;
         public InputAction @Telekinesis => m_Wrapper.m_ControlsLeftShoot_Telekinesis;
@@ -528,9 +505,6 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Left.started += instance.OnLeft;
             @Left.performed += instance.OnLeft;
             @Left.canceled += instance.OnLeft;
-            @Jump.started += instance.OnJump;
-            @Jump.performed += instance.OnJump;
-            @Jump.canceled += instance.OnJump;
             @ToggleSprint.started += instance.OnToggleSprint;
             @ToggleSprint.performed += instance.OnToggleSprint;
             @ToggleSprint.canceled += instance.OnToggleSprint;
@@ -559,9 +533,6 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Left.started -= instance.OnLeft;
             @Left.performed -= instance.OnLeft;
             @Left.canceled -= instance.OnLeft;
-            @Jump.started -= instance.OnJump;
-            @Jump.performed -= instance.OnJump;
-            @Jump.canceled -= instance.OnJump;
             @ToggleSprint.started -= instance.OnToggleSprint;
             @ToggleSprint.performed -= instance.OnToggleSprint;
             @ToggleSprint.canceled -= instance.OnToggleSprint;
@@ -707,7 +678,6 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         void OnBackward(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
         void OnLeft(InputAction.CallbackContext context);
-        void OnJump(InputAction.CallbackContext context);
         void OnToggleSprint(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnTelekinesis(InputAction.CallbackContext context);
