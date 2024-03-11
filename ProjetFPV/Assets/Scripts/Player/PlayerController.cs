@@ -41,19 +41,20 @@ public class PlayerController : Singleton<PlayerController>
     #region Movement Variables
 
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
-    private float walkAccel;
-
-
-
-    [Foldout("Movement")] [Tooltip("Force applied on a jump")] [SerializeField]
-    private float jumpForce;
-
-    [Foldout("Movement")] [Tooltip("Maximum Horizontal Velocity when walking")] [SerializeField]
-    private float maxHorizontalVelocity;
+    private AnimationCurve runCurve;
     
-    [Foldout("Movement")] [Tooltip("Maximum Horizontal Velocity when crouched")] [SerializeField]
-    private float crouchMaxVelocity;
-
+    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
+    private AnimationCurve crouchCurve;
+    
+    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
+    private AnimationCurve dragCurve;
+    
+    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
+    private float runVelocity;
+    
+    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
+    private float crouchVelocity;
+    
     [Foldout("Movement")] [Tooltip("Camera sensitivity")] [SerializeField]
     private float lookSpeed;
 
@@ -63,11 +64,6 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Movement")] [Tooltip("How effective horizontal movement is in the air")] [SerializeField] [Range(0, 1)]
     private float airMobilityFactor;
 
-    [Foldout("Movement")]
-    [Tooltip("How much fast the avatar slows down when no inputs are given")]
-    [SerializeField]
-    [Range(0, 1)]
-    private float drag;
 
     [Foldout("Movement")] [Tooltip("CameraFOV when Player is walking")] [SerializeField]
     private float normalFOV;
@@ -180,6 +176,8 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Debug")] [SerializeField] private Transform shootingHand;
     
+    [Foldout("Debug")] [SerializeField] private Vector3 inputVelocity;
+    
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool appliedForce;
 
@@ -218,6 +216,7 @@ public class PlayerController : Singleton<PlayerController>
     private float jumpTime;
     private Vector2 horizontalVelocity;
     private Vector3 startPos;
+    private float moveInputTimer;
 
     #endregion
 
@@ -309,30 +308,9 @@ public class PlayerController : Singleton<PlayerController>
         reloadCoroutine = StartCoroutine(Reload2());
         
     }
+
+    #region LogicChecks
     
-    private const float reloadHandMove = 2f;
-    private Vector3 reloadBasePos;
-    private IEnumerator Reload2()
-    {
-        reloadBasePos = shootingHand.localPosition;
-        shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * reloadHandMove, 0.4f);
-        yield return new WaitForSeconds(reloadSpeed);
-        shootingHand.DOLocalMove(reloadBasePos, 0.4f);
-        if (inventoryAmmo < magSize - currentAmmo)
-        {
-            currentAmmo = inventoryAmmo;
-            inventoryAmmo = 0;
-        }
-        else
-        {
-            inventoryAmmo -= magSize - currentAmmo;
-            currentAmmo = magSize;
-        }
-
-        reloading = false;
-    }
-
-
     void CheckShootingHand()
     {
         if (currentControls.FindAction("Shoot", true).bindings[0].path == "<Mouse>/leftButton")
@@ -348,57 +326,6 @@ public class PlayerController : Singleton<PlayerController>
         }
 
         UpdateRestingPos();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        UpdateRestingPos();
-        playerDir = Vector3.zero;
-
-        isGrounded = GroundCheck();
-
-        ForwardInput();
-        SidewaysInput();
-        Rotate();
-        ArmBobbing();
-        TelekinesisInput();
-
-        if (shootSpeedTimer >= 0)
-        {
-            shootSpeedTimer -= Time.deltaTime;
-        }
-
-
-        if (isCrouched)
-        {
-            playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center,0.1f);
-        }
-        else
-        {
-            playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
-            playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
-                playerCam.position.z);
-        }
-
-        if (!controlledProp)
-        {
-            CheckTelekinesisTarget();
-
-            currentStamina =
-                GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina, Time.deltaTime * staminaRegen);
-        }
-        else if (telekinesisPointer.gameObject.activeSelf)
-            telekinesisPointer.gameObject.SetActive(false);
-
-        // if (isCrouched && isGrounded)
-        // {
-        //     camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, runningFOV, lerpFOV);
-        // }
-        // else
-        // {
-        //     camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, normalFOV, lerpFOV);
-        // }
     }
 
     private bool GroundCheck()
@@ -435,14 +362,86 @@ public class PlayerController : Singleton<PlayerController>
         if (telekinesisPointer.gameObject.activeSelf)
             telekinesisPointer.gameObject.SetActive(false);
     }
+    
+    #endregion
+    
+    private const float reloadHandMove = 2f;
+    private Vector3 reloadBasePos;
+    private IEnumerator Reload2()
+    {
+        reloadBasePos = shootingHand.localPosition;
+        shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * reloadHandMove, 0.4f);
+        yield return new WaitForSeconds(reloadSpeed);
+        shootingHand.DOLocalMove(reloadBasePos, 0.4f);
+        if (inventoryAmmo < magSize - currentAmmo)
+        {
+            currentAmmo = inventoryAmmo;
+            inventoryAmmo = 0;
+        }
+        else
+        {
+            inventoryAmmo -= magSize - currentAmmo;
+            currentAmmo = magSize;
+        }
+
+        reloading = false;
+    }
+
+
+
+    // Update is called once per frame
+    void Update()
+    {
+        UpdateRestingPos();
+        playerDir = Vector3.zero;
+
+        isGrounded = GroundCheck();
+        
+        
+        ForwardInput();
+        SidewaysInput();
+        Rotate();
+        ArmBobbing();
+        TelekinesisInput();
+
+        if (shootSpeedTimer >= 0)
+        {
+            shootSpeedTimer -= Time.deltaTime;
+        }
+
+
+        if (isCrouched)
+        {
+            playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center,0.1f);
+        }
+        else
+        {
+            playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
+            playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
+                playerCam.position.z);
+        }
+
+        if (!controlledProp)
+        {
+            CheckTelekinesisTarget();
+
+            currentStamina =
+                GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina, Time.deltaTime * staminaRegen);
+        }
+        else if (telekinesisPointer.gameObject.activeSelf)
+            telekinesisPointer.gameObject.SetActive(false);
+        
+    }
+
+
 
 
     private void FixedUpdate()
     {
         HorizontalMovement();
-        VerticalMovement();
+        //VerticalMovement();
 
-        ClampVelocity();
+        //ClampVelocity();
     }
 
 
@@ -450,25 +449,51 @@ public class PlayerController : Singleton<PlayerController>
 
     private void HorizontalMovement()
     {
-        playerDir.Normalize();
-
-        var expectedForce = playerDir * ( walkAccel * (isGrounded ? 1 : airMobilityFactor));
-
-        var dirDiff = Vector3.Angle(playerDir, rb.velocity.normalized);
-        var finalDir = Vector3.Lerp(expectedForce, rb.velocity, (1 - (dirDiff / 180))) * drag;
-        rb.velocity = new Vector3(finalDir.x, rb.velocity.y, finalDir.z);
-
-
-        if (expectedForce.magnitude < 1)
+        if (playerDir == Vector3.zero)
         {
             appliedForce = false;
         }
+        playerDir.Normalize();
 
-        rb.AddForce(expectedForce);
+        if (appliedForce)
+        {
+            moveInputTimer += Time.deltaTime;
+        }
+        else
+        {
+            moveInputTimer -= Time.deltaTime;
+            moveInputTimer = Mathf.Clamp(moveInputTimer, 0, crouchCurve.keys[^1].time);
+        }
+
         if (!appliedForce)
         {
-            rb.velocity = new Vector3(rb.velocity.x * drag, rb.velocity.y, rb.velocity.z * drag);
+            inputVelocity = rb.velocity.normalized * ( dragCurve.Evaluate(moveInputTimer) * (isGrounded ? 1 : airMobilityFactor) * new Vector2(rb.velocity.x,rb.velocity.z).magnitude);
+            rb.velocity = new Vector3(inputVelocity.x, rb.velocity.y, inputVelocity.z);
+            
+            return;
         }
+        
+        
+        if (isCrouched)
+        {
+            inputVelocity = playerDir * ( crouchCurve.Evaluate(moveInputTimer) * (isGrounded ? 1 : airMobilityFactor) * crouchVelocity);
+            Mathf.Clamp(moveInputTimer, 0, crouchCurve.keys[^1].time);
+        }
+        else
+        {
+            inputVelocity = playerDir * ( runCurve.Evaluate(moveInputTimer) * (isGrounded ? 1 : airMobilityFactor) * runVelocity);
+            Mathf.Clamp(moveInputTimer, 0, runCurve.keys[^1].time);
+        }
+        rb.velocity = new Vector3(inputVelocity.x, rb.velocity.y, inputVelocity.z);
+        
+        // var dirDiff = Vector3.Angle(playerDir, rb.velocity.normalized);
+        // var finalDir = Vector3.Lerp(expectedForce, rb.velocity, (1 - (dirDiff / 180))) * drag;
+        // rb.velocity = new Vector3(finalDir.x, rb.velocity.y, finalDir.z);
+        //
+        //
+        //
+        // rb.AddForce(expectedForce);
+
     }
 
     private void VerticalMovement()
@@ -492,12 +517,12 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (!isCrouched)
         {
-            horizontalVelocity = Vector2.ClampMagnitude(horizontalVelocity, maxHorizontalVelocity);
+            horizontalVelocity = Vector2.ClampMagnitude(horizontalVelocity, runVelocity);
         }
         else
         {
             horizontalVelocity =
-                Vector2.ClampMagnitude(horizontalVelocity, crouchMaxVelocity);
+                Vector2.ClampMagnitude(horizontalVelocity, crouchVelocity);
         }
 
         //Clamp horizontal speed with a min and max speed
@@ -779,7 +804,8 @@ public class PlayerController : Singleton<PlayerController>
     
     
     #region Deprecated
-
+    [Foldout("Obsolete")] [Tooltip("Force applied on a jump")] [SerializeField]
+    private float jumpForce;
     [Foldout("Obsolete")] [Tooltip("Acceleration when running")] [SerializeField]
     private float runAccel;
     [Foldout("Obsolete")] [Tooltip("Multiplies with maxHorizontalVelocity when running")] [SerializeField]
