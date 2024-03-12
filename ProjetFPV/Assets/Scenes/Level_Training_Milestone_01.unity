@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3122,6 +3122,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2, z: 1.0000002}
   m_Center: {x: 0.00000005960464, y: 0, z: -0.00000008940697}
+--- !u!114 &593763038 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 755202900764996315, guid: dce82ebbf28195f43941531e37b8f0be,
+    type: 3}
+  m_PrefabInstance: {fileID: 1846737802696205787}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &602191580
 GameObject:
   m_ObjectHideFlags: 0
@@ -4575,6 +4587,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1007013429}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1040206269 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3136422882287331683, guid: dce82ebbf28195f43941531e37b8f0be,
+    type: 3}
+  m_PrefabInstance: {fileID: 1846737802696205787}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1046121358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7076,6 +7100,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1846737802696205787}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1689624937 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7639958620131683214, guid: dce82ebbf28195f43941531e37b8f0be,
+    type: 3}
+  m_PrefabInstance: {fileID: 1846737802696205787}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1731509099 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 140772785885430146, guid: 1d975b2303e173140a37f168170f0975,
@@ -9129,8 +9165,23 @@ PrefabInstance:
     - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
         type: 3}
       propertyPath: ammoText.Array.size
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: ammoText.Array.data[0]
+      value: 
+      objectReference: {fileID: 1689624937}
+    - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: ammoText.Array.data[1]
+      value: 
+      objectReference: {fileID: 1040206269}
+    - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: ammoText.Array.data[2]
+      value: 
+      objectReference: {fileID: 593763038}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

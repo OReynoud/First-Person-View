@@ -351,6 +351,7 @@ GameObject:
   - component: {fileID: 7444262524379830578}
   - component: {fileID: 739510780194846137}
   - component: {fileID: 7813115355682138035}
+  - component: {fileID: 4500119090424759972}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -388,6 +389,135 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51a0ba1f0bed084896949d9bb67cc6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentInputMap: ControlsLeftShoot
+  inputs: {fileID: 739510780194846137}
+  shootTrail: {fileID: 5231518178250592816, guid: 4b369153cbd99c14bb74c1799fc43e68,
+    type: 3}
+  playerCam: {fileID: 7127425910194321269}
+  hands: {fileID: 1278172728399317272}
+  leftHand: {fileID: 2603645875583797810}
+  rightHand: {fileID: 4537594102011827866}
+  telekinesisPointer: {fileID: 1055164273525986397}
+  offsetPosition: {fileID: 8918532052287260627}
+  standingCollider: {fileID: 7813115355682138035}
+  crouchedCollider: {fileID: 4500119090424759972}
+  runCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.7695923
+      value: 1
+      inSlope: 0.4641837
+      outSlope: 0.4641837
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.19815671
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  crouchCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.51179254
+      outSlope: 0.51179254
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.14746542
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1.6328604
+      outSlope: 1.6328604
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09677428
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  dragCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  runVelocity: 8
+  crouchVelocity: 10
+  lookSpeed: 1
+  lookXLimit: 75
+  airMobilityFactor: 0.8
+  normalFOV: 60
+  lerpFOV: 0.1
+  shootMask:
+    serializedVersion: 2
+    m_Bits: 385
+  bulletDmg: 3
+  maxStoredAmmo: 30
+  magSize: 50
+  shootSpeed: 0.3
+  reloadSpeed: 2
+  maxRange: 1000
+  trailTime: 0.2
+  baseKnockBack: 10
+  restingPosOffset: {x: 1, y: 1, z: 2}
+  travelSpeed: 45
+  grabDistanceBuffer: 1
+  maxStamina: 500
+  currentStamina: 100
+  staminaRegen: 1
+  holdObjectCost: 2
+  holdEnemyCost: 4
+  throwCost: 10
+  throwForce: 200
+  amplitude: 0.001
+  frequeny: 10
+  toggleSpeed: 0
+  sideTilting: 0
+  shootingHand: {fileID: 0}
+  inputVelocity: {x: 0, y: 0, z: 0}
+  appliedForce: 0
+  bobbing: 0
+  canMove: 1
+  isCrouched: 0
+  isJumping: 0
+  isGrounded: 0
+  shootSpeedTimer: 0
+  controlledProp: {fileID: 0}
+  currentAmmo: 0
+  inventoryAmmo: 0
+  jumpForce: 5
   runAccel: 30
   runMaxVelocityFactor: 2
   jumpCurve:
@@ -415,61 +545,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   runningFOV: 58
-  currentInputMap: ControlsRightShoot
-  inputs: {fileID: 739510780194846137}
-  shootTrail: {fileID: 5231518178250592816, guid: 4b369153cbd99c14bb74c1799fc43e68,
-    type: 3}
-  playerCam: {fileID: 7127425910194321269}
-  hands: {fileID: 1278172728399317272}
-  leftHand: {fileID: 2603645875583797810}
-  rightHand: {fileID: 4537594102011827866}
-  telekinesisPointer: {fileID: 1055164273525986397}
-  offsetPosition: {fileID: 8918532052287260627}
-  shootingHand: {fileID: 0}
-  walkAccel: 60
-  jumpForce: 5
-  maxHorizontalVelocity: 3
-  lookSpeed: 1
-  lookXLimit: 75
-  airMobilityFactor: 0.8
-  drag: 0.9
-  normalFOV: 60
-  lerpFOV: 0.1
-  shootMask:
-    serializedVersion: 2
-    m_Bits: 385
-  bulletDmg: 3
-  maxStoredAmmo: 30
-  magSize: 5
-  shootSpeed: 0.3
-  reloadSpeed: 2
-  maxRange: 1000
-  trailTime: 1
-  baseKnockBack: 1
-  restingPosOffset: {x: 1, y: 1, z: 2}
-  travelSpeed: 45
-  grabDistanceBuffer: 1
-  maxStamina: 100
-  currentStamina: 100
-  staminaRegen: 1
-  holdObjectCost: 2
-  holdEnemyCost: 4
-  throwCost: 10
-  throwForce: 20
-  amplitude: 0.001
-  frequeny: 10
-  toggleSpeed: 0
-  sideTilting: 0
-  appliedForce: 0
-  bobbing: 0
-  canMove: 1
-  isRunning: 0
-  isJumping: 0
-  isGrounded: 0
-  shootSpeedTimer: 0
-  controlledProp: {fileID: 0}
-  currentAmmo: 0
-  inventoryAmmo: 0
 --- !u!54 &7444262524379830578
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -551,6 +626,29 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &4500119090424759972
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239935718432516662}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.25, z: 0}
 --- !u!1 &1759711028052782629
 GameObject:
   m_ObjectHideFlags: 0
