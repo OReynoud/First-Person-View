@@ -711,9 +711,9 @@ public class PlayerController : Singleton<PlayerController>
                 }
             }
 
-            if (hit.collider.TryGetComponent(out Destructible target))
+            if (hit.collider.TryGetComponent(out IDestructible target))
             {
-                target.GetHit();
+                target.OnDestroy();
             }
 
             currentTrail.SetPosition(1, hit.point);

@@ -10,13 +10,14 @@ public class Enemy : ControllableProp
     public float headShotMultiplier;
     public float bodyShotMultiplier;
     public bool isImmobile = true;
-    
-    [HideIf("isImmobile")]public List<Transform> waypoints;
-    [HideIf("isImmobile")]public float translationSpeed = 0.1f;
+
+    [HideIf("isImmobile")] public List<Transform> waypoints;
+    [HideIf("isImmobile")] public float translationSpeed = 0.1f;
 
     private int currentIndex = 1;
 
     private int previousIndex = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,10 +40,27 @@ public class Enemy : ControllableProp
             currentHealth -= totalDmg;
         }
 
-        if (currentHealth < 0)Die();
-        if (isGrabbed)return;
-        
+        if (currentHealth < 0) Die();
+        if (isGrabbed) return;
+
         body.AddForce(knockBackDir * knockBackValue * totalDmg);
+    }
+
+    public void TakeDamage(int damage, float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce)
+    {
+        currentHealth -= damage;
+        if (currentHealth < 0)
+        {
+            Die();
+        }
+
+
+        if (isGrabbed) return;
+
+        body.constraints = RigidbodyConstraints.None;
+        body.useGravity = true;
+        body.AddForceAtPosition(knockBackDir * knockBackValue * damage,pointOfForce, ForceMode.Impulse);
+        body.AddForce(knockBackDir * knockBackValue * damage, ForceMode.Impulse);
     }
 
     private void Die()
@@ -50,14 +68,16 @@ public class Enemy : ControllableProp
         GameManager.instance.HitMark(true);
         Destroy(gameObject);
     }
+
     // Update is called once per frame
     void Update()
     {
-        if (isImmobile)return;
+        if (isImmobile) return;
         MoveBetweenWaypoints();
     }
 
     private float lerp;
+
     void MoveBetweenWaypoints()
     {
         lerp += Time.deltaTime * translationSpeed;
