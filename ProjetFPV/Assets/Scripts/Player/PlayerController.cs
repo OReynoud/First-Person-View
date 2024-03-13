@@ -19,6 +19,11 @@ public class PlayerController : Singleton<PlayerController>
 
     private InputActionMap currentControls;
 
+    [SerializeField] private int maxHealth = 10;
+    [SerializeField] private float currentHealth;
+    [SerializeField] private float timeToRegenerateHealth;
+    [SerializeField] private float regenSpeed;
+
     #region Refs
 
     [Dropdown("GetInputMaps")] [Foldout("Refs")]
@@ -151,6 +156,11 @@ public class PlayerController : Singleton<PlayerController>
     [Tooltip("Force applied to grabbed object when released from telekinesis")]
     [SerializeField]
     private float throwForce;
+    
+    [Foldout("Telekinesis")]
+    [Tooltip("Delay after releasing Telekinesis before you can use it on another object")]
+    [SerializeField]
+    private float inputSpamBuffer;
 
     #endregion
 
@@ -285,6 +295,8 @@ public class PlayerController : Singleton<PlayerController>
         currentStamina = maxStamina;
         currentAmmo = magSize;
         inventoryAmmo = maxStoredAmmo;
+        
+        
     }
 
     private void OnDisable()
@@ -439,9 +451,6 @@ public class PlayerController : Singleton<PlayerController>
     private void FixedUpdate()
     {
         HorizontalMovement();
-        //VerticalMovement();
-
-        //ClampVelocity();
     }
 
 
@@ -485,57 +494,7 @@ public class PlayerController : Singleton<PlayerController>
             Mathf.Clamp(moveInputTimer, 0, runCurve.keys[^1].time);
         }
         rb.velocity = new Vector3(inputVelocity.x, rb.velocity.y, inputVelocity.z);
-        
-        // var dirDiff = Vector3.Angle(playerDir, rb.velocity.normalized);
-        // var finalDir = Vector3.Lerp(expectedForce, rb.velocity, (1 - (dirDiff / 180))) * drag;
-        // rb.velocity = new Vector3(finalDir.x, rb.velocity.y, finalDir.z);
-        //
-        //
-        //
-        // rb.AddForce(expectedForce);
-
     }
-
-    private void VerticalMovement()
-    {
-        if (isJumping)
-        {
-            jumpTime += Time.deltaTime;
-            rb.AddForce(Vector3.up * jumpForce * jumpCurve.Evaluate(jumpTime));
-        }
-
-        if (jumpTime > jumpCurve.keys[^1].time)
-        {
-            isJumping = false;
-            jumpTime = 0;
-        }
-
-        horizontalVelocity = new Vector2(rb.velocity.x, rb.velocity.z);
-    }
-
-    private void ClampVelocity()
-    {
-        if (!isCrouched)
-        {
-            horizontalVelocity = Vector2.ClampMagnitude(horizontalVelocity, runVelocity);
-        }
-        else
-        {
-            horizontalVelocity =
-                Vector2.ClampMagnitude(horizontalVelocity, crouchVelocity);
-        }
-
-        //Clamp horizontal speed with a min and max speed
-        if (isGrounded)
-        {
-            rb.velocity = new Vector3(horizontalVelocity.x, 0, horizontalVelocity.y);
-        }
-        else
-        {
-            rb.velocity = new Vector3(horizontalVelocity.x, rb.velocity.y, horizontalVelocity.y);
-        }
-    }
-
 
     private void TelekinesisPhysics()
     {
@@ -567,6 +526,17 @@ public class PlayerController : Singleton<PlayerController>
 
                 break;
             case Enemy:
+                currentStamina =
+                    GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina,
+                        Time.deltaTime * -holdEnemyCost);
+                if (controlledProp.isGrabbed)
+                {
+                    return;
+                }
+                var enemy = (Enemy)controlledProp;
+                enemy.body.constraints = RigidbodyConstraints.FreezeAll;
+                controlledProp.isGrabbed = true;
+                enemy.GrabbedBehavior(1,0.1f,30);
                 break;
         }
 
@@ -579,28 +549,41 @@ public class PlayerController : Singleton<PlayerController>
     }
 
 
-    private void ReleaseProp(InputAction.CallbackContext obj)
+    public void ReleaseProp(InputAction.CallbackContext obj)
     {
         if (!controlledProp) return;
-        controlledProp.ApplyTelekinesis();
-        if (!controlledProp.isGrabbed)
+        switch (controlledProp)
         {
-            controlledProp.body.velocity *= 0.1f;
-            controlledProp = null;
-            return;
+            case TelekinesisObject :
+                controlledProp.ApplyTelekinesis();
+                if (!controlledProp.isGrabbed)
+                {
+                    controlledProp.body.velocity *= 0.1f;
+                    controlledProp = null;
+                    return;
+                }
+
+                controlledProp.isGrabbed = false;
+
+                currentStamina =
+                    GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina, -throwCost);
+
+                if (currentStamina < 0) currentStamina = 0;
+
+
+                controlledProp.body.velocity = Vector3.zero;
+                controlledProp.body.AddForce(playerCam.forward * throwForce, ForceMode.Impulse);
+                break;
+            case Enemy :
+
+                controlledProp.isGrabbed = false;
+                controlledProp.ApplyTelekinesis();
+                controlledProp.body.constraints = RigidbodyConstraints.FreezeRotation;
+                
+                break;
         }
-
-        controlledProp.isGrabbed = false;
-
-        currentStamina =
-            GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina, -throwCost);
-
-        if (currentStamina < 0) currentStamina = 0;
-
-
-        controlledProp.body.velocity = Vector3.zero;
-        controlledProp.body.AddForce(playerCam.forward * throwForce, ForceMode.Impulse);
         controlledProp = null;
+
     }
 
     #endregion
@@ -650,16 +633,6 @@ public class PlayerController : Singleton<PlayerController>
             playerCam.localEulerAngles.z);
         //playerCam.localEulerAngles = Vector3.Lerp(playerCam.localEulerAngles, camRotation, 0.8f);
         playerCam.localEulerAngles = camRotation;
-    }
-
-    private void Jump(InputAction.CallbackContext obj)
-    {
-        if (isGrounded)
-        {
-            isGrounded = false;
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isJumping = true;
-        }
     }
 
     private void ToggleCrouch(InputAction.CallbackContext obj)
@@ -745,6 +718,15 @@ public class PlayerController : Singleton<PlayerController>
                     {
                         controlledProp = prop;
                         prop.ApplyTelekinesis();
+                    }
+
+                    if (hit.collider.CompareTag(Ex.Tag_Head) || hit.collider.CompareTag(Ex.Tag_Body))
+                    {
+                        if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
+                        {
+                            controlledProp = enemy;
+                            enemy.ApplyTelekinesis();
+                        }
                     }
                 }
 

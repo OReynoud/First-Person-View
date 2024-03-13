@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Enemy : ControllableProp
 {
@@ -26,6 +28,12 @@ public class Enemy : ControllableProp
         previousIndex = 0;
     }
 
+    public override void ApplyTelekinesis()
+    {
+        base.ApplyTelekinesis();
+        
+    }
+
     public void TakeDamage(int damage, bool headHit, float knockBackValue, Vector3 knockBackDir)
     {
         var totalDmg = 0f;
@@ -42,8 +50,6 @@ public class Enemy : ControllableProp
 
         if (currentHealth < 0) Die();
         if (isGrabbed) return;
-
-        body.AddForce(knockBackDir * knockBackValue * totalDmg);
     }
 
     public void TakeDamage(int damage, float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce)
@@ -54,25 +60,28 @@ public class Enemy : ControllableProp
             Die();
         }
 
-
-        if (isGrabbed) return;
+        InputAction.CallbackContext dummy = new InputAction.CallbackContext();
+        if (isGrabbed) PlayerController.instance.ReleaseProp(dummy);
 
         body.constraints = RigidbodyConstraints.None;
         body.useGravity = true;
         body.AddForceAtPosition(knockBackDir * knockBackValue * damage,pointOfForce, ForceMode.Impulse);
-        body.AddForce(knockBackDir * knockBackValue * damage, ForceMode.Impulse);
     }
 
     private void Die()
     {
         GameManager.instance.HitMark(true);
-        Destroy(gameObject);
+        grabbedTween.Complete();
+        grabbedTween.OnComplete(() =>
+        {
+            Destroy(gameObject);
+        });
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isImmobile) return;
+        if (isImmobile || isGrabbed) return;
         MoveBetweenWaypoints();
     }
 
@@ -92,5 +101,25 @@ public class Enemy : ControllableProp
                 currentIndex = 0;
             }
         }
+    }
+
+    public Tweener grabbedTween;
+    public void GrabbedBehavior(float levitateValue, float shakeAmplitude, int shakeFrequency)
+    {
+        transform.DOMove(transform.position + Vector3.up * levitateValue, 0.2f).OnComplete(() =>
+        {
+            GrabTween(shakeAmplitude, shakeFrequency);
+        });
+    }
+
+    private void GrabTween(float shakeAmplitude, int shakeFrequency)
+    {
+        grabbedTween = transform.DOShakePosition(0.1f, Vector3.one * shakeAmplitude, shakeFrequency).OnComplete(() =>
+        {
+            if (isGrabbed)
+            {
+                GrabTween(shakeAmplitude, shakeFrequency);
+            }
+        });
     }
 }

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public static class Ex
 {
+    public const string Tag_Player = "Player";
+    public const string Tag_Head = "Head";
+    public const string Tag_Body = "Body";
+
     /// <summary>
     /// RETURN THE ANGLE FROM A GIVEN DIRECTION
     /// </summary>
@@ -19,6 +23,8 @@ public static class Ex
 
         return angle;
     }
+    
+    
 
 
     /// <summary>
