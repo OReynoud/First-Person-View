@@ -37,7 +37,7 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Refs")] [SerializeField] private Transform rightHand;
     [Foldout("Refs")] [SerializeField] private RectTransform telekinesisPointer;
     [Foldout("Refs")] [SerializeField] private Transform offsetPosition;
-    
+
     [Foldout("Refs")] [SerializeField] private CapsuleCollider standingCollider;
     [Foldout("Refs")] [SerializeField] private CapsuleCollider crouchedCollider;
 
@@ -47,19 +47,19 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private AnimationCurve runCurve;
-    
+
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private AnimationCurve crouchCurve;
-    
+
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private AnimationCurve dragCurve;
-    
+
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private float runVelocity;
-    
+
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private float crouchVelocity;
-    
+
     [Foldout("Movement")] [Tooltip("Camera sensitivity")] [SerializeField]
     private float lookSpeed;
 
@@ -86,7 +86,7 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Shoot")] [Tooltip("Base damage of a bullet")] [SerializeField]
     private int bulletDmg;
-    
+
     [Foldout("Shoot")] [Tooltip("How much ammo can the player carry? (Current mag not included)")] [SerializeField]
     private int maxStoredAmmo;
 
@@ -95,7 +95,7 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Shoot")] [Tooltip("How fast player can shoot")] [SerializeField]
     private float shootSpeed;
-    
+
     [Foldout("Shoot")] [Tooltip("Time needed to reload")] [SerializeField]
     private float reloadSpeed;
 
@@ -156,7 +156,7 @@ public class PlayerController : Singleton<PlayerController>
     [Tooltip("Force applied to grabbed object when released from telekinesis")]
     [SerializeField]
     private float throwForce;
-    
+
     [Foldout("Telekinesis")]
     [Tooltip("Delay after releasing Telekinesis before you can use it on another object")]
     [SerializeField]
@@ -185,9 +185,9 @@ public class PlayerController : Singleton<PlayerController>
     #region Debug
 
     [Foldout("Debug")] [SerializeField] private Transform shootingHand;
-    
+
     [Foldout("Debug")] [SerializeField] private Vector3 inputVelocity;
-    
+
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool appliedForce;
 
@@ -210,10 +210,10 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private ControllableProp controlledProp;
-    
+
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     public int currentAmmo;
-    
+
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     public int inventoryAmmo;
 
@@ -242,7 +242,7 @@ public class PlayerController : Singleton<PlayerController>
         {
             offsetPosition.position = transform.position;
             offsetPosition.localPosition += new Vector3(restingPosOffset.x,
-                restingPosOffset.y * (playerCam.forward.y + 1), restingPosOffset.z );
+                restingPosOffset.y * (playerCam.forward.y + 1), restingPosOffset.z);
         }
     }
 
@@ -285,7 +285,7 @@ public class PlayerController : Singleton<PlayerController>
         currentControls.FindAction("Shoot", true).performed += Shoot;
         currentControls.FindAction("Telekinesis", true).canceled += ReleaseProp;
         currentControls.FindAction("Reload", true).performed += Reload;
-        
+
         //currentControls.FindAction("Telekinesis",true).performed += ;
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -295,8 +295,29 @@ public class PlayerController : Singleton<PlayerController>
         currentStamina = maxStamina;
         currentAmmo = magSize;
         inventoryAmmo = maxStoredAmmo;
-        
-        
+        currentHealth = maxHealth;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+
+        if (Regen != null) StopCoroutine(Regen);
+        Regen = StartCoroutine(Regenerate());
+    }
+
+    private Coroutine Regen;
+
+    private IEnumerator Regenerate()
+    {
+        yield return new WaitForSeconds(timeToRegenerateHealth);
+        while (currentHealth < maxHealth)
+        {
+            currentHealth += regenSpeed * Time.deltaTime;
+            yield return null;
+        }
+
+        currentHealth = maxHealth;
     }
 
     private void OnDisable()
@@ -306,23 +327,22 @@ public class PlayerController : Singleton<PlayerController>
 
     void Start()
     {
-
         CheckShootingHand();
     }
 
     private Coroutine reloadCoroutine;
     private bool reloading = false;
+
     private void Reload(InputAction.CallbackContext obj)
     {
         if (reloading || currentAmmo == magSize || inventoryAmmo == 0)
             return;
         reloading = true;
         reloadCoroutine = StartCoroutine(Reload2());
-        
     }
 
     #region LogicChecks
-    
+
     void CheckShootingHand()
     {
         if (currentControls.FindAction("Shoot", true).bindings[0].path == "<Mouse>/leftButton")
@@ -350,10 +370,6 @@ public class PlayerController : Singleton<PlayerController>
                 check = true;
             }
         }
-        else
-        {
-            check = false;
-        }
 
         return check;
     }
@@ -374,11 +390,12 @@ public class PlayerController : Singleton<PlayerController>
         if (telekinesisPointer.gameObject.activeSelf)
             telekinesisPointer.gameObject.SetActive(false);
     }
-    
+
     #endregion
-    
+
     private const float reloadHandMove = 2f;
     private Vector3 reloadBasePos;
+
     private IEnumerator Reload2()
     {
         reloadBasePos = shootingHand.localPosition;
@@ -400,7 +417,6 @@ public class PlayerController : Singleton<PlayerController>
     }
 
 
-
     // Update is called once per frame
     void Update()
     {
@@ -408,8 +424,8 @@ public class PlayerController : Singleton<PlayerController>
         playerDir = Vector3.zero;
 
         isGrounded = GroundCheck();
-        
-        
+
+
         ForwardInput();
         SidewaysInput();
         Rotate();
@@ -424,7 +440,7 @@ public class PlayerController : Singleton<PlayerController>
 
         if (isCrouched)
         {
-            playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center,0.1f);
+            playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.1f);
         }
         else
         {
@@ -442,10 +458,7 @@ public class PlayerController : Singleton<PlayerController>
         }
         else if (telekinesisPointer.gameObject.activeSelf)
             telekinesisPointer.gameObject.SetActive(false);
-        
     }
-
-
 
 
     private void FixedUpdate()
@@ -462,6 +475,7 @@ public class PlayerController : Singleton<PlayerController>
         {
             appliedForce = false;
         }
+
         playerDir.Normalize();
 
         if (appliedForce)
@@ -476,23 +490,28 @@ public class PlayerController : Singleton<PlayerController>
 
         if (!appliedForce)
         {
-            inputVelocity = rb.velocity.normalized * ( dragCurve.Evaluate(moveInputTimer) * (isGrounded ? 1 : airMobilityFactor) * new Vector2(rb.velocity.x,rb.velocity.z).magnitude);
+            inputVelocity = rb.velocity.normalized * (dragCurve.Evaluate(moveInputTimer) *
+                                                      (isGrounded ? 1 : airMobilityFactor) *
+                                                      new Vector2(rb.velocity.x, rb.velocity.z).magnitude);
             rb.velocity = new Vector3(inputVelocity.x, rb.velocity.y, inputVelocity.z);
-            
+
             return;
         }
-        
-        
+
+
         if (isCrouched)
         {
-            inputVelocity = playerDir * ( crouchCurve.Evaluate(moveInputTimer) * (isGrounded ? 1 : airMobilityFactor) * crouchVelocity);
+            inputVelocity = playerDir * (crouchCurve.Evaluate(moveInputTimer) * (isGrounded ? 1 : airMobilityFactor) *
+                                         crouchVelocity);
             Mathf.Clamp(moveInputTimer, 0, crouchCurve.keys[^1].time);
         }
         else
         {
-            inputVelocity = playerDir * ( runCurve.Evaluate(moveInputTimer) * (isGrounded ? 1 : airMobilityFactor) * runVelocity);
+            inputVelocity = playerDir *
+                            (runCurve.Evaluate(moveInputTimer) * (isGrounded ? 1 : airMobilityFactor) * runVelocity);
             Mathf.Clamp(moveInputTimer, 0, runCurve.keys[^1].time);
         }
+
         rb.velocity = new Vector3(inputVelocity.x, rb.velocity.y, inputVelocity.z);
     }
 
@@ -533,10 +552,11 @@ public class PlayerController : Singleton<PlayerController>
                 {
                     return;
                 }
+
                 var enemy = (Enemy)controlledProp;
                 enemy.body.constraints = RigidbodyConstraints.FreezeAll;
                 controlledProp.isGrabbed = true;
-                enemy.GrabbedBehavior(1,0.1f,30);
+                enemy.GrabbedBehavior(1, 0.1f, 30);
                 break;
         }
 
@@ -554,36 +574,38 @@ public class PlayerController : Singleton<PlayerController>
         if (!controlledProp) return;
         switch (controlledProp)
         {
-            case TelekinesisObject :
+            case TelekinesisObject:
                 controlledProp.ApplyTelekinesis();
                 if (!controlledProp.isGrabbed)
                 {
                     controlledProp.body.velocity *= 0.1f;
-                    controlledProp = null;
-                    return;
+                }
+                else
+                {
+                    controlledProp.isGrabbed = false;
+
+                    currentStamina =
+                        GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina, -throwCost);
+
+                    if (currentStamina < 0) currentStamina = 0;
+
+
+                    controlledProp.body.velocity = Vector3.zero;
+                    controlledProp.body.AddForce(playerCam.forward * throwForce, ForceMode.Impulse);
                 }
 
-                controlledProp.isGrabbed = false;
-
-                currentStamina =
-                    GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina, -throwCost);
-
-                if (currentStamina < 0) currentStamina = 0;
-
-
-                controlledProp.body.velocity = Vector3.zero;
-                controlledProp.body.AddForce(playerCam.forward * throwForce, ForceMode.Impulse);
                 break;
-            case Enemy :
+            case Enemy:
 
                 controlledProp.isGrabbed = false;
                 controlledProp.ApplyTelekinesis();
                 controlledProp.body.constraints = RigidbodyConstraints.FreezeRotation;
-                
+
                 break;
         }
-        controlledProp = null;
 
+        StartCoroutine(controlledProp.BufferGrabbing());
+        controlledProp = null;
     }
 
     #endregion
@@ -641,8 +663,6 @@ public class PlayerController : Singleton<PlayerController>
 
         crouchedCollider.enabled = isCrouched;
         standingCollider.enabled = !isCrouched;
-
-        
     }
 
 
@@ -652,12 +672,12 @@ public class PlayerController : Singleton<PlayerController>
     private void Shoot(InputAction.CallbackContext obj)
     {
         if (shootSpeedTimer > 0) return;
-        
+
         if (currentAmmo == 0) return;
-        
+
         if (reloading) return;
-        
-        
+
+
         currentAmmo--;
         shootSpeedTimer = shootSpeed;
         currentTrail = Instantiate(shootTrail);
@@ -714,18 +734,20 @@ public class PlayerController : Singleton<PlayerController>
             {
                 if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange, shootMask))
                 {
-                    if (hit.collider.TryGetComponent(out ControllableProp prop))
+                    if (hit.collider.TryGetComponent(out TelekinesisObject TK))
                     {
-                        controlledProp = prop;
-                        prop.ApplyTelekinesis();
+                        if (!TK.canBeGrabbed) return;
+                        controlledProp = TK;
+                        controlledProp.ApplyTelekinesis();
                     }
 
                     if (hit.collider.CompareTag(Ex.Tag_Head) || hit.collider.CompareTag(Ex.Tag_Body))
                     {
                         if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                         {
+                            if (!enemy.canBeGrabbed) return;
                             controlledProp = enemy;
-                            enemy.ApplyTelekinesis();
+                            controlledProp.ApplyTelekinesis();
                         }
                     }
                 }
@@ -773,30 +795,24 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     #endregion
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
     #region Deprecated
+
     [Foldout("Obsolete")] [Tooltip("Force applied on a jump")] [SerializeField]
     private float jumpForce;
+
     [Foldout("Obsolete")] [Tooltip("Acceleration when running")] [SerializeField]
     private float runAccel;
+
     [Foldout("Obsolete")] [Tooltip("Multiplies with maxHorizontalVelocity when running")] [SerializeField]
     private float runMaxVelocityFactor;
 
     [Foldout("Obsolete")] [Tooltip("To make a jump more or less floaty")] [SerializeField]
     private AnimationCurve jumpCurve;
+
     [Foldout("Obsolete")] [Tooltip("CameraFOV when player is running")] [SerializeField]
     private float runningFOV;
-    #endregion
 
+    #endregion
 }

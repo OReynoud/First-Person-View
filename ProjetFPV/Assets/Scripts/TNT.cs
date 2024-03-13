@@ -20,7 +20,7 @@ public class TNT : MonoBehaviour, IDestructible
     public void OnDestroy()
     {
         
-        var colliders = Physics.OverlapSphere(transform.position, explosionRadius, mask, QueryTriggerInteraction.UseGlobal);
+        var colliders = Physics.OverlapSphere(transform.position, explosionRadius, mask, QueryTriggerInteraction.Ignore);
 
         foreach (var col in colliders)
         {
@@ -33,9 +33,11 @@ public class TNT : MonoBehaviour, IDestructible
                 enemy.TakeDamage(Mathf.RoundToInt(damageToEnemy * damageModifier), 1,dir.normalized, col.ClosestPointOnBounds(transform.position));
             }
 
-            if (col.gameObject.layer == LayerMask.NameToLayer("Player"))
+            if (col.gameObject.CompareTag(Ex.Tag_Player))
             {
+                if (!col.enabled)return;
                 Debug.Log("Taking damage");
+                PlayerController.instance.TakeDamage(damageModifier * damageToPlayer);
             }
         }
         
