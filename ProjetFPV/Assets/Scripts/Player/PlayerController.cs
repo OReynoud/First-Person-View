@@ -591,7 +591,8 @@ public class PlayerController : Singleton<PlayerController>
 
 
                     controlledProp.body.velocity = Vector3.zero;
-                    controlledProp.body.AddForce(playerCam.forward * throwForce, ForceMode.Impulse);
+                    var dir = playerCam.forward * 20 - controlledProp.transform.position;
+                    controlledProp.body.AddForce(dir.normalized * throwForce, ForceMode.Impulse);
                 }
 
                 break;
