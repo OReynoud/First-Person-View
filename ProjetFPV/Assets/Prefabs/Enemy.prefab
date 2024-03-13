@@ -162,10 +162,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &3695781019607296251
 MonoBehaviour:
@@ -181,6 +181,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGrabbed: 0
   body: {fileID: 7143357708314217432}
+  spamBuffer: 0.6
+  canBeGrabbed: 1
   maxHealth: 6
   currentHealth: 0
   headShotMultiplier: 2
