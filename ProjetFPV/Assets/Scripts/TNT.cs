@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TNT : MonoBehaviour, IDestructible
 {
+    [SerializeField] private float health = 1;
     [SerializeField] private float explosionRadius;
     [SerializeField] private float damageToEnemy = 5;
     [SerializeField] private float damageToPlayer = 3;
@@ -15,6 +16,11 @@ public class TNT : MonoBehaviour, IDestructible
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, explosionRadius);
+    }
+
+    public void TakeDamage()
+    {
+        throw new NotImplementedException();
     }
 
     public void OnDestroy()

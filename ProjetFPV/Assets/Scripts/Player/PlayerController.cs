@@ -729,7 +729,7 @@ public class PlayerController : Singleton<PlayerController>
 
             if (hit.collider.TryGetComponent(out IDestructible target))
             {
-                target.OnDestroy();
+                target.TakeDamage();
             }
 
             currentTrail.SetPosition(1, hit.point);
