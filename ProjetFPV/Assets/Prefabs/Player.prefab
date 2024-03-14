@@ -352,6 +352,7 @@ GameObject:
   - component: {fileID: 739510780194846137}
   - component: {fileID: 7813115355682138035}
   - component: {fileID: 4500119090424759972}
+  - component: {fileID: 8407101186877072119}
   m_Layer: 9
   m_Name: Character
   m_TagString: Player
@@ -368,7 +369,7 @@ Transform:
   m_GameObject: {fileID: 1239935718432516662}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.72, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -411,20 +412,20 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
+      inSlope: 1.4761884
+      outSlope: 1.4761884
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.061953664
     - serializedVersion: 3
-      time: 0.7695923
-      value: 1
-      inSlope: 0.4641837
-      outSlope: 0.4641837
+      time: 2.0429258
+      value: 0.9788603
+      inSlope: 0.27162594
+      outSlope: 0.27162594
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.19815671
+      inWeight: 0.22013351
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -435,20 +436,20 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.51179254
-      outSlope: 0.51179254
+      inSlope: 1.4761884
+      outSlope: 1.4761884
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.14746542
+      outWeight: 0.061953664
     - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1.6328604
-      outSlope: 1.6328604
+      time: 2.0429258
+      value: 0.9788603
+      inSlope: 0.27162594
+      outSlope: 0.27162594
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.09677428
+      inWeight: 0.22013351
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -478,7 +479,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   runVelocity: 8
-  crouchVelocity: 10
+  crouchVelocity: 5
   lookSpeed: 1
   lookXLimit: 75
   airMobilityFactor: 0.8
@@ -487,7 +488,7 @@ MonoBehaviour:
   shootMask:
     serializedVersion: 2
     m_Bits: 385
-  bulletDmg: 3
+  bulletDmg: 5
   maxStoredAmmo: 30
   magSize: 50
   shootSpeed: 0.3
@@ -495,7 +496,7 @@ MonoBehaviour:
   maxRange: 1000
   trailTime: 0.2
   baseKnockBack: 10
-  restingPosOffset: {x: 1, y: 1, z: 2}
+  restingPosOffset: {x: 1, y: 1, z: 2.5}
   travelSpeed: 45
   grabDistanceBuffer: 1
   maxStamina: 500
@@ -654,6 +655,24 @@ CapsuleCollider:
   m_Height: 1.5
   m_Direction: 1
   m_Center: {x: 0, y: -0.25, z: 0}
+--- !u!114 &8407101186877072119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239935718432516662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c394e54b32020a84f923147b212ef468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fullHealthOnStart: 1
+  maxHealth: 100
+  currentHealth: 0
+  timeBeforeRegen: 2
+  regenPerSecond: 20
+  volume: {fileID: 0}
 --- !u!1 &1759711028052782629
 GameObject:
   m_ObjectHideFlags: 0

@@ -133,7 +133,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.59, y: 2.11, z: 10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85858, y: 0.85858, z: 0.85858}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7533996313253583200}
@@ -165,7 +165,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &3695781019607296251
 MonoBehaviour:
@@ -183,11 +183,11 @@ MonoBehaviour:
   body: {fileID: 7143357708314217432}
   spamBuffer: 0.6
   canBeGrabbed: 1
-  maxHealth: 6
+  maxHealth: 30
   currentHealth: 0
   headShotMultiplier: 2
   bodyShotMultiplier: 1
-  isImmobile: 0
+  isImmobile: 1
   waypoints:
   - {fileID: 0}
   - {fileID: 0}
