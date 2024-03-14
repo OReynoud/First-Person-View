@@ -280,6 +280,7 @@ public class PlayerController : Singleton<PlayerController>
         currentControls = inputs.actions.FindActionMap(currentInputMap);
         Debug.Log(currentControls);
         currentControls.Enable();
+        playerLayer =  LayerMask.GetMask("Player") + shootMask;
         //currentControls.FindAction("Test",true).Enable();
         currentControls.FindAction("ToggleSprint", true).performed += ToggleCrouch;
         currentControls.FindAction("Shoot", true).performed += Shoot;
@@ -515,6 +516,8 @@ public class PlayerController : Singleton<PlayerController>
         rb.velocity = new Vector3(inputVelocity.x, rb.velocity.y, inputVelocity.z);
     }
 
+    private LayerMask playerLayer;
+    private Vector3 tempWorldToScreen;
     private void TelekinesisPhysics()
     {
         switch (controlledProp)
@@ -544,18 +547,36 @@ public class PlayerController : Singleton<PlayerController>
                 }
 
                 break;
-            case Enemy:
+            case Enemy enemy:
                 currentStamina =
                     GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina,
                         Time.deltaTime * -holdEnemyCost);
-                if (controlledProp.isGrabbed)
+
+                tempWorldToScreen = camera1.WorldToScreenPoint(controlledProp.transform.position);
+                Debug.Log(tempWorldToScreen);
+                if (tempWorldToScreen.x < 0 || tempWorldToScreen.x > Screen.width ||
+                    tempWorldToScreen.y < 0 || tempWorldToScreen.y > Screen.height ||
+                    tempWorldToScreen.z < 0)
                 {
+                    ReleaseProp(new InputAction.CallbackContext());
                     return;
                 }
+                
+                Vector3 dir2 = controlledProp.transform.position - transform.position;
+                if (Physics.Raycast(controlledProp.transform.position, -dir2.normalized, out RaycastHit hit, maxRange, playerLayer))
+                {
+                    if (!hit.collider.TryGetComponent(out PlayerController controller))
+                    {
+                        ReleaseProp(new InputAction.CallbackContext());
+                        return;
+                    }
+                }
+                
+                if (enemy.isGrabbed) return;
+                
 
-                var enemy = (Enemy)controlledProp;
                 enemy.body.constraints = RigidbodyConstraints.FreezeAll;
-                controlledProp.isGrabbed = true;
+                enemy.isGrabbed = true;
                 enemy.GrabbedBehavior(1, 0.1f, 30);
                 break;
         }
