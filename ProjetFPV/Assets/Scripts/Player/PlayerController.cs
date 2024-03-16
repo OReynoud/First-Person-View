@@ -246,11 +246,14 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
         //offsetPosition.position = restingPosOffset;
         Gizmos.DrawSphere(offsetPosition.position, 0.2f);
+        
+        
+        Debug.DrawLine(playerCam.position,playerCam.position + playerCam.forward * 20, Color.black);
     }
 
     private void OnValidate()
@@ -612,9 +615,18 @@ public class PlayerController : Singleton<PlayerController>
 
 
                     controlledProp.body.velocity = Vector3.zero;
-                    var dir = playerCam.forward * 20 - offsetPosition.position;
+                    
+                    var dir = Vector3.zero;
+                    if (Physics.Raycast(playerCam.position,playerCam.forward,out RaycastHit hit, maxRange,  LayerMask.GetMask("Telekinesis")))
+                    {
+                        dir = hit.point - offsetPosition.position;
+                    }
+                    else
+                    {
+                        dir = playerCam.forward;
+                    }
                     dir.Normalize();
-                    controlledProp.body.AddForce(playerCam.forward * throwForce + dir * throwForce * 0.2f, ForceMode.Impulse);
+                    controlledProp.body.AddForce(dir * throwForce, ForceMode.Impulse);
                 }
 
                 break;
