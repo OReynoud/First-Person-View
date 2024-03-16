@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -32,6 +33,20 @@ public class Enemy : ControllableProp
     {
         base.ApplyTelekinesis();
         
+    }
+
+    public void OnDrawGizmosSelected()
+    {
+        if (isImmobile)
+        {
+            return;
+        }
+        for (int i = 1; i < waypoints.Count; i++)
+        {
+            Debug.DrawLine(waypoints[i - 1].position,waypoints[i].position );
+        }
+        
+        Debug.DrawLine(waypoints[^1].position,waypoints[0].position );
     }
 
     public void TakeDamage(int damage, bool headHit, float knockBackValue, Vector3 knockBackDir)
