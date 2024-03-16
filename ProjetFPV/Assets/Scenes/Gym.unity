@@ -8226,7 +8226,7 @@ PrefabInstance:
     - target: {fileID: 1171924708256431230, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.32
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 1171924708256431230, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
@@ -8236,7 +8236,7 @@ PrefabInstance:
     - target: {fileID: 1171924708256431230, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -22.68
+      value: -9
       objectReference: {fileID: 0}
     - target: {fileID: 1171924708256431230, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
@@ -8295,17 +8295,77 @@ PrefabInstance:
       objectReference: {fileID: 1596815544}
     - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
-      propertyPath: vignetteIntensity.m_Curve.Array.size
-      value: 2
+      propertyPath: maxHealth
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
-      propertyPath: vignetteIntensity.m_Curve.Array.data[1].time
+      propertyPath: regenPerSecond
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[1].time
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[2].time
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[3].time
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[4].time
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[5].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
       propertyPath: vignetteIntensity.m_Curve.Array.data[1].value
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[2].value
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[3].value
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[4].value
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[5].value
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
@@ -8316,7 +8376,32 @@ PrefabInstance:
     - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
       propertyPath: vignetteIntensity.m_Curve.Array.data[1].inSlope
+      value: -Infinity
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[2].inSlope
+      value: -Infinity
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[3].inSlope
+      value: -Infinity
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[4].inSlope
+      value: -Infinity
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[5].inSlope
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[0].inWeight
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
@@ -8325,8 +8410,78 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
       propertyPath: vignetteIntensity.m_Curve.Array.data[1].outSlope
+      value: -Infinity
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[2].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[2].outSlope
+      value: -Infinity
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[3].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[3].outSlope
+      value: -Infinity
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[4].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[4].outSlope
+      value: -Infinity
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[5].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[5].outSlope
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[2].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[3].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[4].outWeight
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
@@ -8336,6 +8491,26 @@ PrefabInstance:
     - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
       propertyPath: vignetteIntensity.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[2].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[3].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[4].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8407101186877072119, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: vignetteIntensity.m_Curve.Array.data[5].tangentMode
       value: 34
       objectReference: {fileID: 0}
     m_RemovedComponents: []
