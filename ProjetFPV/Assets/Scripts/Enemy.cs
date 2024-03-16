@@ -71,11 +71,13 @@ public class Enemy : ControllableProp
     private void Die()
     {
         GameManager.instance.HitMark(true);
+        
+        
         grabbedTween.Complete();
-        grabbedTween.OnComplete(() =>
-        {
-            Destroy(gameObject);
-        });
+        grabbedTween.Kill();
+        
+        
+        Destroy(gameObject);
     }
 
     // Update is called once per frame

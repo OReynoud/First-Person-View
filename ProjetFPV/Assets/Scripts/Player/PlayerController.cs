@@ -612,7 +612,7 @@ public class PlayerController : Singleton<PlayerController>
 
 
                     controlledProp.body.velocity = Vector3.zero;
-                    var dir = playerCam.forward - offsetPosition.position;
+                    var dir = playerCam.forward * 20 - offsetPosition.position;
                     dir.Normalize();
                     controlledProp.body.AddForce(playerCam.forward * throwForce + dir * throwForce * 0.2f, ForceMode.Impulse);
                 }
