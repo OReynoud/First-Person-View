@@ -7,9 +7,10 @@ public class TNT : MonoBehaviour, IDestructible
 {
     [SerializeField] private float health = 1;
     [SerializeField] private float explosionRadius;
+    [SerializeField] private float explosionForce = 3;
     [SerializeField] private float damageToEnemy = 5;
     [SerializeField] private float damageToPlayer = 3;
-    [SerializeField] private float damageFallOff = 0.2f;
+    [Range(0,1)][SerializeField] private float damageFallOff = 0.2f;
     [SerializeField] private LayerMask mask;
 
     public void OnDrawGizmosSelected()
@@ -20,7 +21,11 @@ public class TNT : MonoBehaviour, IDestructible
 
     public void TakeDamage()
     {
-        throw new NotImplementedException();
+        health--;
+        if (health <= 0)
+        {
+            OnDestroy();
+        }
     }
 
     public void OnDestroy()
@@ -36,7 +41,7 @@ public class TNT : MonoBehaviour, IDestructible
             
             if (col.transform.parent.TryGetComponent(out Enemy enemy))
             {
-                enemy.TakeDamage(Mathf.RoundToInt(damageToEnemy * damageModifier), 1,dir.normalized, col.ClosestPointOnBounds(transform.position));
+                enemy.TakeDamage(Mathf.RoundToInt(damageToEnemy * damageModifier), explosionForce,dir.normalized, col.ClosestPointOnBounds(transform.position));
             }
 
             if (col.gameObject.CompareTag(Ex.Tag_Player))

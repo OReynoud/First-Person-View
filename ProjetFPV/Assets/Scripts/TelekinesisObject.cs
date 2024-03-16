@@ -14,5 +14,14 @@ public class TelekinesisObject : ControllableProp
     public override void ApplyTelekinesis()
     {
         body.useGravity = !body.useGravity;
+
+        if (gameObject.layer == LayerMask.NameToLayer("Default"))
+        {
+            gameObject.layer = LayerMask.NameToLayer("Telekinesis");
+        }
+        else
+        {
+            gameObject.layer = LayerMask.NameToLayer("Default");
+        }
     }
 }
