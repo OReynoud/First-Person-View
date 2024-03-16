@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3783,6 +3783,7 @@ GameObject:
   - component: {fileID: 923273366}
   - component: {fileID: 923273365}
   - component: {fileID: 923273364}
+  - component: {fileID: 923273367}
   m_Layer: 0
   m_Name: Cube (12)
   m_TagString: Untagged
@@ -3876,6 +3877,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 923273362}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &923273367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923273362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bdf378563ef8204883f343c85523f6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &938921780
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6977,6 +6990,84 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d975b2303e173140a37f168170f0975, type: 3}
+--- !u!1001 &1902817633
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 11.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6970334403284051533, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_Name
+      value: TNT Object
+      objectReference: {fileID: 0}
+    - target: {fileID: 9213067938974385105, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: damageFallOff
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9213067938974385105, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: explosionForce
+      value: 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5779a3586bb9ccf439591ca7701719f9, type: 3}
 --- !u!4 &1908175042 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3202209982597070841, guid: 69cb2ee56b9056d40bd8ce78371c070f,
@@ -7658,3 +7749,4 @@ SceneRoots:
   - {fileID: 1032170614}
   - {fileID: 600903793}
   - {fileID: 438106277}
+  - {fileID: 1902817633}
