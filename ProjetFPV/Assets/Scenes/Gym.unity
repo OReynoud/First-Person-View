@@ -4200,6 +4200,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d975b2303e173140a37f168170f0975, type: 3}
+--- !u!1 &488955080 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1484673573471933685, guid: 25b553424ab0af54d9c26fb410130005,
+    type: 3}
+  m_PrefabInstance: {fileID: 1309109271}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &488955081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 488955080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a916e281ee8327d4f9be10923b9af2d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakesPresets:
+  - name: Small
+    moveForce: 1
+    rotationForce: 0.5
+    duration: 3
+    fadeIn: 0.5
+    fadeOut: 1
+  - name: Medium
+    moveForce: 3
+    rotationForce: 2
+    duration: 4
+    fadeIn: 0.5
+    fadeOut: 2
 --- !u!1 &490098506
 GameObject:
   m_ObjectHideFlags: 0
@@ -10243,7 +10274,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1484673573471933685, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 488955081}
   m_SourcePrefab: {fileID: 100100000, guid: 25b553424ab0af54d9c26fb410130005, type: 3}
 --- !u!1001 &1314966833
 PrefabInstance:
