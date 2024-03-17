@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 4722032637743178541}
   - component: {fileID: 6534151198144593587}
   - component: {fileID: 3687632313173452174}
-  - component: {fileID: 4418991839324075221}
   - component: {fileID: 1973829677224127893}
   - component: {fileID: 1164546384550622792}
   - component: {fileID: 9213067938974385105}
+  - component: {fileID: 2140365672910163906}
   m_Layer: 0
   m_Name: TNT Object
   m_TagString: Untagged
@@ -30,9 +30,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6970334403284051533}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.35, y: 0.5, z: 11.17}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3, y: 1.0756092, z: 2.5}
+  m_LocalScale: {x: 1, y: 0.69, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6970334403284051533}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &3687632313173452174
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -87,27 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4418991839324075221
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6970334403284051533}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1973829677224127893
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -164,11 +143,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 1
-  explosionRadius: 5
+  explosionRadius: 10
   explosionForce: 10
-  damageToEnemy: 5
-  damageToPlayer: 3
-  damageFallOff: 5
+  damageToEnemy: 2
+  damageToPlayer: 2
+  damageFallOff: 1
   mask:
     serializedVersion: 2
     m_Bits: 640
+--- !u!136 &2140365672910163906
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6970334403284051533}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5000001
+  m_Height: 2.3
+  m_Direction: 1
+  m_Center: {x: 0.00000029802322, y: 0, z: -0.0000039041042}
