@@ -8,8 +8,10 @@ using Random = UnityEngine.Random;
 public class CameraShake : MonoBehaviour
 {
     private GameObject cam;
-    private float currentShake = -1f;
+    private int currentIndex;
     private Coroutine currentCoroutine;
+    private Vector3 originalPos;
+    private Quaternion originalRot; 
     
     public List<Shakes> shakesPresets;
 
@@ -18,7 +20,7 @@ public class CameraShake : MonoBehaviour
         cam = Camera.main.gameObject;
     }
 
-    void Update() //DEBUG
+    void Update() //TEMPORAIRE
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -36,16 +38,20 @@ public class CameraShake : MonoBehaviour
 
     public void ShakeOneShot(int index)
     {
-        if (shakesPresets[index].moveForce >= currentShake)
+        if (shakesPresets[index].moveForce >= shakesPresets[currentIndex].moveForce)
         {
+            Debug.Log("Lancement d'un shake One shot");
+            
             StartCoroutine(ShakeCoroutine(index, false));
         }   
     }
 
     public void StartInfiniteShake(int index)
     {
-        if (index >= currentShake)
+        if (shakesPresets[index].moveForce >= shakesPresets[currentIndex].moveForce)
         {
+            Debug.Log("Lancement d'un shake Infini");
+            
             currentCoroutine = StartCoroutine(ShakeCoroutine(index, true));
         }  
     }
@@ -54,16 +60,22 @@ public class CameraShake : MonoBehaviour
     {
         if (currentCoroutine is not null)
         {
+            Debug.Log("Lancement d'un stop Couroutine");
+            
             StopCoroutine(currentCoroutine);
             currentCoroutine = null;
-            currentShake = -1f;
+            StartCoroutine(StopShaking(currentIndex));
         }
     }
     
     IEnumerator ShakeCoroutine(int index, bool infinite)
     {
-        Vector3 originalPos = cam.transform.localPosition;
-        Quaternion originalRot = cam.transform.localRotation;
+        Debug.Log("Début shake");
+        
+        currentIndex = index;
+        
+        originalPos = cam.transform.localPosition;
+        originalRot = cam.transform.localRotation;
         float elapsed = 0f;
 
         float duration = infinite ? 1000 : shakesPresets[index].duration;
@@ -74,8 +86,8 @@ public class CameraShake : MonoBehaviour
         {
             float mF = shakesPresets[index].moveForce / 100 * Math.Min(elapsed / shakesPresets[index].fadeIn, 1f);
             float rF = shakesPresets[index].rotationForce / 100 * Math.Min(elapsed / shakesPresets[index].fadeIn, 1f);
-            
-            currentShake = mF;
+
+            Debug.Log("Move Force : " + mF + " || Rotate Force : " + rF);
 
             float x = Random.Range(-1f, 1f) * mF;
             float y = Random.Range(-1f, 1f) * mF;
@@ -93,9 +105,16 @@ public class CameraShake : MonoBehaviour
             yield return null;
         }
 
+        StartCoroutine(StopShaking(index));
+
         #endregion
+    }
+
+    IEnumerator StopShaking(int index)
+    {
+        Debug.Log("Stop shake");
         
-        elapsed = 0f;
+        float elapsed = 0f;
 
         #region FadeOut
         
@@ -104,7 +123,7 @@ public class CameraShake : MonoBehaviour
             float mF = shakesPresets[index].moveForce / 100 * ((shakesPresets[index].fadeOut - elapsed) / shakesPresets[index].fadeOut);
             float rF = shakesPresets[index].rotationForce / 100 * ((shakesPresets[index].fadeOut - elapsed) / shakesPresets[index].fadeOut);
             
-            currentShake = mF;
+            Debug.Log("Move Force : " + mF + " || Rotate Force : " + rF);
 
             float x = Random.Range(-1f, 1f) * mF;
             float y = Random.Range(-1f, 1f) * mF;
@@ -114,19 +133,19 @@ public class CameraShake : MonoBehaviour
             float rotZ = Random.Range(-1f, 1f) * rF;
 
             cam.transform.localPosition = new Vector3(x, y, originalPos.z);
-            cam.transform.RotateAround(cam.transform.position, Vector3.up, rotX);
-            cam.transform.RotateAround(cam.transform.position, Vector3.forward, rotY);
-            cam.transform.RotateAround(cam.transform.position, Vector3.right, rotZ);
+            cam.transform.RotateAround(originalPos, Vector3.up, rotX);
+            cam.transform.RotateAround(originalPos, Vector3.forward, rotY);
+            cam.transform.RotateAround(originalPos, Vector3.right, rotZ);
             
             elapsed += Time.deltaTime;
             yield return null;
         }
         
-        #endregion
-
         cam.transform.localPosition = originalPos;
         cam.transform.localRotation = originalRot;
-        currentShake = -1f;
+        currentIndex = 0;
+
+        #endregion
     }
 }
 
