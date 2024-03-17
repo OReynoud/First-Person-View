@@ -126,6 +126,7 @@ public class Enemy : ControllableProp
         transform.DOMove(transform.position + Vector3.up * levitateValue, 0.2f).OnComplete(() =>
         {
             GrabTween(shakeAmplitude, shakeFrequency);
+            CameraShake.instance.StartInfiniteShake(0);
         });
     }
 

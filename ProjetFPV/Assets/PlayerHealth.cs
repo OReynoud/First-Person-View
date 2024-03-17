@@ -59,6 +59,7 @@ public class PlayerHealth : MonoBehaviour
     
     public void TakeDamage(int damages)
     {
+        CameraShake.instance.ShakeOneShot(2);
         currentHealth -= damages;
         t = timeBeforeRegen;
         

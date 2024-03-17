@@ -4,20 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CameraShake : MonoBehaviour
+public class CameraShake : Singleton<CameraShake>
 {
     private GameObject cam;
     private int currentIndex;
-    private Coroutine currentCoroutine;
+    private Coroutine infCoroutine;
+    private Coroutine oneShotCoroutine;
     private Vector3 originalPos;
     private Quaternion originalRot; 
     
     public List<Shakes> shakesPresets;
-    
-    public int index;
 
-    void Start()
+    public int index;
+    
+    
+    //Yo, Oscar est passer par la. J'ai surtout modif de la logique pour faire en sorte que chaque coroutine qui est en cours est stocké, puis nullifié quand il est terminé
+    public override void Awake()
     {
+        base.Awake();
         cam = Camera.main.gameObject;
     }
 
@@ -39,27 +43,44 @@ public class CameraShake : MonoBehaviour
 
     public void ShakeOneShot(int index)
     {
-        if (shakesPresets[index].moveForce >= shakesPresets[currentIndex].moveForce)
+        if (oneShotCoroutine != null) //Annule la coroutine en cours (si yen a une) et reset la cam
         {
-            StartCoroutine(ShakeCoroutine(index, false));
-        }   
+            StopCoroutine(oneShotCoroutine);
+            oneShotCoroutine = null;
+            cam.transform.localPosition = originalPos;
+            cam.transform.localRotation = originalRot;
+        }
+        
+        oneShotCoroutine = StartCoroutine(ShakeCoroutine(index, false)); //On stocke cette coroutine aussi, comme ca si jamais yen a un autre qui est trigger, on peut tej celui en cours
+        
+        //Pas besoin de ce check de ce que jai pu comprendre
+        //if (shakesPresets[index].moveForce >= shakesPresets[currentIndex].moveForce) { }   
     }
 
     public void StartInfiniteShake(int index)
-    {
-        if (shakesPresets[index].moveForce >= shakesPresets[currentIndex].moveForce)
+    {      
+        if (infCoroutine != null)
         {
-            currentCoroutine = StartCoroutine(ShakeCoroutine(index, true));
-        }  
+            StopCoroutine(infCoroutine);
+            infCoroutine = null;
+            cam.transform.localPosition = originalPos;
+            cam.transform.localRotation = originalRot;
+        }
+        
+        infCoroutine = StartCoroutine(ShakeCoroutine(index, true));
+        
+        //Pas besoin de ce check de ce que jai pu comprendre
+        //if (shakesPresets[index].moveForce >= shakesPresets[currentIndex].moveForce) { }  
     }
 
     public void StopInfiniteShake()
     {
-        if (currentCoroutine is not null)
+        if (infCoroutine is not null)
         {
-            StopCoroutine(currentCoroutine);
-            currentCoroutine = null;
-            StartCoroutine(StopShaking(currentIndex));
+            StopCoroutine(infCoroutine);
+            infCoroutine = null;
+            StartCoroutine(StopShaking(currentIndex, infCoroutine));
+            Debug.Log("stopping");
         }
     }
     
@@ -72,11 +93,15 @@ public class CameraShake : MonoBehaviour
         float elapsed = 0f;
 
         float duration = infinite ? 1000 : shakesPresets[index].duration;
-        
+        float fadeIn = shakesPresets[index].fadeIn;
+        if (fadeIn <= 0) //Pour eviter de diviser par zero, on met une valeur proche de zero
+        {
+            fadeIn = 0.00001f;
+        }
         while (elapsed < duration)
         {
-            float mF = shakesPresets[index].moveForce / 100 * Math.Min(elapsed / shakesPresets[index].fadeIn, 1f);
-            float rF = shakesPresets[index].rotationForce / 100 * Math.Min(elapsed / shakesPresets[index].fadeIn, 1f);
+            float mF = shakesPresets[index].moveForce / 100 * Math.Min(elapsed / fadeIn, 1f);
+            float rF = shakesPresets[index].rotationForce / 100 * Math.Min(elapsed / fadeIn, 1f);
 
             float x = Random.Range(-1f, 1f) * mF;
             float y = Random.Range(-1f, 1f) * mF;
@@ -94,10 +119,10 @@ public class CameraShake : MonoBehaviour
             yield return null;
         }
 
-        StartCoroutine(StopShaking(index));
+        StartCoroutine(StopShaking(index, infinite ? infCoroutine : oneShotCoroutine));
     }
 
-    IEnumerator StopShaking(int index)
+    IEnumerator StopShaking(int index, Coroutine routine) // On track le type de coroutine pour savoir lequel on nullifie
     {
         float elapsed = 0f;
         
@@ -125,6 +150,12 @@ public class CameraShake : MonoBehaviour
         cam.transform.localPosition = originalPos;
         cam.transform.localRotation = originalRot;
         currentIndex = 0;
+        NullifyCurrentCoroutine(routine); 
+    }
+
+    void NullifyCurrentCoroutine(Coroutine routine)
+    {
+        routine = null;
     }
 }
 

@@ -27,15 +27,5 @@ public static class Ex
     
 
 
-    /// <summary>
-    /// ROTATES A VECTOR FROM A CERTAIN ANGLE
-    /// </summary>
-    // public static Vector2 RotateDirection(this Vector2 originalDirection, float addedAngle)
-    // {
-    //     float currentAngle = GetAngleFromVector(originalDirection);
-    //
-    //     currentAngle += addedAngle;
-    //
-    //     return GetVectorFromAngle(currentAngle);
-    // }
+
 }

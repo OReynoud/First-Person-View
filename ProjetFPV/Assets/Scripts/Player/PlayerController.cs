@@ -304,6 +304,7 @@ public class PlayerController : Singleton<PlayerController>
 
     public void TakeDamage(float damage)
     {
+        CameraShake.instance.ShakeOneShot(3);
         currentHealth -= damage;
 
         if (Regen != null) StopCoroutine(Regen);
@@ -542,11 +543,13 @@ public class PlayerController : Singleton<PlayerController>
                     controlledProp.body.velocity = dir * (travelSpeed *
                                                           (Vector3.Distance(controlledProp.transform.position,
                                                               offsetPosition.position) / grabDistanceBuffer));
+                    break;
                 }
 
                 if (grabDistanceBuffer > Vector3.Distance(controlledProp.transform.position, offsetPosition.position))
                 {
                     controlledProp.isGrabbed = true;
+                    CameraShake.instance.StartInfiniteShake(0);
                 }
 
                 break;
@@ -595,6 +598,8 @@ public class PlayerController : Singleton<PlayerController>
     public void ReleaseProp(InputAction.CallbackContext obj)
     {
         if (!controlledProp) return;
+        
+        CameraShake.instance.StopInfiniteShake();
         switch (controlledProp)
         {
             case TelekinesisObject:
@@ -710,8 +715,8 @@ public class PlayerController : Singleton<PlayerController>
         if (currentAmmo == 0) return;
 
         if (reloading) return;
-
-
+        
+        CameraShake.instance.ShakeOneShot(1);
         currentAmmo--;
         shootSpeedTimer = shootSpeed;
         currentTrail = Instantiate(shootTrail);
@@ -784,8 +789,8 @@ public class PlayerController : Singleton<PlayerController>
                             controlledProp.ApplyTelekinesis();
                         }
                     }
+                    CameraShake.instance.ShakeOneShot(2);
                 }
-
                 return;
             }
 
