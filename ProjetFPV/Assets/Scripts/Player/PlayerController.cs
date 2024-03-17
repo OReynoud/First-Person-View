@@ -556,7 +556,6 @@ public class PlayerController : Singleton<PlayerController>
                         Time.deltaTime * -holdEnemyCost);
 
                 tempWorldToScreen = camera1.WorldToScreenPoint(controlledProp.transform.position);
-                Debug.Log(tempWorldToScreen);
                 if (tempWorldToScreen.x < 0 || tempWorldToScreen.x > Screen.width ||
                     tempWorldToScreen.y < 0 || tempWorldToScreen.y > Screen.height ||
                     tempWorldToScreen.z < 0)
