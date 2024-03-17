@@ -4,8 +4,6 @@ using UnityEditor;
 [CustomEditor(typeof(CameraShake))]
 public class CustomInspector : Editor
 {
-    int index;
-    
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
@@ -15,15 +13,14 @@ public class CustomInspector : Editor
         EditorGUILayout.Space(3);
         EditorGUILayout.LabelField("Try a preset", EditorStyles.boldLabel);
         
-        index = EditorGUILayout.IntField("Index", index);
         if (GUILayout.Button("Try Camera Shake (F)"))
         {
-            cs.ShakeOneShot(index);
+            cs.ShakeOneShot(cs.index);
         }
 
         if (GUILayout.Button("Start Infinite Camera Shake (G)"))
         {
-            cs.StartInfiniteShake(index);
+            cs.StartInfiniteShake(cs.index);
         }
         
         if (GUILayout.Button("Stop Infinite Camera Shake (H)"))

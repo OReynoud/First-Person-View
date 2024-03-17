@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[ExecuteAlways]
 public class CameraShake : MonoBehaviour
 {
     private GameObject cam;
@@ -14,6 +13,8 @@ public class CameraShake : MonoBehaviour
     private Quaternion originalRot; 
     
     public List<Shakes> shakesPresets;
+    
+    public int index;
 
     void Start()
     {
@@ -24,11 +25,11 @@ public class CameraShake : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            ShakeOneShot(0);
+            ShakeOneShot(index);
         }
         if (Input.GetKeyDown(KeyCode.G))
         {
-            StartInfiniteShake(0);
+            StartInfiniteShake(index);
         }
         if (Input.GetKeyDown(KeyCode.H))
         {
@@ -40,8 +41,6 @@ public class CameraShake : MonoBehaviour
     {
         if (shakesPresets[index].moveForce >= shakesPresets[currentIndex].moveForce)
         {
-            Debug.Log("Lancement d'un shake One shot");
-            
             StartCoroutine(ShakeCoroutine(index, false));
         }   
     }
@@ -50,8 +49,6 @@ public class CameraShake : MonoBehaviour
     {
         if (shakesPresets[index].moveForce >= shakesPresets[currentIndex].moveForce)
         {
-            Debug.Log("Lancement d'un shake Infini");
-            
             currentCoroutine = StartCoroutine(ShakeCoroutine(index, true));
         }  
     }
@@ -60,8 +57,6 @@ public class CameraShake : MonoBehaviour
     {
         if (currentCoroutine is not null)
         {
-            Debug.Log("Lancement d'un stop Couroutine");
-            
             StopCoroutine(currentCoroutine);
             currentCoroutine = null;
             StartCoroutine(StopShaking(currentIndex));
@@ -70,8 +65,6 @@ public class CameraShake : MonoBehaviour
     
     IEnumerator ShakeCoroutine(int index, bool infinite)
     {
-        Debug.Log("Début shake");
-        
         currentIndex = index;
         
         originalPos = cam.transform.localPosition;
@@ -79,15 +72,11 @@ public class CameraShake : MonoBehaviour
         float elapsed = 0f;
 
         float duration = infinite ? 1000 : shakesPresets[index].duration;
-
-        #region FadeIn and Shake
         
         while (elapsed < duration)
         {
             float mF = shakesPresets[index].moveForce / 100 * Math.Min(elapsed / shakesPresets[index].fadeIn, 1f);
             float rF = shakesPresets[index].rotationForce / 100 * Math.Min(elapsed / shakesPresets[index].fadeIn, 1f);
-
-            Debug.Log("Move Force : " + mF + " || Rotate Force : " + rF);
 
             float x = Random.Range(-1f, 1f) * mF;
             float y = Random.Range(-1f, 1f) * mF;
@@ -106,24 +95,16 @@ public class CameraShake : MonoBehaviour
         }
 
         StartCoroutine(StopShaking(index));
-
-        #endregion
     }
 
     IEnumerator StopShaking(int index)
     {
-        Debug.Log("Stop shake");
-        
         float elapsed = 0f;
-
-        #region FadeOut
         
         while (elapsed < shakesPresets[index].fadeOut)
         {
             float mF = shakesPresets[index].moveForce / 100 * ((shakesPresets[index].fadeOut - elapsed) / shakesPresets[index].fadeOut);
             float rF = shakesPresets[index].rotationForce / 100 * ((shakesPresets[index].fadeOut - elapsed) / shakesPresets[index].fadeOut);
-            
-            Debug.Log("Move Force : " + mF + " || Rotate Force : " + rF);
 
             float x = Random.Range(-1f, 1f) * mF;
             float y = Random.Range(-1f, 1f) * mF;
@@ -144,8 +125,6 @@ public class CameraShake : MonoBehaviour
         cam.transform.localPosition = originalPos;
         cam.transform.localRotation = originalRot;
         currentIndex = 0;
-
-        #endregion
     }
 }
 
