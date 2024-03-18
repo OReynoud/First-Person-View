@@ -23,7 +23,7 @@ public class Enemy : ControllableProp
     private int previousIndex = 0;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         currentHealth = maxHealth;
         currentIndex = 1;
@@ -65,7 +65,7 @@ public class Enemy : ControllableProp
             currentHealth -= totalDmg;
         }
 
-        if (currentHealth <= 0) StartCoroutine(Die());
+        if (currentHealth <= 0) Die();
     }
 
     public void TakeDamage(int damage, float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce)
@@ -73,7 +73,7 @@ public class Enemy : ControllableProp
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
-            StartCoroutine(Die());
+            Die();
         }
 
         InputAction.CallbackContext dummy = new InputAction.CallbackContext();
@@ -84,7 +84,7 @@ public class Enemy : ControllableProp
         body.AddForceAtPosition(knockBackDir * knockBackValue * damage,pointOfForce, ForceMode.Impulse);
     }
 
-    private IEnumerator Die()
+    private void Die()
     {
         GameManager.instance.HitMark(true);
         
@@ -93,11 +93,8 @@ public class Enemy : ControllableProp
         grabbedTween.Kill();
         
         
+        if (respawnOnDeath) GameManager.instance.Respawn(this);
         gameObject.SetActive(false);
-        if (!respawnOnDeath) yield break;
-        yield return new WaitForSeconds(2f);
-        gameObject.SetActive(true);
-        Start();
 
     }
 

@@ -12,7 +12,9 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private Image staminaBar;
     [SerializeField] private List<TextMeshProUGUI> ammoText;
     
+    
     [SerializeField] private float hitMarkerFadeTime;
+    [SerializeField] private float timeForEnemyToRespawn;
 
     private Coroutine bodyHit;
     private Coroutine headHit;
@@ -88,5 +90,16 @@ public class GameManager : Singleton<GameManager>
 
             bodyHitMarker.alpha = 0;
         }
+    }
+
+    public void Respawn(Enemy enemy)
+    {
+        StartCoroutine(RespawnCoroutine(enemy));
+    }
+    private IEnumerator RespawnCoroutine(Enemy enemy)
+    {
+        yield return new WaitForSeconds(timeForEnemyToRespawn);
+        enemy.gameObject.SetActive(true);
+        enemy.Start();
     }
 }
