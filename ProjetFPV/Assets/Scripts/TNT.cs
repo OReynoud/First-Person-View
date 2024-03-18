@@ -51,7 +51,12 @@ public class TNT : MonoBehaviour, IDestructible
                 PlayerController.instance.TakeDamage(damageModifier * damageToPlayer);
             }
         }
+
+        //Moche en attendant le bon VFX
+        GetComponent<MeshRenderer>().enabled = false;
+        transform.GetChild(0).GetComponent<ParticleSystem>().Play();
+        //
         
-        Destroy(gameObject);
+        Destroy(gameObject, 1f);
     }
 }
