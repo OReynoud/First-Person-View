@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &7502388276848145513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48,8 +48,12 @@ MonoBehaviour:
   bodyHitMarker: {fileID: 0}
   headHitMarker: {fileID: 0}
   staminaBar: {fileID: 0}
-  ammoText: []
+  ammoText:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   hitMarkerFadeTime: 0.4
+  timeForEnemyToRespawn: 2
 --- !u!114 &5647592295648705613
 MonoBehaviour:
   m_ObjectHideFlags: 0
