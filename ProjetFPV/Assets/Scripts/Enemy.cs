@@ -50,7 +50,7 @@ public class Enemy : ControllableProp
         Debug.DrawLine(waypoints[^1].position,waypoints[0].position );
     }
 
-    public void TakeDamage(int damage, bool headHit, float knockBackValue, Vector3 knockBackDir)
+    public void TakeDamage(int damage, bool headHit)
     {
         var totalDmg = 0f;
         if (headHit)
@@ -64,7 +64,7 @@ public class Enemy : ControllableProp
             currentHealth -= totalDmg;
         }
 
-        if (currentHealth < 0) StartCoroutine(Die());
+        if (currentHealth <= 0) StartCoroutine(Die());
     }
 
     public void TakeDamage(int damage, float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce)

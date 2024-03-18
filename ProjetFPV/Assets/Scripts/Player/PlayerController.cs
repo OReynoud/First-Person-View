@@ -722,6 +722,7 @@ public class PlayerController : Singleton<PlayerController>
         currentTrail = Instantiate(shootTrail);
         Destroy(currentTrail.gameObject, trailTime);
         currentTrail.SetPosition(0, shootingHand.position);
+        
         if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange, shootMask))
         {
             Debug.Log("Hit something");
@@ -729,7 +730,7 @@ public class PlayerController : Singleton<PlayerController>
             {
                 if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                 {
-                    enemy.TakeDamage(bulletDmg, true, baseKnockBack, transform.forward);
+                    enemy.TakeDamage(bulletDmg, true);
                     GameManager.instance.HitMark(true);
                 }
             }
@@ -738,7 +739,7 @@ public class PlayerController : Singleton<PlayerController>
             {
                 if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                 {
-                    enemy.TakeDamage(bulletDmg, false, baseKnockBack, transform.forward);
+                    enemy.TakeDamage(bulletDmg, false);
                     GameManager.instance.HitMark(false);
                 }
             }
