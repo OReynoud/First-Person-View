@@ -13,6 +13,7 @@ public class Enemy : ControllableProp
     public float headShotMultiplier;
     public float bodyShotMultiplier;
     public bool isImmobile = true;
+    public bool respawnOnDeath = true;
 
     [HideIf("isImmobile")] public List<Transform> waypoints;
     [HideIf("isImmobile")] public float translationSpeed = 0.1f;
@@ -63,8 +64,7 @@ public class Enemy : ControllableProp
             currentHealth -= totalDmg;
         }
 
-        if (currentHealth < 0) Die();
-        if (isGrabbed) return;
+        if (currentHealth < 0) StartCoroutine(Die());
     }
 
     public void TakeDamage(int damage, float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce)
@@ -72,7 +72,7 @@ public class Enemy : ControllableProp
         currentHealth -= damage;
         if (currentHealth < 0)
         {
-            Die();
+            StartCoroutine(Die());
         }
 
         InputAction.CallbackContext dummy = new InputAction.CallbackContext();
@@ -83,7 +83,7 @@ public class Enemy : ControllableProp
         body.AddForceAtPosition(knockBackDir * knockBackValue * damage,pointOfForce, ForceMode.Impulse);
     }
 
-    private void Die()
+    private IEnumerator Die()
     {
         GameManager.instance.HitMark(true);
         
@@ -92,7 +92,12 @@ public class Enemy : ControllableProp
         grabbedTween.Kill();
         
         
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        if (!respawnOnDeath) yield break;
+        yield return new WaitForSeconds(2f);
+        gameObject.SetActive(true);
+        Start();
+
     }
 
     // Update is called once per frame
@@ -120,7 +125,7 @@ public class Enemy : ControllableProp
         }
     }
 
-    public Tweener grabbedTween;
+    private Tweener grabbedTween;
     public void GrabbedBehavior(float levitateValue, float shakeAmplitude, int shakeFrequency)
     {
         transform.DOMove(transform.position + Vector3.up * levitateValue, 0.2f).OnComplete(() =>
