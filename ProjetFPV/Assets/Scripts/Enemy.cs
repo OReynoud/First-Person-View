@@ -70,7 +70,7 @@ public class Enemy : ControllableProp
     public void TakeDamage(int damage, float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce)
     {
         currentHealth -= damage;
-        if (currentHealth < 0)
+        if (currentHealth <= 0)
         {
             StartCoroutine(Die());
         }

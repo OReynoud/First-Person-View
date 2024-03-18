@@ -12,6 +12,7 @@ public class TNT : MonoBehaviour, IDestructible
     [SerializeField] private float damageToPlayer = 3;
     [Range(0,1)][SerializeField] private float damageFallOff = 0.2f;
     [SerializeField] private LayerMask mask;
+    [SerializeField] private GameObject explosionMesh;
 
     public void OnDrawGizmosSelected()
     {
@@ -57,6 +58,9 @@ public class TNT : MonoBehaviour, IDestructible
         transform.GetChild(0).GetComponent<ParticleSystem>().Play();
         //
         
-        Destroy(gameObject, 1f);
+        explosionMesh.SetActive(true);
+        explosionMesh.transform.localScale = new Vector3(1/transform.localScale.x ,1/transform.localScale.y,1/transform.localScale.z) * explosionForce;
+        Destroy(gameObject,1f);
     }
 }
+
