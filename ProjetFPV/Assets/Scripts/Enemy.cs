@@ -28,6 +28,7 @@ public class Enemy : ControllableProp
         currentHealth = maxHealth;
         currentIndex = 1;
         previousIndex = 0;
+        body.constraints = RigidbodyConstraints.FreezeAll;
     }
 
     public override void ApplyTelekinesis()
