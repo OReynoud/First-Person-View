@@ -44,7 +44,7 @@ public class PlayerHealth : MonoBehaviour
 
         var lostHealth = (maxHealth - currentHealth) / maxHealth;
 
-        volume.weight = Mathf.Lerp(volume.weight, vignetteIntensity.Evaluate(lostHealth), .01f);
+        //volume.weight = Mathf.Lerp(volume.weight, vignetteIntensity.Evaluate(lostHealth), .01f);
         
         if (t <= 0 && currentHealth < maxHealth) //La régén ne s'applique qu'après que timeBeforeRegen soit passé
         {

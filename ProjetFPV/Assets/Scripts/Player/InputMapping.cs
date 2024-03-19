@@ -98,6 +98,15 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""d72de2d2-8aff-4d2d-8533-debed6673b4c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -188,6 +197,17 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""22492a8a-5409-42f7-bad9-555b11bcaeb3"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -199,6 +219,15 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""name"": ""Forward"",
                     ""type"": ""Button"",
                     ""id"": ""bf1c9578-b4f9-41db-b96d-d15afa0f156e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""5e1baa0c-5825-44bf-868f-992f454f5198"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -376,6 +405,17 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e74b2cf-38d2-47a3-9977-a907cee7192a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -392,9 +432,11 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         m_ControlsLeftShoot_Shoot = m_ControlsLeftShoot.FindAction("Shoot", throwIfNotFound: true);
         m_ControlsLeftShoot_Telekinesis = m_ControlsLeftShoot.FindAction("Telekinesis", throwIfNotFound: true);
         m_ControlsLeftShoot_Reload = m_ControlsLeftShoot.FindAction("Reload", throwIfNotFound: true);
+        m_ControlsLeftShoot_Interact = m_ControlsLeftShoot.FindAction("Interact", throwIfNotFound: true);
         // ControlsRightShoot
         m_ControlsRightShoot = asset.FindActionMap("ControlsRightShoot", throwIfNotFound: true);
         m_ControlsRightShoot_Forward = m_ControlsRightShoot.FindAction("Forward", throwIfNotFound: true);
+        m_ControlsRightShoot_Interact = m_ControlsRightShoot.FindAction("Interact", throwIfNotFound: true);
         m_ControlsRightShoot_Backward = m_ControlsRightShoot.FindAction("Backward", throwIfNotFound: true);
         m_ControlsRightShoot_Right = m_ControlsRightShoot.FindAction("Right", throwIfNotFound: true);
         m_ControlsRightShoot_Left = m_ControlsRightShoot.FindAction("Left", throwIfNotFound: true);
@@ -472,6 +514,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     private readonly InputAction m_ControlsLeftShoot_Shoot;
     private readonly InputAction m_ControlsLeftShoot_Telekinesis;
     private readonly InputAction m_ControlsLeftShoot_Reload;
+    private readonly InputAction m_ControlsLeftShoot_Interact;
     public struct ControlsLeftShootActions
     {
         private @InputMapping m_Wrapper;
@@ -484,6 +527,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         public InputAction @Shoot => m_Wrapper.m_ControlsLeftShoot_Shoot;
         public InputAction @Telekinesis => m_Wrapper.m_ControlsLeftShoot_Telekinesis;
         public InputAction @Reload => m_Wrapper.m_ControlsLeftShoot_Reload;
+        public InputAction @Interact => m_Wrapper.m_ControlsLeftShoot_Interact;
         public InputActionMap Get() { return m_Wrapper.m_ControlsLeftShoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -517,6 +561,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         private void UnregisterCallbacks(IControlsLeftShootActions instance)
@@ -545,6 +592,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         public void RemoveCallbacks(IControlsLeftShootActions instance)
@@ -567,6 +617,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_ControlsRightShoot;
     private List<IControlsRightShootActions> m_ControlsRightShootActionsCallbackInterfaces = new List<IControlsRightShootActions>();
     private readonly InputAction m_ControlsRightShoot_Forward;
+    private readonly InputAction m_ControlsRightShoot_Interact;
     private readonly InputAction m_ControlsRightShoot_Backward;
     private readonly InputAction m_ControlsRightShoot_Right;
     private readonly InputAction m_ControlsRightShoot_Left;
@@ -580,6 +631,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         private @InputMapping m_Wrapper;
         public ControlsRightShootActions(@InputMapping wrapper) { m_Wrapper = wrapper; }
         public InputAction @Forward => m_Wrapper.m_ControlsRightShoot_Forward;
+        public InputAction @Interact => m_Wrapper.m_ControlsRightShoot_Interact;
         public InputAction @Backward => m_Wrapper.m_ControlsRightShoot_Backward;
         public InputAction @Right => m_Wrapper.m_ControlsRightShoot_Right;
         public InputAction @Left => m_Wrapper.m_ControlsRightShoot_Left;
@@ -600,6 +652,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Forward.started += instance.OnForward;
             @Forward.performed += instance.OnForward;
             @Forward.canceled += instance.OnForward;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
             @Backward.started += instance.OnBackward;
             @Backward.performed += instance.OnBackward;
             @Backward.canceled += instance.OnBackward;
@@ -631,6 +686,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Forward.started -= instance.OnForward;
             @Forward.performed -= instance.OnForward;
             @Forward.canceled -= instance.OnForward;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
             @Backward.started -= instance.OnBackward;
             @Backward.performed -= instance.OnBackward;
             @Backward.canceled -= instance.OnBackward;
@@ -682,10 +740,12 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnTelekinesis(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
     public interface IControlsRightShootActions
     {
         void OnForward(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
         void OnBackward(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
         void OnLeft(InputAction.CallbackContext context);

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Mechanics;
 using NaughtyAttributes;
 using Unity.Mathematics;
 using Unity.VisualScripting;
@@ -15,7 +16,7 @@ public class PlayerController : Singleton<PlayerController>
 //    [SerializeField] private Vector3 cameraOffset;
 
     private bool moveCam = false;
-    private Rigidbody rb;
+    public Rigidbody rb;
 
     private InputActionMap currentControls;
 
@@ -31,14 +32,14 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Refs")] public PlayerInput inputs;
     [Foldout("Refs")] public LineRenderer shootTrail;
-    [Foldout("Refs")] [SerializeField] private Transform playerCam;
+    [Foldout("Refs")] [SerializeField] public Transform playerCam;
     [Foldout("Refs")] [SerializeField] private Transform hands;
     [Foldout("Refs")] [SerializeField] private Transform leftHand;
     [Foldout("Refs")] [SerializeField] private Transform rightHand;
     [Foldout("Refs")] [SerializeField] private RectTransform telekinesisPointer;
     [Foldout("Refs")] [SerializeField] private Transform offsetPosition;
 
-    [Foldout("Refs")] [SerializeField] private CapsuleCollider standingCollider;
+    [Foldout("Refs")] [SerializeField] public CapsuleCollider standingCollider;
     [Foldout("Refs")] [SerializeField] private CapsuleCollider crouchedCollider;
 
     #endregion
@@ -194,7 +195,7 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Debug")] [SerializeField] private bool bobbing;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
-    private bool canMove = true;
+    public bool canMove = true;
 
     [FormerlySerializedAs("isRunning")] [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool isCrouched = false;
@@ -284,11 +285,11 @@ public class PlayerController : Singleton<PlayerController>
         Debug.Log(currentControls);
         currentControls.Enable();
         playerLayer =  LayerMask.GetMask("Player") + shootMask;
-        //currentControls.FindAction("Test",true).Enable();
         currentControls.FindAction("ToggleSprint", true).performed += ToggleCrouch;
         currentControls.FindAction("Shoot", true).performed += Shoot;
         currentControls.FindAction("Telekinesis", true).canceled += ReleaseProp;
         currentControls.FindAction("Reload", true).performed += Reload;
+        currentControls.FindAction("Interact", true).performed += Interact;
 
         //currentControls.FindAction("Telekinesis",true).performed += ;
 
@@ -300,6 +301,17 @@ public class PlayerController : Singleton<PlayerController>
         currentAmmo = magSize;
         inventoryAmmo = maxStoredAmmo;
         currentHealth = maxHealth;
+    }
+
+    private void Interact(InputAction.CallbackContext obj)
+    {
+        if ( Physics.Raycast(transform.position + transform.forward,transform.forward , out RaycastHit hit,2))
+        {
+            if (hit.transform.TryGetComponent(out ICanInteract interactable))
+            {
+                interactable.Interact(-hit.normal);
+            }
+        }
     }
 
     public void TakeDamage(float damage)
@@ -430,12 +442,14 @@ public class PlayerController : Singleton<PlayerController>
 
         isGrounded = GroundCheck();
 
-
-        ForwardInput();
-        SidewaysInput();
-        Rotate();
-        ArmBobbing();
-        TelekinesisInput();
+        if (canMove)
+        {
+            Rotate();
+            ForwardInput();
+            SidewaysInput();
+            ArmBobbing();
+            TelekinesisInput();
+        }
 
         if (shootSpeedTimer >= 0)
         {
@@ -651,6 +665,21 @@ public class PlayerController : Singleton<PlayerController>
 
     #region Controls
 
+    public void ImmobilizePlayer()
+    {
+        canMove = !canMove;
+
+        if (canMove)
+        {
+            rb.constraints = RigidbodyConstraints.FreezeRotation;
+            currentControls.Enable();
+        }
+        else
+        {
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+            currentControls.Disable();
+        }
+    }
     void ForwardInput()
     {
         if (currentControls.FindAction("Forward", true).IsPressed())
@@ -665,7 +694,6 @@ public class PlayerController : Singleton<PlayerController>
             appliedForce = true;
         }
     }
-
     void SidewaysInput()
     {
         if (currentControls.FindAction("Right", true).IsPressed())

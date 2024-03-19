@@ -156,7 +156,7 @@ public class CameraShake : Singleton<CameraShake>
 
     public void ResetCoroutine()
     {
-        StopCoroutine(oneShotCoroutine);
+        if (oneShotCoroutine != null) StopCoroutine(oneShotCoroutine);
         oneShotCoroutine = null;
         cam.transform.localPosition = originalPos;
         cam.transform.localRotation = originalRot;
