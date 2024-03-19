@@ -32,11 +32,11 @@ public class TiltHead : MonoBehaviour
         
         if (objectInFront || objectInBack)
         {
-            cam.localRotation = Quaternion.Lerp(cam.localRotation, angle, 0.02f*speed);
+            cam.localRotation = Quaternion.Lerp(cam.localRotation, angle, Mathf.SmoothStep(0.0f, 1.0f, 0.02f*speed));
         }
         else
         {
-            cam.localRotation = Quaternion.Lerp(cam.localRotation, Quaternion.identity, 0.02f*speed);
+            cam.localRotation = Quaternion.Lerp(cam.localRotation, Quaternion.identity, Mathf.SmoothStep(0.0f, 1.0f, 0.02f*speed));
         }
         
     }
