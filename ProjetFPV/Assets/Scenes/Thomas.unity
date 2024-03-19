@@ -204,6 +204,63 @@ Transform:
   - {fileID: 2002401184}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -88.782, z: 0}
+--- !u!1 &428961709
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 428961711}
+  - component: {fileID: 428961710}
+  m_Layer: 0
+  m_Name: Decal Projector (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &428961710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428961709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: b4d576a9bbcab104c84dd1b6cc1c5e66, type: 2}
+  m_DrawDistance: 1000
+  m_FadeScale: 0.9
+  m_StartAngleFade: 180
+  m_EndAngleFade: 180
+  m_UVScale: {x: 1, y: 1}
+  m_UVBias: {x: 0, y: 0}
+  m_DecalLayerMask: 1
+  m_ScaleMode: 0
+  m_Offset: {x: 0, y: 0, z: 0.975}
+  m_Size: {x: 8, y: 8, z: 1.95}
+  m_FadeFactor: 1
+--- !u!4 &428961711
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428961709}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0000010803341, y: -0.6995531, z: -0.0000010654329, w: 0.7145807}
+  m_LocalPosition: {x: -13.48, y: 12.51, z: -13.59}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2074578333}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -88.782, z: 0}
 --- !u!1 &514257787
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,6 +539,111 @@ Transform:
   - {fileID: 1556458415}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -88.782, z: 0}
+--- !u!1 &866037241
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 866037245}
+  - component: {fileID: 866037244}
+  - component: {fileID: 866037243}
+  - component: {fileID: 866037242}
+  m_Layer: 0
+  m_Name: Cube (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &866037242
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866037241}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &866037243
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866037241}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 91f544b67b384764d81661e07f7b37fd, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &866037244
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866037241}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &866037245
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866037241}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -14.42, y: 8.03, z: -13.41}
+  m_LocalScale: {x: 1, y: 20, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &903732235
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,7 +767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ac7240c9c6f7354bb5d1ae45a94d11c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  translationDistance: 25
+  translationDistance: 100
   descriptionText: {fileID: 2014585169}
 --- !u!114 &1139039112 stripped
 MonoBehaviour:
@@ -861,6 +1023,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: "Libert\xE0 nella mascherata"
+  maxDistance: 10
 --- !u!65 &1556458417
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1178,6 +1341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: Un graffiti avec beaucoup de style
+  maxDistance: 10
 --- !u!65 &2002401186
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1347,6 +1511,83 @@ CanvasGroup:
     type: 3}
   m_PrefabInstance: {fileID: 1512341441}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2074578332
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2074578333}
+  - component: {fileID: 2074578336}
+  - component: {fileID: 2074578335}
+  - component: {fileID: 2074578334}
+  m_Layer: 0
+  m_Name: ColliderDecal
+  m_TagString: Decal
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2074578333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074578332}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0000010803341, y: 0.6995531, z: 0.0000010654329, w: 0.7145807}
+  m_LocalPosition: {x: 0.32, y: -0.31, z: 0.79}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 428961711}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2074578334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074578332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 560c26944c9b62745a41e0fd5838fbc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: Un grand graffiti
+  maxDistance: 50
+--- !u!65 &2074578335
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074578332}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.15993781, y: 4.080593, z: 6.804385}
+  m_Center: {x: 0.42214242, y: 0.4988842, z: -0.442443}
+--- !u!33 &2074578336
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2074578332}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &9057081235497785879
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1359,6 +1600,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Decal Projector
+      objectReference: {fileID: 0}
+    - target: {fileID: 6120044306860007911, guid: 2b169caecd1f29d4199d46e8de8c226b,
+        type: 3}
+      propertyPath: maxDistance
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6891074738902423863, guid: 2b169caecd1f29d4199d46e8de8c226b,
         type: 3}
@@ -1422,6 +1668,7 @@ SceneRoots:
   - {fileID: 1951328816}
   - {fileID: 514257791}
   - {fileID: 903732239}
+  - {fileID: 866037245}
   - {fileID: 1849883600}
   - {fileID: 1854279968}
   - {fileID: 1512341441}
@@ -1429,4 +1676,5 @@ SceneRoots:
   - {fileID: 9057081235497785879}
   - {fileID: 244590111}
   - {fileID: 860295919}
+  - {fileID: 428961711}
   - {fileID: 1147534609}

@@ -25,14 +25,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2021356887493841895}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0000010803341, y: -0.6995531, z: -0.0000010654329, w: 0.7145807}
-  m_LocalPosition: {x: 2.26, y: 1.95, z: -9.93}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7568893983490178865}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -88.782, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &1901195851505241101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54,8 +54,8 @@ MonoBehaviour:
   m_UVBias: {x: 0, y: 0}
   m_DecalLayerMask: 1
   m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 0.975}
-  m_Size: {x: 4, y: 4, z: 1.95}
+  m_Offset: {x: 0, y: 0, z: 0}
+  m_Size: {x: 4, y: 4, z: 0.5}
   m_FadeFactor: 1
 --- !u!1 &2168650781754737008
 GameObject:
@@ -84,13 +84,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2168650781754737008}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0000010803341, y: 0.6995531, z: 0.0000010654329, w: 0.7145807}
-  m_LocalPosition: {x: 0.28680694, y: -0.31354663, z: 2.1365776}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6891074738902423863}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!33 &3928415909443016725
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -119,7 +119,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.10565394, y: 2.237053, z: 3.4628773}
-  m_Center: {x: 0.39500043, y: 0.47271442, z: -0.4424429}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6120044306860007911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,3 +133,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   description: Ceci est un graffiti placeholder
+  maxDistance: 0

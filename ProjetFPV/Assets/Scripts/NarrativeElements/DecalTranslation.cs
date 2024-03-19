@@ -5,6 +5,8 @@ using UnityEngine;
 public class DecalTranslation : MonoBehaviour
 {
     private RaycastHit hit;
+    private bool hasAText;
+    
     [SerializeField] private float translationDistance;
 
     [SerializeField] private TextMeshProUGUI descriptionText;
@@ -21,11 +23,27 @@ public class DecalTranslation : MonoBehaviour
         {
             if (hit.transform.gameObject.CompareTag("Decal"))
             {
-                descriptionText.text = hit.transform.gameObject.GetComponent<DecalInfos>().ReturnDescription();
+                var target = hit.transform.gameObject.GetComponent<DecalInfos>();
+                float dist = 0;
+                string desc = "";
+
+                target.ReturnDescription(out dist, out desc);
+
+                if (Vector3.Distance(transform.position, hit.transform.position) <= dist)
+                {
+                    descriptionText.text = desc;
+                    hasAText = true;
+                }
+                else
+                {
+                    descriptionText.text = "";
+                    hasAText = false;
+                }
             }
-            else
+            else if (hasAText)
             {
                 descriptionText.text = "";
+                hasAText = false;
             }
         }
     }
