@@ -17,17 +17,22 @@ public class Enemy : ControllableProp
 
     [HideIf("isImmobile")] public List<Transform> waypoints;
     [HideIf("isImmobile")] public float translationSpeed = 0.1f;
+    [ShowIf("respawnOnDeath")] public Transform respawnPoint;
 
     private int currentIndex = 1;
 
     private int previousIndex = 0;
 
     // Start is called before the first frame update
+    void Awake()
+    {
+        currentIndex = 1;
+        previousIndex = 0;
+    }
     public void Start()
     {
         currentHealth = maxHealth;
-        currentIndex = 1;
-        previousIndex = 0;
+
         body.constraints = RigidbodyConstraints.FreezeAll;
     }
 

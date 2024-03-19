@@ -45,10 +45,7 @@ public class CameraShake : Singleton<CameraShake>
     {
         if (oneShotCoroutine != null) //Annule la coroutine en cours (si yen a une) et reset la cam
         {
-            StopCoroutine(oneShotCoroutine);
-            oneShotCoroutine = null;
-            cam.transform.localPosition = originalPos;
-            cam.transform.localRotation = originalRot;
+            ResetCoroutine();
         }
         
         oneShotCoroutine = StartCoroutine(ShakeCoroutine(index, false)); //On stocke cette coroutine aussi, comme ca si jamais yen a un autre qui est trigger, on peut tej celui en cours
@@ -80,7 +77,6 @@ public class CameraShake : Singleton<CameraShake>
             StopCoroutine(infCoroutine);
             infCoroutine = null;
             StartCoroutine(StopShaking(currentIndex, infCoroutine));
-            Debug.Log("stopping");
         }
     }
     
@@ -156,6 +152,14 @@ public class CameraShake : Singleton<CameraShake>
     void NullifyCurrentCoroutine(Coroutine routine)
     {
         routine = null;
+    }
+
+    public void ResetCoroutine()
+    {
+        StopCoroutine(oneShotCoroutine);
+        oneShotCoroutine = null;
+        cam.transform.localPosition = originalPos;
+        cam.transform.localRotation = originalRot;
     }
 }
 

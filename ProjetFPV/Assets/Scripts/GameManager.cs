@@ -101,5 +101,16 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(timeForEnemyToRespawn);
         enemy.gameObject.SetActive(true);
         enemy.Start();
+        if (enemy.isImmobile) yield break;
+        
+        try
+        {
+            enemy.transform.position = enemy.respawnPoint.position;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("T'as oublié de mettre un respawn point en réference");
+       
+        }
     }
 }
