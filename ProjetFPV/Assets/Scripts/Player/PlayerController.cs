@@ -586,8 +586,9 @@ public class PlayerController : Singleton<PlayerController>
                 break;
         }
 
-        if (currentStamina < 0)
+        if (currentStamina < throwCost)
         {
+            CameraShake.instance.StopInfiniteShake();
             controlledProp.ApplyTelekinesis();
             controlledProp.isGrabbed = false;
             controlledProp = null;
@@ -597,8 +598,7 @@ public class PlayerController : Singleton<PlayerController>
 
     public void ReleaseProp(InputAction.CallbackContext obj)
     {
-        if (!controlledProp) return;
-        
+        if (controlledProp == null) CameraShake.instance.ResetCoroutine();
         CameraShake.instance.StopInfiniteShake();
         switch (controlledProp)
         {
@@ -766,8 +766,6 @@ public class PlayerController : Singleton<PlayerController>
 
     private void TelekinesisInput()
     {
-        if (currentStamina < throwCost * 1.5f) return;
-
         if (currentControls.FindAction("Telekinesis", true).IsPressed())
         {
             if (!controlledProp)
