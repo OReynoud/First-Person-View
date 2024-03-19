@@ -9,7 +9,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class PlayerController : Singleton<PlayerController>
 {
@@ -231,6 +233,8 @@ public class PlayerController : Singleton<PlayerController>
 
     #endregion
 
+    [SerializeField] private GameObject inkStainDecal;
+    
     [Button]
     void UpdateRestingPos()
     {
@@ -778,6 +782,14 @@ public class PlayerController : Singleton<PlayerController>
             }
 
             currentTrail.SetPosition(1, hit.point);
+
+            //Coucou, Thomas est passé par là (jusqu'au prochain commentaire)
+            var r = Random.Range(0.8f, 1.2f);
+            var decal = Instantiate(inkStainDecal, hit.point + hit.normal * 0.02f, Quaternion.identity, hit.transform);
+            decal.transform.forward = -hit.normal;
+            var proj = decal.GetComponent<DecalProjector>();
+            proj.size *= r;
+            //Je m'en vais !
         }
         else
         {
