@@ -598,10 +598,8 @@ public class PlayerController : Singleton<PlayerController>
 
     public void ReleaseProp(InputAction.CallbackContext obj)
     {
+        if (controlledProp == null) CameraShake.instance.ResetCoroutine();
         CameraShake.instance.StopInfiniteShake();
-        if (controlledProp == null) return;
-        
-        Debug.Log("oui");
         switch (controlledProp)
         {
             case TelekinesisObject:
