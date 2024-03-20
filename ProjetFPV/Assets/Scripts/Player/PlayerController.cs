@@ -792,7 +792,7 @@ public class PlayerController : Singleton<PlayerController>
         else
         {
             Debug.Log("Hit some air");
-            currentTrail.SetPosition(1, playerCam.forward * maxRange);
+            currentTrail.SetPosition(1, playerCam.forward * maxRange + playerCam.position);
         }
 
         if (currentAmmo == 0)
