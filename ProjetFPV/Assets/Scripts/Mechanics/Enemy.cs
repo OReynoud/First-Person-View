@@ -32,7 +32,7 @@ namespace Mechanics
         public void Start()
         {
             currentHealth = maxHealth;
-
+            transform.rotation = Quaternion.identity;
             body.constraints = RigidbodyConstraints.FreezeAll;
         }
 

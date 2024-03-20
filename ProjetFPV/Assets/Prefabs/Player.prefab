@@ -392,6 +392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51a0ba1f0bed084896949d9bb67cc6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
   maxHealth: 10
   currentHealth: 0
   timeToRegenerateHealth: 0
@@ -456,14 +457,20 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  sprintCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   dragCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -471,8 +478,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -482,16 +489,20 @@ MonoBehaviour:
     m_RotationOrder: 4
   runVelocity: 8
   crouchVelocity: 5
+  sprintVelocity: 0
   lookSpeed: 1
+  maxSteepness: 30
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 65
   lookXLimit: 75
-  airMobilityFactor: 0.8
   normalFOV: 60
   lerpFOV: 0.1
   shootMask:
     serializedVersion: 2
     m_Bits: 385
   bulletDmg: 5
-  maxStoredAmmo: 200
+  maxStoredAmmo: 500
   magSize: 5
   shootSpeed: 0.5
   reloadSpeed: 1
@@ -503,7 +514,7 @@ MonoBehaviour:
   grabDistanceBuffer: 15
   maxStamina: 200
   currentStamina: 100
-  staminaRegen: 5
+  staminaRegen: 10
   holdObjectCost: 4
   holdEnemyCost: 8
   throwCost: 20
@@ -525,6 +536,8 @@ MonoBehaviour:
   controlledProp: {fileID: 0}
   currentAmmo: 0
   inventoryAmmo: 0
+  inkStainDecal: {fileID: 2021356887493841895, guid: 3871a1bd6706e8944a93be83e22c8fc5,
+    type: 3}
   jumpForce: 5
   runAccel: 30
   runMaxVelocityFactor: 2
@@ -750,8 +763,8 @@ MonoBehaviour:
   frontRC: {fileID: 7392715935690071276}
   backRC: {fileID: 2340682711907133276}
   cam: {fileID: 5842867412959891476}
-  angle: {x: 0, y: 0, z: 0.06975647, w: 0.9975641}
-  speed: 0.75
+  angle: {x: 0, y: 0, z: 0.08715574, w: 0.9961947}
+  speed: 1.6
 --- !u!1 &1759711028052782629
 GameObject:
   m_ObjectHideFlags: 0
@@ -3881,6 +3894,7 @@ GameObject:
   - component: {fileID: 5747994813939177046}
   - component: {fileID: 6778243986181336472}
   - component: {fileID: 5565993660230409513}
+  - component: {fileID: 9203036196178575144}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4007,6 +4021,20 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &9203036196178575144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7963865459006595146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ac7240c9c6f7354bb5d1ae45a94d11c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  translationDistance: 100
+  descriptionText: {fileID: 0}
 --- !u!1 &8515408509111836048
 GameObject:
   m_ObjectHideFlags: 0

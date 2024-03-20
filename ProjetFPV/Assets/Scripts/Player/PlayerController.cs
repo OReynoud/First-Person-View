@@ -53,6 +53,9 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private AnimationCurve crouchCurve;
+    
+    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
+    private AnimationCurve sprintCurve;
 
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private AnimationCurve dragCurve;
@@ -63,15 +66,20 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private float crouchVelocity;
 
+    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
+    private float sprintVelocity;
+    
     [Foldout("Movement")] [Tooltip("Camera sensitivity")] [SerializeField]
     private float lookSpeed;
+    [Foldout("Movement")] [Tooltip("Camera sensitivity")] [SerializeField]
+    private float maxSteepness;
 
     [Foldout("Movement")] [Tooltip("Limit to the camera being able to look up or down")] [SerializeField]
+    private LayerMask groundLayer;
+    
+    [Foldout("Movement")] [Tooltip("Limit to the camera being able to look up or down")] [SerializeField]
     private float lookXLimit;
-
-    [Foldout("Movement")] [Tooltip("How effective horizontal movement is in the air")] [SerializeField] [Range(0, 1)]
-    private float airMobilityFactor;
-
+    
 
     [Foldout("Movement")] [Tooltip("CameraFOV when Player is walking")] [SerializeField]
     private float normalFOV;
@@ -381,15 +389,22 @@ public class PlayerController : Singleton<PlayerController>
         UpdateRestingPos();
     }
 
-    private bool GroundCheck()
+    private bool GroundCheck(out RaycastHit hit)
     {
         bool check = false;
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.1f, LayerMask.GetMask("Ground")))
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.2f, groundLayer))
         {
             if (!isJumping)
             {
                 check = true;
             }
+
+            if (Vector3.Angle(hit.normal,transform.up) > maxSteepness)
+            {
+                check = false;
+            }
+
+            ;
         }
 
         return check;
@@ -444,7 +459,6 @@ public class PlayerController : Singleton<PlayerController>
         UpdateRestingPos();
         playerDir = Vector3.zero;
 
-        isGrounded = GroundCheck();
 
         if (canMove)
         {
@@ -463,7 +477,7 @@ public class PlayerController : Singleton<PlayerController>
 
         if (isCrouched)
         {
-            playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.1f);
+            playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.8f);
         }
         else
         {
@@ -484,9 +498,10 @@ public class PlayerController : Singleton<PlayerController>
     }
 
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         HorizontalMovement();
+        
     }
 
 
@@ -494,6 +509,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void HorizontalMovement()
     {
+        isGrounded = GroundCheck(out RaycastHit hit);
         if (playerDir == Vector3.zero)
         {
             appliedForce = false;
@@ -501,6 +517,12 @@ public class PlayerController : Singleton<PlayerController>
 
         playerDir.Normalize();
 
+        if (!isGrounded)
+        {
+            rb.AddForce(Vector3.down * 10);
+            moveInputTimer = 0;
+            return;
+        }
         if (appliedForce)
         {
             moveInputTimer += Time.deltaTime;
@@ -508,33 +530,34 @@ public class PlayerController : Singleton<PlayerController>
         else
         {
             moveInputTimer -= Time.deltaTime;
-            moveInputTimer = Mathf.Clamp(moveInputTimer, 0, crouchCurve.keys[^1].time);
+            moveInputTimer = Mathf.Clamp(moveInputTimer, 0, dragCurve.keys[^1].time);
         }
 
+        
         if (!appliedForce)
         {
             inputVelocity = rb.velocity.normalized * (dragCurve.Evaluate(moveInputTimer) *
-                                                      (isGrounded ? 1 : airMobilityFactor) *
                                                       new Vector2(rb.velocity.x, rb.velocity.z).magnitude);
-            rb.velocity = new Vector3(inputVelocity.x, rb.velocity.y, inputVelocity.z);
-
+            rb.velocity = new Vector3(inputVelocity.x, 0, inputVelocity.z);
             return;
         }
 
 
         if (isCrouched)
         {
-            inputVelocity = playerDir * (crouchCurve.Evaluate(moveInputTimer) * (isGrounded ? 1 : airMobilityFactor) *
+            inputVelocity = playerDir * (crouchCurve.Evaluate(moveInputTimer) *
                                          crouchVelocity);
             Mathf.Clamp(moveInputTimer, 0, crouchCurve.keys[^1].time);
         }
         else
         {
             inputVelocity = playerDir *
-                            (runCurve.Evaluate(moveInputTimer) * (isGrounded ? 1 : airMobilityFactor) * runVelocity);
+                            (runCurve.Evaluate(moveInputTimer) * runVelocity);
             Mathf.Clamp(moveInputTimer, 0, runCurve.keys[^1].time);
         }
 
+        // float magnitude = inputVelocity.magnitude;
+        // Debug.Log(Vector3.Cross(transform.up,inputVelocity.normalized));
         rb.velocity = new Vector3(inputVelocity.x, rb.velocity.y, inputVelocity.z);
     }
 
@@ -616,7 +639,11 @@ public class PlayerController : Singleton<PlayerController>
 
     public void ReleaseProp(InputAction.CallbackContext obj)
     {
-        if (controlledProp == null) CameraShake.instance.ResetCoroutine();
+        if (controlledProp == null)
+        {
+            CameraShake.instance.ResetCoroutine();
+            return;
+        }
         CameraShake.instance.StopInfiniteShake();
         switch (controlledProp)
         {
