@@ -11,7 +11,8 @@ public class InkStain : MonoBehaviour
     void Start()
     {
         decal = GetComponent<DecalProjector>();
-        decal.fadeFactor = Random.Range(0.6f, 1f);
+        decal.fadeFactor = Random.Range(0.85f, 1f);
+        decal.size *= Random.Range(0.8f, 1.2f);
         t = 2f;
         Destroy(gameObject, 8f);
     }

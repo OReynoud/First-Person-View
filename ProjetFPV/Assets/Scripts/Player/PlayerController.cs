@@ -784,11 +784,9 @@ public class PlayerController : Singleton<PlayerController>
             currentTrail.SetPosition(1, hit.point);
 
             //Coucou, Thomas est passé par là (jusqu'au prochain commentaire)
-            var r = Random.Range(0.8f, 1.2f);
             var decal = Instantiate(inkStainDecal, hit.point + hit.normal * 0.02f, Quaternion.identity, hit.transform);
             decal.transform.forward = -hit.normal;
-            var proj = decal.GetComponent<DecalProjector>();
-            proj.size *= r;
+            decal.transform.RotateAround(decal.transform.position, decal.transform.forward, Random.Range(-180f, 180f));
             //Je m'en vais !
         }
         else
