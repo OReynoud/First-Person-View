@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
+
 [CustomEditor(typeof(CameraShake))]
 public class CustomInspector : Editor
 {
@@ -30,3 +32,5 @@ public class CustomInspector : Editor
 
     }
 }
+
+#endif

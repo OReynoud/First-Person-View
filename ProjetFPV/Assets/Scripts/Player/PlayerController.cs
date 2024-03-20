@@ -477,7 +477,7 @@ public class PlayerController : Singleton<PlayerController>
 
         if (isCrouched)
         {
-            playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.1f);
+            playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.8f);
         }
         else
         {
