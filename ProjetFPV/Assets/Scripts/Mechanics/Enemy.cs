@@ -91,7 +91,7 @@ namespace Mechanics
 
         private void Die()
         {
-            GameManager.instance.HitMark(true);
+            GameManager.instance.OnKillEnemy();
         
         
             grabbedTween.Complete();
