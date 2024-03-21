@@ -371,7 +371,7 @@ Transform:
   m_GameObject: {fileID: 1239935718432516662}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.72, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -459,7 +459,25 @@ MonoBehaviour:
     m_RotationOrder: 4
   sprintCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.4761884
+      outSlope: 1.4761884
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.061953664
+    - serializedVersion: 3
+      time: 2.0429258
+      value: 0.9788603
+      inSlope: 0.27162594
+      outSlope: 0.27162594
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.22013351
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -489,7 +507,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   runVelocity: 8
   crouchVelocity: 5
-  sprintVelocity: 0
+  sprintVelocity: 13
   lookSpeed: 1
   maxSteepness: 30
   groundLayer:
@@ -529,7 +547,6 @@ MonoBehaviour:
   appliedForce: 0
   bobbing: 0
   canMove: 1
-  isCrouched: 0
   isJumping: 0
   isGrounded: 0
   shootSpeedTimer: 0

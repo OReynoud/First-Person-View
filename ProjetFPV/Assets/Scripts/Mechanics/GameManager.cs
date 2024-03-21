@@ -11,6 +11,8 @@ namespace Mechanics
     {
         [SerializeField] private CanvasGroup bodyHitMarker;
         [SerializeField] private CanvasGroup headHitMarker;
+        [SerializeField] private CanvasGroup crosshairTK;
+        [SerializeField] private CanvasGroup crosshairBase;
         [SerializeField] private Image staminaBar;
         [SerializeField] private List<TextMeshProUGUI> ammoText;
     
