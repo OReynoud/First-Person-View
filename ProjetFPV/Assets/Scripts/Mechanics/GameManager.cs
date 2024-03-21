@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,8 @@ namespace Mechanics
     {
         [SerializeField] private CanvasGroup bodyHitMarker;
         [SerializeField] private CanvasGroup headHitMarker;
+        [SerializeField] private CanvasGroup crosshairTK;
+        [SerializeField] private Image crosshairBase;
         [SerializeField] private Image staminaBar;
         [SerializeField] private List<TextMeshProUGUI> ammoText;
     
@@ -32,6 +35,7 @@ namespace Mechanics
         public void Update()
         {
             UpdateAmmoUI();
+            UsingTK();
         }
 
         private void UpdateAmmoUI()
@@ -53,6 +57,18 @@ namespace Mechanics
                 if (bodyHit != null)StopCoroutine(bodyHit);
                 headHit = StartCoroutine(FadeHitMark(false));
             }
+        }
+
+        public void UsingTK()
+        {
+            crosshairTK.alpha = PlayerController.instance.controlledProp ? 1 : 0;
+        }
+
+        public Coroutine killMarker;
+        public void OnKillEnemy()
+        {
+            if (killMarker != null)StopCoroutine(killMarker);
+            killMarker = StartCoroutine(OnKillHitMark());
         }
 
         public float UpdatePlayerStamina(float current, float max, float increment)
@@ -93,6 +109,22 @@ namespace Mechanics
                 bodyHitMarker.alpha = 0;
             }
         }
+
+        private IEnumerator OnKillHitMark()
+        {
+            
+            var timer = Time.time + hitMarkerFadeTime;
+            crosshairBase.color = Color.red;
+            while (Time.time < timer)
+            {
+                 crosshairBase.color = Color.Lerp(Color.white,Color.red, (timer - Time.time)/hitMarkerFadeTime);
+                yield return null;
+            }
+            
+            crosshairBase.color = Color.white;
+        }
+        
+        
 
         public void Respawn(Enemy enemy)
         {

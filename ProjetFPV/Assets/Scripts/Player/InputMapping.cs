@@ -64,9 +64,18 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ToggleSprint"",
+                    ""name"": ""ToggleCrouch"",
                     ""type"": ""Button"",
                     ""id"": ""6261dffc-8265-46ba-b04c-044a2a20e77e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleSprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""8481f983-7a1c-40f2-9447-b7ab13820713"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -157,11 +166,22 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""14823f61-26eb-46c1-b964-e08829c2c634"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ToggleSprint"",
+                    ""action"": ""ToggleCrouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2749989e-d744-4570-827f-063ca7088c03"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleCrouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -206,6 +226,17 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""096edd90-780b-4137-bc55-14cb291fc0b2"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleSprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -428,6 +459,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         m_ControlsLeftShoot_Backward = m_ControlsLeftShoot.FindAction("Backward", throwIfNotFound: true);
         m_ControlsLeftShoot_Right = m_ControlsLeftShoot.FindAction("Right", throwIfNotFound: true);
         m_ControlsLeftShoot_Left = m_ControlsLeftShoot.FindAction("Left", throwIfNotFound: true);
+        m_ControlsLeftShoot_ToggleCrouch = m_ControlsLeftShoot.FindAction("ToggleCrouch", throwIfNotFound: true);
         m_ControlsLeftShoot_ToggleSprint = m_ControlsLeftShoot.FindAction("ToggleSprint", throwIfNotFound: true);
         m_ControlsLeftShoot_Shoot = m_ControlsLeftShoot.FindAction("Shoot", throwIfNotFound: true);
         m_ControlsLeftShoot_Telekinesis = m_ControlsLeftShoot.FindAction("Telekinesis", throwIfNotFound: true);
@@ -510,6 +542,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     private readonly InputAction m_ControlsLeftShoot_Backward;
     private readonly InputAction m_ControlsLeftShoot_Right;
     private readonly InputAction m_ControlsLeftShoot_Left;
+    private readonly InputAction m_ControlsLeftShoot_ToggleCrouch;
     private readonly InputAction m_ControlsLeftShoot_ToggleSprint;
     private readonly InputAction m_ControlsLeftShoot_Shoot;
     private readonly InputAction m_ControlsLeftShoot_Telekinesis;
@@ -523,6 +556,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         public InputAction @Backward => m_Wrapper.m_ControlsLeftShoot_Backward;
         public InputAction @Right => m_Wrapper.m_ControlsLeftShoot_Right;
         public InputAction @Left => m_Wrapper.m_ControlsLeftShoot_Left;
+        public InputAction @ToggleCrouch => m_Wrapper.m_ControlsLeftShoot_ToggleCrouch;
         public InputAction @ToggleSprint => m_Wrapper.m_ControlsLeftShoot_ToggleSprint;
         public InputAction @Shoot => m_Wrapper.m_ControlsLeftShoot_Shoot;
         public InputAction @Telekinesis => m_Wrapper.m_ControlsLeftShoot_Telekinesis;
@@ -549,6 +583,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Left.started += instance.OnLeft;
             @Left.performed += instance.OnLeft;
             @Left.canceled += instance.OnLeft;
+            @ToggleCrouch.started += instance.OnToggleCrouch;
+            @ToggleCrouch.performed += instance.OnToggleCrouch;
+            @ToggleCrouch.canceled += instance.OnToggleCrouch;
             @ToggleSprint.started += instance.OnToggleSprint;
             @ToggleSprint.performed += instance.OnToggleSprint;
             @ToggleSprint.canceled += instance.OnToggleSprint;
@@ -580,6 +617,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Left.started -= instance.OnLeft;
             @Left.performed -= instance.OnLeft;
             @Left.canceled -= instance.OnLeft;
+            @ToggleCrouch.started -= instance.OnToggleCrouch;
+            @ToggleCrouch.performed -= instance.OnToggleCrouch;
+            @ToggleCrouch.canceled -= instance.OnToggleCrouch;
             @ToggleSprint.started -= instance.OnToggleSprint;
             @ToggleSprint.performed -= instance.OnToggleSprint;
             @ToggleSprint.canceled -= instance.OnToggleSprint;
@@ -736,6 +776,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         void OnBackward(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
         void OnLeft(InputAction.CallbackContext context);
+        void OnToggleCrouch(InputAction.CallbackContext context);
         void OnToggleSprint(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnTelekinesis(InputAction.CallbackContext context);

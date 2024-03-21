@@ -48,38 +48,40 @@ public class PlayerController : Singleton<PlayerController>
 
     #region Movement Variables
 
-    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
+    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField] [HorizontalLine(color: EColor.Black)]
     private AnimationCurve runCurve;
 
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
-    private AnimationCurve crouchCurve;
-    
-    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
-    private AnimationCurve sprintCurve;
-
-    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
-    private AnimationCurve dragCurve;
-
-    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private float runVelocity;
+    
+    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField] [HorizontalLine(color: EColor.Black)]
+    private AnimationCurve crouchCurve;
 
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private float crouchVelocity;
+    
+    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField] [HorizontalLine(color: EColor.Black)]
+    private AnimationCurve sprintCurve;
 
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private float sprintVelocity;
     
+    [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField] [HorizontalLine(color: EColor.Black)]
+    private AnimationCurve dragCurve;
+
+    [Space(30)]
     [Foldout("Movement")] [Tooltip("Camera sensitivity")] [SerializeField]
     private float lookSpeed;
+
     [Foldout("Movement")] [Tooltip("Camera sensitivity")] [SerializeField]
     private float maxSteepness;
 
     [Foldout("Movement")] [Tooltip("Limit to the camera being able to look up or down")] [SerializeField]
     private LayerMask groundLayer;
-    
+
     [Foldout("Movement")] [Tooltip("Limit to the camera being able to look up or down")] [SerializeField]
     private float lookXLimit;
-    
+
 
     [Foldout("Movement")] [Tooltip("CameraFOV when Player is walking")] [SerializeField]
     private float normalFOV;
@@ -207,8 +209,15 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     public bool canMove = true;
 
-    [FormerlySerializedAs("isRunning")] [Foldout("Debug")] [Tooltip("")] [SerializeField]
-    private bool isCrouched = false;
+
+    enum PlayerStates
+    {
+        Standing,
+        Sprinting,
+        Crouching
+    }
+
+    private PlayerStates state = PlayerStates.Standing;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool isJumping = false;
@@ -220,7 +229,7 @@ public class PlayerController : Singleton<PlayerController>
     private float shootSpeedTimer;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
-    private ControllableProp controlledProp;
+    public ControllableProp controlledProp;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     public int currentAmmo;
@@ -242,7 +251,7 @@ public class PlayerController : Singleton<PlayerController>
     #endregion
 
     [SerializeField] private GameObject inkStainDecal;
-    
+
     [Button]
     void UpdateRestingPos()
     {
@@ -264,9 +273,9 @@ public class PlayerController : Singleton<PlayerController>
         Gizmos.color = Color.blue;
         //offsetPosition.position = restingPosOffset;
         Gizmos.DrawSphere(offsetPosition.position, 0.2f);
-        
-        
-        Debug.DrawLine(playerCam.position,playerCam.position + playerCam.forward * 20, Color.black);
+
+
+        Debug.DrawLine(playerCam.position, playerCam.position + playerCam.forward * 20, Color.black);
     }
 
     private void OnValidate()
@@ -295,12 +304,22 @@ public class PlayerController : Singleton<PlayerController>
         inputs.actions.Enable();
         currentControls = inputs.actions.FindActionMap(currentInputMap);
         Debug.Log(currentControls);
+        playerLayer = LayerMask.GetMask("Player") + shootMask;
+
         currentControls.Enable();
-        playerLayer =  LayerMask.GetMask("Player") + shootMask;
-        currentControls.FindAction("ToggleSprint", true).performed += ToggleCrouch;
+
+        currentControls.FindAction("ToggleCrouch", true).performed += ToggleCrouch;
+        currentControls.FindAction("ToggleCrouch", true).performed += ToggleCrouch;
+
+        currentControls.FindAction("ToggleSprint", true).canceled += ToggleSprint;
+        currentControls.FindAction("ToggleSprint", true).canceled += ToggleSprint;
+
         currentControls.FindAction("Shoot", true).performed += Shoot;
+
         currentControls.FindAction("Telekinesis", true).canceled += ReleaseProp;
+
         currentControls.FindAction("Reload", true).performed += Reload;
+
         currentControls.FindAction("Interact", true).performed += Interact;
 
         //currentControls.FindAction("Telekinesis",true).performed += ;
@@ -315,9 +334,13 @@ public class PlayerController : Singleton<PlayerController>
         currentHealth = maxHealth;
     }
 
+    private void ToggleSprint(InputAction.CallbackContext obj)
+    {
+    }
+
     private void Interact(InputAction.CallbackContext obj)
     {
-        if ( Physics.Raycast(transform.position + transform.forward,transform.forward , out RaycastHit hit,2))
+        if (Physics.Raycast(transform.position + transform.forward, transform.forward, out RaycastHit hit, 2))
         {
             if (hit.transform.TryGetComponent(out ICanInteract interactable))
             {
@@ -399,7 +422,7 @@ public class PlayerController : Singleton<PlayerController>
                 check = true;
             }
 
-            if (Vector3.Angle(hit.normal,transform.up) > maxSteepness)
+            if (Vector3.Angle(hit.normal, transform.up) > maxSteepness)
             {
                 check = false;
             }
@@ -474,16 +497,28 @@ public class PlayerController : Singleton<PlayerController>
             shootSpeedTimer -= Time.deltaTime;
         }
 
+        switch (state)
+        {
+            case PlayerStates.Crouching:
+                playerCam.position =
+                    Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.8f);
+                break;
 
-        if (isCrouched)
-        {
-            playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.8f);
-        }
-        else
-        {
-            playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
-            playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
-                playerCam.position.z);
+            case PlayerStates.Sprinting:
+                playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
+                playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
+                    playerCam.position.z);
+
+                camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, runningFOV, lerpFOV);
+                break;
+
+            case PlayerStates.Standing:
+                playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
+                playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
+                    playerCam.position.z);
+
+                camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, normalFOV, lerpFOV);
+                break;
         }
 
         if (!controlledProp)
@@ -501,7 +536,6 @@ public class PlayerController : Singleton<PlayerController>
     private void LateUpdate()
     {
         HorizontalMovement();
-        
     }
 
 
@@ -523,6 +557,7 @@ public class PlayerController : Singleton<PlayerController>
             moveInputTimer = 0;
             return;
         }
+
         if (appliedForce)
         {
             moveInputTimer += Time.deltaTime;
@@ -533,7 +568,7 @@ public class PlayerController : Singleton<PlayerController>
             moveInputTimer = Mathf.Clamp(moveInputTimer, 0, dragCurve.keys[^1].time);
         }
 
-        
+
         if (!appliedForce)
         {
             inputVelocity = rb.velocity.normalized * (dragCurve.Evaluate(moveInputTimer) *
@@ -542,18 +577,28 @@ public class PlayerController : Singleton<PlayerController>
             return;
         }
 
-
-        if (isCrouched)
+        switch (state)
         {
-            inputVelocity = playerDir * (crouchCurve.Evaluate(moveInputTimer) *
-                                         crouchVelocity);
-            Mathf.Clamp(moveInputTimer, 0, crouchCurve.keys[^1].time);
-        }
-        else
-        {
-            inputVelocity = playerDir *
-                            (runCurve.Evaluate(moveInputTimer) * runVelocity);
-            Mathf.Clamp(moveInputTimer, 0, runCurve.keys[^1].time);
+            case PlayerStates.Standing:
+                inputVelocity = playerDir *
+                                (runCurve.Evaluate(moveInputTimer) * runVelocity);
+                Mathf.Clamp(moveInputTimer, 0, runCurve.keys[^1].time);
+                break;
+            
+            case PlayerStates.Sprinting:
+                inputVelocity = playerDir * (sprintCurve.Evaluate(moveInputTimer) *
+                                             sprintVelocity);
+                Mathf.Clamp(moveInputTimer, 0, sprintCurve.keys[^1].time);
+                break;
+            
+            case PlayerStates.Crouching:
+                inputVelocity = playerDir * (crouchCurve.Evaluate(moveInputTimer) *
+                                             crouchVelocity);
+                Mathf.Clamp(moveInputTimer, 0, crouchCurve.keys[^1].time);
+                break;
+            
+            default:
+                throw new ArgumentOutOfRangeException();
         }
 
         // float magnitude = inputVelocity.magnitude;
@@ -563,6 +608,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private LayerMask playerLayer;
     private Vector3 tempWorldToScreen;
+
     private void TelekinesisPhysics()
     {
         switch (controlledProp)
@@ -607,9 +653,10 @@ public class PlayerController : Singleton<PlayerController>
                     ReleaseProp(new InputAction.CallbackContext());
                     return;
                 }
-                
+
                 Vector3 dir2 = controlledProp.transform.position - transform.position;
-                if (Physics.Raycast(controlledProp.transform.position, -dir2.normalized, out RaycastHit hit, maxRange, playerLayer))
+                if (Physics.Raycast(controlledProp.transform.position, -dir2.normalized, out RaycastHit hit, maxRange,
+                        playerLayer))
                 {
                     if (!hit.collider.TryGetComponent(out PlayerController controller))
                     {
@@ -617,9 +664,9 @@ public class PlayerController : Singleton<PlayerController>
                         return;
                     }
                 }
-                
+
                 if (enemy.isGrabbed) return;
-                
+
 
                 enemy.body.constraints = RigidbodyConstraints.FreezeAll;
                 enemy.isGrabbed = true;
@@ -644,6 +691,7 @@ public class PlayerController : Singleton<PlayerController>
             CameraShake.instance.ResetCoroutine();
             return;
         }
+
         CameraShake.instance.StopInfiniteShake();
         switch (controlledProp)
         {
@@ -664,9 +712,10 @@ public class PlayerController : Singleton<PlayerController>
 
 
                     controlledProp.body.velocity = Vector3.zero;
-                    
+
                     var dir = Vector3.zero;
-                    if (Physics.Raycast(playerCam.position,playerCam.forward,out RaycastHit hit, maxRange,  LayerMask.GetMask("Telekinesis")))
+                    if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange,
+                            LayerMask.GetMask("Telekinesis")))
                     {
                         dir = hit.point - offsetPosition.position;
                     }
@@ -674,6 +723,7 @@ public class PlayerController : Singleton<PlayerController>
                     {
                         dir = playerCam.forward;
                     }
+
                     dir.Normalize();
                     controlledProp.body.AddForce(dir * throwForce, ForceMode.Impulse);
                 }
@@ -711,6 +761,7 @@ public class PlayerController : Singleton<PlayerController>
             currentControls.Disable();
         }
     }
+
     void ForwardInput()
     {
         if (currentControls.FindAction("Forward", true).IsPressed())
@@ -725,6 +776,7 @@ public class PlayerController : Singleton<PlayerController>
             appliedForce = true;
         }
     }
+
     void SidewaysInput()
     {
         if (currentControls.FindAction("Right", true).IsPressed())
@@ -757,10 +809,17 @@ public class PlayerController : Singleton<PlayerController>
 
     private void ToggleCrouch(InputAction.CallbackContext obj)
     {
-        isCrouched = !isCrouched;
+        if (state == PlayerStates.Crouching)
+        {
+            state = PlayerStates.Standing;
+        }
+        else
+        {
+            state = PlayerStates.Crouching;
+        }
 
-        crouchedCollider.enabled = isCrouched;
-        standingCollider.enabled = !isCrouched;
+        crouchedCollider.enabled = state == PlayerStates.Crouching;
+        standingCollider.enabled = state != PlayerStates.Crouching;
     }
 
 
@@ -774,14 +833,14 @@ public class PlayerController : Singleton<PlayerController>
         if (currentAmmo == 0) return;
 
         if (reloading) return;
-        
+
         CameraShake.instance.ShakeOneShot(1);
         currentAmmo--;
         shootSpeedTimer = shootSpeed;
         currentTrail = Instantiate(shootTrail);
         Destroy(currentTrail.gameObject, trailTime);
         currentTrail.SetPosition(0, shootingHand.position);
-        
+
         if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange, shootMask))
         {
             Debug.Log("Hit something");
@@ -853,8 +912,10 @@ public class PlayerController : Singleton<PlayerController>
                             controlledProp.ApplyTelekinesis();
                         }
                     }
+
                     CameraShake.instance.ShakeOneShot(2);
                 }
+
                 return;
             }
 
