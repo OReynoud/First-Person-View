@@ -206,10 +206,17 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     public bool canMove = true;
+    
 
-    [FormerlySerializedAs("isRunning")] [Foldout("Debug")] [Tooltip("")] [SerializeField]
-    private bool isCrouched = false;
+    enum PlayerStates
+    {
+        Standing,
+        Sprinting,
+        Crouching
+    }
 
+    private PlayerStates state = PlayerStates.Standing;
+    
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool isJumping = false;
 
@@ -295,12 +302,22 @@ public class PlayerController : Singleton<PlayerController>
         inputs.actions.Enable();
         currentControls = inputs.actions.FindActionMap(currentInputMap);
         Debug.Log(currentControls);
-        currentControls.Enable();
         playerLayer =  LayerMask.GetMask("Player") + shootMask;
-        currentControls.FindAction("ToggleSprint", true).performed += ToggleCrouch;
+        
+        currentControls.Enable();
+        
+        currentControls.FindAction("ToggleCrouch", true).performed += ToggleCrouch;
+        currentControls.FindAction("ToggleCrouch", true).performed += ToggleCrouch;
+        
+        currentControls.FindAction("ToggleSprint", true).canceled += ToggleSprint;
+        currentControls.FindAction("ToggleSprint", true).canceled += ToggleSprint;
+        
         currentControls.FindAction("Shoot", true).performed += Shoot;
+        
         currentControls.FindAction("Telekinesis", true).canceled += ReleaseProp;
+        
         currentControls.FindAction("Reload", true).performed += Reload;
+        
         currentControls.FindAction("Interact", true).performed += Interact;
 
         //currentControls.FindAction("Telekinesis",true).performed += ;
@@ -313,6 +330,11 @@ public class PlayerController : Singleton<PlayerController>
         currentAmmo = magSize;
         inventoryAmmo = maxStoredAmmo;
         currentHealth = maxHealth;
+    }
+
+    private void ToggleSprint(InputAction.CallbackContext obj)
+    {
+        
     }
 
     private void Interact(InputAction.CallbackContext obj)
@@ -474,16 +496,23 @@ public class PlayerController : Singleton<PlayerController>
             shootSpeedTimer -= Time.deltaTime;
         }
 
-
-        if (isCrouched)
+        switch (state)
         {
-            playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.8f);
-        }
-        else
-        {
-            playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
-            playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
-                playerCam.position.z);
+            case PlayerStates.Crouching:
+                playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.8f);
+                break;
+            case PlayerStates.Sprinting:
+                playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
+                playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
+                    playerCam.position.z);
+                
+                break;
+            case PlayerStates.Standing:
+                playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
+                playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
+                    playerCam.position.z);
+                
+                break;
         }
 
         if (!controlledProp)
