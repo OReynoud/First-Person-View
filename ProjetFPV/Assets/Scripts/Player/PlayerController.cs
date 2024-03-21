@@ -229,7 +229,7 @@ public class PlayerController : Singleton<PlayerController>
     private float shootSpeedTimer;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
-    private ControllableProp controlledProp;
+    public ControllableProp controlledProp;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     public int currentAmmo;

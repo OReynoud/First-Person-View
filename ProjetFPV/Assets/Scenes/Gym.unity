@@ -10370,9 +10370,19 @@ PrefabInstance:
       objectReference: {fileID: 725714617}
     - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
         type: 3}
+      propertyPath: crosshairTK
+      value: 
+      objectReference: {fileID: 2129700204}
+    - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
       propertyPath: bodyHitMarker
       value: 
       objectReference: {fileID: 772990149}
+    - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: crosshairBase
+      value: 
+      objectReference: {fileID: 2129700205}
     - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
         type: 3}
       propertyPath: headHitMarker
@@ -15498,6 +15508,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   translationDistance: 100
   descriptionText: {fileID: 61051654}
+--- !u!225 &2129700204 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 1736609952548410195, guid: dce82ebbf28195f43941531e37b8f0be,
+    type: 3}
+  m_PrefabInstance: {fileID: 2129700201}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2129700205 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3944824522803494201, guid: dce82ebbf28195f43941531e37b8f0be,
+    type: 3}
+  m_PrefabInstance: {fileID: 2129700201}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2139984115
 GameObject:
   m_ObjectHideFlags: 0
