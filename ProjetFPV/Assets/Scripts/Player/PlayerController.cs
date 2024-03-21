@@ -85,7 +85,9 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Movement")] [Tooltip("CameraFOV when Player is walking")] [SerializeField]
     private float normalFOV;
-
+    
+    [Foldout("Movement")] [Tooltip("CameraFOV when player is running")] [SerializeField]
+    private float runningFOV;
 
     [Foldout("Movement")] [Tooltip("How fast the FOV changes")] [SerializeField] [Range(0, 1)]
     private float lerpFOV;
@@ -309,9 +311,9 @@ public class PlayerController : Singleton<PlayerController>
         currentControls.Enable();
 
         currentControls.FindAction("ToggleCrouch", true).performed += ToggleCrouch;
-        currentControls.FindAction("ToggleCrouch", true).performed += ToggleCrouch;
+        currentControls.FindAction("ToggleCrouch", true).canceled += ToggleCrouch;
 
-        currentControls.FindAction("ToggleSprint", true).canceled += ToggleSprint;
+        currentControls.FindAction("ToggleSprint", true).performed += ToggleSprint;
         currentControls.FindAction("ToggleSprint", true).canceled += ToggleSprint;
 
         currentControls.FindAction("Shoot", true).performed += Shoot;
@@ -334,9 +336,7 @@ public class PlayerController : Singleton<PlayerController>
         currentHealth = maxHealth;
     }
 
-    private void ToggleSprint(InputAction.CallbackContext obj)
-    {
-    }
+
 
     private void Interact(InputAction.CallbackContext obj)
     {
@@ -821,6 +821,17 @@ public class PlayerController : Singleton<PlayerController>
         crouchedCollider.enabled = state == PlayerStates.Crouching;
         standingCollider.enabled = state != PlayerStates.Crouching;
     }
+    private void ToggleSprint(InputAction.CallbackContext obj)
+    {        
+        if (state == PlayerStates.Sprinting)
+        {
+            state = PlayerStates.Standing;
+        }
+        else
+        {
+            state = PlayerStates.Sprinting;
+        }
+    }
 
 
     private LineRenderer currentTrail;
@@ -833,7 +844,9 @@ public class PlayerController : Singleton<PlayerController>
         if (currentAmmo == 0) return;
 
         if (reloading) return;
-
+        if (stagger != null)StopCoroutine(stagger);
+        stagger = StartCoroutine(StaggerSprint(state == PlayerStates.Sprinting));
+        
         CameraShake.instance.ShakeOneShot(1);
         currentAmmo--;
         shootSpeedTimer = shootSpeed;
@@ -888,6 +901,17 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    private Coroutine stagger;
+    IEnumerator StaggerSprint(bool sprinting)
+    {
+        if (sprinting)
+        {
+            state = PlayerStates.Standing;
+            yield return new WaitForSeconds(1f);
+            state = PlayerStates.Sprinting;
+        }
+        
+    }
     private void TelekinesisInput()
     {
         if (currentControls.FindAction("Telekinesis", true).IsPressed())
@@ -931,7 +955,10 @@ public class PlayerController : Singleton<PlayerController>
     {
         Vector3 pos = Vector3.zero;
         pos.y += Mathf.Sin(Time.time * frequeny) * amplitude;
-        //pos.x += Mathf.Cos(Time.time * frequeny/2) * amplitude;
+        if (state == PlayerStates.Sprinting)
+        {
+            pos.x += Mathf.Cos(Time.time * frequeny/2) * amplitude;
+        }
 
         return pos;
     }
@@ -975,8 +1002,7 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Obsolete")] [Tooltip("To make a jump more or less floaty")] [SerializeField]
     private AnimationCurve jumpCurve;
 
-    [Foldout("Obsolete")] [Tooltip("CameraFOV when player is running")] [SerializeField]
-    private float runningFOV;
+
 
     #endregion
 }
