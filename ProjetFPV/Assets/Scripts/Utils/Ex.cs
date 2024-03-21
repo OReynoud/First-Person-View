@@ -4,6 +4,10 @@ using UnityEngine;
 
 public static class Ex
 {
+    public const string Tag_Player = "Player";
+    public const string Tag_Head = "Head";
+    public const string Tag_Body = "Body";
+
     /// <summary>
     /// RETURN THE ANGLE FROM A GIVEN DIRECTION
     /// </summary>
@@ -19,17 +23,9 @@ public static class Ex
 
         return angle;
     }
+    
+    
 
 
-    /// <summary>
-    /// ROTATES A VECTOR FROM A CERTAIN ANGLE
-    /// </summary>
-    // public static Vector2 RotateDirection(this Vector2 originalDirection, float addedAngle)
-    // {
-    //     float currentAngle = GetAngleFromVector(originalDirection);
-    //
-    //     currentAngle += addedAngle;
-    //
-    //     return GetVectorFromAngle(currentAngle);
-    // }
+
 }

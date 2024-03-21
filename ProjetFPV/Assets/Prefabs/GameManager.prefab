@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6625738270304295612}
   - component: {fileID: 7502388276848145513}
+  - component: {fileID: 5647592295648705613}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &7502388276848145513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,4 +47,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyHitMarker: {fileID: 0}
   headHitMarker: {fileID: 0}
+  crosshairTK: {fileID: 0}
+  crosshairBase: {fileID: 0}
+  staminaBar: {fileID: 0}
+  ammoText:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   hitMarkerFadeTime: 0.4
+  timeForEnemyToRespawn: 2
+--- !u!114 &5647592295648705613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1484673573471933685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a916e281ee8327d4f9be10923b9af2d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakesPresets:
+  - name: Steady
+    moveForce: 0.2
+    rotationForce: 2
+    duration: 0.1
+    fadeIn: 0.1
+    fadeOut: 0.4
+  - name: Small
+    moveForce: 2
+    rotationForce: 0.2
+    duration: 0.1
+    fadeIn: 0
+    fadeOut: 0.1
+  - name: Medium
+    moveForce: 4
+    rotationForce: 0.2
+    duration: 0.1
+    fadeIn: 0
+    fadeOut: 0.1
+  - name: Heavy
+    moveForce: 4
+    rotationForce: 0.4
+    duration: 0.2
+    fadeIn: 0
+    fadeOut: 0.2
+  index: 0
