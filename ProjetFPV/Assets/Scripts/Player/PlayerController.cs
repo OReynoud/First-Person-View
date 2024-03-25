@@ -338,7 +338,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Interact(InputAction.CallbackContext obj)
     {
-        if (Physics.Raycast(transform.position + transform.forward, transform.forward, out RaycastHit hit, 2))
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit,  2,~LayerMask.GetMask("Player")))
         {
             if (hit.transform.TryGetComponent(out ICanInteract interactable))
             {
@@ -413,7 +413,7 @@ public class PlayerController : Singleton<PlayerController>
     private bool GroundCheck(out RaycastHit hit)
     {
         bool check = false;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.2f, groundLayer))
+        if (Physics.SphereCast(transform.position,0.3f, Vector3.down, out hit, 1.1f, groundLayer))
         {
             if (!isJumping)
             {
@@ -424,8 +424,6 @@ public class PlayerController : Singleton<PlayerController>
             {
                 check = false;
             }
-
-            ;
         }
 
         return check;
