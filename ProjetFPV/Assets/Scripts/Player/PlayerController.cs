@@ -53,24 +53,23 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private float runVelocity;
-    
+
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField] [HorizontalLine(color: EColor.Black)]
     private AnimationCurve crouchCurve;
 
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private float crouchVelocity;
-    
+
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField] [HorizontalLine(color: EColor.Black)]
     private AnimationCurve sprintCurve;
 
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField]
     private float sprintVelocity;
-    
+
     [Foldout("Movement")] [Tooltip("Acceleration when walking")] [SerializeField] [HorizontalLine(color: EColor.Black)]
     private AnimationCurve dragCurve;
 
-    [Space(30)]
-    [Foldout("Movement")] [Tooltip("Camera sensitivity")] [SerializeField]
+    [Space(30)] [Foldout("Movement")] [Tooltip("Camera sensitivity")] [SerializeField]
     private float lookSpeed;
 
     [Foldout("Movement")] [Tooltip("Camera sensitivity")] [SerializeField]
@@ -85,7 +84,7 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Movement")] [Tooltip("CameraFOV when Player is walking")] [SerializeField]
     private float normalFOV;
-    
+
     [Foldout("Movement")] [Tooltip("CameraFOV when player is running")] [SerializeField]
     private float runningFOV;
 
@@ -337,10 +336,9 @@ public class PlayerController : Singleton<PlayerController>
     }
 
 
-
     private void Interact(InputAction.CallbackContext obj)
     {
-        if (Physics.Raycast(transform.position + transform.forward, transform.forward, out RaycastHit hit, 2))
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit,  2,~LayerMask.GetMask("Player")))
         {
             if (hit.transform.TryGetComponent(out ICanInteract interactable))
             {
@@ -415,7 +413,7 @@ public class PlayerController : Singleton<PlayerController>
     private bool GroundCheck(out RaycastHit hit)
     {
         bool check = false;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.2f, groundLayer))
+        if (Physics.SphereCast(transform.position,0.3f, Vector3.down, out hit, 1.1f, groundLayer))
         {
             if (!isJumping)
             {
@@ -426,8 +424,6 @@ public class PlayerController : Singleton<PlayerController>
             {
                 check = false;
             }
-
-            ;
         }
 
         return check;
@@ -584,19 +580,19 @@ public class PlayerController : Singleton<PlayerController>
                                 (runCurve.Evaluate(moveInputTimer) * runVelocity);
                 Mathf.Clamp(moveInputTimer, 0, runCurve.keys[^1].time);
                 break;
-            
+
             case PlayerStates.Sprinting:
                 inputVelocity = playerDir * (sprintCurve.Evaluate(moveInputTimer) *
                                              sprintVelocity);
                 Mathf.Clamp(moveInputTimer, 0, sprintCurve.keys[^1].time);
                 break;
-            
+
             case PlayerStates.Crouching:
                 inputVelocity = playerDir * (crouchCurve.Evaluate(moveInputTimer) *
                                              crouchVelocity);
                 Mathf.Clamp(moveInputTimer, 0, crouchCurve.keys[^1].time);
                 break;
-            
+
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -809,6 +805,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void ToggleCrouch(InputAction.CallbackContext obj)
     {
+        hands.localPosition = Vector3.Lerp(hands.localPosition, startPos, 0.6f);
         if (state == PlayerStates.Crouching)
         {
             state = PlayerStates.Standing;
@@ -821,9 +818,11 @@ public class PlayerController : Singleton<PlayerController>
         crouchedCollider.enabled = state == PlayerStates.Crouching;
         standingCollider.enabled = state != PlayerStates.Crouching;
     }
+
     private void ToggleSprint(InputAction.CallbackContext obj)
-    {        
-        if (state == PlayerStates.Sprinting)
+    {
+        hands.localPosition = startPos;
+        if (obj.canceled)
         {
             state = PlayerStates.Standing;
         }
@@ -844,9 +843,9 @@ public class PlayerController : Singleton<PlayerController>
         if (currentAmmo == 0) return;
 
         if (reloading) return;
-        if (stagger != null)StopCoroutine(stagger);
+        if (stagger != null) StopCoroutine(stagger);
         stagger = StartCoroutine(StaggerSprint(state == PlayerStates.Sprinting));
-        
+
         CameraShake.instance.ShakeOneShot(1);
         currentAmmo--;
         shootSpeedTimer = shootSpeed;
@@ -902,16 +901,18 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     private Coroutine stagger;
+
     IEnumerator StaggerSprint(bool sprinting)
     {
         if (sprinting)
         {
             state = PlayerStates.Standing;
             yield return new WaitForSeconds(1f);
-            state = PlayerStates.Sprinting;
+            if (currentControls.FindAction("ToggleSprint", true).IsPressed())
+                state = PlayerStates.Sprinting;
         }
-        
     }
+
     private void TelekinesisInput()
     {
         if (currentControls.FindAction("Telekinesis", true).IsPressed())
@@ -957,7 +958,7 @@ public class PlayerController : Singleton<PlayerController>
         pos.y += Mathf.Sin(Time.time * frequeny) * amplitude;
         if (state == PlayerStates.Sprinting)
         {
-            pos.x += Mathf.Cos(Time.time * frequeny/2) * amplitude;
+            pos.x += Mathf.Cos(Time.time * frequeny / 2) * amplitude;
         }
 
         return pos;
@@ -1001,8 +1002,6 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Obsolete")] [Tooltip("To make a jump more or less floaty")] [SerializeField]
     private AnimationCurve jumpCurve;
-
-
 
     #endregion
 }

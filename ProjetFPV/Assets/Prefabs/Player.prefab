@@ -630,7 +630,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  runVelocity: 8
+  runVelocity: 5
   crouchCurve:
     serializedVersion: 2
     m_Curve:
@@ -655,7 +655,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  crouchVelocity: 5
+  crouchVelocity: 3
   sprintCurve:
     serializedVersion: 2
     m_Curve:
@@ -680,7 +680,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  sprintVelocity: 13
+  sprintVelocity: 10
   dragCurve:
     serializedVersion: 2
     m_Curve:
@@ -712,6 +712,7 @@ MonoBehaviour:
     m_Bits: 65
   lookXLimit: 75
   normalFOV: 60
+  runningFOV: 58
   lerpFOV: 0.1
   shootMask:
     serializedVersion: 2
@@ -719,10 +720,10 @@ MonoBehaviour:
   bulletDmg: 5
   maxStoredAmmo: 500
   magSize: 5
-  shootSpeed: 0.5
-  reloadSpeed: 1
+  shootSpeed: 0.1
+  reloadSpeed: 2
   maxRange: 1000
-  trailTime: 0.2
+  trailTime: 0.1
   baseKnockBack: 10
   restingPosOffset: {x: 1, y: 1, z: 2.5}
   travelSpeed: 45
@@ -779,7 +780,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  runningFOV: 58
 --- !u!54 &7444262524379830578
 Rigidbody:
   m_ObjectHideFlags: 0
