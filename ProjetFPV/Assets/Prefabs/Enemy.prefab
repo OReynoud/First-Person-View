@@ -163,7 +163,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -183,15 +183,17 @@ MonoBehaviour:
   body: {fileID: 7143357708314217432}
   spamBuffer: 0.6
   canBeGrabbed: 1
-  maxHealth: 30
+  maxHealth: 10
   currentHealth: 0
   headShotMultiplier: 2
   bodyShotMultiplier: 1
   isImmobile: 1
+  respawnOnDeath: 1
   waypoints:
   - {fileID: 0}
   - {fileID: 0}
-  translationSpeed: 0.1
+  translationSpeed: 1.1
+  respawnPoint: {fileID: 0}
 --- !u!1 &7561002305878562183
 GameObject:
   m_ObjectHideFlags: 0
