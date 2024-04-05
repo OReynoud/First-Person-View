@@ -2,7 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DG.Tweening;
 using Mechanics;
+using NaughtyAttributes;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -13,16 +16,42 @@ public class ChargerBehavior : MonoBehaviour
     private NavMeshAgent agent;
     [SerializeField] private float pathUpdateFrequency;
 
-    
-    
-    [SerializeField] private float walkAreaRange;
-    [SerializeField] private Transform[] spawnPositions;
-    [SerializeField] private float rushRange;
-    [SerializeField] private float rushSpeed;
-    [SerializeField] private float atkRange;
-    [SerializeField] private float atkDamage;
-    [SerializeField] private int maskCount;
-    [SerializeField] private float stunDurationTK;
+    [Foldout("Reposition state")] [SerializeField]
+    private float disappearDuration = 0.5f;
+
+    [Foldout("Reposition state")] [SerializeField]
+    private float idleDuration = 1f;
+
+    [Foldout("Reposition state")] [SerializeField]
+    private float appearDuration = 0.5f;
+
+    [Foldout("Reposition state")] [SerializeField]
+    private Transform[] spawnPositions;
+
+    [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro;  Cercle violet = portée de l'attaque")]
+    [Foldout("Neutral state")] [SerializeField]
+    private float walkAreaRange;
+
+    [Foldout("Neutral state")] [SerializeField]
+    private float wanderFrequency;
+
+    [Foldout("Neutral state")] [SerializeField]
+    private float wanderSpeed;
+
+    [Foldout("Rush state")] [SerializeField]
+    private float rushRange;
+
+    [Foldout("Rush state")] [SerializeField]
+    private float rushSpeed;
+
+    [Foldout("Attack state")] [SerializeField]
+    private float atkRange;
+
+    [Foldout("Attack state")] [SerializeField]
+    private float atkDamage;
+
+    public Transform test;
+
     public enum States
     {
         Neutral,
@@ -34,6 +63,26 @@ public class ChargerBehavior : MonoBehaviour
     }
 
     public States currentState;
+    private bool repositioning;
+
+    private void OnDrawGizmosSelected()
+    {
+        Handles.color = Color.green;
+        if (Application.isPlaying)
+        {
+            Handles.DrawWireDisc(origin, Vector3.up, walkAreaRange,2);
+        }
+        else
+        {
+            Handles.DrawWireDisc(transform.position, Vector3.up, walkAreaRange,2);
+        }
+
+        Handles.color = Color.red;
+        Handles.DrawWireDisc(transform.position, Vector3.up, rushRange,2);
+        
+        Handles.color = Color.magenta;
+        Handles.DrawWireDisc(transform.position, Vector3.up, atkRange,2);
+    }
 
     public void ApplyTK()
     {
@@ -46,17 +95,34 @@ public class ChargerBehavior : MonoBehaviour
             currentState = States.Repositioning;
         }
     }
+
     // Start is called before the first frame update
+    private Vector3 origin;
+
     private void Awake()
     {
-        playerLayer = LayerMask.GetMask("Player");
+        origin = transform.position;
+        agent = GetComponent<NavMeshAgent>();
+        brain = GetComponent<Enemy>();
+    }
+
+    IEnumerator Wander()
+    {
+        var oui = Random.insideUnitCircle * walkAreaRange;
+        agent.SetDestination(origin + new Vector3(oui.x, 0, oui.y));
+        yield return new WaitForSeconds(wanderFrequency);
+        if (currentState == States.Neutral)
+        {
+            StartCoroutine(Wander());
+        }
     }
 
     void Start()
     {
-        agent.stoppingDistance = atkDamage;
-        
-        
+        agent.stoppingDistance = atkRange;
+        agent.speed = wanderSpeed;
+        currentState = States.Neutral;
+        StartCoroutine(Wander());
     }
 
     // Update is called once per frame
@@ -65,18 +131,20 @@ public class ChargerBehavior : MonoBehaviour
         switch (currentState)
         {
             case States.Neutral:
-                if (Vector3.Distance(PlayerController.instance.transform.position, transform.position) < rushRange)
-                {
-                    TryDetectPlayer();
-                }
+
+                TryDetectPlayer();
                 break;
             case States.Repositioning:
+                if (repositioning) break;
+                StartCoroutine(Reposition());
+
                 break;
             case States.Rush:
                 if (Vector3.Distance(PlayerController.instance.transform.position, transform.position) < atkRange)
                 {
                     StartCoroutine(AttackPlayer());
                 }
+
                 break;
             case States.Attack:
                 break;
@@ -87,39 +155,68 @@ public class ChargerBehavior : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
-
-
-
-
     }
 
-    private LayerMask playerLayer;
+    private IEnumerator Reposition()
+    {
+        agent.enabled = false;
+        repositioning = true;
+        foreach (var part in brain.bodyParts)
+        {
+            part.bodyPartCollider.enabled = false;
+        }
+
+        brain.body.isKinematic = true;
+        transform.DOMove(transform.position + Vector3.down * 5, disappearDuration);
+
+        yield return new WaitForSeconds(disappearDuration + idleDuration);
+        transform.position = GetRandomSpawnPoint() + Vector3.down * 5;
+        transform.DOMove(transform.position + Vector3.up * 5, appearDuration).OnComplete(() =>
+        {
+            repositioning = false;
+            currentState = States.Rush;
+            foreach (var part in brain.bodyParts)
+            {
+                part.bodyPartCollider.enabled = true;
+            }
+
+            brain.body.isKinematic = false;
+            agent.enabled = true;
+        });
+    }
+
+    public LayerMask playerLayer;
+
     void TryDetectPlayer()
     {
-        if (!Physics.Linecast(transform.position, PlayerController.instance.transform.position)) return;
+        var dir = PlayerController.instance.transform.position - transform.position;
+        Debug.DrawRay(transform.position, dir.normalized * 5, Color.magenta);
+        if (!Physics.Raycast(transform.position, dir.normalized, out RaycastHit hit,rushRange, playerLayer)) return;
+        if (!hit.collider.gameObject.CompareTag("Player"))return;
         
+        Debug.Log("Player Detected");
         currentState = States.Repositioning;
+        agent.speed = rushSpeed;
         SetAgentDestination();
     }
+
     async void SetAgentDestination()
     {
-        
-        if (!Application.isPlaying)return;
-        
+        if (!Application.isPlaying) return;
+
         await Task.Delay(Mathf.RoundToInt(pathUpdateFrequency * 1000));
         while (currentState != States.Rush)
         {
             await Task.Delay(100);
         }
-            
-        
+
+
         agent.SetDestination(PlayerController.instance.transform.position);
-        
+
         SetAgentDestination();
     }
 
-    
-    
+
     IEnumerator AttackPlayer()
     {
         currentState = States.Attack;
@@ -134,9 +231,9 @@ public class ChargerBehavior : MonoBehaviour
                 player.TakeDamage(atkDamage);
             }
         }
+
         yield return new WaitForSeconds(1.5f);
         currentState = States.Repositioning;
-
     }
 
     Vector3 GetRandomSpawnPoint()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using NaughtyAttributes;
@@ -10,10 +11,12 @@ namespace Mechanics
     {
         public float maxHealth;
         public float currentHealth;
-        public float headShotMultiplier;
-        public float bodyShotMultiplier;
+
+        public BodyPart[] bodyParts;
+        
         public bool isImmobile = true;
         public bool respawnOnDeath = true;
+        [SerializeField] private float stunDurationTK;
 
         [HideIf("isImmobile")] public List<Transform> waypoints;
         [HideIf("isImmobile")] public float translationSpeed = 0.1f;
@@ -22,6 +25,14 @@ namespace Mechanics
         private int currentIndex = 1;
 
         private int previousIndex = 0;
+        [Serializable]
+        public struct BodyPart
+        {
+            [HorizontalLine(color:EColor.White)]
+            public string bodyPartName;
+            public Collider bodyPartCollider;
+            public float damageMultiplier;
+        }
 
         // Start is called before the first frame update
         void Awake()
@@ -56,20 +67,17 @@ namespace Mechanics
             Debug.DrawLine(waypoints[^1].position,waypoints[0].position );
         }
 
-        public void TakeDamage(int damage, bool headHit)
+        public void TakeDamage(int damage, Collider partHit)
         {
-            var totalDmg = 0f;
-            if (headHit)
+            for (int i = 0; i < bodyParts.Length; i++)
             {
-                totalDmg = damage * headShotMultiplier;
+                if (partHit != bodyParts[i].bodyPartCollider)continue;
+                
+                var totalDmg = damage * bodyParts[i].damageMultiplier;
                 currentHealth -= totalDmg;
+                break;
             }
-            else
-            {
-                totalDmg = damage * bodyShotMultiplier;
-                currentHealth -= totalDmg;
-            }
-
+            
             if (currentHealth <= 0) Die();
         }
 

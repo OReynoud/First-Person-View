@@ -860,7 +860,7 @@ public class PlayerController : Singleton<PlayerController>
             {
                 if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                 {
-                    enemy.TakeDamage(bulletDmg, true);
+                    enemy.TakeDamage(bulletDmg, hit.collider);
                     GameManager.instance.HitMark(true);
                 }
             }
@@ -869,7 +869,7 @@ public class PlayerController : Singleton<PlayerController>
             {
                 if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                 {
-                    enemy.TakeDamage(bulletDmg, false);
+                    enemy.TakeDamage(bulletDmg, hit.collider);
                     GameManager.instance.HitMark(false);
                 }
             }
