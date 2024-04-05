@@ -50,8 +50,6 @@ public class ChargerBehavior : MonoBehaviour
     [Foldout("Attack state")] [SerializeField]
     private float atkDamage;
 
-    public Transform test;
-
     public enum States
     {
         Neutral,
