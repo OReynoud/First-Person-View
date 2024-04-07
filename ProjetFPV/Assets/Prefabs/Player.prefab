@@ -680,7 +680,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  sprintVelocity: 10
+  sprintVelocity: 8
   dragCurve:
     serializedVersion: 2
     m_Curve:
@@ -724,19 +724,19 @@ MonoBehaviour:
   reloadSpeed: 2
   maxRange: 1000
   trailTime: 0.1
-  baseKnockBack: 10
+  baseKnockBack: 100
   restingPosOffset: {x: 1, y: 1, z: 2.5}
   travelSpeed: 45
   grabDistanceBuffer: 15
   maxStamina: 200
   currentStamina: 100
   staminaRegen: 10
-  holdObjectCost: 4
-  holdEnemyCost: 8
-  throwCost: 20
+  holdObjectCost: 10
+  holdEnemyCost: 15
+  throwCost: 40
   throwForce: 350
   inputSpamBuffer: 0
-  amplitude: 0.001
+  amplitude: 0.003
   frequeny: 10
   toggleSpeed: 0
   sideTilting: 0
@@ -5433,6 +5433,7 @@ GameObject:
   - component: {fileID: 6778243986181336472}
   - component: {fileID: 5565993660230409513}
   - component: {fileID: 9203036196178575144}
+  - component: {fileID: 7617246677153205059}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5560,6 +5561,20 @@ MonoBehaviour:
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
 --- !u!114 &9203036196178575144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7963865459006595146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ac7240c9c6f7354bb5d1ae45a94d11c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  translationDistance: 100
+  descriptionText: {fileID: 0}
+--- !u!114 &7617246677153205059
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
