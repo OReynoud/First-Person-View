@@ -14,6 +14,7 @@ public class ChargerBehavior : MonoBehaviour
 {
     private Enemy brain;
     private NavMeshAgent agent;
+    [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro;  Cercle violet = portée de l'attaque")]
     [SerializeField] private float pathUpdateFrequency;
 
     [Foldout("Reposition state")] [SerializeField]
@@ -28,7 +29,6 @@ public class ChargerBehavior : MonoBehaviour
     [Foldout("Reposition state")] [SerializeField]
     private Transform[] spawnPositions;
 
-    [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro;  Cercle violet = portée de l'attaque")]
     [Foldout("Neutral state")] [SerializeField]
     private float walkAreaRange;
 
@@ -63,6 +63,8 @@ public class ChargerBehavior : MonoBehaviour
     public States currentState;
     private bool repositioning;
 
+
+
     private void OnDrawGizmosSelected()
     {
         Handles.color = Color.green;
@@ -84,14 +86,7 @@ public class ChargerBehavior : MonoBehaviour
 
     public void ApplyTK()
     {
-        if (currentState != States.Paralysed)
-        {
-            currentState = States.Paralysed;
-        }
-        else
-        {
-            currentState = States.Repositioning;
-        }
+        
     }
 
     // Start is called before the first frame update

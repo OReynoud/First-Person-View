@@ -33,6 +33,18 @@ namespace Mechanics
             public Collider bodyPartCollider;
             public float damageMultiplier;
         }
+        
+        public enum SpecificBehaviors
+        {
+            Bouffon,
+            Truc,
+            Rien
+        }
+
+        [EnumFlags] public SpecificBehaviors associatedBehavior;
+
+        [ShowIf("associatedBehavior", SpecificBehaviors.Bouffon)]
+        public ChargerBehavior charger;
 
         // Start is called before the first frame update
         void Awake()
