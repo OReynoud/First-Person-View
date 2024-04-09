@@ -9,13 +9,14 @@ public class TelekinesisObject : ControllableProp
     public bool thrown;
     [SerializeField]private Collider col;
 
-    void Awake()
+    public override void Awake()
     {
+        base.Awake();
         col = GetComponent<Collider>();
     }
 
     // Update is called once per frame
-    public override void ApplyTelekinesis()
+    public override void ApplyTelekinesis() 
     {
         body.useGravity = !body.useGravity;
 
@@ -32,20 +33,23 @@ public class TelekinesisObject : ControllableProp
 
     private void FixedUpdate()
     {
-        if (!thrown) return;
         
-        if (body.velocity.magnitude < 10)
-        {
-            thrown = false;
-        }
     }
 
     private void OnCollisionEnter(Collision other)
     {
+        if (!thrown)return;
+        
+        if (body.velocity.magnitude < 10)
+        {
+            thrown = false;
+            return;
+        }
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             if (other.gameObject.TryGetComponent(out Enemy enemy))
             {
+                Debug.Log("Stunned an enemy");
                 enemy.ApplyStun();
                 thrown = false;
             }

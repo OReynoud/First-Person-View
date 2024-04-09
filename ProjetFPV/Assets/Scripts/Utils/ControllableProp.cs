@@ -15,7 +15,7 @@ public class ControllableProp : MonoBehaviour
     public bool canBeGrabbed = true;
 
     // Start is called before the first frame update
-    void Awake()
+    public virtual void Awake()
     {
         body = GetComponent<Rigidbody>();
         canBeGrabbed = true;

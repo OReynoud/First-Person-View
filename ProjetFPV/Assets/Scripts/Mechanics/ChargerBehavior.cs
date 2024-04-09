@@ -13,12 +13,20 @@ using Random = UnityEngine.Random;
 public class ChargerBehavior : MonoBehaviour
 {
     private Enemy brain;
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
+    public MeshRenderer renderer;
     [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro;  Cercle violet = portée de l'attaque")]
-    [SerializeField] private float pathUpdateFrequency;
+    [SerializeField]
+    private float pathUpdateFrequency;
 
-    [SerializeField] private float stunDuration = 2f;
-    private float stunTimer;
+    [Foldout("Stunned state")] [SerializeField] 
+    private float stunDuration = 2f;
+    
+    [Foldout("Stunned state")] [SerializeField] 
+    private Material defaultMat;
+    
+    [Foldout("Stunned state")] [SerializeField] 
+    private Material stunnedMat;
 
     [Foldout("Reposition state")] [SerializeField]
     private float disappearDuration = 0.5f;
@@ -52,6 +60,12 @@ public class ChargerBehavior : MonoBehaviour
 
     [Foldout("Attack state")] [SerializeField]
     private float atkDamage;
+    
+    [Foldout("Attack state")] [SerializeField]
+    private float timeToAttack = 0.3f;
+
+    [Foldout("Attack state")] [SerializeField]
+    private float waitAfterAttack = 0.2f;
 
     public enum States
     {
@@ -67,24 +81,23 @@ public class ChargerBehavior : MonoBehaviour
     private bool repositioning;
 
 
-
     private void OnDrawGizmosSelected()
     {
         Handles.color = Color.green;
         if (Application.isPlaying)
         {
-            Handles.DrawWireDisc(origin, Vector3.up, walkAreaRange,2);
+            Handles.DrawWireDisc(origin, Vector3.up, walkAreaRange, 2);
         }
         else
         {
-            Handles.DrawWireDisc(transform.position, Vector3.up, walkAreaRange,2);
+            Handles.DrawWireDisc(transform.position, Vector3.up, walkAreaRange, 2);
         }
 
         Handles.color = Color.red;
-        Handles.DrawWireDisc(transform.position, Vector3.up, rushRange,2);
-        
+        Handles.DrawWireDisc(transform.position, Vector3.up, rushRange, 2);
+
         Handles.color = Color.magenta;
-        Handles.DrawWireDisc(transform.position, Vector3.up, atkRange,2);
+        Handles.DrawWireDisc(transform.position, Vector3.up, atkRange, 2);
     }
 
     public void ApplyTK()
@@ -96,7 +109,6 @@ public class ChargerBehavior : MonoBehaviour
         else
         {
             currentState = States.Rush;
-
         }
 
         agent.enabled = currentState != States.Paralysed;
@@ -108,12 +120,24 @@ public class ChargerBehavior : MonoBehaviour
 
     public void ApplyStun()
     {
-        currentState = States.Stunned;
+        if (currentState != States.Stunned)
+        {
+            currentState = States.Stunned;
+            StartCoroutine(Stun());
+        }
     }
 
     IEnumerator Stun()
     {
-        yield return null;
+        renderer.material = stunnedMat;
+        agent.enabled = false;
+        transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
+        yield return new WaitForSeconds(stunDuration);
+
+        agent.enabled = true;
+        renderer.material = defaultMat;
+        agent.SetDestination(PlayerController.instance.transform.position);
+        
     }
 
     // Start is called before the first frame update
@@ -129,8 +153,9 @@ public class ChargerBehavior : MonoBehaviour
     IEnumerator Wander()
     {
         var oui = Random.insideUnitCircle * walkAreaRange;
+        agent.speed = wanderSpeed + Random.Range(-1f, 1f);
         agent.SetDestination(origin + new Vector3(oui.x, 0, oui.y));
-        yield return new WaitForSeconds(wanderFrequency);
+        yield return new WaitForSeconds(wanderFrequency + Random.Range(-wanderFrequency * .2f,wanderFrequency * .2f));
         if (currentState == States.Neutral)
         {
             StartCoroutine(Wander());
@@ -160,6 +185,10 @@ public class ChargerBehavior : MonoBehaviour
 
                 break;
             case States.Rush:
+                if (pathRoutine == null)
+                {
+                    pathRoutine = StartCoroutine(SetAgentDestination());
+                }
                 if (Vector3.Distance(PlayerController.instance.transform.position, transform.position) < atkRange)
                 {
                     StartCoroutine(AttackPlayer());
@@ -211,29 +240,28 @@ public class ChargerBehavior : MonoBehaviour
     {
         var dir = PlayerController.instance.transform.position - transform.position;
         Debug.DrawRay(transform.position, dir.normalized * 5, Color.magenta);
-        if (!Physics.Raycast(transform.position, dir.normalized, out RaycastHit hit,rushRange, playerLayer)) return;
-        if (!hit.collider.gameObject.CompareTag("Player"))return;
-        
+        if (!Physics.Raycast(transform.position, dir.normalized, out RaycastHit hit, rushRange, playerLayer)) return;
+        if (!hit.collider.gameObject.CompareTag("Player")) return;
+
         Debug.Log("Player Detected");
         currentState = States.Repositioning;
         agent.speed = rushSpeed;
         SetAgentDestination();
     }
 
-    async void SetAgentDestination()
+    private Coroutine pathRoutine;
+    IEnumerator SetAgentDestination()
     {
-        if (!Application.isPlaying) return;
-
-        await Task.Delay(Mathf.RoundToInt(pathUpdateFrequency * 1000));
+        yield return new WaitForSeconds(pathUpdateFrequency);
         while (currentState != States.Rush)
         {
-            await Task.Delay(100);
+            yield return new WaitForSeconds(pathUpdateFrequency);
         }
 
 
         agent.SetDestination(PlayerController.instance.transform.position);
 
-        SetAgentDestination();
+        pathRoutine = StartCoroutine(SetAgentDestination());
     }
 
 
@@ -241,7 +269,7 @@ public class ChargerBehavior : MonoBehaviour
     {
         currentState = States.Attack;
         Debug.Log("j'attaque le joueur");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(timeToAttack);
         var colliders = Physics.OverlapSphere(transform.position + transform.forward, 1f, playerLayer);
         foreach (var col in colliders)
         {
@@ -252,7 +280,7 @@ public class ChargerBehavior : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(waitAfterAttack);
         currentState = States.Repositioning;
     }
 

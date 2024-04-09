@@ -32,7 +32,13 @@ public class TNT : MonoBehaviour, IDestructible
 
     public void OnDestroy()
     {
-        
+
+        if (TryGetComponent(out TelekinesisObject tk))
+        {
+            tk.body.isKinematic = true;
+            tk.body.useGravity = false;
+            tk.body.velocity = Vector3.zero;
+        }
         var colliders = Physics.OverlapSphere(transform.position, explosionRadius, mask, QueryTriggerInteraction.Ignore);
 
         foreach (var col in colliders)

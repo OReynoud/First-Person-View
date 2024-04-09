@@ -116,7 +116,19 @@ namespace Mechanics
                 currentHealth -= totalDmg;
                 break;
             }
-            
+            switch (associatedBehavior)
+            {
+                case SpecificBehaviors.Bouffon:
+                    charger.currentState = ChargerBehavior.States.Rush;
+                    charger.agent.SetDestination(PlayerController.instance.transform.position);
+                    break;
+                case SpecificBehaviors.Truc:
+                    break;
+                case SpecificBehaviors.Rien:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             if (currentHealth <= 0) Die();
         }
 
@@ -134,6 +146,18 @@ namespace Mechanics
             body.constraints = RigidbodyConstraints.None;
             body.useGravity = true;
             body.AddForceAtPosition(knockBackDir * knockBackValue * damage,pointOfForce, ForceMode.Impulse);
+            switch (associatedBehavior)
+            {
+                case SpecificBehaviors.Bouffon:
+                    charger.ApplyStun();
+                    break;
+                case SpecificBehaviors.Truc:
+                    break;
+                case SpecificBehaviors.Rien:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void Die()

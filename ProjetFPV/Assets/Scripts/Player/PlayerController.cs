@@ -550,7 +550,7 @@ public class PlayerController : Singleton<PlayerController>
         if (!isGrounded)
         {
             rb.AddForce(Vector3.down * 10);
-            moveInputTimer = 0;
+           // moveInputTimer = 0;
             return;
         }
 
@@ -807,9 +807,16 @@ public class PlayerController : Singleton<PlayerController>
     private void ToggleCrouch(InputAction.CallbackContext obj)
     {
         hands.localPosition = Vector3.Lerp(hands.localPosition, startPos, 0.6f);
-        if (state == PlayerStates.Crouching)
+
+        if (obj.canceled)
         {
-            state = PlayerStates.Standing;
+            if (state == PlayerStates.Sprinting)
+            {
+            }
+            else
+            {
+                state = PlayerStates.Standing;
+            }
         }
         else
         {
@@ -825,6 +832,10 @@ public class PlayerController : Singleton<PlayerController>
         hands.localPosition = startPos;
         if (obj.canceled)
         {
+            if (state == PlayerStates.Crouching)
+            {
+                return;
+            }
             state = PlayerStates.Standing;
         }
         else
