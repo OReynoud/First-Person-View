@@ -722,6 +722,7 @@ public class PlayerController : Singleton<PlayerController>
 
                     dir.Normalize();
                     controlledProp.body.AddForce(dir * throwForce, ForceMode.Impulse);
+                    
                 }
 
                 break;

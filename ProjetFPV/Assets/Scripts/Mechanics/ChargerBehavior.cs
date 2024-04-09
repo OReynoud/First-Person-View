@@ -17,6 +17,9 @@ public class ChargerBehavior : MonoBehaviour
     [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro;  Cercle violet = portée de l'attaque")]
     [SerializeField] private float pathUpdateFrequency;
 
+    [SerializeField] private float stunDuration = 2f;
+    private float stunTimer;
+
     [Foldout("Reposition state")] [SerializeField]
     private float disappearDuration = 0.5f;
 
@@ -85,6 +88,30 @@ public class ChargerBehavior : MonoBehaviour
     }
 
     public void ApplyTK()
+    {
+        if (currentState != States.Paralysed)
+        {
+            currentState = States.Paralysed;
+        }
+        else
+        {
+            currentState = States.Rush;
+
+        }
+
+        agent.enabled = currentState != States.Paralysed;
+
+
+        if (agent.enabled)
+            agent.SetDestination(PlayerController.instance.transform.position);
+    }
+
+    public void ApplyStun()
+    {
+        currentState = States.Stunned;
+    }
+
+    IEnumerator Stun()
     {
         
     }

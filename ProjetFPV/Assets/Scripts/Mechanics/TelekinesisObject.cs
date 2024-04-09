@@ -1,13 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Mechanics;
 using UnityEngine;
 
 public class TelekinesisObject : ControllableProp
 {
-    // Start is called before the first frame update
-    void Start()
+    public bool thrown;
+    [SerializeField]private Collider col;
+
+    void Awake()
     {
-        
+        col = GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -22,6 +26,29 @@ public class TelekinesisObject : ControllableProp
         else
         {
             gameObject.layer = LayerMask.NameToLayer("Default");
+            thrown = true;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (!thrown) return;
+        
+        if (body.velocity.magnitude < 10)
+        {
+            thrown = false;
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            if (other.gameObject.TryGetComponent(out Enemy enemy))
+            {
+                enemy.ApplyStun();
+                thrown = false;
+            }
         }
     }
 }
