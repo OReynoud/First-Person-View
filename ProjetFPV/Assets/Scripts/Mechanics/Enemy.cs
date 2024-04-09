@@ -62,7 +62,34 @@ namespace Mechanics
         public override void ApplyTelekinesis()
         {
             base.ApplyTelekinesis();
-        
+            switch (associatedBehavior)
+            {
+                case SpecificBehaviors.Bouffon:
+                    charger.ApplyTK();
+                    break;
+                case SpecificBehaviors.Truc:
+                    break;
+                case SpecificBehaviors.Rien:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public void ApplyStun()
+        {
+            switch (associatedBehavior)
+            {
+                case SpecificBehaviors.Bouffon:
+                    charger.ApplyStun();
+                    break;
+                case SpecificBehaviors.Truc:
+                    break;
+                case SpecificBehaviors.Rien:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         public void OnDrawGizmosSelected()
