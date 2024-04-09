@@ -113,7 +113,7 @@ public class ChargerBehavior : MonoBehaviour
 
     IEnumerator Stun()
     {
-        
+        yield return null;
     }
 
     // Start is called before the first frame update
