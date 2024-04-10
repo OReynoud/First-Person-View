@@ -14,7 +14,7 @@ public class ChargerBehavior : MonoBehaviour
 {
     private Enemy brain;
     public NavMeshAgent agent;
-    public MeshRenderer renderer;
+    public MeshRenderer meshRenderer;
     [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro;  Cercle violet = portée de l'attaque")]
     [SerializeField]
     private float pathUpdateFrequency;
@@ -129,13 +129,13 @@ public class ChargerBehavior : MonoBehaviour
 
     IEnumerator Stun()
     {
-        renderer.material = stunnedMat;
+        meshRenderer.material = stunnedMat;
         agent.enabled = false;
         transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
         yield return new WaitForSeconds(stunDuration);
 
         agent.enabled = true;
-        renderer.material = defaultMat;
+        meshRenderer.material = defaultMat;
         agent.SetDestination(PlayerController.instance.transform.position);
         
     }

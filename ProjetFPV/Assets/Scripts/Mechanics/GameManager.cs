@@ -30,15 +30,20 @@ namespace Mechanics
             base.Awake();
             bodyHitMarker.alpha = 0;
             headHitMarker.alpha = 0;
+            
+        }
+
+        void Start()
+        {
+            UpdateAmmoUI();
         }
 
         public void Update()
         {
-            UpdateAmmoUI();
             UsingTK();
         }
 
-        private void UpdateAmmoUI()
+        public void UpdateAmmoUI()
         {
             ammoText[0].text = PlayerController.instance.currentAmmo.ToString();
             ammoText[1].text = PlayerController.instance.magSize.ToString();
@@ -81,11 +86,12 @@ namespace Mechanics
             staminaBar.fillAmount = current / max;
             return current;
         }
-    
+
+        private float timer;
         // Update is called once per frame
         private IEnumerator FadeHitMark(bool headshot)
         {
-            var timer = Time.time + hitMarkerFadeTime;
+            timer = Time.time + hitMarkerFadeTime;
             if (headshot)
             {
                 headHitMarker.alpha = 1;
@@ -110,14 +116,15 @@ namespace Mechanics
             }
         }
 
+        private float timer2;
         private IEnumerator OnKillHitMark()
         {
             
-            var timer = Time.time + hitMarkerFadeTime;
+            timer2 = Time.time + hitMarkerFadeTime;
             crosshairBase.color = Color.red;
-            while (Time.time < timer)
+            while (Time.time < timer2)
             {
-                 crosshairBase.color = Color.Lerp(Color.white,Color.red, (timer - Time.time)/hitMarkerFadeTime);
+                 crosshairBase.color = Color.Lerp(Color.white,Color.red, (timer2 - Time.time)/hitMarkerFadeTime);
                 yield return null;
             }
             

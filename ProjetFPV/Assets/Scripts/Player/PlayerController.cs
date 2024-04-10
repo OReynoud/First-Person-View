@@ -468,6 +468,7 @@ public class PlayerController : Singleton<PlayerController>
             currentAmmo = magSize;
         }
 
+        GameManager.instance.UpdateAmmoUI();
         reloading = false;
     }
 
@@ -860,6 +861,8 @@ public class PlayerController : Singleton<PlayerController>
 
         CameraShake.instance.ShakeOneShot(1);
         currentAmmo--;
+        GameManager.instance.UpdateAmmoUI();
+        
         shootSpeedTimer = shootSpeed;
         currentTrail = Instantiate(shootTrail);
         Destroy(currentTrail.gameObject, trailTime);

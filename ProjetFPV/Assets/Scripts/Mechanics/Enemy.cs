@@ -47,8 +47,9 @@ namespace Mechanics
         public ChargerBehavior charger;
 
         // Start is called before the first frame update
-        void Awake()
+        public override void Awake()
         {
+            base.Awake();
             currentIndex = 1;
             previousIndex = 0;
         }
