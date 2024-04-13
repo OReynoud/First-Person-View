@@ -253,6 +253,7 @@ public class PlayerController : Singleton<PlayerController>
     private Vector2 horizontalVelocity;
     private Vector3 startPos;
     private float moveInputTimer;
+    private bool recentlyDepletedStamina = false;
 
     #endregion
 
@@ -713,12 +714,14 @@ public class PlayerController : Singleton<PlayerController>
             controlledProp.ApplyTelekinesis();
             controlledProp.isGrabbed = false;
             controlledProp = null;
+            recentlyDepletedStamina = true;
         }
     }
 
 
     public void ReleaseProp(InputAction.CallbackContext obj)
     {
+        recentlyDepletedStamina = false;
         if (controlledProp == null)
         {
             CameraShake.instance.ResetCoroutine();
@@ -964,7 +967,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void TelekinesisInput()
     {
-        if (currentControls.FindAction("Telekinesis", true).IsPressed())
+        if (currentControls.FindAction("Telekinesis", true).IsPressed() && !recentlyDepletedStamina)
         {
             if (!controlledProp)
             {
