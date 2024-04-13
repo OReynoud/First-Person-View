@@ -115,7 +115,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4246528624926509626}
   - component: {fileID: 8586051079737411682}
-  - component: {fileID: 1774432769092554759}
   - component: {fileID: 8521479539179761231}
   - component: {fileID: 7332121169580317388}
   m_Layer: 7
@@ -169,38 +168,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1774432769092554759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 531205356919008700}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c78c568a8ba8e645afd1854315718b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isGrabbed: 0
-  body: {fileID: 8586051079737411682}
-  spamBuffer: 0.6
-  canBeGrabbed: 1
-  maxHealth: 10
-  currentHealth: 0
-  bodyParts:
-  - bodyPartName: Head
-    bodyPartCollider: {fileID: 734972143042659317}
-    damageMultiplier: 1
-  isImmobile: 1
-  respawnOnDeath: 1
-  stunDurationTK: 2
-  waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  translationSpeed: 1.1
-  respawnPoint: {fileID: 0}
-  associatedBehavior: 0
-  charger: {fileID: 8521479539179761231}
 --- !u!114 &8521479539179761231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,6 +180,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2590273a12049a841b8430c0ad0f0092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isGrabbed: 0
+  body: {fileID: 8586051079737411682}
+  spamBuffer: 0.6
+  canBeGrabbed: 1
+  maxHealth: 10
+  currentHealth: 0
+  bodyParts:
+  - bodyPartName: Head
+    bodyPartCollider: {fileID: 1610786631946204173}
+    damageMultiplier: 1
+  isDummyTarget: 1
+  respawnOnDeath: 1
+  stunDurationTK: 2
+  waypoints: []
+  translationSpeed: 0.1
+  respawnPoint: {fileID: 0}
   agent: {fileID: 7332121169580317388}
   meshRenderer: {fileID: 7494169833123804209}
   pathUpdateFrequency: 0.5

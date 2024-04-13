@@ -272,7 +272,6 @@ public class PlayerController : Singleton<PlayerController>
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        //offsetPosition.position = restingPosOffset;
         Gizmos.DrawSphere(offsetPosition.position, 0.2f);
 
 
@@ -281,7 +280,10 @@ public class PlayerController : Singleton<PlayerController>
 
     private void OnValidate()
     {
-        inputs = GetComponent<PlayerInput>();
+        if (!inputs)
+        {
+            inputs = GetComponent<PlayerInput>();
+        }
     }
 
     List<string> GetInputMaps()
@@ -307,21 +309,7 @@ public class PlayerController : Singleton<PlayerController>
 
         playerLayer = LayerMask.GetMask("Player") + shootMask;
 
-        currentControls.Enable();
-
-        currentControls.FindAction("ToggleCrouch", true).performed += ToggleCrouch;
-        currentControls.FindAction("ToggleCrouch", true).canceled += ToggleCrouch;
-
-        currentControls.FindAction("ToggleSprint", true).performed += ToggleSprint;
-        currentControls.FindAction("ToggleSprint", true).canceled += ToggleSprint;
-
-        currentControls.FindAction("Shoot", true).performed += Shoot;
-
-        currentControls.FindAction("Telekinesis", true).canceled += ReleaseProp;
-
-        currentControls.FindAction("Reload", true).performed += Reload;
-
-        currentControls.FindAction("Interact", true).performed += Interact;
+        RegisterInputs();
 
         //currentControls.FindAction("Telekinesis",true).performed += ;
 
@@ -334,6 +322,8 @@ public class PlayerController : Singleton<PlayerController>
         inventoryAmmo = maxStoredAmmo;
         currentHealth = maxHealth;
     }
+
+
 
 
     private void Interact(InputAction.CallbackContext obj)
@@ -372,7 +362,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void OnDisable()
     {
-        currentControls.Disable();
+        UnRegisterInputs();
     }
 
     void Start()
@@ -392,7 +382,44 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     #region LogicChecks
+    private void RegisterInputs()
+    {
+        currentControls.Enable();
 
+        currentControls.FindAction("ToggleCrouch", true).performed += ToggleCrouch;
+        currentControls.FindAction("ToggleCrouch", true).canceled += ToggleCrouch;
+
+        currentControls.FindAction("ToggleSprint", true).performed += ToggleSprint;
+        currentControls.FindAction("ToggleSprint", true).canceled += ToggleSprint;
+
+        currentControls.FindAction("Shoot", true).performed += Shoot;
+
+        currentControls.FindAction("Telekinesis", true).canceled += ReleaseProp;
+
+        currentControls.FindAction("Reload", true).performed += Reload;
+
+        currentControls.FindAction("Interact", true).performed += Interact;
+    }
+
+    void UnRegisterInputs()
+    {
+
+        currentControls.FindAction("ToggleCrouch", true).performed -= ToggleCrouch;
+        currentControls.FindAction("ToggleCrouch", true).canceled -= ToggleCrouch;
+
+        currentControls.FindAction("ToggleSprint", true).performed -= ToggleSprint;
+        currentControls.FindAction("ToggleSprint", true).canceled -= ToggleSprint;
+
+        currentControls.FindAction("Shoot", true).performed -= Shoot;
+
+        currentControls.FindAction("Telekinesis", true).canceled -= ReleaseProp;
+
+        currentControls.FindAction("Reload", true).performed -= Reload;
+
+        currentControls.FindAction("Interact", true).performed -= Interact;
+        
+        currentControls.Disable();
+    }
     void CheckShootingHand()
     {
         if (currentControls.FindAction("Shoot", true).bindings[0].path == "<Mouse>/leftButton")

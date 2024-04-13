@@ -9,12 +9,13 @@ namespace Mechanics
 {
     public class Enemy : ControllableProp
     {
+        [InfoBox("Universal Behavior")]
         public float maxHealth;
         public float currentHealth;
 
         public BodyPart[] bodyParts;
         
-        public bool isImmobile = true;
+        public bool isDummyTarget = true;
         public bool respawnOnDeath = true;
         [SerializeField] private float stunDurationTK;
 
@@ -34,17 +35,6 @@ namespace Mechanics
             public float damageMultiplier;
         }
         
-        public enum SpecificBehaviors
-        {
-            Bouffon,
-            Truc,
-            Rien
-        }
-
-        [EnumFlags] public SpecificBehaviors associatedBehavior;
-
-        [ShowIf("associatedBehavior", SpecificBehaviors.Bouffon)]
-        public ChargerBehavior charger;
 
         // Start is called before the first frame update
         public override void Awake()
@@ -53,49 +43,22 @@ namespace Mechanics
             currentIndex = 1;
             previousIndex = 0;
         }
-        public void Start()
+        public virtual void Start()
         {
             currentHealth = maxHealth;
             transform.rotation = Quaternion.identity;
             body.constraints = RigidbodyConstraints.FreezeAll;
         }
+        
 
-        public override void ApplyTelekinesis()
+        public virtual void ApplyStun()
         {
-            base.ApplyTelekinesis();
-            switch (associatedBehavior)
-            {
-                case SpecificBehaviors.Bouffon:
-                    charger.ApplyTK();
-                    break;
-                case SpecificBehaviors.Truc:
-                    break;
-                case SpecificBehaviors.Rien:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
 
-        public void ApplyStun()
-        {
-            switch (associatedBehavior)
-            {
-                case SpecificBehaviors.Bouffon:
-                    charger.ApplyStun();
-                    break;
-                case SpecificBehaviors.Truc:
-                    break;
-                case SpecificBehaviors.Rien:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
         }
 
         public void OnDrawGizmosSelected()
         {
-            if (isImmobile)
+            if (isDummyTarget)
             {
                 return;
             }
@@ -117,19 +80,7 @@ namespace Mechanics
                 currentHealth -= totalDmg;
                 break;
             }
-            switch (associatedBehavior)
-            {
-                case SpecificBehaviors.Bouffon:
-                    charger.currentState = ChargerBehavior.States.Rush;
-                    charger.agent.SetDestination(PlayerController.instance.transform.position);
-                    break;
-                case SpecificBehaviors.Truc:
-                    break;
-                case SpecificBehaviors.Rien:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+
             if (currentHealth <= 0) Die();
         }
 
@@ -147,18 +98,6 @@ namespace Mechanics
             body.constraints = RigidbodyConstraints.None;
             body.useGravity = true;
             body.AddForceAtPosition(knockBackDir * knockBackValue * damage,pointOfForce, ForceMode.Impulse);
-            switch (associatedBehavior)
-            {
-                case SpecificBehaviors.Bouffon:
-                    charger.ApplyStun();
-                    break;
-                case SpecificBehaviors.Truc:
-                    break;
-                case SpecificBehaviors.Rien:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
         }
 
         private void Die()
@@ -178,7 +117,7 @@ namespace Mechanics
         // Update is called once per frame
         void Update()
         {
-            if (isImmobile || isGrabbed) return;
+            if (isDummyTarget || isGrabbed) return;
             MoveBetweenWaypoints();
         }
 
