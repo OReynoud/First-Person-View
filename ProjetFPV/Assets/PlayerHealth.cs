@@ -15,10 +15,7 @@ public class PlayerHealth : MonoBehaviour
     [Tooltip("PV régénérés chaque seconde")] 
     [SerializeField] private float regenPerSecond; //Nombre de PV soignés chaque seconde
     
-    [Tooltip("Intensité de la vignette selon les PV perdus")] 
-    [SerializeField] private AnimationCurve vignetteIntensity; //Intensité de la vignette
 
-    [SerializeField] private Volume volume;
     
     private float t;
 
@@ -41,10 +38,7 @@ public class PlayerHealth : MonoBehaviour
     void Update()
     {
         t -= Time.deltaTime;
-
-        var lostHealth = (maxHealth - currentHealth) / maxHealth;
-
-        volume.weight = Mathf.Lerp(volume.weight, vignetteIntensity.Evaluate(lostHealth), .01f);
+        
         
         if (t <= 0 && currentHealth < maxHealth) //La régén ne s'applique qu'après que timeBeforeRegen soit passé
         {

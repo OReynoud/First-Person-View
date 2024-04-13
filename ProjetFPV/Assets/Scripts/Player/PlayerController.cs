@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -22,6 +23,10 @@ public class PlayerController : Singleton<PlayerController>
 
     private InputActionMap currentControls;
 
+    [Tooltip("Intensité de la vignette selon les PV perdus")] 
+    [SerializeField] private AnimationCurve vignetteIntensity; //Intensité de la vignette
+
+    [SerializeField] private Volume volume;
     [SerializeField] private int maxHealth = 10;
     [SerializeField] private float currentHealth;
     [SerializeField] private float timeToRegenerateHealth;
@@ -507,6 +512,10 @@ public class PlayerController : Singleton<PlayerController>
         playerDir = Vector3.zero;
 
 
+        var lostHealth = (maxHealth - currentHealth) / maxHealth;
+
+        volume.weight = Mathf.Lerp(volume.weight, vignetteIntensity.Evaluate(lostHealth), .01f);
+        
         if (canMove)
         {
             Rotate();

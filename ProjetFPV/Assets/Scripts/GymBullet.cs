@@ -7,7 +7,7 @@ public class GymBullet : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<PlayerHealth>().TakeDamage(bulletDamage);
+            other.gameObject.GetComponent<PlayerController>().TakeDamage(bulletDamage);
             Destroy(gameObject);
         }
     }
