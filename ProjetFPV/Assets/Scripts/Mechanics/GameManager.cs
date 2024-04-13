@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 namespace Mechanics
@@ -30,6 +32,19 @@ namespace Mechanics
             base.Awake();
             bodyHitMarker.alpha = 0;
             headHitMarker.alpha = 0;
+
+            // var temp = FindObjectsOfType<GameObject>();
+            // foreach (var oui in temp)
+            // {
+            //     if (oui.activeInHierarchy)
+            //     {
+            //         if (oui.TryGetComponent(out NavMeshSurface blabla))
+            //         {
+            //             Debug.Log("Found Navmesh at " + oui, oui);
+            //         }
+            //
+            //     }
+            // }
             
         }
 

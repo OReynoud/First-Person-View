@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7253845302195405665}
   - component: {fileID: 6899933558648520374}
   - component: {fileID: 1386136084744189729}
+  - component: {fileID: 5495468611489512478}
   m_Layer: 0
   m_Name: Moyen objet TK
   m_TagString: Untagged
@@ -150,3 +151,21 @@ MonoBehaviour:
   body: {fileID: 0}
   spamBuffer: 0.6
   canBeGrabbed: 1
+  thrown: 0
+  col: {fileID: 0}
+--- !u!208 &5495468611489512478
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7416197397818469994}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5

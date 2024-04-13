@@ -15,7 +15,7 @@ namespace Mechanics
 
         public BodyPart[] bodyParts;
         
-        public bool isDummyTarget = true;
+        public bool isImmobile = true;
         public bool respawnOnDeath = true;
         [SerializeField] private float stunDurationTK;
 
@@ -48,6 +48,7 @@ namespace Mechanics
             currentHealth = maxHealth;
             transform.rotation = Quaternion.identity;
             body.constraints = RigidbodyConstraints.FreezeAll;
+            body.isKinematic = false;
         }
         
 
@@ -58,7 +59,7 @@ namespace Mechanics
 
         public void OnDrawGizmosSelected()
         {
-            if (isDummyTarget)
+            if (isImmobile)
             {
                 return;
             }
@@ -117,7 +118,7 @@ namespace Mechanics
         // Update is called once per frame
         void Update()
         {
-            if (isDummyTarget || isGrabbed) return;
+            if (isImmobile || isGrabbed) return;
             MoveBetweenWaypoints();
         }
 

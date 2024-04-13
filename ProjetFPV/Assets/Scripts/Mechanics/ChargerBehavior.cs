@@ -172,6 +172,8 @@ namespace Mechanics
             agent.stoppingDistance = atkRange;
             agent.speed = wanderSpeed;
             currentState = States.Neutral;
+            agent.enabled = true;
+            meshRenderer.material = defaultMat;
             StartCoroutine(Wander());
         }
 

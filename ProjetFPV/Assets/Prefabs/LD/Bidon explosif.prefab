@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 654588051440287768}
   - component: {fileID: 1193160553724778552}
   - component: {fileID: 1293906957723120419}
+  - component: {fileID: 5047152407354138015}
   m_Layer: 0
   m_Name: Bidon explosif
   m_TagString: Untagged
@@ -132,6 +133,8 @@ MonoBehaviour:
   body: {fileID: 0}
   spamBuffer: 0.6
   canBeGrabbed: 1
+  thrown: 0
+  col: {fileID: 0}
 --- !u!114 &1193160553724778552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +180,22 @@ CapsuleCollider:
   m_Height: 2.3
   m_Direction: 1
   m_Center: {x: 0.00000029802322, y: 0, z: -0.0000039041042}
+--- !u!208 &5047152407354138015
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936830731786060555}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.5, y: 1.85, z: 0.5}
+  m_MoveThreshold: 1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.4
 --- !u!1 &3188091217334086261
 GameObject:
   m_ObjectHideFlags: 0
