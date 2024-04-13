@@ -304,7 +304,7 @@ public class PlayerController : Singleton<PlayerController>
         inputs = GetComponent<PlayerInput>();
         inputs.actions.Enable();
         currentControls = inputs.actions.FindActionMap(currentInputMap);
-        Debug.Log(currentControls);
+
         playerLayer = LayerMask.GetMask("Player") + shootMask;
 
         currentControls.Enable();
@@ -338,7 +338,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Interact(InputAction.CallbackContext obj)
     {
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit,  2,~LayerMask.GetMask("Player")))
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 2, ~LayerMask.GetMask("Player")))
         {
             if (hit.transform.TryGetComponent(out ICanInteract interactable))
             {
@@ -413,7 +413,7 @@ public class PlayerController : Singleton<PlayerController>
     private bool GroundCheck(out RaycastHit hit)
     {
         bool check = false;
-        if (Physics.SphereCast(transform.position,0.3f, Vector3.down, out hit, 1.1f, groundLayer))
+        if (Physics.SphereCast(transform.position, 0.3f, Vector3.down, out hit, 1.1f, groundLayer))
         {
             if (!isJumping)
             {
@@ -551,7 +551,7 @@ public class PlayerController : Singleton<PlayerController>
         if (!isGrounded)
         {
             rb.AddForce(Vector3.down * 10);
-           // moveInputTimer = 0;
+            // moveInputTimer = 0;
             return;
         }
 
@@ -662,7 +662,7 @@ public class PlayerController : Singleton<PlayerController>
                     }
                 }
 
-                if (enemy.isGrabbed) return;
+                if (enemy.isGrabbed) break;
 
 
                 enemy.body.constraints = RigidbodyConstraints.FreezeAll;
@@ -671,7 +671,7 @@ public class PlayerController : Singleton<PlayerController>
                 break;
         }
 
-        if (currentStamina < throwCost)
+        if (currentStamina < 1)
         {
             CameraShake.instance.StopInfiniteShake();
             controlledProp.ApplyTelekinesis();
@@ -705,9 +705,6 @@ public class PlayerController : Singleton<PlayerController>
                     currentStamina =
                         GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina, -throwCost);
 
-                    if (currentStamina < 0) currentStamina = 0;
-
-
                     controlledProp.body.velocity = Vector3.zero;
 
                     var dir = Vector3.zero;
@@ -723,7 +720,6 @@ public class PlayerController : Singleton<PlayerController>
 
                     dir.Normalize();
                     controlledProp.body.AddForce(dir * throwForce, ForceMode.Impulse);
-                    
                 }
 
                 break;
@@ -736,6 +732,7 @@ public class PlayerController : Singleton<PlayerController>
                 break;
         }
 
+        if (currentStamina < 0) currentStamina = 0;
         StartCoroutine(controlledProp.BufferGrabbing());
         controlledProp = null;
     }
@@ -837,6 +834,7 @@ public class PlayerController : Singleton<PlayerController>
             {
                 return;
             }
+
             state = PlayerStates.Standing;
         }
         else
@@ -862,7 +860,7 @@ public class PlayerController : Singleton<PlayerController>
         CameraShake.instance.ShakeOneShot(1);
         currentAmmo--;
         GameManager.instance.UpdateAmmoUI();
-        
+
         shootSpeedTimer = shootSpeed;
         currentTrail = Instantiate(shootTrail);
         Destroy(currentTrail.gameObject, trailTime);
@@ -943,15 +941,13 @@ public class PlayerController : Singleton<PlayerController>
                         controlledProp.ApplyTelekinesis();
                     }
 
-                    if (hit.collider.CompareTag(Ex.Tag_Head) || hit.collider.CompareTag(Ex.Tag_Body))
+                    if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                     {
-                        if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
-                        {
-                            if (!enemy.canBeGrabbed) return;
-                            controlledProp = enemy;
-                            controlledProp.ApplyTelekinesis();
-                        }
+                        if (!enemy.canBeGrabbed) return;
+                        controlledProp = enemy;
+                        controlledProp.ApplyTelekinesis();
                     }
+
 
                     CameraShake.instance.ShakeOneShot(2);
                 }
