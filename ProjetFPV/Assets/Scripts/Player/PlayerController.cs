@@ -912,7 +912,7 @@ public class PlayerController : Singleton<PlayerController>
             {
                 if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                 {
-                    enemy.TakeDamage(bulletDmg, hit.collider);
+                    enemy.TakeDamage(hit.collider);
                     GameManager.instance.HitMark(true);
                 }
             }
@@ -921,7 +921,7 @@ public class PlayerController : Singleton<PlayerController>
             {
                 if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                 {
-                    enemy.TakeDamage(bulletDmg, hit.collider);
+                    enemy.TakeDamage(hit.collider);
                     GameManager.instance.HitMark(false);
                 }
             }

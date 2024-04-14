@@ -217,9 +217,9 @@ namespace Mechanics
         {
             agent.enabled = false;
             repositioning = true;
-            foreach (var part in bodyParts)
+            foreach (var part in allMasks)
             {
-                part.bodyPartCollider.enabled = false;
+                part.maskCollider.enabled = false;
             }
 
             body.isKinematic = true;
@@ -231,9 +231,9 @@ namespace Mechanics
             {
                 repositioning = false;
                 currentState = States.Rush;
-                foreach (var part in bodyParts)
+                foreach (var part in allMasks)
                 {
-                    part.bodyPartCollider.enabled = true;
+                    part.maskCollider.enabled = true;
                 }
 
                 body.isKinematic = false;
