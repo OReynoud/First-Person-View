@@ -14,7 +14,6 @@ namespace Mechanics
     {
         [InfoBox("Bouffon Behavior")]
         public NavMeshAgent agent;
-        public MeshRenderer meshRenderer;
         [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro;  Cercle violet = portée de l'attaque", EInfoBoxType.Warning) ]
         [SerializeField]
         private float pathUpdateFrequency;
@@ -134,15 +133,28 @@ namespace Mechanics
 
         IEnumerator Stun()
         {
-            meshRenderer.material = stunnedMat;
+            foreach (var part in allMasks)
+            {
+                if (!part.broken)
+                {
+                    part.meshRenderer.material = stunnedMat;
+                }
+            }
             agent.enabled = false;
             transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
             yield return new WaitForSeconds(stunDuration);
 
-            agent.enabled = true;
-            meshRenderer.material = defaultMat;
+            agent.enabled = true;            
+            foreach (var part in allMasks)
+            {
+                if (!part.broken)
+                {
+                    part.meshRenderer.material = defaultMat;
+                }
+            }
             agent.SetDestination(PlayerController.instance.transform.position);
-        
+            currentState = States.Repositioning;
+
         }
 
         // Start is called before the first frame update
@@ -169,11 +181,23 @@ namespace Mechanics
 
         public override void Start()
         {
+            base.Start();
             agent.stoppingDistance = atkRange;
             agent.speed = wanderSpeed;
             currentState = States.Neutral;
             agent.enabled = true;
-            meshRenderer.material = defaultMat;
+            foreach (var part in allMasks)
+            {
+                if (!part.broken)
+                {
+                    part.meshRenderer.material = defaultMat;
+                }
+            }
+            if (pathRoutine != null)
+            {
+                StopCoroutine(pathRoutine);
+            }
+            pathRoutine = null;
             StartCoroutine(Wander());
         }
 
@@ -217,15 +241,18 @@ namespace Mechanics
         {
             agent.enabled = false;
             repositioning = true;
+            var temp = allMasks[0].tr.localScale;
             foreach (var part in allMasks)
             {
                 part.maskCollider.enabled = false;
+                part.tr.DOLocalMove(Vector3.zero, disappearDuration);
+                part.tr.DOScale(Vector3.one * 0.8f, disappearDuration * 0.5f);
             }
 
             body.isKinematic = true;
             transform.DOMove(transform.position + Vector3.down * 5, disappearDuration);
-
             yield return new WaitForSeconds(disappearDuration + idleDuration);
+            
             transform.position = GetRandomSpawnPoint() + Vector3.down * 5;
             transform.DOMove(transform.position + Vector3.up * 5, appearDuration).OnComplete(() =>
             {
@@ -234,6 +261,8 @@ namespace Mechanics
                 foreach (var part in allMasks)
                 {
                     part.maskCollider.enabled = true;
+                    part.tr.DOLocalMove(part.origin, appearDuration * 2);
+                    part.tr.DOScale(temp, appearDuration);
                 }
 
                 body.isKinematic = false;
@@ -290,6 +319,15 @@ namespace Mechanics
 
             yield return new WaitForSeconds(waitAfterAttack);
             currentState = States.Repositioning;
+        }
+
+        public override void TakeDamage(Collider part)
+        {
+            base.TakeDamage(part);
+            if (currentState == States.Neutral)
+            {
+                currentState = States.Rush;
+            }
         }
 
         Vector3 GetRandomSpawnPoint()

@@ -34,7 +34,8 @@ namespace Mechanics
             [HideInInspector] public int baseHealth;
             [Range(1,10)]public int maskHealth = 1;
             public Collider maskCollider;
-            [HideInInspector] public Transform tr; 
+            [HideInInspector] public Transform tr;
+            [HideInInspector] public MeshRenderer meshRenderer;
             [ReadOnly] public bool broken;
         }
 
@@ -52,9 +53,15 @@ namespace Mechanics
             previousIndex = 0;
             foreach (var mask in allMasks)
             {
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                if (mask.maskHealth <= 0)
+                {
+                    mask.maskHealth = 1;
+                }
                 mask.baseHealth = mask.maskHealth;
                 mask.tr = mask.maskCollider.transform;
                 mask.origin = mask.tr.localPosition;
+                mask.meshRenderer = mask.tr.GetComponent<MeshRenderer>();
             }
         }
         public virtual void Start()
@@ -91,7 +98,7 @@ namespace Mechanics
             Debug.DrawLine(waypoints[^1].position,waypoints[0].position );
         }
 
-        public void TakeDamage(Collider partHit)
+        public virtual void TakeDamage(Collider partHit)
         {
             for (int i = 0; i < allMasks.Length; i++)
             {
@@ -115,10 +122,10 @@ namespace Mechanics
 
             InputAction.CallbackContext dummy = new InputAction.CallbackContext();
             if (isGrabbed) PlayerController.instance.ReleaseProp(dummy);
-
-            body.constraints = RigidbodyConstraints.None;
-            body.useGravity = true;
-            body.AddForceAtPosition(knockBackDir * knockBackValue,pointOfForce, ForceMode.Impulse);
+            ApplyStun();
+            // body.constraints = RigidbodyConstraints.None;
+            // body.useGravity = true;
+            // body.AddForceAtPosition(knockBackDir * knockBackValue,pointOfForce, ForceMode.Impulse);
         }
 
         private void Die()
