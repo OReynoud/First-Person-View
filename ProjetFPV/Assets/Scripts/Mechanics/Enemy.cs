@@ -9,11 +9,10 @@ namespace Mechanics
 {
     public class Enemy : ControllableProp
     {
-        [InfoBox("Universal Behavior")]
-        public float maxHealth;
-        public float currentHealth;
+        [InfoBox("Universal Behavior")] 
+        [ShowNonSerializedField] private int maskCount;
 
-        public BodyPart[] bodyParts;
+        public BodyPart[] allMasks;
         
         public bool isImmobile = true;
         public bool respawnOnDeath = true;
@@ -27,14 +26,23 @@ namespace Mechanics
 
         private int previousIndex = 0;
         [Serializable]
-        public struct BodyPart
+        public class BodyPart
         {
             [HorizontalLine(color:EColor.White)]
-            public string bodyPartName;
-            public Collider bodyPartCollider;
-            public float damageMultiplier;
+            public string maskName;
+            [HideInInspector] public Vector3 origin;
+            [HideInInspector] public int baseHealth;
+            [Range(1,10)]public int maskHealth = 1;
+            public Collider maskCollider;
+            [HideInInspector] public Transform tr; 
+            [ReadOnly] public bool broken;
         }
-        
+
+        private void OnValidate()
+        {
+            maskCount = allMasks.Length;
+        }
+
 
         // Start is called before the first frame update
         public override void Awake()
@@ -42,11 +50,23 @@ namespace Mechanics
             base.Awake();
             currentIndex = 1;
             previousIndex = 0;
+            foreach (var mask in allMasks)
+            {
+                mask.baseHealth = mask.maskHealth;
+                mask.tr = mask.maskCollider.transform;
+                mask.origin = mask.tr.localPosition;
+            }
         }
         public virtual void Start()
         {
-            currentHealth = maxHealth;
-            transform.rotation = Quaternion.identity;
+            maskCount = allMasks.Length;
+            foreach (var mask in allMasks)
+            {
+                mask.maskCollider.gameObject.SetActive(true);
+                mask.maskHealth = mask.baseHealth;
+                mask.broken = false;
+            }
+            
             body.constraints = RigidbodyConstraints.FreezeAll;
             body.isKinematic = false;
         }
@@ -71,34 +91,34 @@ namespace Mechanics
             Debug.DrawLine(waypoints[^1].position,waypoints[0].position );
         }
 
-        public void TakeDamage(int damage, Collider partHit)
+        public void TakeDamage(Collider partHit)
         {
-            for (int i = 0; i < bodyParts.Length; i++)
+            for (int i = 0; i < allMasks.Length; i++)
             {
-                if (partHit != bodyParts[i].bodyPartCollider)continue;
-                
-                var totalDmg = damage * bodyParts[i].damageMultiplier;
-                currentHealth -= totalDmg;
+                if (partHit != allMasks[i].maskCollider)continue;
+
+                allMasks[i].maskHealth--;
+                if ( allMasks[i].maskHealth <= 0)
+                {
+                    allMasks[i].maskCollider.gameObject.SetActive(false);
+                    allMasks[i].broken = true;
+                    maskCount--;
+                }
                 break;
             }
 
-            if (currentHealth <= 0) Die();
+            if (maskCount <= 0) Die();
         }
 
-        public void TakeDamage(int damage, float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce)
+        public void TakeDamage(float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce)
         {
-            currentHealth -= damage;
-            if (currentHealth <= 0)
-            {
-                Die();
-            }
 
             InputAction.CallbackContext dummy = new InputAction.CallbackContext();
             if (isGrabbed) PlayerController.instance.ReleaseProp(dummy);
 
             body.constraints = RigidbodyConstraints.None;
             body.useGravity = true;
-            body.AddForceAtPosition(knockBackDir * knockBackValue * damage,pointOfForce, ForceMode.Impulse);
+            body.AddForceAtPosition(knockBackDir * knockBackValue,pointOfForce, ForceMode.Impulse);
         }
 
         private void Die()

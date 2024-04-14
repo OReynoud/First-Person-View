@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mechanics;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class TNT : MonoBehaviour, IDestructible
@@ -9,11 +10,11 @@ public class TNT : MonoBehaviour, IDestructible
     [SerializeField] private float health = 1;
     [SerializeField] private float explosionRadius;
     [SerializeField] private float explosionForce = 3;
-    [SerializeField] private float damageToEnemy = 5;
     [SerializeField] private float damageToPlayer = 3;
     [Range(0,1)][SerializeField] private float damageFallOff = 0.2f;
     [SerializeField] private LayerMask mask;
     [SerializeField] private GameObject explosionMesh;
+    [Foldout("Obsolète")][SerializeField] private float damageToEnemy = 5;
 
     public void OnDrawGizmosSelected()
     {
@@ -48,7 +49,7 @@ public class TNT : MonoBehaviour, IDestructible
             
             if (col.transform.parent.TryGetComponent(out Enemy enemy))
             {
-                enemy.TakeDamage(Mathf.RoundToInt(damageToEnemy * damageModifier), explosionForce,dir.normalized, col.ClosestPointOnBounds(transform.position));
+                enemy.TakeDamage(explosionForce,dir.normalized, col.ClosestPointOnBounds(transform.position));
             }
 
             if (col.gameObject.CompareTag(Ex.Tag_Player))
