@@ -18,14 +18,7 @@ namespace Mechanics
         [SerializeField]
         private float pathUpdateFrequency;
 
-        [Foldout("Stunned state")] [SerializeField] 
-        private float stunDuration = 2f;
-    
-        [Foldout("Stunned state")] [SerializeField] 
-        private Material defaultMat;
-    
-        [Foldout("Stunned state")] [SerializeField] 
-        private Material stunnedMat;
+
 
         [Foldout("Reposition state")] [SerializeField]
         private float disappearDuration = 0.5f;
@@ -186,13 +179,7 @@ namespace Mechanics
             agent.speed = wanderSpeed;
             currentState = States.Neutral;
             agent.enabled = true;
-            foreach (var part in allMasks)
-            {
-                if (!part.broken)
-                {
-                    part.meshRenderer.material = defaultMat;
-                }
-            }
+
             if (pathRoutine != null)
             {
                 StopCoroutine(pathRoutine);

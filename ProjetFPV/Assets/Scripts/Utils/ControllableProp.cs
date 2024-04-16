@@ -6,13 +6,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class ControllableProp : MonoBehaviour
 {
-    public bool isGrabbed;
+    [BoxGroup("Controllable Prop")] public bool isGrabbed;
 
-    public Rigidbody body;
+    [BoxGroup("Controllable Prop")] public Rigidbody body;
 
-    public float spamBuffer = 0.6f;
+    [BoxGroup("Controllable Prop")] public float spamBuffer = 0.6f;
 
-    public bool canBeGrabbed = true;
+    [BoxGroup("Controllable Prop")] public bool canBeGrabbed = true;
 
     // Start is called before the first frame update
     public virtual void Awake()

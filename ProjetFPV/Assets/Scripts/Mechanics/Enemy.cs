@@ -10,34 +10,29 @@ namespace Mechanics
     public class Enemy : ControllableProp
     {
         [InfoBox("Universal Behavior")] 
-        [ShowNonSerializedField] private int maskCount;
-
-        public BodyPart[] allMasks;
         
-        public bool isImmobile = true;
-        public bool respawnOnDeath = true;
-        [SerializeField] private float stunDurationTK;
+        [BoxGroup("Masks")] public BodyPart[] allMasks;
+        
+        [BoxGroup("Masks")] [ReadOnly] public int maskCount;
+        
+        [BoxGroup("Stunned state")] public float stunDuration = 2f;
+    
+        [BoxGroup("Stunned state")] public Material defaultMat;
+    
+        [BoxGroup("Stunned state")] [SerializeField] public Material stunnedMat;
 
-        [HideIf("isImmobile")] public List<Transform> waypoints;
-        [HideIf("isImmobile")] public float translationSpeed = 0.1f;
-        [ShowIf("respawnOnDeath")] public Transform respawnPoint;
+        
+        [Foldout("Dummy Target")] public bool isImmobile = true;
+        [Foldout("Dummy Target")] public bool respawnOnDeath = true;
+
+        [Foldout("Dummy Target")] [HideIf("isImmobile")] public List<Transform> waypoints;
+        [Foldout("Dummy Target")] [HideIf("isImmobile")] public float translationSpeed = 0.1f;
+        [Foldout("Dummy Target")] [ShowIf("respawnOnDeath")] public Transform respawnPoint;
 
         private int currentIndex = 1;
 
         private int previousIndex = 0;
-        [Serializable]
-        public class BodyPart
-        {
-            [HorizontalLine(color:EColor.White)]
-            public string maskName;
-            [HideInInspector] public Vector3 origin;
-            [HideInInspector] public int baseHealth;
-            [Range(1,10)]public int maskHealth = 1;
-            public Collider maskCollider;
-            [HideInInspector] public Transform tr;
-            [HideInInspector] public MeshRenderer meshRenderer;
-            [ReadOnly] public bool broken;
-        }
+
 
         private void OnValidate()
         {
@@ -72,6 +67,8 @@ namespace Mechanics
                 mask.maskCollider.gameObject.SetActive(true);
                 mask.maskHealth = mask.baseHealth;
                 mask.broken = false;
+                mask.meshRenderer.material = defaultMat;
+
             }
             
             body.constraints = RigidbodyConstraints.FreezeAll;
@@ -188,4 +185,21 @@ namespace Mechanics
             });
         }
     }
+    
+    
+            
+    [Serializable]
+    public class BodyPart
+    {
+        [HorizontalLine(color:EColor.White)]
+        public string maskName;
+        [HideInInspector] public Vector3 origin;
+        [HideInInspector] public int baseHealth;
+        [Range(1,10)]public int maskHealth = 1;
+        public Collider maskCollider;
+        [HideInInspector] public Transform tr;
+        [HideInInspector] public MeshRenderer meshRenderer;
+        [ReadOnly] public bool broken;
+    }
+
 }
