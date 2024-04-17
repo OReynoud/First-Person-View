@@ -7,6 +7,7 @@ public class AudioOcclusion : MonoBehaviour
     private Transform[] casters;
     private int[] collisions;
     private AudioLowPassFilter lowPass;
+    private AudioHighPassFilter highPass;
     [SerializeField] private AnimationCurve lowPassCurve;
     public float min;
     public float max;
@@ -14,6 +15,7 @@ public class AudioOcclusion : MonoBehaviour
     void Start()
     {
         lowPass = GetComponent<AudioLowPassFilter>();
+        highPass = GetComponent<AudioHighPassFilter>();
         
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
@@ -32,12 +34,6 @@ public class AudioOcclusion : MonoBehaviour
     {
         distance = Vector3.Distance(transform.position, player.position);
         
-        Debug.DrawRay(casters[0].position, player.position - casters[0].position, Color.green);
-        Debug.DrawRay(casters[1].position, player.position - casters[1].position, Color.green);
-        Debug.DrawRay(casters[2].position, player.position - casters[2].position, Color.green);
-        Debug.DrawRay(casters[3].position, player.position - casters[3].position, Color.green);
-        Debug.DrawRay(casters[4].position, player.position - casters[4].position, Color.green);
-        
         if (distance <= 40)
         {
             RaycastHit hit0;
@@ -46,7 +42,7 @@ public class AudioOcclusion : MonoBehaviour
             RaycastHit hit3;
             RaycastHit hit4;
 
-            if (Physics.Raycast(casters[0].position, player.position - casters[0].position, out hit0, distance - 1f))
+            if (Physics.Raycast(casters[0].position, player.position + Vector3.up - casters[0].position, out hit0, distance - 1f))
             {
                 collisions[0] = 1;
             }
@@ -55,7 +51,7 @@ public class AudioOcclusion : MonoBehaviour
                 collisions[0] = 0;
             }
             
-            if (Physics.Raycast(casters[1].position, player.position - casters[1].position, out hit1, distance - 1f))
+            if (Physics.Raycast(casters[1].position, player.position + Vector3.up  - casters[1].position, out hit1, distance - 1f))
             {
                 collisions[1] = 1;
             }
@@ -64,7 +60,7 @@ public class AudioOcclusion : MonoBehaviour
                 collisions[1] = 0;
             }
             
-            if (Physics.Raycast(casters[2].position, player.position - casters[2].position, out hit2, distance - 1f))
+            if (Physics.Raycast(casters[2].position, player.position + Vector3.up  - casters[2].position, out hit2, distance - 1f))
             {
                 collisions[2] = 1;
             }
@@ -73,7 +69,7 @@ public class AudioOcclusion : MonoBehaviour
                 collisions[2] = 0;
             }
             
-            if (Physics.Raycast(casters[3].position, player.position - casters[3].position, out hit3, distance - 1f))
+            if (Physics.Raycast(casters[3].position, player.position + Vector3.up  - casters[3].position, out hit3, distance - 1f))
             {
                 collisions[3] = 1;
             }
@@ -82,7 +78,7 @@ public class AudioOcclusion : MonoBehaviour
                 collisions[3] = 0;
             }
             
-            if (Physics.Raycast(casters[4].position, player.position - casters[4].position, out hit4, distance - 1f))
+            if (Physics.Raycast(casters[4].position, player.position + Vector3.up  - casters[4].position, out hit4, distance - 1f))
             {
                 collisions[4] = 1;
             }
@@ -93,7 +89,8 @@ public class AudioOcclusion : MonoBehaviour
 
             var x = collisions[0] + collisions[1] + collisions[2] + collisions[3] + collisions[4];
 
-            lowPass.cutoffFrequency = Mathf.Lerp(lowPass.cutoffFrequency, lowPassCurve.Evaluate(x) * max + min, 0.02f);
+            lowPass.cutoffFrequency = Mathf.Lerp(lowPass.cutoffFrequency, lowPassCurve.Evaluate(x) * max + min, 0.1f);
+            highPass.cutoffFrequency = Mathf.Lerp(highPass.cutoffFrequency, (float)x / 5f * 1000, 0.1f);
         }
     }
 }
