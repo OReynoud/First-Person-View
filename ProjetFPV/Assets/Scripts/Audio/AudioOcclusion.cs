@@ -30,6 +30,8 @@ public class AudioOcclusion : MonoBehaviour
 
     void Update()
     {
+        transform.LookAt(player.position);
+        
         distance = Vector3.Distance(transform.position, player.position);
         
         if (distance <= 40)

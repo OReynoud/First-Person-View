@@ -17,6 +17,10 @@ using Random = UnityEngine.Random;
 public class PlayerController : Singleton<PlayerController>
 {
 
+    private AudioSource audioSource;
+
+    [SerializeField] private AudioClip shootClip;
+    
     private bool moveCam = false;
     public Rigidbody rb;
 
@@ -362,6 +366,8 @@ public class PlayerController : Singleton<PlayerController>
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        
         CheckShootingHand();
     }
 
@@ -939,6 +945,9 @@ public class PlayerController : Singleton<PlayerController>
             Debug.Log("Hit some air");
             currentTrail.SetPosition(1, playerCam.forward * maxRange + playerCam.position);
         }
+
+        audioSource.pitch = Random.Range(0.9f, 1.1f);
+        audioSource.PlayOneShot(shootClip);
 
         if (currentAmmo == 0)
         {
