@@ -35,8 +35,8 @@ public class PlayerController : Singleton<PlayerController>
     private float maxInk;
     
     [Tooltip("How much stamina the player currently has")]
-    [SerializeField] [ProgressBar("maxStamina", EColor.Green)]
-    private float currentInk;
+    [SerializeField] [ProgressBar("maxInk", EColor.Green)]
+    public float currentInk;
     
     [SerializeField] private int maxHealth = 10; 
     [SerializeField] [ProgressBar("maxHealth", EColor.Red)]
@@ -185,9 +185,8 @@ public class PlayerController : Singleton<PlayerController>
     private float throwForce;
 
     [Foldout("Telekinesis")]
-    [Tooltip("Delay after releasing Telekinesis before you can use it on another object")]
     [SerializeField]
-    private float inputSpamBuffer;
+    public float inkAbsorbSpeed;
 
     #endregion
 
@@ -333,7 +332,7 @@ public class PlayerController : Singleton<PlayerController>
         Cursor.visible = false;
 
         startPos = hands.localPosition;
-        currentInk = maxInk;
+        currentInk = maxInk * 0.5f;
         currentAmmo = magSize;
         currentHealth = maxHealth;
     }
@@ -667,8 +666,22 @@ public class PlayerController : Singleton<PlayerController>
                     controlledProp.isGrabbed = true;
                     CameraShake.instance.StartInfiniteShake(0);
                 }
-
                 break;
+            
+            case AbsorbInk absorbInk:
+                absorbInk.storedInk -= inkAbsorbSpeed * Time.deltaTime;
+                currentInk += inkAbsorbSpeed * Time.deltaTime;
+                var lerpValue = Mathf.Clamp(1 - absorbInk.storedInk / absorbInk.maxInk, 0, 0.8f);
+                absorbInk.transform.localScale = Vector3.Lerp(absorbInk.baseScale, Vector3.zero, lerpValue);
+
+                if (absorbInk.storedInk < 0)
+                {
+                    
+                    ReleaseProp(new InputAction.CallbackContext());
+                    return;
+                }
+                break;
+            
             case Enemy enemy:
                 currentInk =
                     GameManager.instance.UpdatePlayerStamina(currentInk, maxInk,
@@ -701,6 +714,7 @@ public class PlayerController : Singleton<PlayerController>
                 enemy.isGrabbed = true;
                 enemy.GrabbedBehavior(1, 0.1f, 30);
                 break;
+            
         }
 
         if (currentInk < 1)
@@ -762,7 +776,13 @@ public class PlayerController : Singleton<PlayerController>
                 controlledProp.isGrabbed = false;
                 controlledProp.ApplyTelekinesis();
                 controlledProp.body.constraints = RigidbodyConstraints.FreezeRotation;
-
+                break;
+            
+            case AbsorbInk absorbInk:
+                if (absorbInk.storedInk < 0)
+                {
+                    Destroy(absorbInk.gameObject);
+                }
                 break;
         }
 
@@ -1008,13 +1028,24 @@ public class PlayerController : Singleton<PlayerController>
                         if (!TK.canBeGrabbed) return;
                         controlledProp = TK;
                         controlledProp.ApplyTelekinesis();
+                        return;
                     }
+
+                    if (hit.collider.TryGetComponent(out AbsorbInk absorb))
+                    {
+                        if (!absorb.canBeGrabbed) return;
+                        controlledProp = absorb;
+                        controlledProp.ApplyTelekinesis();
+                        return;
+                    }
+
 
                     if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                     {
                         if (!enemy.canBeGrabbed) return;
                         controlledProp = enemy;
                         controlledProp.ApplyTelekinesis();
+                        return;
                     }
 
 
