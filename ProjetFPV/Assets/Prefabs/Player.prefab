@@ -288,6 +288,7 @@ Transform:
   - {fileID: 5842867412959891476}
   - {fileID: 3973509670897740175}
   - {fileID: 1278172728399317272}
+  - {fileID: 1884776594256887845}
   m_Father: {fileID: 1171924708256431230}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!111 &5209075110235037746
@@ -1284,6 +1285,46 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1812574446848229607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1884776594256887845}
+  - component: {fileID: 3518178944565488153}
+  m_Layer: 9
+  m_Name: AudioListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1884776594256887845
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812574446848229607}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.07600057, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7127425910194321269}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &3518178944565488153
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812574446848229607}
+  m_Enabled: 1
 --- !u!1 &2150186101708781376
 GameObject:
   m_ObjectHideFlags: 0
@@ -5712,7 +5753,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5842867412959891476}
   - component: {fileID: 5747994813939177046}
-  - component: {fileID: 6778243986181336472}
   - component: {fileID: 5565993660230409513}
   - component: {fileID: 9203036196178575144}
   - component: {fileID: 7617246677153205059}
@@ -5789,14 +5829,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &6778243986181336472
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7963865459006595146}
-  m_Enabled: 1
 --- !u!114 &5565993660230409513
 MonoBehaviour:
   m_ObjectHideFlags: 0

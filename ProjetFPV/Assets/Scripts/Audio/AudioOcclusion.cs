@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AudioOcclusion : MonoBehaviour
 {
-    private Transform player;
+    [SerializeField] private Transform player;
     private float distance;
     private Transform[] casters;
     private int[] collisions;
@@ -16,8 +16,6 @@ public class AudioOcclusion : MonoBehaviour
     {
         lowPass = GetComponent<AudioLowPassFilter>();
         highPass = GetComponent<AudioHighPassFilter>();
-        
-        player = GameObject.FindGameObjectWithTag("Player").transform;
 
         var childCount = transform.childCount;
         
@@ -42,7 +40,7 @@ public class AudioOcclusion : MonoBehaviour
             RaycastHit hit3;
             RaycastHit hit4;
 
-            if (Physics.Raycast(casters[0].position, player.position + Vector3.up - casters[0].position, out hit0, distance - 1f))
+            if (Physics.Raycast(casters[0].position, player.position - casters[0].position, out hit0, distance - 1f))
             {
                 collisions[0] = 1;
             }
@@ -51,7 +49,7 @@ public class AudioOcclusion : MonoBehaviour
                 collisions[0] = 0;
             }
             
-            if (Physics.Raycast(casters[1].position, player.position + Vector3.up  - casters[1].position, out hit1, distance - 1f))
+            if (Physics.Raycast(casters[1].position, player.position - casters[1].position, out hit1, distance - 1f))
             {
                 collisions[1] = 1;
             }
@@ -60,7 +58,7 @@ public class AudioOcclusion : MonoBehaviour
                 collisions[1] = 0;
             }
             
-            if (Physics.Raycast(casters[2].position, player.position + Vector3.up  - casters[2].position, out hit2, distance - 1f))
+            if (Physics.Raycast(casters[2].position, player.position - casters[2].position, out hit2, distance - 1f))
             {
                 collisions[2] = 1;
             }
@@ -69,7 +67,7 @@ public class AudioOcclusion : MonoBehaviour
                 collisions[2] = 0;
             }
             
-            if (Physics.Raycast(casters[3].position, player.position + Vector3.up  - casters[3].position, out hit3, distance - 1f))
+            if (Physics.Raycast(casters[3].position, player.position - casters[3].position, out hit3, distance - 1f))
             {
                 collisions[3] = 1;
             }
@@ -78,7 +76,7 @@ public class AudioOcclusion : MonoBehaviour
                 collisions[3] = 0;
             }
             
-            if (Physics.Raycast(casters[4].position, player.position + Vector3.up  - casters[4].position, out hit4, distance - 1f))
+            if (Physics.Raycast(casters[4].position, player.position - casters[4].position, out hit4, distance - 1f))
             {
                 collisions[4] = 1;
             }
