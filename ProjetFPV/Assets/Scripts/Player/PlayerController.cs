@@ -30,8 +30,17 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private AnimationCurve vignetteIntensity; //Intensité de la vignette
 
     [SerializeField] private Volume volume;
-    [SerializeField] private int maxHealth = 10;
-    [SerializeField] private float currentHealth;
+
+    [Tooltip("Maximum Ink of the player")] [SerializeField]
+    private float maxInk;
+    
+    [Tooltip("How much stamina the player currently has")]
+    [SerializeField] [ProgressBar("maxStamina", EColor.Green)]
+    private float currentInk;
+    
+    [SerializeField] private int maxHealth = 10; 
+    [SerializeField] [ProgressBar("maxHealth", EColor.Red)]
+    private float currentHealth;
     [SerializeField] public int healPackCapacity;
     [SerializeField] private float healAmount;
     //[SerializeField] private float timeToRegenerateHealth;
@@ -110,9 +119,15 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Shoot")] [Tooltip("Base damage of a bullet")] [SerializeField]
     private int bulletDmg;
-
-    [Foldout("Shoot")] [Tooltip("How much ammo can the player carry? (Current mag not included)")] [SerializeField]
-    private int maxStoredAmmo;
+    
+    [Foldout("Shoot")] [Tooltip("Cost to convert ink into bullets")] [SerializeField]
+    private float reloadCostPerBullet;
+    
+    [Foldout("Shoot")] [Tooltip("Base damage of a bullet")] [SerializeField]
+    private float surplusDrainRate;
+    
+    [Foldout("Shoot")] [Tooltip("Base damage of a bullet")] [SerializeField]
+    private float surplusBulletCost;
 
     [Foldout("Shoot")] [Tooltip("(Not yet used) Max ammo before player has to reload")] [SerializeField]
     public int magSize;
@@ -153,20 +168,8 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField]
     private float grabDistanceBuffer;
 
-    [Foldout("Telekinesis")] [Tooltip("Maximum stamina of the player")] [SerializeField]
-    private float maxStamina;
 
-    [Foldout("Telekinesis")]
-    [Tooltip("How much stamina the player currently has")]
-    [SerializeField]
-    [ProgressBar("maxStamina", EColor.Green)]
-    private float currentStamina;
-
-    [Foldout("Telekinesis")]
-    [Tooltip("How fast stamina regenerates when player is not using telekinesis")]
-    [SerializeField]
-    private float staminaRegen;
-
+    
     [Foldout("Telekinesis")] [Tooltip("Cost per second of using telekinesis on an object")] [SerializeField]
     private float holdObjectCost;
 
@@ -330,9 +333,8 @@ public class PlayerController : Singleton<PlayerController>
         Cursor.visible = false;
 
         startPos = hands.localPosition;
-        currentStamina = maxStamina;
+        currentInk = maxInk;
         currentAmmo = magSize;
-        inventoryAmmo = maxStoredAmmo;
         currentHealth = maxHealth;
     }
     
@@ -471,15 +473,21 @@ public class PlayerController : Singleton<PlayerController>
 
     #endregion
 
-    private const float reloadHandMove = 2f;
+    private const float ReloadHandMove = 2f;
     private Vector3 reloadBasePos;
 
     private IEnumerator Reload2()
     {
         reloadBasePos = shootingHand.localPosition;
-        shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * reloadHandMove, 0.4f);
+        shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * ReloadHandMove, 0.4f);
         yield return new WaitForSeconds(reloadSpeed);
         shootingHand.DOLocalMove(reloadBasePos, 0.4f);
+
+        if (currentInk < (magSize - currentAmmo) * reloadCostPerBullet)
+        {
+                
+        }
+        
         if (inventoryAmmo < magSize - currentAmmo)
         {
             currentAmmo = inventoryAmmo;
@@ -497,7 +505,7 @@ public class PlayerController : Singleton<PlayerController>
 
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         UpdateRestingPos();
         playerDir = Vector3.zero;
@@ -548,9 +556,6 @@ public class PlayerController : Singleton<PlayerController>
         if (!controlledProp)
         {
             CheckTelekinesisTarget();
-
-            currentStamina =
-                GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina, Time.deltaTime * staminaRegen);
         }
         else if (telekinesisPointer.gameObject.activeSelf)
             telekinesisPointer.gameObject.SetActive(false);
@@ -639,8 +644,8 @@ public class PlayerController : Singleton<PlayerController>
         {
             case TelekinesisObject:
 
-                currentStamina =
-                    GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina,
+                currentInk =
+                    GameManager.instance.UpdatePlayerStamina(currentInk, maxInk,
                         Time.deltaTime * -holdObjectCost);
 
                 var dir = offsetPosition.position - controlledProp.transform.position;
@@ -665,8 +670,8 @@ public class PlayerController : Singleton<PlayerController>
 
                 break;
             case Enemy enemy:
-                currentStamina =
-                    GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina,
+                currentInk =
+                    GameManager.instance.UpdatePlayerStamina(currentInk, maxInk,
                         Time.deltaTime * -holdEnemyCost);
 
                 tempWorldToScreen = camera1.WorldToScreenPoint(controlledProp.transform.position);
@@ -698,7 +703,7 @@ public class PlayerController : Singleton<PlayerController>
                 break;
         }
 
-        if (currentStamina < 1)
+        if (currentInk < 1)
         {
             CameraShake.instance.StopInfiniteShake();
             controlledProp.ApplyTelekinesis();
@@ -731,8 +736,8 @@ public class PlayerController : Singleton<PlayerController>
                 {
                     controlledProp.isGrabbed = false;
 
-                    currentStamina =
-                        GameManager.instance.UpdatePlayerStamina(currentStamina, maxStamina, -throwCost);
+                    currentInk =
+                        GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, -throwCost);
 
                     controlledProp.body.velocity = Vector3.zero;
 
@@ -761,7 +766,7 @@ public class PlayerController : Singleton<PlayerController>
                 break;
         }
 
-        if (currentStamina < 0) currentStamina = 0;
+        if (currentInk < 0) currentInk = 0;
         StartCoroutine(controlledProp.BufferGrabbing());
         controlledProp = null;
     }
@@ -878,7 +883,8 @@ public class PlayerController : Singleton<PlayerController>
     
     private void Interact(InputAction.CallbackContext obj)
     {
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 2, ~LayerMask.GetMask("Player")))
+        Debug.DrawRay(playerCam.position,camera1.transform.forward * 4, Color.blue,3);
+        if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, 4, ~LayerMask.GetMask("Player")))
         {
             if (hit.transform.TryGetComponent(out ICanInteract interactable))
             {
@@ -958,7 +964,7 @@ public class PlayerController : Singleton<PlayerController>
     
     private void Reload(InputAction.CallbackContext obj)
     {
-        if (reloading || currentAmmo == magSize || inventoryAmmo == 0)
+        if (reloading || currentAmmo == magSize || currentInk == 0)
             return;
         reloading = true;
         reloadCoroutine = StartCoroutine(Reload2());
