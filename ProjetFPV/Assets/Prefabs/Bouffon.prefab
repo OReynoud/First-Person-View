@@ -188,7 +188,7 @@ MonoBehaviour:
   - maskName: 
     origin: {x: 0, y: 0, z: 0}
     baseHealth: 0
-    maskHealth: 1
+    maskHealth: 2
     maskCollider: {fileID: 734972143042659317}
     tr: {fileID: 0}
     meshRenderer: {fileID: 0}
@@ -214,13 +214,16 @@ MonoBehaviour:
   walkAreaRange: 13.6
   wanderFrequency: 4
   wanderSpeed: 6
-  rushRange: 13.34
+  rushRange: 10
   rushSpeed: 10
   atkRange: 2.12
   atkDamage: 10
   timeToAttack: 0.3
   waitAfterAttack: 0.2
   currentState: 0
+  arenaSpawn: 0
+  locationToSpawn: {x: 0, y: 0, z: 0}
+  arena: {fileID: 0}
   playerLayer:
     serializedVersion: 2
     m_Bits: 833

@@ -63,13 +63,11 @@ namespace Mechanics
         public void UpdateAmmoUI()
         {
             ammoText[0].text = PlayerController.instance.currentAmmo.ToString();
-            ammoText[1].text = PlayerController.instance.magSize.ToString();
-            ammoText[2].text = PlayerController.instance.inventoryAmmo.ToString();
         }
 
         public void UpdateHealPackUI()
         {
-            healPackText.text = "x " + PlayerController.instance.currentHealPackAmount.ToString();
+            healPackText.text = "x " + PlayerController.instance.currentHealPackAmount;
         }
 
         public void HitMark(bool headshot)
