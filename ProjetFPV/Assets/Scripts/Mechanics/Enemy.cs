@@ -125,7 +125,7 @@ namespace Mechanics
             // body.AddForceAtPosition(knockBackDir * knockBackValue,pointOfForce, ForceMode.Impulse);
         }
 
-        private void Die()
+        public virtual void Die()
         {
             GameManager.instance.OnKillEnemy();
         

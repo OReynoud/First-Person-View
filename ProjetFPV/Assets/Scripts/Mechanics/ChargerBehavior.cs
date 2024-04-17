@@ -30,7 +30,7 @@ namespace Mechanics
         private float appearDuration = 0.5f;
 
         [Foldout("Reposition state")] [SerializeField]
-        private Transform[] spawnPositions;
+        public Transform[] spawnPositions;
 
         [Foldout("Neutral state")] [SerializeField]
         private float walkAreaRange;
@@ -172,13 +172,23 @@ namespace Mechanics
             }
         }
 
+        [HideInInspector] public bool arenaSpawn;
+        [HideInInspector] public Vector3 locationToSpawn;
+        [HideInInspector] public Arena arena;
         public override void Start()
         {
             base.Start();
             agent.stoppingDistance = atkRange;
             agent.speed = wanderSpeed;
-            currentState = States.Neutral;
+            
+            if (arenaSpawn)
+            {
+                ArenaSpawn();
+                return;
+            }
             agent.enabled = true;
+
+            currentState = States.Neutral;
 
             if (pathRoutine != null)
             {
@@ -308,6 +318,19 @@ namespace Mechanics
             currentState = States.Repositioning;
         }
 
+        
+        void ArenaSpawn()
+        {
+            currentState = States.Rush;
+            agent.enabled = false;
+            body.isKinematic = true;
+            transform.DOMove(transform.position + Vector3.up * 6, appearDuration).OnComplete(() =>
+            {
+                body.isKinematic = false;
+                agent.enabled = true;
+            });
+        }
+
         public override void TakeDamage(Collider part)
         {
             base.TakeDamage(part);
@@ -315,6 +338,14 @@ namespace Mechanics
             {
                 currentState = States.Rush;
             }
+        }
+
+        public override void Die()
+        {
+            arena.currentEnemies.Remove(this);
+            
+            
+            base.Die();
         }
 
         Vector3 GetRandomSpawnPoint()

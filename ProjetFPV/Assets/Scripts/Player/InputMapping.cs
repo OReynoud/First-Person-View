@@ -116,6 +116,15 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UseHealPack"",
+                    ""type"": ""Button"",
+                    ""id"": ""cf316270-d6cc-4c04-beb5-9ab216920706"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -237,6 +246,17 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ToggleSprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8dfda0fc-aa74-4272-b246-ce3be58610ea"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseHealPack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -465,6 +485,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         m_ControlsLeftShoot_Telekinesis = m_ControlsLeftShoot.FindAction("Telekinesis", throwIfNotFound: true);
         m_ControlsLeftShoot_Reload = m_ControlsLeftShoot.FindAction("Reload", throwIfNotFound: true);
         m_ControlsLeftShoot_Interact = m_ControlsLeftShoot.FindAction("Interact", throwIfNotFound: true);
+        m_ControlsLeftShoot_UseHealPack = m_ControlsLeftShoot.FindAction("UseHealPack", throwIfNotFound: true);
         // ControlsRightShoot
         m_ControlsRightShoot = asset.FindActionMap("ControlsRightShoot", throwIfNotFound: true);
         m_ControlsRightShoot_Forward = m_ControlsRightShoot.FindAction("Forward", throwIfNotFound: true);
@@ -548,6 +569,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     private readonly InputAction m_ControlsLeftShoot_Telekinesis;
     private readonly InputAction m_ControlsLeftShoot_Reload;
     private readonly InputAction m_ControlsLeftShoot_Interact;
+    private readonly InputAction m_ControlsLeftShoot_UseHealPack;
     public struct ControlsLeftShootActions
     {
         private @InputMapping m_Wrapper;
@@ -562,6 +584,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         public InputAction @Telekinesis => m_Wrapper.m_ControlsLeftShoot_Telekinesis;
         public InputAction @Reload => m_Wrapper.m_ControlsLeftShoot_Reload;
         public InputAction @Interact => m_Wrapper.m_ControlsLeftShoot_Interact;
+        public InputAction @UseHealPack => m_Wrapper.m_ControlsLeftShoot_UseHealPack;
         public InputActionMap Get() { return m_Wrapper.m_ControlsLeftShoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -601,6 +624,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @UseHealPack.started += instance.OnUseHealPack;
+            @UseHealPack.performed += instance.OnUseHealPack;
+            @UseHealPack.canceled += instance.OnUseHealPack;
         }
 
         private void UnregisterCallbacks(IControlsLeftShootActions instance)
@@ -635,6 +661,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @UseHealPack.started -= instance.OnUseHealPack;
+            @UseHealPack.performed -= instance.OnUseHealPack;
+            @UseHealPack.canceled -= instance.OnUseHealPack;
         }
 
         public void RemoveCallbacks(IControlsLeftShootActions instance)
@@ -782,6 +811,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         void OnTelekinesis(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnUseHealPack(InputAction.CallbackContext context);
     }
     public interface IControlsRightShootActions
     {
