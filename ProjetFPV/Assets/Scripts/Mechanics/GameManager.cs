@@ -18,6 +18,7 @@ namespace Mechanics
         [SerializeField] private Image crosshairBase;
         [SerializeField] private Image staminaBar;
         [SerializeField] private List<TextMeshProUGUI> ammoText;
+        [SerializeField] private TextMeshProUGUI healPackText;
     
     
         [SerializeField] private float hitMarkerFadeTime;
@@ -51,6 +52,7 @@ namespace Mechanics
         void Start()
         {
             UpdateAmmoUI();
+            UpdateHealPackUI();
         }
 
         public void Update()
@@ -63,6 +65,11 @@ namespace Mechanics
             ammoText[0].text = PlayerController.instance.currentAmmo.ToString();
             ammoText[1].text = PlayerController.instance.magSize.ToString();
             ammoText[2].text = PlayerController.instance.inventoryAmmo.ToString();
+        }
+
+        public void UpdateHealPackUI()
+        {
+            healPackText.text = "x " + PlayerController.instance.currentHealPackAmount.ToString();
         }
 
         public void HitMark(bool headshot)
@@ -146,8 +153,6 @@ namespace Mechanics
             crosshairBase.color = Color.white;
         }
         
-        
-
         public void Respawn(Enemy enemy)
         {
             StartCoroutine(RespawnCoroutine(enemy));

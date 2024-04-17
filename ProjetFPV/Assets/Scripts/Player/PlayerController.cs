@@ -16,7 +16,6 @@ using Random = UnityEngine.Random;
 
 public class PlayerController : Singleton<PlayerController>
 {
-//    [SerializeField] private Vector3 cameraOffset;
 
     private bool moveCam = false;
     public Rigidbody rb;
@@ -29,8 +28,10 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private Volume volume;
     [SerializeField] private int maxHealth = 10;
     [SerializeField] private float currentHealth;
-    [SerializeField] private float timeToRegenerateHealth;
-    [SerializeField] private float regenSpeed;
+    [SerializeField] public int healPackCapacity;
+    [SerializeField] private float healAmount;
+    //[SerializeField] private float timeToRegenerateHealth;
+    //[SerializeField] private float regenSpeed;
 
     #region Refs
 
@@ -204,6 +205,8 @@ public class PlayerController : Singleton<PlayerController>
     #region Debug
 
     [Foldout("Debug")] [SerializeField] private Transform shootingHand;
+    
+    [Foldout("Debug")] [SerializeField] public int currentHealPackAmount;
 
     [Foldout("Debug")] [SerializeField] private Vector3 inputVelocity;
 
@@ -328,43 +331,29 @@ public class PlayerController : Singleton<PlayerController>
         inventoryAmmo = maxStoredAmmo;
         currentHealth = maxHealth;
     }
-
-
-
-
-    private void Interact(InputAction.CallbackContext obj)
-    {
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 2, ~LayerMask.GetMask("Player")))
-        {
-            if (hit.transform.TryGetComponent(out ICanInteract interactable))
-            {
-                interactable.Interact(-hit.normal);
-            }
-        }
-    }
-
+    
     public void TakeDamage(float damage)
     {
         CameraShake.instance.ShakeOneShot(3);
         currentHealth -= damage;
 
-        if (Regen != null) StopCoroutine(Regen);
-        Regen = StartCoroutine(Regenerate());
+        //if (Regen != null) StopCoroutine(Regen);
+        //Regen = StartCoroutine(Regenerate());
     }
 
-    private Coroutine Regen;
+    //private Coroutine Regen;
 
-    private IEnumerator Regenerate()
-    {
-        yield return new WaitForSeconds(timeToRegenerateHealth);
-        while (currentHealth < maxHealth)
-        {
-            currentHealth += regenSpeed * Time.deltaTime;
-            yield return null;
-        }
-
-        currentHealth = maxHealth;
-    }
+    // private IEnumerator Regenerate()
+            // {
+            //     yield return new WaitForSeconds(timeToRegenerateHealth);
+            //     while (currentHealth < maxHealth)
+            //     {
+            //         currentHealth += regenSpeed * Time.deltaTime;
+            //         yield return null;
+            //     }
+            //
+            //     currentHealth = maxHealth;
+            // }
 
     private void OnDisable()
     {
@@ -378,14 +367,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private Coroutine reloadCoroutine;
     private bool reloading = false;
-
-    private void Reload(InputAction.CallbackContext obj)
-    {
-        if (reloading || currentAmmo == magSize || inventoryAmmo == 0)
-            return;
-        reloading = true;
-        reloadCoroutine = StartCoroutine(Reload2());
-    }
+    
 
     #region LogicChecks
     private void RegisterInputs()
@@ -405,6 +387,8 @@ public class PlayerController : Singleton<PlayerController>
         currentControls.FindAction("Reload", true).performed += Reload;
 
         currentControls.FindAction("Interact", true).performed += Interact;
+        
+        currentControls.FindAction("UseHealPack", true).performed += UseHealPack;
     }
 
     void UnRegisterInputs()
@@ -885,6 +869,17 @@ public class PlayerController : Singleton<PlayerController>
 
     private LineRenderer currentTrail;
     private Camera camera1;
+    
+    private void Interact(InputAction.CallbackContext obj)
+    {
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 2, ~LayerMask.GetMask("Player")))
+        {
+            if (hit.transform.TryGetComponent(out ICanInteract interactable))
+            {
+                interactable.Interact(-hit.normal);
+            }
+        }
+    }
 
     private void Shoot(InputAction.CallbackContext obj)
     {
@@ -949,6 +944,26 @@ public class PlayerController : Singleton<PlayerController>
         {
             reloading = true;
             reloadCoroutine = StartCoroutine(Reload2());
+        }
+    }
+    
+    private void Reload(InputAction.CallbackContext obj)
+    {
+        if (reloading || currentAmmo == magSize || inventoryAmmo == 0)
+            return;
+        reloading = true;
+        reloadCoroutine = StartCoroutine(Reload2());
+    }
+    
+    private void UseHealPack(InputAction.CallbackContext obj)
+    {
+        if (currentHealPackAmount <= 0 || currentHealth >= maxHealth) return;
+        currentHealPackAmount--;
+        GameManager.instance.UpdateHealPackUI();
+        currentHealth += healAmount;
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
         }
     }
 
@@ -1040,18 +1055,7 @@ public class PlayerController : Singleton<PlayerController>
 
 
     #region Deprecated
-
-    [Foldout("Obsolete")] [Tooltip("Force applied on a jump")] [SerializeField]
-    private float jumpForce;
-
-    [Foldout("Obsolete")] [Tooltip("Acceleration when running")] [SerializeField]
-    private float runAccel;
-
-    [Foldout("Obsolete")] [Tooltip("Multiplies with maxHorizontalVelocity when running")] [SerializeField]
-    private float runMaxVelocityFactor;
-
-    [Foldout("Obsolete")] [Tooltip("To make a jump more or less floaty")] [SerializeField]
-    private AnimationCurve jumpCurve;
+    
 
     #endregion
 }
