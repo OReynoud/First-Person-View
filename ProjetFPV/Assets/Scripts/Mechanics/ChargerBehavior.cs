@@ -342,8 +342,10 @@ namespace Mechanics
 
         public override void Die()
         {
-            arena.currentEnemies.Remove(this);
-            
+            if (arenaSpawn)
+            {
+                arena.currentEnemies.Remove(this);
+            }
             
             base.Die();
         }
