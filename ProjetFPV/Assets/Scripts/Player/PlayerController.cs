@@ -669,7 +669,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 var dir = offsetPosition.position - controlledProp.transform.position;
                 dir.Normalize();
-                if (playerCam.forward.y < -0.9f)
+                if (playerCam.forward.y < -0.82f)
                 {
                     CameraShake.instance.StopInfiniteShake();
                     controlledProp.ApplyTelekinesis();
@@ -817,7 +817,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 controlledProp.isGrabbed = false;
                 controlledProp.ApplyTelekinesis();
-                controlledProp.body.constraints = RigidbodyConstraints.FreezeRotation;
+                controlledProp.body.constraints = RigidbodyConstraints.FreezeAll;
                 break;
             
             case AbsorbInk absorbInk:
@@ -961,14 +961,13 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (shootSpeedTimer > 0) return;
 
-        if (currentAmmo == 0) return;
+        if (currentAmmo == 0 && currentInk < maxInk) return;
 
         if (reloading) return;
         if (stagger != null) StopCoroutine(stagger);
         stagger = StartCoroutine(StaggerSprint(state == PlayerStates.Sprinting));
 
         CameraShake.instance.ShakeOneShot(1);
-        currentAmmo--;
 
         if (currentInk > maxInk)
         {
@@ -978,9 +977,10 @@ public class PlayerController : Singleton<PlayerController>
         }
         else
         {
+            currentAmmo--;
             superShot = false;
+            GameManager.instance.UpdateAmmoUI();
         }
-        GameManager.instance.UpdateAmmoUI();
 
         shootSpeedTimer = shootSpeed;
         currentTrail = Instantiate(shootTrail);

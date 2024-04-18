@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using Mechanics;
 using NaughtyAttributes;
@@ -16,6 +15,7 @@ public class CollectorBehavior : Enemy
     [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro", EInfoBoxType.Warning) ]
     [BoxGroup] public NavMeshAgent agent;
     [BoxGroup] public CollectorBullet bulletPrefab;
+    [BoxGroup] public ChargerBehavior bouffonPrefab;
     [BoxGroup] public Animation transitionState;
     [BoxGroup] public float speedTransition;
     

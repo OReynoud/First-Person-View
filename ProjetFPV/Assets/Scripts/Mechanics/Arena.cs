@@ -73,6 +73,10 @@ namespace Mechanics
                 }
 
                 yield return new WaitForSeconds(timeBetweenWaves);
+                while (currentEnemies.Count > 0)
+                {
+                    yield return null;
+                }
             }
 
             finishedSpawning = true;
