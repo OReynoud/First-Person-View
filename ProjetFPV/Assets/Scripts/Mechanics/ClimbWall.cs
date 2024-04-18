@@ -49,6 +49,11 @@ namespace Mechanics
             player.transform.DORotate(rotationValue, 0.2f).OnComplete(() => { StartCoroutine(Climb()); });
         }
 
+        public void ShowContext()
+        {
+            GameManager.instance.interactText.text = "[E] Escalader";
+        }
+
         IEnumerator Climb()
         {
             float t = 0;

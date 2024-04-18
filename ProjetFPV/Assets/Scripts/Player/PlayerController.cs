@@ -35,7 +35,7 @@ public class PlayerController : Singleton<PlayerController>
     private float maxInk;
     
     [Tooltip("How much stamina the player currently has")]
-    [SerializeField] [ProgressBar("maxInk", EColor.Green)]
+    [SerializeField] //[ProgressBar("maxInk", EColor.Green)]
     public float currentInk;
     
     [SerializeField] private int maxHealth = 10; 
@@ -116,9 +116,6 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Shoot")] [Tooltip("Which layers will get hit by the hit scan")] [SerializeField]
     private LayerMask shootMask;
-
-    [Foldout("Shoot")] [Tooltip("Base damage of a bullet")] [SerializeField]
-    private int bulletDmg;
     
     [Foldout("Shoot")] [Tooltip("Cost to convert ink into bullets")] [SerializeField]
     private float reloadCostPerBullet;
@@ -129,7 +126,7 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Shoot")] [Tooltip("Base damage of a bullet")] [SerializeField]
     private float surplusBulletCost;
 
-    [Foldout("Shoot")] [Tooltip("(Not yet used) Max ammo before player has to reload")] [SerializeField]
+    [Foldout("Shoot")] [Tooltip("Max ammo before player has to reload")] [SerializeField]
     public int magSize;
 
     [Foldout("Shoot")] [Tooltip("How fast player can shoot")] [SerializeField]
@@ -143,9 +140,6 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Shoot")] [Tooltip("How long the trail of the shot stays visible")] [SerializeField]
     private float trailTime;
-
-    [Foldout("Shoot")] [Tooltip("base knockback inflicted on enemies")] [SerializeField]
-    private float baseKnockBack;
 
     #endregion
 
@@ -248,9 +242,6 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     public int currentAmmo;
-
-    [Foldout("Debug")] [Tooltip("")] [SerializeField]
-    public int inventoryAmmo;
 
     #endregion
 
@@ -368,7 +359,7 @@ public class PlayerController : Singleton<PlayerController>
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        
+        currentInk = GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, 0);
         CheckShootingHand();
     }
 
@@ -461,13 +452,35 @@ public class PlayerController : Singleton<PlayerController>
             if (!telekinesisPointer.gameObject.activeSelf)
                 telekinesisPointer.gameObject.SetActive(true);
 
-            telekinesisPointer.position = Camera.main.WorldToScreenPoint(prop.transform.position);
+            telekinesisPointer.position = camera1.WorldToScreenPoint(prop.transform.position);
             telekinesisPointer.rotation *= Quaternion.Euler(0, 0, 2);
             return;
         }
 
         if (telekinesisPointer.gameObject.activeSelf)
             telekinesisPointer.gameObject.SetActive(false);
+    }
+
+    void CheckInteractableTarget()
+    {
+        if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, 4, ~LayerMask.GetMask("Player")))
+        {
+            if (hit.transform.TryGetComponent(out ICanInteract interactable))
+            {
+                if (!GameManager.instance.interactText.enabled)
+                {
+                    GameManager.instance.interactText.enabled = true;
+                }
+
+                interactable.ShowContext();
+                return;
+            }
+
+        }
+        if (GameManager.instance.interactText.enabled)
+        {
+            GameManager.instance.interactText.enabled = false;
+        }
     }
 
     #endregion
@@ -484,20 +497,18 @@ public class PlayerController : Singleton<PlayerController>
 
         if (currentInk < (magSize - currentAmmo) * reloadCostPerBullet)
         {
-                
-        }
-        
-        if (inventoryAmmo < magSize - currentAmmo)
-        {
-            currentAmmo = inventoryAmmo;
-            inventoryAmmo = 0;
+            currentAmmo = Mathf.FloorToInt(currentInk / reloadCostPerBullet);
+           
+           
+           currentInk =
+               GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, -(currentInk - currentInk % reloadCostPerBullet));
         }
         else
         {
-            inventoryAmmo -= magSize - currentAmmo;
+            currentInk =
+                GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, -magSize * reloadCostPerBullet + currentAmmo * reloadCostPerBullet);
             currentAmmo = magSize;
         }
-
         GameManager.instance.UpdateAmmoUI();
         reloading = false;
     }
@@ -555,9 +566,16 @@ public class PlayerController : Singleton<PlayerController>
         if (!controlledProp)
         {
             CheckTelekinesisTarget();
+            CheckInteractableTarget();
+            if (currentInk > maxInk)
+            {
+                currentInk = GameManager.instance.UpdatePlayerStamina(currentInk,maxInk,-surplusDrainRate * Time.deltaTime);
+            }
         }
         else if (telekinesisPointer.gameObject.activeSelf)
             telekinesisPointer.gameObject.SetActive(false);
+
+        
     }
 
 
@@ -670,9 +688,16 @@ public class PlayerController : Singleton<PlayerController>
             
             case AbsorbInk absorbInk:
                 absorbInk.storedInk -= inkAbsorbSpeed * Time.deltaTime;
-                currentInk += inkAbsorbSpeed * Time.deltaTime;
+                currentInk =
+                    GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, inkAbsorbSpeed * Time.deltaTime);
                 var lerpValue = Mathf.Clamp(1 - absorbInk.storedInk / absorbInk.maxInk, 0, 0.8f);
                 absorbInk.transform.localScale = Vector3.Lerp(absorbInk.baseScale, Vector3.zero, lerpValue);
+
+                if (!controlledProp.isGrabbed)
+                {
+                    controlledProp.isGrabbed = true;
+                    CameraShake.instance.StartInfiniteShake(0);
+                }
 
                 if (absorbInk.storedInk < 0)
                 {
@@ -779,6 +804,7 @@ public class PlayerController : Singleton<PlayerController>
                 break;
             
             case AbsorbInk absorbInk:
+                absorbInk.isGrabbed = false;
                 if (absorbInk.storedInk < 0)
                 {
                     Destroy(absorbInk.gameObject);
@@ -913,6 +939,7 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    private bool superShot;
     private void Shoot(InputAction.CallbackContext obj)
     {
         if (shootSpeedTimer > 0) return;
@@ -925,6 +952,17 @@ public class PlayerController : Singleton<PlayerController>
 
         CameraShake.instance.ShakeOneShot(1);
         currentAmmo--;
+
+        if (currentInk > maxInk)
+        {
+            superShot = true;
+            currentInk =
+                GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, -surplusBulletCost);
+        }
+        else
+        {
+            superShot = false;
+        }
         GameManager.instance.UpdateAmmoUI();
 
         shootSpeedTimer = shootSpeed;
@@ -939,7 +977,7 @@ public class PlayerController : Singleton<PlayerController>
             {
                 if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                 {
-                    enemy.TakeDamage(hit.collider);
+                    enemy.TakeDamage(hit.collider, superShot);
                     GameManager.instance.HitMark(true);
                 }
             }
@@ -948,7 +986,7 @@ public class PlayerController : Singleton<PlayerController>
             {
                 if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                 {
-                    enemy.TakeDamage(hit.collider);
+                    enemy.TakeDamage(hit.collider,superShot);
                     GameManager.instance.HitMark(false);
                 }
             }
@@ -1023,6 +1061,7 @@ public class PlayerController : Singleton<PlayerController>
             {
                 if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange, shootMask))
                 {
+                    CameraShake.instance.ShakeOneShot(2);
                     if (hit.collider.TryGetComponent(out TelekinesisObject TK))
                     {
                         if (!TK.canBeGrabbed) return;
@@ -1049,7 +1088,6 @@ public class PlayerController : Singleton<PlayerController>
                     }
 
 
-                    CameraShake.instance.ShakeOneShot(2);
                 }
 
                 return;

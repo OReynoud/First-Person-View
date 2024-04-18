@@ -11,6 +11,8 @@ namespace Mechanics
     {
         [InfoBox("Universal Behavior")] 
         
+        [BoxGroup("Masks")] public float inkIncrease = 30;
+        
         [BoxGroup("Masks")] public BodyPart[] allMasks;
         
         [BoxGroup("Masks")] [ReadOnly] public int maskCount;
@@ -95,14 +97,14 @@ namespace Mechanics
             Debug.DrawLine(waypoints[^1].position,waypoints[0].position );
         }
 
-        public virtual void TakeDamage(Collider partHit)
+        public virtual void TakeDamage(Collider partHit, bool superShot)
         {
             for (int i = 0; i < allMasks.Length; i++)
             {
                 if (partHit != allMasks[i].maskCollider)continue;
 
                 allMasks[i].maskHealth--;
-                if ( allMasks[i].maskHealth <= 0)
+                if ( allMasks[i].maskHealth <= 0 || superShot)
                 {
                     allMasks[i].maskCollider.gameObject.SetActive(false);
                     allMasks[i].broken = true;
@@ -132,7 +134,8 @@ namespace Mechanics
         
             grabbedTween.Complete();
             grabbedTween.Kill();
-        
+            var oui = Instantiate(GameManager.instance.inkStainPrefab, transform.position, transform.rotation);
+            oui.storedInk = inkIncrease;
         
             if (respawnOnDeath) GameManager.instance.Respawn(this);
             gameObject.SetActive(false);

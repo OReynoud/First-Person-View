@@ -12,5 +12,10 @@ namespace Mechanics
             GameManager.instance.UpdateHealPackUI();
             Destroy(gameObject);
         }
+
+        public void ShowContext()
+        {
+            GameManager.instance.interactText.text = "[E] Prendre le Pack de soins";
+        }
     }
 }

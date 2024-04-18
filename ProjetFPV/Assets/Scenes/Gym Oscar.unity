@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5602,6 +5602,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 679661489}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &685017083 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4633918753410537476, guid: dce82ebbf28195f43941531e37b8f0be,
+    type: 3}
+  m_PrefabInstance: {fileID: 2129700201}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &690218194
 GameObject:
   m_ObjectHideFlags: 0
@@ -7916,18 +7928,6 @@ MonoBehaviour:
   timeBetweenShot: 0.7
   bulletForce: 800
   bullet: {fileID: 7114239103142558885, guid: 4f2e615f50fa36c4fa78d0b05033e223, type: 3}
---- !u!114 &959072974 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 755202900764996315, guid: dce82ebbf28195f43941531e37b8f0be,
-    type: 3}
-  m_PrefabInstance: {fileID: 2129700201}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &964590785
 GameObject:
   m_ObjectHideFlags: 0
@@ -10534,11 +10534,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 5647592295648705613, guid: 25b553424ab0af54d9c26fb410130005,
-        type: 3}
-      propertyPath: index
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6625738270304295612, guid: 25b553424ab0af54d9c26fb410130005,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10591,7 +10586,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
         type: 3}
-      propertyPath: staminaBar
+      propertyPath: baseInkBar
       value: 
       objectReference: {fileID: 725714617}
     - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
@@ -10621,24 +10616,14 @@ PrefabInstance:
       objectReference: {fileID: 1179137112}
     - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
         type: 3}
-      propertyPath: ammoText.Array.size
-      value: 3
-      objectReference: {fileID: 0}
+      propertyPath: surplusInkBar
+      value: 
+      objectReference: {fileID: 685017083}
     - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
         type: 3}
       propertyPath: ammoText.Array.data[0]
       value: 
       objectReference: {fileID: 1485465533}
-    - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
-        type: 3}
-      propertyPath: ammoText.Array.data[1]
-      value: 
-      objectReference: {fileID: 1765192267}
-    - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
-        type: 3}
-      propertyPath: ammoText.Array.data[2]
-      value: 
-      objectReference: {fileID: 959072974}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13504,18 +13489,6 @@ CapsuleCollider:
   m_Height: 2.3
   m_Direction: 1
   m_Center: {x: 0.00000029802322, y: 0, z: -0.0000039041042}
---- !u!114 &1765192267 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3136422882287331683, guid: dce82ebbf28195f43941531e37b8f0be,
-    type: 3}
-  m_PrefabInstance: {fileID: 2129700201}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1768508765
 GameObject:
   m_ObjectHideFlags: 0
@@ -15390,21 +15363,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
-        type: 3}
-      propertyPath: maxInk
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
-        type: 3}
-      propertyPath: currentInk
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
-        type: 3}
-      propertyPath: inkAbsorbSpeed
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 1171924708256431230, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
       propertyPath: m_LocalPosition.x

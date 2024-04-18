@@ -290,22 +290,38 @@ MonoBehaviour:
   body: {fileID: 7143357708314217432}
   spamBuffer: 0.6
   canBeGrabbed: 1
+  inkIncrease: 10
   allMasks:
   - maskName: Comedy
+    origin: {x: 0, y: 0, z: 0}
+    baseHealth: 0
     maskHealth: 1
     maskCollider: {fileID: 8148672877731008641}
+    tr: {fileID: 0}
+    meshRenderer: {fileID: 0}
     broken: 0
   - maskName: Tragedy
+    origin: {x: 0, y: 0, z: 0}
+    baseHealth: 0
     maskHealth: 1
     maskCollider: {fileID: 5459844800093645068}
+    tr: {fileID: 0}
+    meshRenderer: {fileID: 0}
     broken: 0
   - maskName: Envy
+    origin: {x: 0, y: 0, z: 0}
+    baseHealth: 0
     maskHealth: 1
     maskCollider: {fileID: 6051393342412516014}
+    tr: {fileID: 0}
+    meshRenderer: {fileID: 0}
     broken: 0
+  maskCount: 3
+  stunDuration: 2
+  defaultMat: {fileID: 0}
+  stunnedMat: {fileID: 0}
   isImmobile: 1
   respawnOnDeath: 1
-  stunDurationTK: 0
   waypoints:
   - {fileID: 0}
   - {fileID: 0}

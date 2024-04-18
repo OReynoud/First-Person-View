@@ -6,6 +6,7 @@ using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Mechanics
@@ -16,9 +17,13 @@ namespace Mechanics
         [SerializeField] private CanvasGroup headHitMarker;
         [SerializeField] private CanvasGroup crosshairTK;
         [SerializeField] private Image crosshairBase;
-        [SerializeField] private Image staminaBar;
+        [SerializeField] private Image baseInkBar;
+        [SerializeField] private Image surplusInkBar;
         [SerializeField] private List<TextMeshProUGUI> ammoText;
         [SerializeField] private TextMeshProUGUI healPackText;
+        [SerializeField] public TextMeshProUGUI interactText;
+
+        public AbsorbInk inkStainPrefab;
     
     
         [SerializeField] private float hitMarkerFadeTime;
@@ -100,10 +105,11 @@ namespace Mechanics
         {
             current += increment;
         
-            if (current > max) current = max;
             if (current < 0) current = 0;
-        
-            staminaBar.fillAmount = current / max;
+            if (current > max * 2) current = max * 2;
+            
+            baseInkBar.fillAmount = current / max;
+            surplusInkBar.fillAmount = (current - max) / max;
             return current;
         }
 
