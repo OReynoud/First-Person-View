@@ -6,6 +6,7 @@ using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -22,6 +23,7 @@ namespace Mechanics
         [SerializeField] private List<TextMeshProUGUI> ammoText;
         [SerializeField] private TextMeshProUGUI healPackText;
         [SerializeField] public TextMeshProUGUI interactText;
+        [SerializeField] public GameObject gameOver;
 
         public AbsorbInk inkStainPrefab;
     
@@ -176,6 +178,21 @@ namespace Mechanics
                 Debug.LogError("T'as oublié de mettre un respawn point en réference");
        
             }
+        }
+
+
+        public void PlayerDeath()
+        {
+            PlayerController.instance.enabled = false;
+            Debug.Log("Je suis mort");
+            gameOver.SetActive(true);
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+
+        public void Reload()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }

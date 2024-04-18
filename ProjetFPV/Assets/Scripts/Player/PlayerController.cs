@@ -323,7 +323,6 @@ public class PlayerController : Singleton<PlayerController>
         Cursor.visible = false;
 
         startPos = hands.localPosition;
-        currentInk = maxInk * 0.5f;
         currentAmmo = magSize;
         currentHealth = maxHealth;
     }
@@ -333,8 +332,11 @@ public class PlayerController : Singleton<PlayerController>
         CameraShake.instance.ShakeOneShot(3);
         currentHealth -= damage;
 
-        //if (Regen != null) StopCoroutine(Regen);
-        //Regen = StartCoroutine(Regenerate());
+        if (currentHealth <= 0)
+        {
+            Debug.Log("Je suis mort");
+            GameManager.instance.PlayerDeath();
+        }
     }
 
     //private Coroutine Regen;
@@ -705,7 +707,7 @@ public class PlayerController : Singleton<PlayerController>
                     ReleaseProp(new InputAction.CallbackContext());
                     return;
                 }
-                break;
+                return;
             
             case Enemy enemy:
                 currentInk =
@@ -968,7 +970,7 @@ public class PlayerController : Singleton<PlayerController>
         shootSpeedTimer = shootSpeed;
         currentTrail = Instantiate(shootTrail);
         Destroy(currentTrail.gameObject, trailTime);
-        currentTrail.SetPosition(0, shootingHand.position);
+        currentTrail.SetPosition(0, shootingHand.position + shootingHand.up * 0.5f);
 
         if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange, shootMask))
         {
@@ -1065,6 +1067,7 @@ public class PlayerController : Singleton<PlayerController>
                     if (hit.collider.TryGetComponent(out TelekinesisObject TK))
                     {
                         if (!TK.canBeGrabbed) return;
+                        if (currentInk < 1)return;
                         controlledProp = TK;
                         controlledProp.ApplyTelekinesis();
                         return;
@@ -1082,6 +1085,7 @@ public class PlayerController : Singleton<PlayerController>
                     if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                     {
                         if (!enemy.canBeGrabbed) return;
+                        if (currentInk < 1)return;
                         controlledProp = enemy;
                         controlledProp.ApplyTelekinesis();
                         return;
