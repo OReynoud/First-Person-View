@@ -669,6 +669,15 @@ public class PlayerController : Singleton<PlayerController>
 
                 var dir = offsetPosition.position - controlledProp.transform.position;
                 dir.Normalize();
+                if (playerCam.forward.y < -0.9f)
+                {
+                    CameraShake.instance.StopInfiniteShake();
+                    controlledProp.ApplyTelekinesis();
+                    controlledProp.isGrabbed = false;
+                    controlledProp = null;
+                    recentlyDepletedStamina = true;
+                    return;
+                }
                 if (!controlledProp.isGrabbed)
                 {
                     controlledProp.body.velocity = dir * travelSpeed;
@@ -686,6 +695,8 @@ public class PlayerController : Singleton<PlayerController>
                     controlledProp.isGrabbed = true;
                     CameraShake.instance.StartInfiniteShake(0);
                 }
+
+
                 break;
             
             case AbsorbInk absorbInk:
@@ -703,7 +714,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 if (absorbInk.storedInk < 0)
                 {
-                    
+                    recentlyDepletedStamina = true;
                     ReleaseProp(new InputAction.CallbackContext());
                     return;
                 }
@@ -719,6 +730,8 @@ public class PlayerController : Singleton<PlayerController>
                     tempWorldToScreen.y < 0 || tempWorldToScreen.y > Screen.height ||
                     tempWorldToScreen.z < 0)
                 {
+                    
+                    recentlyDepletedStamina = true;
                     ReleaseProp(new InputAction.CallbackContext());
                     return;
                 }
@@ -729,6 +742,8 @@ public class PlayerController : Singleton<PlayerController>
                 {
                     if (!hit.collider.TryGetComponent(out PlayerController controller))
                     {
+                        
+                        recentlyDepletedStamina = true;
                         ReleaseProp(new InputAction.CallbackContext());
                         return;
                     }
