@@ -27,15 +27,15 @@ public class CameraShake : Singleton<CameraShake>
 
     void Update() //TEMPORAIRE
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             ShakeOneShot(index);
         }
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             StartInfiniteShake(index);
         }
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Input.GetKeyDown(KeyCode.Semicolon))
         {
              StopInfiniteShake();
         }

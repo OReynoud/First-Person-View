@@ -15,17 +15,17 @@ public class CustomInspector : Editor
         EditorGUILayout.Space(3);
         EditorGUILayout.LabelField("Try a preset", EditorStyles.boldLabel);
         
-        if (GUILayout.Button("Try Camera Shake (F)"))
+        if (GUILayout.Button("Try Camera Shake (K)"))
         {
             cs.ShakeOneShot(cs.index);
         }
 
-        if (GUILayout.Button("Start Infinite Camera Shake (G)"))
+        if (GUILayout.Button("Start Infinite Camera Shake (L)"))
         {
             cs.StartInfiniteShake(cs.index);
         }
         
-        if (GUILayout.Button("Stop Infinite Camera Shake (H)"))
+        if (GUILayout.Button("Stop Infinite Camera Shake (M)"))
         {
             cs.StopInfiniteShake();
         }
