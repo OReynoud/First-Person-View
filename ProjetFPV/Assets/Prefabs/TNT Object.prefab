@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1407765115563909656}
   - component: {fileID: 3492164934561258573}
   - component: {fileID: 3305613804009021180}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4401144767541403562}
   - component: {fileID: 7596100958590342182}
   - component: {fileID: 8056879739578214835}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4987,7 +4987,7 @@ GameObject:
   - component: {fileID: 9213067938974385105}
   - component: {fileID: 2140365672910163906}
   - component: {fileID: 7581430574437656596}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TNT Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5121,13 +5121,13 @@ MonoBehaviour:
   health: 1
   explosionRadius: 10
   explosionForce: 30
-  damageToEnemy: 2
   damageToPlayer: 2
   damageFallOff: 1
   mask:
     serializedVersion: 2
-    m_Bits: 640
+    m_Bits: 896
   explosionMesh: {fileID: 4183366761923645707}
+  damageToEnemy: 2
 --- !u!136 &2140365672910163906
 CapsuleCollider:
   m_ObjectHideFlags: 0

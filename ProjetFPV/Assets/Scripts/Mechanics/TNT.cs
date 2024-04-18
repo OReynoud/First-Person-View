@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Mechanics;
 using NaughtyAttributes;
 using UnityEngine;
@@ -33,7 +34,8 @@ public class TNT : MonoBehaviour, IDestructible
 
     public void OnDestroy()
     {
-
+        if (health <= -1)return;
+        health--;
         if (TryGetComponent(out TelekinesisObject tk))
         {
             tk.body.isKinematic = true;
@@ -52,11 +54,25 @@ public class TNT : MonoBehaviour, IDestructible
                 enemy.TakeDamage(explosionForce,dir.normalized, col.ClosestPointOnBounds(transform.position));
             }
 
+            if (col.transform.TryGetComponent(out TNT tnt))
+            {
+                if (tnt != this)
+                {
+                    transform.DOMove(transform.position, 0.08f).OnComplete((() =>
+                    {
+                        tnt.OnDestroy();
+                    }));
+                }
+            }
+
             if (col.gameObject.CompareTag(Ex.Tag_Player))
             {
-                if (!col.enabled)return;
-                Debug.Log("Taking damage");
-                PlayerController.instance.TakeDamage(damageModifier * damageToPlayer);
+                if (col.enabled)
+                {
+                    
+                    Debug.Log("Taking damage");
+                    PlayerController.instance.TakeDamage(damageModifier * damageToPlayer);
+                }
             }
         }
 
