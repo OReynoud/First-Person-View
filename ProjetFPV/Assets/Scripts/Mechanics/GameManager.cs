@@ -20,10 +20,12 @@ namespace Mechanics
         [SerializeField] private Image crosshairBase;
         [SerializeField] private Image baseInkBar;
         [SerializeField] private Image surplusInkBar;
+        [SerializeField] private Image[] segments;
         [SerializeField] private List<TextMeshProUGUI> ammoText;
         [SerializeField] private TextMeshProUGUI healPackText;
         [SerializeField] public TextMeshProUGUI interactText;
         [SerializeField] public GameObject gameOver;
+        
 
         public AbsorbInk inkStainPrefab;
     
@@ -108,7 +110,16 @@ namespace Mechanics
             current += increment;
         
             if (current < 0) current = 0;
-            if (current > max * 2) current = max * 2;
+            if (current > max * 2)
+            {
+                current = max * 2;
+                segments[0].color = Color.yellow;
+            }
+            else
+            {
+                
+                segments[0].color = Color.black;
+            }
             
             baseInkBar.fillAmount = current / max;
             surplusInkBar.fillAmount = (current - max) / max;
