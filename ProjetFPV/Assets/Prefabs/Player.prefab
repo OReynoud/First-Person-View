@@ -814,8 +814,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   volume: {fileID: 925616782057724675}
-  maxInk: 100
-  currentInk: 50
+  maxInk: 15
+  currentInk: 15
   maxHealth: 10
   currentHealth: 0
   healPackCapacity: 4
@@ -943,9 +943,9 @@ MonoBehaviour:
   shootMask:
     serializedVersion: 2
     m_Bits: 385
-  reloadCostPerBullet: 3
+  reloadCostPerBullet: 1
   surplusDrainRate: 2
-  surplusBulletCost: 2
+  surplusBulletCost: 1
   magSize: 5
   shootSpeed: 0.1
   reloadSpeed: 2
@@ -954,9 +954,9 @@ MonoBehaviour:
   restingPosOffset: {x: 1, y: 1, z: 2.5}
   travelSpeed: 45
   grabDistanceBuffer: 15
-  holdObjectCost: 10
-  holdEnemyCost: 15
-  throwCost: 10
+  holdObjectCost: 1
+  holdEnemyCost: 1
+  throwCost: 2
   throwForce: 350
   inkAbsorbSpeed: 30
   amplitude: 0.0003
