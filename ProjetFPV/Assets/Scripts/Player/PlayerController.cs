@@ -961,14 +961,13 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (shootSpeedTimer > 0) return;
 
-        if (currentAmmo == 0) return;
+        if (currentAmmo == 0 && currentInk < maxInk) return;
 
         if (reloading) return;
         if (stagger != null) StopCoroutine(stagger);
         stagger = StartCoroutine(StaggerSprint(state == PlayerStates.Sprinting));
 
         CameraShake.instance.ShakeOneShot(1);
-        currentAmmo--;
 
         if (currentInk > maxInk)
         {
@@ -978,9 +977,10 @@ public class PlayerController : Singleton<PlayerController>
         }
         else
         {
+            currentAmmo--;
             superShot = false;
+            GameManager.instance.UpdateAmmoUI();
         }
-        GameManager.instance.UpdateAmmoUI();
 
         shootSpeedTimer = shootSpeed;
         currentTrail = Instantiate(shootTrail);
