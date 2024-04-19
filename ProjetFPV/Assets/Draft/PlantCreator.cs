@@ -22,6 +22,7 @@ public class PlantCreator : MonoBehaviour
     bool lockY;
     bool lockZ;
     int depth;
+    LayerMask defaultLayer;
 
     List<GameObject> lastCreated = new List<GameObject>();
     
@@ -157,10 +158,17 @@ public class PlantCreator : MonoBehaviour
 
             SceneVisibilityManager.instance.DisablePicking(parent, false);
             
+            // Change layer for raycast
+
+            plantCreator.defaultLayer = plantCreator.gameObject.layer;
+            plantCreator.gameObject.layer = LayerMask.NameToLayer("PlantCreator");
+            
+            int layerMask = 1 << LayerMask.NameToLayer("PlantCreator");
+            
             for (int i = 0; i < plantCreator.density; i++)
             {
                 // Instantiate plane
-                GameObject newPlane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                GameObject newPlane = GameObject.CreatePrimitive(PrimitiveType.Quad);
                 
                 RaycastHit hit;
                 var x = Random.Range(-1f, 1f);
@@ -168,11 +176,9 @@ public class PlantCreator : MonoBehaviour
                 var z = Random.Range(-1f, 1f);
 
                 var r = new Vector3(x, y, z).normalized;
-                var raycastSpawner = plantCreator.gameObject.transform.position + r * Math.Max(
-                    plantCreator.transform.localScale.x,
-                    Math.Max(plantCreator.transform.localScale.y, plantCreator.transform.localScale.z));
+                var raycastSpawner = plantCreator.gameObject.transform.position + r * 100f;
                 
-                if (Physics.Raycast(raycastSpawner, plantCreator.gameObject.transform.position - raycastSpawner, out hit, 3f))
+                if (Physics.Raycast(raycastSpawner, plantCreator.gameObject.transform.position - raycastSpawner, out hit, Mathf.Infinity, layerMask))
                 {
                     newPlane.transform.position = hit.point + r/100 * plantCreator.depth;
                 }
@@ -207,13 +213,15 @@ public class PlantCreator : MonoBehaviour
                 newPlane.transform.parent = parent.transform;
                 DestroyImmediate(newPlane.GetComponent<MeshCollider>());
                 SceneVisibilityManager.instance.DisablePicking(newPlane, false);
+                
+                // Set un deuxième quad au même endroit, mais retourné
+                GameObject secondPlane = Instantiate(newPlane, newPlane.transform.position, newPlane.transform.rotation, parent.transform);
+                secondPlane.transform.localScale = new Vector3(secondPlane.transform.localScale.x, secondPlane.transform.localScale.y, -secondPlane.transform.localScale.z);
             }
             
-            // Set la rotation autour de la normale
-            // Ajouter des constraints sur les 3 axes
-            // Ajouter la depth pour faire les niveaux de feuillage (DONE)
-            // Ajouter un sécurité sur le destroy plant (DONE)
-            // Ajouter un bouton undo (DONE)
+            // Remet le bon layer
+
+            plantCreator.gameObject.layer = plantCreator.defaultLayer;
         }
 
         private static void VectorCalculator(Vector3 normal, out Vector3[] vectors)
