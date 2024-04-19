@@ -11,15 +11,19 @@ using UnityEditor;
 
 public class PlantCreator : MonoBehaviour
 {
-    List<Material> materials;
+    List<Material> materials = new List<Material>();
     
-    float rotation;
+    float rotationX;
+    float rotationY;
+    float rotationZ;
     float size;
     float density;
     bool lockX;
     bool lockY;
     bool lockZ;
-    float depth;
+    int depth;
+
+    List<GameObject> lastCreated = new List<GameObject>();
     
     #region Editor
     #if UNITY_EDITOR
@@ -41,6 +45,8 @@ public class PlantCreator : MonoBehaviour
             
             ListOfTextures(list);
 
+            EditorGUILayout.Space(20);
+            
             if (GUILayout.Button("Generate Plant"))
             {
                 for (int i = 0; i < list.Count; i++)
@@ -65,23 +71,24 @@ public class PlantCreator : MonoBehaviour
                 
                 GeneratePlant(plantCreator);
             }
+            
+            if (GUILayout.Button("Undo"))
+            {
+                Undo(plantCreator);
+            }
 
+            EditorGUILayout.Space(20);
+            
             if (GUILayout.Button("Destroy Plant"))
             {
-                while (plantCreator.transform.childCount > 0)
-                {
-                    DestroyImmediate(plantCreator.transform.GetChild(0).gameObject);
-                }
+                DestroyPlant(plantCreator);
             }
         }
-        
+
         private static void GeneralParameters(PlantCreator plantCreator)
         {
             EditorGUILayout.LabelField("General Parameters", EditorStyles.boldLabel);
             EditorGUILayout.BeginHorizontal();
-            
-            EditorGUILayout.LabelField("    Rotation", GUILayout.MaxWidth(80));
-            plantCreator.rotation = EditorGUILayout.FloatField(plantCreator.rotation);
 
             EditorGUILayout.LabelField("        Size", GUILayout.MaxWidth(80));
             plantCreator.size = EditorGUILayout.FloatField(plantCreator.size);
@@ -90,25 +97,36 @@ public class PlantCreator : MonoBehaviour
             plantCreator.density = EditorGUILayout.FloatField(plantCreator.density);
 
             EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.LabelField("Axis locks", EditorStyles.boldLabel);
+            
             EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("    Depth", GUILayout.MaxWidth(80));
+            plantCreator.depth = EditorGUILayout.IntSlider(plantCreator.depth, 1, 5);
+            EditorGUILayout.EndHorizontal();
             
-            EditorGUILayout.LabelField("    X", GUILayout.MaxWidth(30));
+            EditorGUILayout.Space(20);
+            
+            EditorGUILayout.LabelField("Rotations", EditorStyles.boldLabel);
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("X", GUILayout.MaxWidth(30));
             plantCreator.lockX = EditorGUILayout.Toggle(plantCreator.lockX);
-            
-            EditorGUILayout.LabelField("    Y", GUILayout.MaxWidth(30));
+            plantCreator.rotationX = EditorGUILayout.FloatField(plantCreator.rotationX);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Y", GUILayout.MaxWidth(30));
             plantCreator.lockY = EditorGUILayout.Toggle(plantCreator.lockY);
-            
-            EditorGUILayout.LabelField("   Z", GUILayout.MaxWidth(30));
+            plantCreator.rotationY = EditorGUILayout.FloatField(plantCreator.rotationY);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Z", GUILayout.MaxWidth(30));
             plantCreator.lockZ = EditorGUILayout.Toggle(plantCreator.lockZ);
-            
+            plantCreator.rotationZ = EditorGUILayout.FloatField(plantCreator.rotationZ);
             EditorGUILayout.EndHorizontal();
         }
         
         private static void ListOfTextures(List<Material> list)
         {
-            int size = Mathf.Max(0, EditorGUILayout.IntField("Size", list.Count));
+            int size;
+            size = Mathf.Max(0, list != null ? EditorGUILayout.IntField("Size", list.Count) : EditorGUILayout.IntField("Size", 0));
 
             while (size > list.Count)
             {
@@ -129,7 +147,15 @@ public class PlantCreator : MonoBehaviour
         private static void GeneratePlant(PlantCreator plantCreator)
         {
             var host = plantCreator.gameObject;
+
+            // Creates a parent to add a destruction security
             
+            GameObject parent = new GameObject("Plants");
+            parent.transform.position = host.transform.position;
+            parent.transform.parent = host.transform;
+            plantCreator.lastCreated.Add(parent);
+
+            SceneVisibilityManager.instance.DisablePicking(parent, false);
             
             for (int i = 0; i < plantCreator.density; i++)
             {
@@ -148,33 +174,77 @@ public class PlantCreator : MonoBehaviour
                 
                 if (Physics.Raycast(raycastSpawner, plantCreator.gameObject.transform.position - raycastSpawner, out hit, 3f))
                 {
-                    newPlane.transform.position = hit.point + r/100;
+                    newPlane.transform.position = hit.point + r/100 * plantCreator.depth;
                 }
             
                 // Set plane size
                 newPlane.transform.localScale = Vector3.one * plantCreator.size / 100f;
 
                 // Set plane orientation
-                var rotPoint = hit.normal;
+                Vector3[] vectors;
+                VectorCalculator(hit.normal, out vectors);
 
-                // newPlane.transform.up = rotPoint;
-                // newPlane.transform.RotateAround(rotPoint, Random.Range(0f, plantCreator.rotation));
+                newPlane.transform.up = hit.normal;
                 
-                newPlane.transform.rotation = quaternion.Euler(Random.Range(0f, plantCreator.rotation), Random.Range(0f, plantCreator.rotation), Random.Range(0f, plantCreator.rotation));
+                if (plantCreator.lockX)
+                {
+                    newPlane.transform.RotateAround(vectors[0], Random.Range(0f, plantCreator.rotationX));
+                }
+
+                if (plantCreator.lockY)
+                {
+                    newPlane.transform.RotateAround(vectors[1], Random.Range(0f, plantCreator.rotationY));
+                }
+
+                if (plantCreator.lockZ)
+                {
+                    newPlane.transform.RotateAround(vectors[2], Random.Range(0f, plantCreator.rotationZ));
+                }
 
                 // Set plane texture
                 newPlane.GetComponent<Renderer>().material = plantCreator.materials[Random.Range(0, plantCreator.materials.Count)];
 
-                newPlane.transform.parent = host.transform;
+                newPlane.transform.parent = parent.transform;
                 DestroyImmediate(newPlane.GetComponent<MeshCollider>());
+                SceneVisibilityManager.instance.DisablePicking(newPlane, false);
             }
             
             // Set la rotation autour de la normale
             // Ajouter des constraints sur les 3 axes
-            // Ajouter la depth pour faire les niveaux de feuillage
-            // Ajouter un sécurité sur le destroy plant
+            // Ajouter la depth pour faire les niveaux de feuillage (DONE)
+            // Ajouter un sécurité sur le destroy plant (DONE)
+            // Ajouter un bouton undo (DONE)
+        }
+
+        private static void VectorCalculator(Vector3 normal, out Vector3[] vectors)
+        {
+            vectors = new Vector3[3];
+
+            Vector3 arbitraryVector = normal == Vector3.up ? Vector3.right : Vector3.up;
+
+            vectors[0] = Vector3.Cross(normal, arbitraryVector).normalized;
+            vectors[1] = Vector3.Cross(normal, vectors[0]).normalized;
+            vectors[2] = normal;
+        }
+        
+        private static void DestroyPlant(PlantCreator plantCreator)
+        {
+            for (var i = plantCreator.transform.childCount - 1; i >= 0; i--)
+            {
+                if (plantCreator.transform.GetChild(i).name == "Plants")
+                {
+                    DestroyImmediate(plantCreator.transform.GetChild(i).gameObject);
+                    plantCreator.lastCreated = new List<GameObject>();
+                }
+            }
+        }
+
+        private static void Undo(PlantCreator plantCreator)
+        {
+            if (plantCreator.lastCreated.Count <= 0) return;
             
-            
+            DestroyImmediate(plantCreator.lastCreated[^1]);
+            plantCreator.lastCreated.RemoveAt(plantCreator.lastCreated.Count - 1);
         }
     }
     #endif
