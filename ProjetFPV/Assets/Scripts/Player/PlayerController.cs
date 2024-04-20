@@ -254,6 +254,7 @@ public class PlayerController : Singleton<PlayerController>
     private Vector3 startPos;
     private float moveInputTimer;
     private bool recentlyDepletedStamina = false;
+    [HideInInspector] public ShootingHand socketManager;
 
     #endregion
 
@@ -312,6 +313,7 @@ public class PlayerController : Singleton<PlayerController>
         inputs = GetComponent<PlayerInput>();
         inputs.actions.Enable();
         currentControls = inputs.actions.FindActionMap(currentInputMap);
+        socketManager = GetComponent<ShootingHand>();
 
         playerLayer = LayerMask.GetMask("Player") + shootMask;
 
@@ -512,6 +514,7 @@ public class PlayerController : Singleton<PlayerController>
             currentAmmo = magSize;
         }
         GameManager.instance.UpdateAmmoUI();
+        socketManager.ReloadSockets(magSize - currentAmmo);
         reloading = false;
     }
 
@@ -981,6 +984,7 @@ public class PlayerController : Singleton<PlayerController>
             superShot = false;
             GameManager.instance.UpdateAmmoUI();
         }
+        socketManager.UpdateCurrentSocket(magSize - currentAmmo);
 
         shootSpeedTimer = shootSpeed;
         currentTrail = Instantiate(shootTrail);
