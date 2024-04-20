@@ -27,7 +27,7 @@ public class PlantCreator : MonoBehaviour
     
     int numberOfGameObjects;
     int numberOfTris;
-    public List<GameObject> objectsToCombine = new List<GameObject>();
+    List<GameObject> objectsToCombine = new List<GameObject>();
 
     List<GameObject> lastCreated = new List<GameObject>();
     
@@ -85,16 +85,20 @@ public class PlantCreator : MonoBehaviour
 
             EditorGUILayout.Space(20);
             
-            if (GUILayout.Button("Destroy Plant"))
-            {
-                DestroyPlant(plantCreator);
-            }
-            
-            EditorGUILayout.Space(20);
+            GUI.color = Color.green;
             
             if (GUILayout.Button("Merge Plant"))
             {
                 CombineMeshes(plantCreator);
+            }
+            
+            EditorGUILayout.Space(20);
+
+            GUI.color = Color.red;
+            
+            if (GUILayout.Button("Destroy Plant"))
+            {
+                DestroyPlant(plantCreator);
             }
         }
 
@@ -289,6 +293,11 @@ public class PlantCreator : MonoBehaviour
                     DestroyImmediate(plantCreator.transform.GetChild(i).gameObject);
                     plantCreator.lastCreated = new List<GameObject>();
                 }
+                
+                else if (plantCreator.transform.GetChild(i).name == "CombinedMesh")
+                {
+                    DestroyImmediate(plantCreator.transform.GetChild(i).gameObject);
+                }
             }
 
             plantCreator.numberOfGameObjects = 0;
@@ -302,6 +311,11 @@ public class PlantCreator : MonoBehaviour
             
             plantCreator.numberOfGameObjects -= plantCreator.lastCreated[^1].transform.childCount + 1;
             plantCreator.numberOfTris -= plantCreator.lastCreated[^1].transform.childCount * 2;
+
+            foreach (Transform child in plantCreator.lastCreated[^1].transform)
+            {
+                plantCreator.objectsToCombine.Remove(child.gameObject);
+            }
             
             DestroyImmediate(plantCreator.lastCreated[^1]);
             plantCreator.lastCreated.RemoveAt(plantCreator.lastCreated.Count - 1);
@@ -316,14 +330,15 @@ public class PlantCreator : MonoBehaviour
             {
                 // Crée une nouvelle instance de CombineInstance pour chaque GameObject
                 combineInstances[i].mesh = plantCreator.objectsToCombine[i].GetComponent<MeshFilter>().sharedMesh;
-                combineInstances[i].transform = plantCreator.objectsToCombine[i].transform.localToWorldMatrix;
-            
-                // Désactive les rendus des MeshRenderers des objets d'origine pour éviter le rendu en double
-                plantCreator.objectsToCombine[i].GetComponent<MeshRenderer>().enabled = false;
+                combineInstances[i].transform = Matrix4x4.TRS(plantCreator.objectsToCombine[i].transform.localPosition,
+                    plantCreator.objectsToCombine[i].transform.localRotation,
+                    plantCreator.objectsToCombine[i].transform.localScale);
             }
 
             // Crée un nouveau GameObject pour contenir le Mesh combiné
             GameObject combinedObject = new GameObject("CombinedMesh");
+            combinedObject.transform.position = plantCreator.transform.position;
+            combinedObject.transform.parent = plantCreator.transform;
         
             // Ajoute un MeshFilter et un MeshRenderer au nouveau GameObject
             MeshFilter meshFilter = combinedObject.AddComponent<MeshFilter>();
@@ -335,6 +350,26 @@ public class PlantCreator : MonoBehaviour
 
             // Assigne le matériau du premier objet à la MeshRenderer du nouveau GameObject
             meshRenderer.material = plantCreator.objectsToCombine[0].GetComponent<MeshRenderer>().sharedMaterial;
+
+            for (var i = plantCreator.transform.childCount - 1; i >= 0; i--)
+            {
+                if (plantCreator.transform.GetChild(i).name == "Plants")
+                {
+                    DestroyImmediate(plantCreator.transform.GetChild(i).gameObject);
+                }
+            }
+
+            plantCreator.objectsToCombine = new List<GameObject>();
+
+            plantCreator.numberOfGameObjects = 0;
+
+            foreach (Transform child in plantCreator.transform)
+            {
+                if (child.name == "CombinedMesh")
+                {
+                    plantCreator.numberOfGameObjects++;
+                }
+            }
         }
     }
     #endif
