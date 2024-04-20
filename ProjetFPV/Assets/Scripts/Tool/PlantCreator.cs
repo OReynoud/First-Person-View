@@ -21,8 +21,13 @@ public class PlantCreator : MonoBehaviour
     bool lockX;
     bool lockY;
     bool lockZ;
+    private bool[] constraints = new[] { false, false, false, false, false, false};
     int depth;
     LayerMask defaultLayer;
+    
+    int numberOfGameObjects;
+    int numberOfTris;
+    public List<GameObject> objectsToCombine = new List<GameObject>();
 
     List<GameObject> lastCreated = new List<GameObject>();
     
@@ -84,10 +89,24 @@ public class PlantCreator : MonoBehaviour
             {
                 DestroyPlant(plantCreator);
             }
+            
+            EditorGUILayout.Space(20);
+            
+            if (GUILayout.Button("Merge Plant"))
+            {
+                CombineMeshes(plantCreator);
+            }
         }
 
         private static void GeneralParameters(PlantCreator plantCreator)
         {
+            EditorGUILayout.LabelField("Perfs Analyser", EditorStyles.boldLabel);
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Number of Game Objects : " + plantCreator.numberOfGameObjects);
+            EditorGUILayout.LabelField("Number of Tris : " + plantCreator.numberOfTris);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.Space(20);
+            
             EditorGUILayout.LabelField("General Parameters", EditorStyles.boldLabel);
             EditorGUILayout.BeginHorizontal();
 
@@ -122,6 +141,25 @@ public class PlantCreator : MonoBehaviour
             plantCreator.lockZ = EditorGUILayout.Toggle(plantCreator.lockZ);
             plantCreator.rotationZ = EditorGUILayout.FloatField(plantCreator.rotationZ);
             EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space(20);
+
+            EditorGUILayout.LabelField("Faces", EditorStyles.boldLabel);
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Front", GUILayout.MaxWidth(30));
+            plantCreator.constraints[0] = EditorGUILayout.Toggle(plantCreator.constraints[0]);
+            EditorGUILayout.LabelField("Back", GUILayout.MaxWidth(30));
+            plantCreator.constraints[1] = EditorGUILayout.Toggle(plantCreator.constraints[1]);
+            EditorGUILayout.LabelField("Left", GUILayout.MaxWidth(30));
+            plantCreator.constraints[2] = EditorGUILayout.Toggle(plantCreator.constraints[2]);
+            EditorGUILayout.LabelField("Right", GUILayout.MaxWidth(30));
+            plantCreator.constraints[3] = EditorGUILayout.Toggle(plantCreator.constraints[3]);
+            EditorGUILayout.LabelField("Up", GUILayout.MaxWidth(30));
+            plantCreator.constraints[4] = EditorGUILayout.Toggle(plantCreator.constraints[4]);
+            EditorGUILayout.LabelField("Down", GUILayout.MaxWidth(30));
+            plantCreator.constraints[5] = EditorGUILayout.Toggle(plantCreator.constraints[5]);
+            EditorGUILayout.EndHorizontal();
+            
         }
         
         private static void ListOfTextures(List<Material> list)
@@ -152,6 +190,7 @@ public class PlantCreator : MonoBehaviour
             // Creates a parent to add a destruction security
             
             GameObject parent = new GameObject("Plants");
+            plantCreator.numberOfGameObjects++;
             parent.transform.position = host.transform.position;
             parent.transform.parent = host.transform;
             plantCreator.lastCreated.Add(parent);
@@ -169,11 +208,14 @@ public class PlantCreator : MonoBehaviour
             {
                 // Instantiate plane
                 GameObject newPlane = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                plantCreator.numberOfGameObjects++;
+                plantCreator.objectsToCombine.Add(newPlane);
+                plantCreator.numberOfTris += 2;
                 
                 RaycastHit hit;
-                var x = Random.Range(-1f, 1f);
-                var y = Random.Range(-1f, 1f);
-                var z = Random.Range(-1f, 1f);
+                var x = plantCreator.constraints[2] ? 1f : plantCreator.constraints[3] ? -1f : Random.Range(-1f, 1f);
+                var y = plantCreator.constraints[4] ? 1f : plantCreator.constraints[5] ? -1f : Random.Range(-1f, 1f);
+                var z = plantCreator.constraints[0] ? 1f : plantCreator.constraints[1] ? -1f : Random.Range(-1f, 1f);
 
                 var r = new Vector3(x, y, z).normalized;
                 var raycastSpawner = plantCreator.gameObject.transform.position + r * 100f;
@@ -216,6 +258,9 @@ public class PlantCreator : MonoBehaviour
                 
                 // Set un deuxième quad au même endroit, mais retourné
                 GameObject secondPlane = Instantiate(newPlane, newPlane.transform.position, newPlane.transform.rotation, parent.transform);
+                plantCreator.numberOfGameObjects++;
+                plantCreator.objectsToCombine.Add(secondPlane);
+                plantCreator.numberOfTris += 2;
                 secondPlane.transform.localScale = new Vector3(secondPlane.transform.localScale.x, secondPlane.transform.localScale.y, -secondPlane.transform.localScale.z);
             }
             
@@ -245,14 +290,51 @@ public class PlantCreator : MonoBehaviour
                     plantCreator.lastCreated = new List<GameObject>();
                 }
             }
+
+            plantCreator.numberOfGameObjects = 0;
+            plantCreator.objectsToCombine = new List<GameObject>();
+            plantCreator.numberOfTris = 0;
         }
 
         private static void Undo(PlantCreator plantCreator)
         {
             if (plantCreator.lastCreated.Count <= 0) return;
             
+            plantCreator.numberOfGameObjects -= plantCreator.lastCreated[^1].transform.childCount + 1;
+            plantCreator.numberOfTris -= plantCreator.lastCreated[^1].transform.childCount * 2;
+            
             DestroyImmediate(plantCreator.lastCreated[^1]);
             plantCreator.lastCreated.RemoveAt(plantCreator.lastCreated.Count - 1);
+        }
+        
+        private static void CombineMeshes(PlantCreator plantCreator)
+        {
+            // Liste des CombineInstances pour stocker les informations sur les Meshes à fusionner
+            CombineInstance[] combineInstances = new CombineInstance[plantCreator.objectsToCombine.Count];
+
+            for (int i = 0; i < plantCreator.objectsToCombine.Count; i++)
+            {
+                // Crée une nouvelle instance de CombineInstance pour chaque GameObject
+                combineInstances[i].mesh = plantCreator.objectsToCombine[i].GetComponent<MeshFilter>().sharedMesh;
+                combineInstances[i].transform = plantCreator.objectsToCombine[i].transform.localToWorldMatrix;
+            
+                // Désactive les rendus des MeshRenderers des objets d'origine pour éviter le rendu en double
+                plantCreator.objectsToCombine[i].GetComponent<MeshRenderer>().enabled = false;
+            }
+
+            // Crée un nouveau GameObject pour contenir le Mesh combiné
+            GameObject combinedObject = new GameObject("CombinedMesh");
+        
+            // Ajoute un MeshFilter et un MeshRenderer au nouveau GameObject
+            MeshFilter meshFilter = combinedObject.AddComponent<MeshFilter>();
+            MeshRenderer meshRenderer = combinedObject.AddComponent<MeshRenderer>();
+
+            // Fusionne les Meshes en un seul Mesh
+            meshFilter.sharedMesh = new Mesh();
+            meshFilter.sharedMesh.CombineMeshes(combineInstances, true, true);
+
+            // Assigne le matériau du premier objet à la MeshRenderer du nouveau GameObject
+            meshRenderer.material = plantCreator.objectsToCombine[0].GetComponent<MeshRenderer>().sharedMaterial;
         }
     }
     #endif
