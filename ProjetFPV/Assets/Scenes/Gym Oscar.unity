@@ -2752,7 +2752,7 @@ MonoBehaviour:
   spamBuffer: 0.6
   canBeGrabbed: 1
   maxInk: 100
-  storedInk: 100
+  storedInk: 10000
   baseScale: {x: 0, y: 0, z: 0}
 --- !u!54 &325425197
 Rigidbody:
@@ -2862,8 +2862,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 14.057644, y: 2.6151173, z: -105.26}
-  m_LocalScale: {x: 1, y: 1, z: 0.1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 4.63, y: 4.63, z: 0.46300003}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10504,6 +10504,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6235907091198542630, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 62
+      objectReference: {fileID: 0}
+    - target: {fileID: 6235907091198542630, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -367
+      objectReference: {fileID: 0}
     - target: {fileID: 6625738270304295612, guid: 25b553424ab0af54d9c26fb410130005,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10594,6 +10604,16 @@ PrefabInstance:
       propertyPath: ammoText.Array.data[0]
       value: 
       objectReference: {fileID: 1485465533}
+    - target: {fileID: 7589724300096152003, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -87
+      objectReference: {fileID: 0}
+    - target: {fileID: 7589724300096152003, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -367
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

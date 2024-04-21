@@ -32,7 +32,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private Volume volume;
 
     [Tooltip("Maximum Ink of the player")] [SerializeField]
-    private float maxInk;
+    public float maxInk;
     
     [Tooltip("How much stamina the player currently has")]
     [SerializeField] //[ProgressBar("maxInk", EColor.Green)]
@@ -114,11 +114,9 @@ public class PlayerController : Singleton<PlayerController>
 
     #region Shoot variables
 
-    [Foldout("Shoot")] [Tooltip("Which layers will get hit by the hit scan")] [SerializeField]
-    private LayerMask shootMask;
+
     
-    [Foldout("Shoot")] [Tooltip("Cost to convert ink into bullets")] [SerializeField]
-    private float reloadCostPerBullet;
+
     
     [Foldout("Shoot")] [Tooltip("Base damage of a bullet")] [SerializeField]
     private float surplusDrainRate;
@@ -135,8 +133,7 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Shoot")] [Tooltip("Time needed to reload")] [SerializeField]
     private float reloadSpeed;
 
-    [Foldout("Shoot")] [Tooltip("Range of the hit scan")] [SerializeField]
-    private float maxRange;
+
 
     [Foldout("Shoot")] [Tooltip("How long the trail of the shot stays visible")] [SerializeField]
     private float trailTime;
@@ -315,7 +312,7 @@ public class PlayerController : Singleton<PlayerController>
         currentControls = inputs.actions.FindActionMap(currentInputMap);
         socketManager = GetComponent<ShootingHand>();
 
-        playerLayer = LayerMask.GetMask("Player") + shootMask;
+        playerLayer = LayerMask.GetMask("Player") + socketManager.shootMask;
 
         RegisterInputs();
 
@@ -369,6 +366,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private Coroutine reloadCoroutine;
     private bool reloading = false;
+    [HideInInspector]public bool inSurplus;
     
 
     #region LogicChecks
@@ -450,7 +448,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void CheckTelekinesisTarget()
     {
-        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange, shootMask)
+        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange, socketManager.shootMask)
             && hit.collider.TryGetComponent(out ControllableProp prop))
         {
             if (!telekinesisPointer.gameObject.activeSelf)
@@ -499,22 +497,9 @@ public class PlayerController : Singleton<PlayerController>
         yield return new WaitForSeconds(reloadSpeed);
         shootingHand.DOLocalMove(reloadBasePos, 0.4f);
 
-        if (currentInk < (magSize - currentAmmo) * reloadCostPerBullet)
-        {
-            currentAmmo = Mathf.FloorToInt(currentInk / reloadCostPerBullet);
-           
-           
-           currentInk =
-               GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, -(currentInk - currentInk % reloadCostPerBullet));
-        }
-        else
-        {
-            currentInk =
-                GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, -magSize * reloadCostPerBullet + currentAmmo * reloadCostPerBullet);
-            currentAmmo = magSize;
-        }
+        socketManager.ReloadSockets();
+
         GameManager.instance.UpdateAmmoUI();
-        socketManager.ReloadSockets(magSize - currentAmmo);
         reloading = false;
     }
 
@@ -524,7 +509,8 @@ public class PlayerController : Singleton<PlayerController>
     {
         UpdateRestingPos();
         playerDir = Vector3.zero;
-
+        
+        inSurplus = currentInk > maxInk;
 
         var lostHealth = (maxHealth - currentHealth) / maxHealth;
 
@@ -740,7 +726,7 @@ public class PlayerController : Singleton<PlayerController>
                 }
 
                 Vector3 dir2 = controlledProp.transform.position - transform.position;
-                if (Physics.Raycast(controlledProp.transform.position, -dir2.normalized, out RaycastHit hit, maxRange,
+                if (Physics.Raycast(controlledProp.transform.position, -dir2.normalized, out RaycastHit hit, socketManager.maxRange,
                         playerLayer))
                 {
                     if (!hit.collider.TryGetComponent(out PlayerController controller))
@@ -801,7 +787,7 @@ public class PlayerController : Singleton<PlayerController>
                     controlledProp.body.velocity = Vector3.zero;
 
                     var dir = Vector3.zero;
-                    if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange,
+                    if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange,
                             LayerMask.GetMask("Telekinesis")))
                     {
                         dir = hit.point - offsetPosition.position;
@@ -944,7 +930,6 @@ public class PlayerController : Singleton<PlayerController>
     }
 
 
-    private LineRenderer currentTrail;
     private Camera camera1;
     
     private void Interact(InputAction.CallbackContext obj)
@@ -970,66 +955,6 @@ public class PlayerController : Singleton<PlayerController>
         if (stagger != null) StopCoroutine(stagger);
         stagger = StartCoroutine(StaggerSprint(state == PlayerStates.Sprinting));
 
-        CameraShake.instance.ShakeOneShot(1);
-
-        if (currentInk > maxInk)
-        {
-            superShot = true;
-            currentInk =
-                GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, -surplusBulletCost);
-        }
-        else
-        {
-            currentAmmo--;
-            superShot = false;
-            GameManager.instance.UpdateAmmoUI();
-        }
-        socketManager.UpdateCurrentSocket(magSize - currentAmmo);
-
-        shootSpeedTimer = shootSpeed;
-        currentTrail = Instantiate(shootTrail);
-        Destroy(currentTrail.gameObject, trailTime);
-        currentTrail.SetPosition(0, shootingHand.position + shootingHand.up * 0.5f);
-
-        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange, shootMask))
-        {
-            Debug.Log("Hit something");
-            if (hit.collider.CompareTag("Head"))
-            {
-                if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
-                {
-                    enemy.TakeDamage(hit.collider, superShot);
-                    GameManager.instance.HitMark(true);
-                }
-            }
-
-            if (hit.collider.CompareTag("Body"))
-            {
-                if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
-                {
-                    enemy.TakeDamage(hit.collider,superShot);
-                    GameManager.instance.HitMark(false);
-                }
-            }
-
-            if (hit.collider.TryGetComponent(out IDestructible target))
-            {
-                target.TakeDamage();
-            }
-
-            currentTrail.SetPosition(1, hit.point);
-
-            //Coucou, Thomas est passé par là (jusqu'au prochain commentaire)
-            var decal = Instantiate(inkStainDecal, hit.point + hit.normal * 0.02f, Quaternion.identity, hit.transform);
-            decal.transform.forward = -hit.normal;
-            decal.transform.RotateAround(decal.transform.position, decal.transform.forward, Random.Range(-180f, 180f));
-            //Je m'en vais !
-        }
-        else
-        {
-            Debug.Log("Hit some air");
-            currentTrail.SetPosition(1, playerCam.forward * maxRange + playerCam.position);
-        }
 
         audioSource.pitch = Random.Range(0.9f, 1.1f);
         audioSource.PlayOneShot(shootClip);
@@ -1080,7 +1005,7 @@ public class PlayerController : Singleton<PlayerController>
         {
             if (!controlledProp)
             {
-                if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, maxRange, shootMask))
+                if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange, socketManager.shootMask))
                 {
                     CameraShake.instance.ShakeOneShot(2);
                     if (hit.collider.TryGetComponent(out TelekinesisObject TK))
