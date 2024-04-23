@@ -27,6 +27,7 @@ public class PlantCreator : MonoBehaviour
     
     int numberOfGameObjects;
     int numberOfTris;
+    private int numberOfCurrentTris;
     List<GameObject> objectsToCombine = new List<GameObject>();
 
     List<GameObject> lastCreated = new List<GameObject>();
@@ -71,7 +72,7 @@ public class PlantCreator : MonoBehaviour
 
                 if (list.Count <= 0)
                 {
-                    Debug.Log("At least one texture is needed");
+                    Debug.Log("<color=yellow> From : Plant Creator Tool | </color>Au moins un material est nécessaire.");
                     return;
                 }
                 
@@ -189,6 +190,12 @@ public class PlantCreator : MonoBehaviour
 
         private static void GeneratePlant(PlantCreator plantCreator)
         {
+            if (plantCreator.numberOfCurrentTris >= 30000)
+            {
+                Debug.Log("<color=yellow> From : Plant Creator Tool | </color>Nombre de tris maximum atteint (30'000).");
+                return;
+            }
+            
             var host = plantCreator.gameObject;
 
             // Creates a parent to add a destruction security
@@ -210,11 +217,18 @@ public class PlantCreator : MonoBehaviour
             
             for (int i = 0; i < plantCreator.density; i++)
             {
+                if (plantCreator.numberOfCurrentTris >= 30000)
+                {
+                    Debug.Log("<color=yellow> From : Plant Creator Tool | </color>Nombre de tris maximum atteint (30'000). Interruption de la génération à l'étape " + i);
+                    return;
+                }
+                
                 // Instantiate plane
                 GameObject newPlane = GameObject.CreatePrimitive(PrimitiveType.Quad);
                 plantCreator.numberOfGameObjects++;
                 plantCreator.objectsToCombine.Add(newPlane);
                 plantCreator.numberOfTris += 2;
+                plantCreator.numberOfCurrentTris += 2;
                 
                 RaycastHit hit;
                 var x = plantCreator.constraints[2] ? 1f : plantCreator.constraints[3] ? -1f : Random.Range(-1f, 1f);
@@ -265,6 +279,7 @@ public class PlantCreator : MonoBehaviour
                 plantCreator.numberOfGameObjects++;
                 plantCreator.objectsToCombine.Add(secondPlane);
                 plantCreator.numberOfTris += 2;
+                plantCreator.numberOfCurrentTris += 2;
                 secondPlane.transform.localScale = new Vector3(secondPlane.transform.localScale.x, secondPlane.transform.localScale.y, -secondPlane.transform.localScale.z);
             }
             
@@ -303,6 +318,7 @@ public class PlantCreator : MonoBehaviour
             plantCreator.numberOfGameObjects = 0;
             plantCreator.objectsToCombine = new List<GameObject>();
             plantCreator.numberOfTris = 0;
+            plantCreator.numberOfCurrentTris = 0;
         }
 
         private static void Undo(PlantCreator plantCreator)
@@ -311,6 +327,7 @@ public class PlantCreator : MonoBehaviour
             
             plantCreator.numberOfGameObjects -= plantCreator.lastCreated[^1].transform.childCount + 1;
             plantCreator.numberOfTris -= plantCreator.lastCreated[^1].transform.childCount * 2;
+            plantCreator.numberOfCurrentTris -= plantCreator.lastCreated[^1].transform.childCount * 2;
 
             foreach (Transform child in plantCreator.lastCreated[^1].transform)
             {
@@ -323,6 +340,12 @@ public class PlantCreator : MonoBehaviour
         
         private static void CombineMeshes(PlantCreator plantCreator)
         {
+            if (plantCreator.objectsToCombine.Count <= 0)
+            {
+                Debug.Log("<color=yellow> From : Plant Creator Tool | </color>Aucune plante à fusionner. Opération annulée.");
+                return;
+            }
+            
             // Liste des CombineInstances pour stocker les informations sur les Meshes à fusionner
             CombineInstance[] combineInstances = new CombineInstance[plantCreator.objectsToCombine.Count];
 
@@ -362,6 +385,7 @@ public class PlantCreator : MonoBehaviour
             plantCreator.objectsToCombine = new List<GameObject>();
 
             plantCreator.numberOfGameObjects = 0;
+            plantCreator.numberOfCurrentTris = 0;
 
             foreach (Transform child in plantCreator.transform)
             {

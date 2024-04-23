@@ -11,8 +11,13 @@ public class AudioOcclusion : MonoBehaviour
     private AudioHighPassFilter highPass;
     private float thickness;
 
+    private AudioSubtitles subtitles;
+
     void Start()
     {
+        subtitles = GetComponent<AudioSubtitles>();
+        subtitles.StartTimer(0);
+        
         lowPass = GetComponent<AudioLowPassFilter>();
         highPass = GetComponent<AudioHighPassFilter>();
     }
@@ -34,6 +39,8 @@ public class AudioOcclusion : MonoBehaviour
                 }
             }
 
+            subtitles.hasToDisplay = thickness < 3;
+            
             highPass.cutoffFrequency = Mathf.Lerp(highPass.cutoffFrequency,highPassCurve.Evaluate(thickness) * 1000f - 200f, 0.1f);
             lowPass.cutoffFrequency = Mathf.Lerp(lowPass.cutoffFrequency,lowPassCurve.Evaluate(thickness) * 1000f + 200f, 0.1f);
         }
