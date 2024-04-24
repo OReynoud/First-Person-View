@@ -21,7 +21,6 @@ namespace Mechanics
         [SerializeField] private Image baseInkBar;
         [SerializeField] private Image surplusInkBar;
         [SerializeField] private Image[] segments;
-        [SerializeField] private List<TextMeshProUGUI> ammoText;
         [SerializeField] private TextMeshProUGUI healPackText;
         [SerializeField] public TextMeshProUGUI interactText;
         [SerializeField] public GameObject gameOver;
@@ -60,7 +59,6 @@ namespace Mechanics
 
         void Start()
         {
-            UpdateAmmoUI();
             UpdateHealPackUI();
         }
 
@@ -69,10 +67,7 @@ namespace Mechanics
             UsingTK();
         }
 
-        public void UpdateAmmoUI()
-        {
-            ammoText[0].text = PlayerController.instance.currentAmmo.ToString();
-        }
+
 
         public void UpdateHealPackUI()
         {

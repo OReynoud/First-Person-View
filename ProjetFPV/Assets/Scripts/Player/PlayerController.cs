@@ -52,7 +52,6 @@ public class PlayerController : Singleton<PlayerController>
     public string currentInputMap;
 
     [Foldout("Refs")] public PlayerInput inputs;
-    [Foldout("Refs")] public LineRenderer shootTrail;
     [Foldout("Refs")] [SerializeField] public Transform playerCam;
     [Foldout("Refs")] [SerializeField] private Transform hands;
     [Foldout("Refs")] [SerializeField] private Transform leftHand;
@@ -113,30 +112,13 @@ public class PlayerController : Singleton<PlayerController>
     #endregion
 
     #region Shoot variables
-
-
     
-
-    
-    [Foldout("Shoot")] [Tooltip("Base damage of a bullet")] [SerializeField]
+    [Foldout("Shoot")] [Tooltip("Ink drain per second when in surplus")] [SerializeField]
     private float surplusDrainRate;
-    
-    [Foldout("Shoot")] [Tooltip("Base damage of a bullet")] [SerializeField]
-    private float surplusBulletCost;
-
-    [Foldout("Shoot")] [Tooltip("Max ammo before player has to reload")] [SerializeField]
-    public int magSize;
-
-    [Foldout("Shoot")] [Tooltip("How fast player can shoot")] [SerializeField]
-    private float shootSpeed;
 
     [Foldout("Shoot")] [Tooltip("Time needed to reload")] [SerializeField]
     private float reloadSpeed;
-
-
-
-    [Foldout("Shoot")] [Tooltip("How long the trail of the shot stays visible")] [SerializeField]
-    private float trailTime;
+    
 
     #endregion
 
@@ -237,8 +219,7 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     public ControllableProp controlledProp;
 
-    [Foldout("Debug")] [Tooltip("")] [SerializeField]
-    public int currentAmmo;
+
 
     #endregion
 
@@ -255,7 +236,6 @@ public class PlayerController : Singleton<PlayerController>
 
     #endregion
 
-    [SerializeField] private GameObject inkStainDecal;
 
     [Button]
     void UpdateRestingPos()
@@ -322,7 +302,6 @@ public class PlayerController : Singleton<PlayerController>
         Cursor.visible = false;
 
         startPos = hands.localPosition;
-        currentAmmo = magSize;
         currentHealth = maxHealth;
     }
     
@@ -365,7 +344,6 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     private Coroutine reloadCoroutine;
-    private bool reloading = false;
     [HideInInspector]public bool inSurplus;
     
 
@@ -384,7 +362,7 @@ public class PlayerController : Singleton<PlayerController>
 
         currentControls.FindAction("Telekinesis", true).canceled += ReleaseProp;
 
-        currentControls.FindAction("Reload", true).performed += Reload;
+        currentControls.FindAction("Reload", true).performed += RequestReload;
 
         currentControls.FindAction("Interact", true).performed += Interact;
         
@@ -404,7 +382,7 @@ public class PlayerController : Singleton<PlayerController>
 
         currentControls.FindAction("Telekinesis", true).canceled -= ReleaseProp;
 
-        currentControls.FindAction("Reload", true).performed -= Reload;
+        currentControls.FindAction("Reload", true).performed -= RequestReload;
 
         currentControls.FindAction("Interact", true).performed -= Interact;
         
@@ -492,14 +470,13 @@ public class PlayerController : Singleton<PlayerController>
 
     private IEnumerator Reload2()
     {
+        
+        socketManager.ReloadSockets();
         reloadBasePos = shootingHand.localPosition;
         shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * ReloadHandMove, 0.4f);
-        yield return new WaitForSeconds(reloadSpeed);
+        yield return new WaitForSeconds(currentInk < maxInk ? reloadSpeed : socketManager.surplusReloadTime);
         shootingHand.DOLocalMove(reloadBasePos, 0.4f);
 
-        socketManager.ReloadSockets();
-
-        GameManager.instance.UpdateAmmoUI();
         reloading = false;
     }
 
@@ -947,29 +924,24 @@ public class PlayerController : Singleton<PlayerController>
     private bool superShot;
     private void Shoot(InputAction.CallbackContext obj)
     {
-        if (shootSpeedTimer > 0) return;
-
-        if (currentAmmo == 0 && currentInk < maxInk) return;
-
         if (reloading) return;
+        if (socketManager.noBullets)return;
+        if (shootSpeedTimer > 0) return;
         if (stagger != null) StopCoroutine(stagger);
         stagger = StartCoroutine(StaggerSprint(state == PlayerStates.Sprinting));
 
+        socketManager.ShootWithSocket(playerCam, shootingHand);
 
         audioSource.pitch = Random.Range(0.9f, 1.1f);
         audioSource.PlayOneShot(shootClip);
 
-        if (currentAmmo == 0)
-        {
-            reloading = true;
-            reloadCoroutine = StartCoroutine(Reload2());
-        }
     }
     
-    private void Reload(InputAction.CallbackContext obj)
+    private bool reloading = false;
+    public void RequestReload(InputAction.CallbackContext obj)
     {
-        if (reloading || currentAmmo == magSize || currentInk == 0)
-            return;
+        if (reloading)return;
+        if (currentInk < socketManager.reloadCostPerBullet) return;
         reloading = true;
         reloadCoroutine = StartCoroutine(Reload2());
     }
