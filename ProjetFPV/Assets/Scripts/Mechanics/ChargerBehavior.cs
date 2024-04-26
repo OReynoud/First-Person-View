@@ -340,6 +340,16 @@ namespace Mechanics
             }
         }
 
+        public override void TakeDamage(float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce, float damage, Collider maskCollider)
+        {
+            base.TakeDamage(knockBackValue, knockBackDir, pointOfForce, damage, maskCollider);
+            foreach (var mask in allMasks)
+            {
+                if (mask.maskCollider != maskCollider)continue;
+                mask.maskHealth -= damage;
+            }
+        }   
+
         public override void Die()
         {
             if (arenaSpawn)

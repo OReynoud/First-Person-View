@@ -289,7 +289,7 @@ Transform:
   - {fileID: 3973509670897740175}
   - {fileID: 1278172728399317272}
   - {fileID: 1884776594256887845}
-  m_Father: {fileID: 1171924708256431230}
+  m_Father: {fileID: 6473887197865536909}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!111 &5209075110235037746
 Animation:
@@ -734,6 +734,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7127425910194321269}
   - {fileID: 8718492654356727475}
   - {fileID: 6239005035128904802}
   - {fileID: 8918532052287260627}
@@ -815,15 +816,13 @@ MonoBehaviour:
     m_RotationOrder: 4
   volume: {fileID: 925616782057724675}
   maxInk: 15
-  currentInk: 15
+  currentInk: 5
   maxHealth: 10
   currentHealth: 0
   healPackCapacity: 4
   healAmount: 10
   currentInputMap: ControlsLeftShoot
   inputs: {fileID: 739510780194846137}
-  shootTrail: {fileID: 5231518178250592816, guid: 4b369153cbd99c14bb74c1799fc43e68,
-    type: 3}
   playerCam: {fileID: 7127425910194321269}
   hands: {fileID: 1278172728399317272}
   leftHand: {fileID: 8092773862637584861}
@@ -945,8 +944,8 @@ MonoBehaviour:
   restingPosOffset: {x: 1, y: 1, z: 2.5}
   travelSpeed: 45
   grabDistanceBuffer: 15
-  holdObjectCost: 1
-  holdEnemyCost: 1
+  holdObjectCost: 0
+  holdEnemyCost: 0
   throwCost: 2
   throwForce: 350
   inkAbsorbSpeed: 30
@@ -965,8 +964,6 @@ MonoBehaviour:
   shootSpeedTimer: 0
   controlledProp: {fileID: 0}
   socketManager: {fileID: 0}
-  inkStainDecal: {fileID: 2021356887493841895, guid: 3871a1bd6706e8944a93be83e22c8fc5,
-    type: 3}
   inSurplus: 0
 --- !u!54 &7444262524379830578
 Rigidbody:
@@ -4599,7 +4596,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1641675738388639272}
-  - {fileID: 7127425910194321269}
   - {fileID: 6473887197865536909}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

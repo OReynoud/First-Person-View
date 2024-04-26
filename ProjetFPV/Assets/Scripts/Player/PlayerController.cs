@@ -301,7 +301,7 @@ public class PlayerController : Singleton<PlayerController>
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        startPos = hands.localPosition;
+        startPos = camera1.transform.localPosition;
         currentHealth = maxHealth;
     }
     
@@ -498,10 +498,10 @@ public class PlayerController : Singleton<PlayerController>
             Rotate();
             ForwardInput();
             SidewaysInput();
-            ArmBobbing();
             TelekinesisInput();
         }
 
+        ArmBobbing();
         if (shootSpeedTimer >= 0)
         {
             shootSpeedTimer -= Time.deltaTime;
@@ -516,6 +516,7 @@ public class PlayerController : Singleton<PlayerController>
 
             case PlayerStates.Sprinting:
                 playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
+                //playerCam.position = transform.position;
                 playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
                     playerCam.position.z);
 
@@ -524,6 +525,7 @@ public class PlayerController : Singleton<PlayerController>
 
             case PlayerStates.Standing:
                 playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
+                //playerCam.position = transform.position;
                 playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
                     playerCam.position.z);
 
@@ -550,6 +552,8 @@ public class PlayerController : Singleton<PlayerController>
     private void LateUpdate()
     {
         HorizontalMovement();
+        
+
     }
 
 
@@ -1025,22 +1029,28 @@ public class PlayerController : Singleton<PlayerController>
     {
         Vector3 pos = Vector3.zero;
         pos.y += Mathf.Sin(Time.time * frequeny) * amplitude;
-        if (state == PlayerStates.Sprinting)
-        {
-            pos.x += Mathf.Cos(Time.time * frequeny / 2) * amplitude;
-        }
+        pos.x += Mathf.Cos(Time.time * frequeny / 2) * amplitude * 0.5f;
+        
 
+        return pos;
+    }
+
+    Vector3 FocusTarget()
+    {
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y + playerCam.transform.localPosition.y,
+            transform.position.z);
+        pos += playerCam.forward * 15;
         return pos;
     }
 
     private void PlayMotion(Vector3 motion)
     {
-        hands.localPosition += motion;
+        camera1.transform.localPosition += motion;
     }
 
     void ResetBobbing()
     {
-        hands.localPosition = Vector3.Lerp(hands.localPosition, startPos, 1 * Time.deltaTime);
+        camera1.transform.localPosition = Vector3.Lerp(camera1.transform.localPosition, startPos, 1 * Time.deltaTime);
     }
 
     private void ArmBobbing()
@@ -1048,6 +1058,7 @@ public class PlayerController : Singleton<PlayerController>
         if (appliedForce && isGrounded)
         {
             PlayMotion(FootStepMotion());
+            camera1.transform.LookAt(FocusTarget());
         }
         else
         {

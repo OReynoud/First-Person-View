@@ -116,7 +116,7 @@ namespace Mechanics
             if (maskCount <= 0) Die();
         }
 
-        public void TakeDamage(float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce)
+        public virtual void TakeDamage(float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce,float damage, Collider maskCollider)
         {
 
             InputAction.CallbackContext dummy = new InputAction.CallbackContext();
@@ -197,8 +197,8 @@ namespace Mechanics
         [HorizontalLine(color:EColor.White)]
         public string maskName;
         [HideInInspector] public Vector3 origin;
-        [HideInInspector] public int baseHealth;
-        [Range(1,10)]public int maskHealth = 1;
+        [HideInInspector] public float baseHealth;
+        [Range(1,10)]public float maskHealth = 1;
         public Collider maskCollider;
         [HideInInspector] public Transform tr;
         [HideInInspector] public MeshRenderer meshRenderer;

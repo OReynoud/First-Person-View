@@ -5,17 +5,18 @@ using DG.Tweening;
 using Mechanics;
 using NaughtyAttributes;
 using UnityEngine;
-
+[RequireComponent(typeof(TelekinesisObject))]
 public class TNT : MonoBehaviour, IDestructible
 {
     [SerializeField] private float health = 1;
     [SerializeField] private float explosionRadius;
     [SerializeField] private float explosionForce = 3;
     [SerializeField] private float damageToPlayer = 3;
+    [SerializeField] private float damageToEnemy = 5;
     [Range(0,1)][SerializeField] private float damageFallOff = 0.2f;
     [SerializeField] private LayerMask mask;
     [SerializeField] private GameObject explosionMesh;
-    [Foldout("Obsolète")][SerializeField] private float damageToEnemy = 5;
+    private TelekinesisObject tk;
 
     public void OnDrawGizmosSelected()
     {
@@ -30,6 +31,11 @@ public class TNT : MonoBehaviour, IDestructible
         {
             OnDestroy();
         }
+    }
+
+    private void Awake()
+    {
+        tk = GetComponent<TelekinesisObject>();
     }
 
     public void OnDestroy()
@@ -51,7 +57,7 @@ public class TNT : MonoBehaviour, IDestructible
             
             if (col.transform.parent.TryGetComponent(out Enemy enemy))
             {
-                enemy.TakeDamage(explosionForce,dir.normalized, col.ClosestPointOnBounds(transform.position));
+                enemy.TakeDamage(explosionForce,dir.normalized, col.ClosestPointOnBounds(transform.position),damageToEnemy * damageFallOff, col);
             }
 
             if (col.transform.TryGetComponent(out TNT tnt))
@@ -84,6 +90,17 @@ public class TNT : MonoBehaviour, IDestructible
         explosionMesh.SetActive(true);
         explosionMesh.transform.localScale = new Vector3(1/transform.localScale.x ,1/transform.localScale.y,1/transform.localScale.z) * explosionForce;
         Destroy(gameObject,1f);
+    }
+    
+    private void OnCollisionEnter(Collision other)
+    {
+        if (!tk.thrown)return;
+        
+        if (tk.body.velocity.magnitude > 10)
+        {
+            health = 0;
+            OnDestroy();
+        }
     }
 }
 
