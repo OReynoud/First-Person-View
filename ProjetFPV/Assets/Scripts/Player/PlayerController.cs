@@ -863,7 +863,7 @@ public class PlayerController : Singleton<PlayerController>
 
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
 
-        var camRotation = new Vector3(playerCam.localEulerAngles.x, transform.localEulerAngles.y,
+        var camRotation = new Vector3(playerCam.localEulerAngles.x,0,
             playerCam.localEulerAngles.z);
         //playerCam.localEulerAngles = Vector3.Lerp(playerCam.localEulerAngles, camRotation, 0.8f);
         playerCam.localEulerAngles = camRotation;
