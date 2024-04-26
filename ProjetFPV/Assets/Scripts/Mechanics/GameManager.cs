@@ -24,6 +24,7 @@ namespace Mechanics
         [SerializeField] private TextMeshProUGUI healPackText;
         [SerializeField] public TextMeshProUGUI interactText;
         [SerializeField] public GameObject gameOver;
+        [SerializeField] public GameObject inkStainDecal;
         
 
         public AbsorbInk inkStainPrefab;

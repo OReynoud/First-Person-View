@@ -20,6 +20,9 @@ public class ShootingHand : MonoBehaviour
 
     public List<AmmoSocket> sockets = new List<AmmoSocket>();
 
+    [Foldout("Shoot")] [SerializeField]
+    public float bulletSpeed;
+    
     [Foldout("Shoot")] [Tooltip("Which layers will get hit by the hit scan")] [SerializeField]
     public LayerMask shootMask;
 
@@ -31,11 +34,11 @@ public class ShootingHand : MonoBehaviour
     [Foldout("Shoot")] [SerializeField] private float surplusBulletCost;
     [Foldout("Shoot")] [SerializeField] private float trailTime;
     
-    [Foldout("Refs")] [SerializeField] private GameObject inkStainDecal;
 
     [Foldout("Refs")] public Material emptySocket;
     [Foldout("Refs")] public Material loadedSocket;
     [Foldout("Refs")] public Material superChargedSocket;
+    [Foldout("Refs")] [SerializeField] private PlayerBullet bulletPrefab;
     [Foldout("Refs")] [SerializeField] private LineRenderer normalTrail;
     [Foldout("Refs")] [SerializeField] private LineRenderer superTrail;
     private LineRenderer currentTrail;
@@ -179,42 +182,13 @@ public class ShootingHand : MonoBehaviour
 
         if (Physics.Raycast(cam.position, cam.forward, out RaycastHit hit, maxRange, shootMask))
         {
-            Debug.Log("Hit something");
-            if (hit.collider.CompareTag("Head"))
-            {
-                if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
-                {
-                    if (currentSocket.state == SocketStates.Loaded)
-                    {
-                        enemy.TakeDamage(hit.collider, false);
-                    }
-                    else
-                    {
-                        enemy.TakeDamage(hit.collider, true);
-                    }
 
-                    GameManager.instance.HitMark(true);
-                }
-            }
-
-            if (hit.collider.TryGetComponent(out IDestructible target))
-            {
-                target.TakeDamage();
-            }
-
-            currentTrail.SetPosition(1, hit.point);
-
-            //Coucou, Thomas est passé par là (jusqu'au prochain commentaire)
-            var decal = Instantiate(inkStainDecal, hit.point + hit.normal * 0.02f, Quaternion.identity, hit.transform);
-            decal.transform.forward = -hit.normal;
-            decal.transform.RotateAround(decal.transform.position, decal.transform.forward, Random.Range(-180f, 180f));
-            //Je m'en vais !
         }
         else
         {
             Debug.Log("Hit some air");
-            currentTrail.SetPosition(1, cam.forward * maxRange + cam.position);
         }
+        currentTrail.SetPosition(1, cam.forward * maxRange + cam.position);
 
         UpdateCurrentSocket();
     }
