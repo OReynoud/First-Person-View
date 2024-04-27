@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Mechanics;
 using NaughtyAttributes;
+using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -10,6 +11,7 @@ using Random = UnityEngine.Random;
 public class ShootingHand : MonoBehaviour
 {
     public AmmoSocket currentSocket;
+    public bool useHitScan = true;
 
     public enum SocketStates
     {
@@ -20,7 +22,7 @@ public class ShootingHand : MonoBehaviour
 
     public List<AmmoSocket> sockets = new List<AmmoSocket>();
 
-    [Foldout("Shoot")] [SerializeField]
+    [HideIf("useHitScan")][Foldout("Shoot")] [SerializeField]
     public float bulletSpeed;
     
     [Foldout("Shoot")] [Tooltip("Which layers will get hit by the hit scan")] [SerializeField]
@@ -168,27 +170,66 @@ public class ShootingHand : MonoBehaviour
     {
         CameraShake.instance.ShakeOneShot(1);
 
-        if (currentSocket.state == SocketStates.Loaded)
-        {
-            currentTrail = Instantiate(normalTrail);
-        }
-        else
-        {
-            currentTrail = Instantiate(superTrail);
-        }
-
-        Destroy(currentTrail.gameObject, trailTime);
-        currentTrail.SetPosition(0, origin.position + origin.up * 0.5f);
-
         if (Physics.Raycast(cam.position, cam.forward, out RaycastHit hit, maxRange, shootMask))
         {
+            if (useHitScan)
+            {
+                currentTrail = Instantiate(currentSocket.state == SocketStates.Loaded ? normalTrail : superTrail);
+
+                Destroy(currentTrail.gameObject, trailTime);
+                currentTrail.SetPosition(0, origin.position + origin.up * 0.5f);
+
+
+                currentTrail.SetPosition(1, cam.forward * maxRange + cam.position);
+                
+                Debug.Log("Hit something");
+                if (hit.collider.CompareTag("Head"))
+                {
+                    if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
+                    {
+                        if (currentSocket.state == SocketStates.Loaded)
+                        {
+                            enemy.TakeDamage(hit.collider, false);
+                        }
+                        else
+                        {
+                            enemy.TakeDamage(hit.collider, true);
+                        }
+
+                        GameManager.instance.HitMark(true);
+                    }
+                }
+
+                if (hit.collider.TryGetComponent(out IDestructible target))
+                {
+                    target.TakeDamage();
+                }
+
+                currentTrail.SetPosition(1, hit.point);
+
+                //Coucou, Thomas est passé par là (jusqu'au prochain commentaire)
+                var decal = Instantiate(GameManager.instance.inkStainDecal, hit.point + hit.normal * 0.02f, Quaternion.identity, hit.transform);
+                decal.transform.forward = -hit.normal;
+                decal.transform.RotateAround(decal.transform.position, decal.transform.forward, Random.Range(-180f, 180f));
+                //Je m'en vais !
+            }
+            else
+            {
+                var bullet = Instantiate(bulletPrefab, origin.position + origin.up * 0.5f, Quaternion.identity);
+                bullet.transform.LookAt(hit.point);
+                bullet.rb.velocity = bullet.transform.forward * bulletSpeed;
+                bullet.superShot = currentSocket.state == SocketStates.SuperCharged;
+                bullet.meshRenderer.material = 
+                    currentSocket.state == SocketStates.SuperCharged ? superChargedSocket : loadedSocket;
+            }
 
         }
         else
         {
             Debug.Log("Hit some air");
         }
-        currentTrail.SetPosition(1, cam.forward * maxRange + cam.position);
+
+
 
         UpdateCurrentSocket();
     }
