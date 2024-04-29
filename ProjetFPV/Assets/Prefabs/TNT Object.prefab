@@ -5104,6 +5104,7 @@ MonoBehaviour:
   body: {fileID: 0}
   spamBuffer: 0.6
   canBeGrabbed: 1
+  velocityLimit: 5
   thrown: 0
   col: {fileID: 0}
 --- !u!114 &9213067938974385105
@@ -5122,12 +5123,12 @@ MonoBehaviour:
   explosionRadius: 10
   explosionForce: 30
   damageToPlayer: 2
+  damageToEnemy: 5
   damageFallOff: 1
   mask:
     serializedVersion: 2
     m_Bits: 896
   explosionMesh: {fileID: 4183366761923645707}
-  damageToEnemy: 2
 --- !u!136 &2140365672910163906
 CapsuleCollider:
   m_ObjectHideFlags: 0

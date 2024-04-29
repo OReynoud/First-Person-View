@@ -95,12 +95,11 @@ public class TNT : MonoBehaviour, IDestructible
     private void OnCollisionEnter(Collision other)
     {
         if (!tk.thrown)return;
+        Debug.Log("COLLIDE");
         
-        if (tk.body.velocity.magnitude > 10)
-        {
-            health = 0;
-            OnDestroy();
-        }
+        health = 0;
+        OnDestroy();
+        
     }
 }
 
