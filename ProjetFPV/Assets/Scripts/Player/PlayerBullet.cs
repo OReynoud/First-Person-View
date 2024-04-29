@@ -19,7 +19,7 @@ namespace Player
             Debug.Log("Hit something" + other.gameObject, other.gameObject);
             if (other.collider.CompareTag("Head"))
             {
-                if (other.transform.parent.TryGetComponent(out Enemy enemy))
+                if (other.transform.TryGetComponent(out Enemy enemy))
                 {
                 
                     enemy.TakeDamage(other.collider, superShot);

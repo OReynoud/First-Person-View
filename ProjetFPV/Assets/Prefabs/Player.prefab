@@ -707,13 +707,13 @@ GameObject:
   m_Component:
   - component: {fileID: 6473887197865536909}
   - component: {fileID: 10083582493029471}
+  - component: {fileID: 6171253402340276740}
+  - component: {fileID: 2788651801690148795}
   - component: {fileID: 7444262524379830578}
   - component: {fileID: 739510780194846137}
   - component: {fileID: 7813115355682138035}
   - component: {fileID: 4500119090424759972}
-  - component: {fileID: 2788651801690148795}
   - component: {fileID: 6921202048059391438}
-  - component: {fileID: 6171253402340276740}
   m_Layer: 9
   m_Name: Character
   m_TagString: Player
@@ -949,7 +949,7 @@ MonoBehaviour:
   throwCost: 2
   throwForce: 350
   inkAbsorbSpeed: 30
-  amplitude: 0.001
+  amplitude: 0.015
   frequeny: 10
   toggleSpeed: 0
   sideTilting: 0
@@ -965,6 +965,65 @@ MonoBehaviour:
   controlledProp: {fileID: 0}
   socketManager: {fileID: 0}
   inSurplus: 0
+--- !u!114 &6171253402340276740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239935718432516662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98e501247d577e1448a60246c0fbf925, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentSocket: {fileID: 0}
+  useHitScan: 0
+  sockets:
+  - {fileID: 1040699354674772416}
+  - {fileID: 2690477868673476573}
+  - {fileID: 6966013319261075465}
+  - {fileID: 6944116981685293138}
+  - {fileID: 4816899416955406028}
+  bulletSpeed: 70
+  shootMask:
+    serializedVersion: 2
+    m_Bits: 465
+  maxRange: 1000
+  reloadCostPerBullet: 1
+  surplusBulletCost: 1
+  trailTime: 0.3
+  emptySocket: {fileID: 2100000, guid: 3d843fafaff4d6e42b863c58f7c49aba, type: 2}
+  loadedSocket: {fileID: 2100000, guid: 96e954d9630101a42b6b43eef3f1e8ef, type: 2}
+  superChargedSocket: {fileID: 2100000, guid: 726e1866d5396af4791e88a89d7f9528, type: 2}
+  bulletPrefab: {fileID: 1621833375193159615, guid: ffccde237f1fe774695fca52b8ce3c09,
+    type: 3}
+  normalTrail: {fileID: 5231518178250592816, guid: 4b369153cbd99c14bb74c1799fc43e68,
+    type: 3}
+  superTrail: {fileID: 5231518178250592816, guid: ac08b1f577bac1d4487b2f604eee5662,
+    type: 3}
+  autoLoadOnSurplus: 1
+  timeToAutoLoad: 0.3
+  reloadSuperBulletsOnSurplus: 0
+  surplusReloadTime: 0.5
+  noBullets: 0
+--- !u!114 &2788651801690148795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239935718432516662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dbe9b61735ed44f85932cf0da645a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontRC: {fileID: 7392715935690071276}
+  backRC: {fileID: 2340682711907133276}
+  cam: {fileID: 5842867412959891476}
+  angle: {x: 0, y: 0, z: 0.08715574, w: 0.9961947}
+  speed: 1.6
 --- !u!54 &7444262524379830578
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1069,23 +1128,6 @@ CapsuleCollider:
   m_Height: 1.2256818
   m_Direction: 1
   m_Center: {x: 0, y: -0.3871591, z: 0}
---- !u!114 &2788651801690148795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1239935718432516662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0dbe9b61735ed44f85932cf0da645a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frontRC: {fileID: 7392715935690071276}
-  backRC: {fileID: 2340682711907133276}
-  cam: {fileID: 5842867412959891476}
-  angle: {x: 0, y: 0, z: 0.08715574, w: 0.9961947}
-  speed: 1.6
 --- !u!82 &6921202048059391438
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1183,46 +1225,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6171253402340276740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1239935718432516662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98e501247d577e1448a60246c0fbf925, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentSocket: {fileID: 0}
-  sockets:
-  - {fileID: 1040699354674772416}
-  - {fileID: 2690477868673476573}
-  - {fileID: 6966013319261075465}
-  - {fileID: 6944116981685293138}
-  - {fileID: 4816899416955406028}
-  shootMask:
-    serializedVersion: 2
-    m_Bits: 465
-  maxRange: 1000
-  reloadCostPerBullet: 1
-  surplusBulletCost: 1
-  trailTime: 0.3
-  inkStainDecal: {fileID: 2021356887493841895, guid: 3871a1bd6706e8944a93be83e22c8fc5,
-    type: 3}
-  emptySocket: {fileID: 2100000, guid: 3d843fafaff4d6e42b863c58f7c49aba, type: 2}
-  loadedSocket: {fileID: 2100000, guid: 96e954d9630101a42b6b43eef3f1e8ef, type: 2}
-  superChargedSocket: {fileID: 2100000, guid: 726e1866d5396af4791e88a89d7f9528, type: 2}
-  normalTrail: {fileID: 5231518178250592816, guid: 4b369153cbd99c14bb74c1799fc43e68,
-    type: 3}
-  superTrail: {fileID: 5231518178250592816, guid: ac08b1f577bac1d4487b2f604eee5662,
-    type: 3}
-  autoLoadOnSurplus: 1
-  timeToAutoLoad: 0.3
-  reloadSuperBulletsOnSurplus: 1
-  surplusReloadTime: 0.5
-  noBullets: 0
 --- !u!1 &1641975305724952938
 GameObject:
   m_ObjectHideFlags: 0
@@ -5613,7 +5615,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 6135
+    m_Bits: 22519
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

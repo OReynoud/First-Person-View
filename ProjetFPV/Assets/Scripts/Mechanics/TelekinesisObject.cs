@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class TelekinesisObject : ControllableProp
 {
+    public float velocityLimit = 10;
     public bool thrown;
     [SerializeField]private Collider col;
 
@@ -40,9 +41,9 @@ public class TelekinesisObject : ControllableProp
     {
         if (!thrown)return;
         
-        if (body.velocity.magnitude < 10)
+        if (body.velocity.magnitude < velocityLimit)
         {
-            thrown = false;
+            StartCoroutine(NotThrown());
             return;
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
@@ -51,8 +52,15 @@ public class TelekinesisObject : ControllableProp
             {
                 Debug.Log("Stunned an enemy");
                 enemy.ApplyStun();
-                thrown = false;
+                
+                StartCoroutine(NotThrown());
             }
         }
+    }
+
+    IEnumerator NotThrown()
+    {
+        yield return new WaitForSeconds(0.2f);
+        thrown = false;
     }
 }

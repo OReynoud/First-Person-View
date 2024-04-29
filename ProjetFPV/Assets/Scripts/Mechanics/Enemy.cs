@@ -122,6 +122,22 @@ namespace Mechanics
             InputAction.CallbackContext dummy = new InputAction.CallbackContext();
             if (isGrabbed) PlayerController.instance.ReleaseProp(dummy);
             ApplyStun();
+            
+            for (int i = 0; i < allMasks.Length; i++)
+            {
+                if (maskCollider != allMasks[i].maskCollider)continue;
+
+                allMasks[i].maskHealth -= damage;
+                if ( allMasks[i].maskHealth <= 0)
+                {
+                    allMasks[i].maskCollider.gameObject.SetActive(false);
+                    allMasks[i].broken = true;
+                    maskCount--;
+                }
+                break;
+            }
+
+            if (maskCount <= 0) Die();
             // body.constraints = RigidbodyConstraints.None;
             // body.useGravity = true;
             // body.AddForceAtPosition(knockBackDir * knockBackValue,pointOfForce, ForceMode.Impulse);

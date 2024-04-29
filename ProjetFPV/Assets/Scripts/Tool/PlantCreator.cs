@@ -11,7 +11,7 @@ using UnityEditor;
 
 public class PlantCreator : MonoBehaviour
 {
-    List<Material> materials = new List<Material>();
+    private Material material;
     
     float rotationX;
     float rotationY;
@@ -46,31 +46,18 @@ public class PlantCreator : MonoBehaviour
             GeneralParameters(plantCreator);
             
             EditorGUILayout.Space(20);
-            EditorGUILayout.LabelField("Materials", EditorStyles.boldLabel);
-            
-            List<Material> list = plantCreator.materials;
-            
-            ListOfTextures(list);
+            EditorGUILayout.BeginHorizontal();
+
+            EditorGUILayout.LabelField("Material", GUILayout.MaxWidth(80));
+            plantCreator.material = (Material)EditorGUILayout.ObjectField(plantCreator.material, typeof(Material), false);
+
+            EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.Space(20);
             
             if (GUILayout.Button("Generate Plant"))
             {
-                for (int i = 0; i < list.Count; i++)
-                {
-                    if (list[i] == null)
-                    {
-                        list.RemoveAt(i);
-                        i--;
-                    }
-                }
-                
-                for (int i = 0; i < list.Count; i++)
-                {
-                    list[i] = EditorGUILayout.ObjectField("Element " + i, list[i], typeof(Material), false) as Material;
-                }
-
-                if (list.Count <= 0)
+                if (plantCreator.material is null)
                 {
                     Debug.Log("<color=yellow> From : Plant Creator Tool | </color>Au moins un material est nécessaire.");
                     return;
@@ -268,7 +255,7 @@ public class PlantCreator : MonoBehaviour
                 }
 
                 // Set plane texture
-                newPlane.GetComponent<Renderer>().material = plantCreator.materials[Random.Range(0, plantCreator.materials.Count)];
+                newPlane.GetComponent<Renderer>().material = plantCreator.material;
 
                 newPlane.transform.parent = parent.transform;
                 DestroyImmediate(newPlane.GetComponent<MeshCollider>());
@@ -370,6 +357,7 @@ public class PlantCreator : MonoBehaviour
             // Fusionne les Meshes en un seul Mesh
             meshFilter.sharedMesh = new Mesh();
             meshFilter.sharedMesh.CombineMeshes(combineInstances, true, true);
+            Unwrapping.GenerateSecondaryUVSet(meshFilter.sharedMesh);
 
             // Assigne le matériau du premier objet à la MeshRenderer du nouveau GameObject
             meshRenderer.material = plantCreator.objectsToCombine[0].GetComponent<MeshRenderer>().sharedMaterial;
