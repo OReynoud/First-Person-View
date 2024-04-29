@@ -1196,12 +1196,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentSocket: {fileID: 0}
+  useHitScan: 1
   sockets:
   - {fileID: 1040699354674772416}
   - {fileID: 2690477868673476573}
   - {fileID: 6966013319261075465}
   - {fileID: 6944116981685293138}
   - {fileID: 4816899416955406028}
+  bulletSpeed: 100
   shootMask:
     serializedVersion: 2
     m_Bits: 465
@@ -1209,11 +1211,11 @@ MonoBehaviour:
   reloadCostPerBullet: 1
   surplusBulletCost: 1
   trailTime: 0.3
-  inkStainDecal: {fileID: 2021356887493841895, guid: 3871a1bd6706e8944a93be83e22c8fc5,
-    type: 3}
   emptySocket: {fileID: 2100000, guid: 3d843fafaff4d6e42b863c58f7c49aba, type: 2}
   loadedSocket: {fileID: 2100000, guid: 96e954d9630101a42b6b43eef3f1e8ef, type: 2}
   superChargedSocket: {fileID: 2100000, guid: 726e1866d5396af4791e88a89d7f9528, type: 2}
+  bulletPrefab: {fileID: 1621833375193159615, guid: ffccde237f1fe774695fca52b8ce3c09,
+    type: 3}
   normalTrail: {fileID: 5231518178250592816, guid: 4b369153cbd99c14bb74c1799fc43e68,
     type: 3}
   superTrail: {fileID: 5231518178250592816, guid: ac08b1f577bac1d4487b2f604eee5662,
@@ -5613,7 +5615,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 6135
+    m_Bits: 22519
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
