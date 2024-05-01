@@ -55,6 +55,8 @@ public class PrefabReplacement : EditorWindow
             newGO.transform.position = go.transform.position;
             newGO.transform.rotation = go.transform.rotation;
             newGO.transform.localScale = go.transform.localScale;
+
+            SetRotation(newGO);
             
             DestroyImmediate(go);
 
@@ -62,5 +64,18 @@ public class PrefabReplacement : EditorWindow
         }
 
         Selection.objects = toSelect;
+    }
+
+    private void SetRotation(GameObject newObj)
+    {
+        var camPos = SceneView.lastActiveSceneView.pivot;
+        var objPos = newObj.transform.GetComponent<Renderer>().bounds.center;
+
+        var angle = Vector3.Angle(newObj.transform.up, camPos - objPos);
+        
+        if (angle < 90)
+        {
+            newObj.transform.RotateAround(newObj.transform.GetComponent<Renderer>().bounds.center, Vector3.up, 180f);
+        }
     }
 }
