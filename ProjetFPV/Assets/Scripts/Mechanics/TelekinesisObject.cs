@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mechanics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TelekinesisObject : ControllableProp
 {
     public float velocityLimit = 10;
     public bool thrown;
+    public float ignoreGravityTime = 3;
     [SerializeField]private Collider col;
 
     public override void Awake()
@@ -16,6 +18,8 @@ public class TelekinesisObject : ControllableProp
         col = GetComponent<Collider>();
     }
 
+    private float timer;
+
     // Update is called once per frame
     public override void ApplyTelekinesis() 
     {
@@ -23,6 +27,8 @@ public class TelekinesisObject : ControllableProp
 
         if (gameObject.layer == LayerMask.NameToLayer("Default"))
         {
+            timer = 0;
+            thrown = false;
             gameObject.layer = LayerMask.NameToLayer("Telekinesis");
         }
         else
@@ -34,7 +40,15 @@ public class TelekinesisObject : ControllableProp
 
     private void FixedUpdate()
     {
-        
+        if (thrown)
+        {
+            timer += Time.deltaTime;
+            body.useGravity = timer > ignoreGravityTime;
+        }
+        else
+        {
+            body.useGravity = true;
+        }
     }
 
     private void OnCollisionEnter(Collision other)

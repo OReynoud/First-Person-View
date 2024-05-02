@@ -66,6 +66,12 @@ public class ShootingHand : MonoBehaviour
     private PlayerController player;
 
 
+    public class Bullet
+    {
+        private ParticleSystem.Particle projectile;
+    }
+
+
     public void Awake()
     {
         player = GetComponent<PlayerController>();
@@ -78,7 +84,7 @@ public class ShootingHand : MonoBehaviour
 
         currentSocket.highlightMesh.enabled = true;
         
-        bulletParticle.Stop();
+        //bulletParticle.Stop();
     }
 
 
@@ -218,13 +224,13 @@ public class ShootingHand : MonoBehaviour
             }
             else
             {
-                // var bullet = Instantiate(bulletPrefab, origin.position + origin.up * 0.5f, Quaternion.identity);
-                // bullet.transform.LookAt(hit.point);
-                // bullet.rb.velocity = bullet.transform.forward * bulletSpeed;
-                // bullet.superShot = currentSocket.state == SocketStates.SuperCharged;
-                // bullet.meshRenderer.material = 
-                //     currentSocket.state == SocketStates.SuperCharged ? superChargedSocket : loadedSocket;
-                bulletParticle.Play();
+                var bullet = Instantiate(bulletPrefab, origin.position + origin.up * 0.5f, Quaternion.identity);
+                bullet.transform.LookAt(hit.point);
+                bullet.rb.velocity = bullet.transform.forward * bulletSpeed;
+                bullet.superShot = currentSocket.state == SocketStates.SuperCharged;
+                bullet.meshRenderer.material = 
+                    currentSocket.state == SocketStates.SuperCharged ? superChargedSocket : loadedSocket;
+                //bulletParticle.Play();
                 
                 
             }
@@ -244,32 +250,33 @@ public class ShootingHand : MonoBehaviour
     }
 
 
-   /* private void OnParticleCollision(GameObject other)
-    {
-        
-        Debug.Log("Hit something" + other.gameObject, other.gameObject);
-        other.TryGetComponent(out Collider collider);
-        if (other.CompareTag("Head"))
-        {
-            if (other.transform.TryGetComponent(out Enemy enemy))
-            {
-                enemy.TakeDamage(collider, superShot);
-                
-
-                GameManager.instance.HitMark(true);
-            }
-        }
-
-        if (other.gameObject.TryGetComponent(out IDestructible target))
-        {
-            target.TakeDamage();
-        }
-
-
-        //Coucou, Thomas est passé par là (jusqu'au prochain commentaire)
-        var decal = Instantiate(GameManager.instance.inkStainDecal, collider.GetContact(0).point + other.GetContact(0).normal * 0.02f, Quaternion.identity, other.transform);
-        decal.transform.forward = -collider.GetContact(0).normal;
-        decal.transform.RotateAround(decal.transform.position, decal.transform.forward, Random.Range(-180f, 180f));
-        //Je m'en vais !
-    }*/
+    // public List<ParticleCollisionEvent> collisionEvents;
+    // private void OnParticleCollision(GameObject other)
+    // {
+    //     var numCollisions = bulletParticle.GetCollisionEvents(other, collisionEvents);
+    //     Debug.Log("Hit something" + other.gameObject, other.gameObject);
+    //     other.TryGetComponent(out Collider collider);
+    //     if (other.CompareTag("Head"))
+    //     {
+    //         if (other.transform.TryGetComponent(out Enemy enemy))
+    //         {
+    //             enemy.TakeDamage(collider, superShot);
+    //             
+    //
+    //             GameManager.instance.HitMark(true);
+    //         }
+    //     }
+    //
+    //     if (other.gameObject.TryGetComponent(out IDestructible target))
+    //     {
+    //         target.TakeDamage();
+    //     }
+    //
+    //
+    //     //Coucou, Thomas est passé par là (jusqu'au prochain commentaire)
+    //     var decal = Instantiate(GameManager.instance.inkStainDecal, collider.GetContact(0).point + other.GetContact(0).normal * 0.02f, Quaternion.identity, other.transform);
+    //     decal.transform.forward = -collider.GetContact(0).normal;
+    //     decal.transform.RotateAround(decal.transform.position, decal.transform.forward, Random.Range(-180f, 180f));
+    //     //Je m'en vais !
+    // }
 }
