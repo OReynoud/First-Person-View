@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 public class PrefabReplacement : EditorWindow
 {
-    private GameObject prefab;
+    private List<GameObject> prefab = new List<GameObject>();
     private int numberOfSelectedObjects;
     private GameObject go;
     private GameObject[] toSelect;
@@ -16,7 +15,7 @@ public class PrefabReplacement : EditorWindow
     {
         GetWindow(typeof(PrefabReplacement));
     }
-
+    
     private void OnGUI()
     {
         GUILayout.Label("Replace Prefab", EditorStyles.boldLabel);
@@ -27,11 +26,44 @@ public class PrefabReplacement : EditorWindow
 
         GUILayout.Space(10);
 
-        prefab = EditorGUILayout.ObjectField("New Prefab", prefab, typeof(GameObject), false) as GameObject;
+        int size = Mathf.Max(0, EditorGUILayout.IntField("Number of prefabs", prefab.Count));
+
+        for (int i = 0; i < prefab.Count; i++)
+        {
+            prefab[i] = EditorGUILayout.ObjectField("Prefab " + i, prefab[i], typeof(GameObject), false) as GameObject;
+        }
+        
+        EditorGUILayout.BeginHorizontal();
+        
+        GUILayout.FlexibleSpace();
+        
+        if (GUILayout.Button("+", GUILayout.Width(40f), GUILayout.Height(25f)))
+        {
+            size++;
+        }
+        if (GUILayout.Button("-", GUILayout.Width(40f), GUILayout.Height(25f)))
+        {
+            if (size > 0)
+            {
+                size--;
+            }
+        }
+        
+        EditorGUILayout.EndHorizontal();
+        
+        while (size > prefab.Count)
+        {
+            prefab.Add(null);
+        }
+        
+        while (size < prefab.Count)
+        {
+            prefab.RemoveAt(prefab.Count - 1);
+        }
         
         GUILayout.Space(10);
         
-        if (GUILayout.Button("Replace Game Objects"))
+        if (GUILayout.Button("Replace Game Objects", GUILayout.Height(25f)))
         {
             if (prefab is null)
             {
@@ -45,18 +77,31 @@ public class PrefabReplacement : EditorWindow
 
     private void Replace()
     {
+        for (int i = prefab.Count - 1; i >= 0; i--)
+        {
+            if (prefab[i] is null)
+            {
+                prefab.RemoveAt(i);
+            }
+        }
+        
         toSelect = new GameObject[Selection.count];
         
         for (int i = Selection.count - 1; i >= 0; i--)
         {
             go = (GameObject)Selection.objects[i];
             
-            GameObject newGO = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+            GameObject newGO = PrefabUtility.InstantiatePrefab(prefab[Random.Range(0, prefab.Count)]) as GameObject;
             newGO.transform.position = go.transform.position;
             newGO.transform.rotation = go.transform.rotation;
             newGO.transform.localScale = go.transform.localScale;
 
             SetRotation(newGO);
+
+            if (go.transform.parent is not null)
+            {
+                newGO.transform.parent = go.transform.parent;
+            }
             
             DestroyImmediate(go);
 
@@ -68,7 +113,7 @@ public class PrefabReplacement : EditorWindow
 
     private void SetRotation(GameObject newObj)
     {
-        var camPos = SceneView.lastActiveSceneView.pivot;
+        var camPos = SceneView.lastActiveSceneView.camera.transform.position;
         var objPos = newObj.transform.GetComponent<Renderer>().bounds.center;
 
         var angle = Vector3.Angle(newObj.transform.up, camPos - objPos);
