@@ -96,7 +96,10 @@ public class PrefabReplacement : EditorWindow
             newGO.transform.rotation = go.transform.rotation;
             newGO.transform.localScale = go.transform.localScale;
 
-            SetRotation(newGO);
+            if (go.GetComponent<Renderer>() != null)
+            {
+                SetRotation(newGO);
+            }
 
             if (go.transform.parent is not null)
             {
