@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Mechanics;
 using NaughtyAttributes;
 using Player;
+using Unity.Properties;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -12,7 +13,7 @@ public class ShootingHand : MonoBehaviour
 {
     public AmmoSocket currentSocket;
     public bool useHitScan = true;
-    public ParticleSystem bulletParticle;
+    public ParticleSystem[] bulletParticle;
 
     public enum SocketStates
     {
@@ -83,11 +84,19 @@ public class ShootingHand : MonoBehaviour
         }
 
         currentSocket.highlightMesh.enabled = true;
-        
-        //bulletParticle.Stop();
+
+
+        ParticleSystem oui = new ParticleSystem();
+        var main = oui.main;
+        foreach (var particle in bulletParticle)
+        {
+            main = particle.main;
+            main.startSpeed = bulletSpeed;
+            particle.Stop();
+        }
     }
-
-
+    
+    //private ParticleSystem
     [HideInInspector] public bool noBullets;
 
 
@@ -230,9 +239,14 @@ public class ShootingHand : MonoBehaviour
                 bullet.superShot = currentSocket.state == SocketStates.SuperCharged;
                 bullet.meshRenderer.material = 
                     currentSocket.state == SocketStates.SuperCharged ? superChargedSocket : loadedSocket;
-                //bulletParticle.Play();
+                bulletParticle[0].transform.LookAt(hit.point);
                 
                 
+                var oui = bulletParticle[^1].main;
+                var ohCestRelou = bulletParticle[0].transform.eulerAngles;
+                oui.startRotationX = ohCestRelou.x;
+                oui.startRotationY = ohCestRelou.y;
+                oui.startRotationZ = ohCestRelou.z;
             }
             
             
@@ -243,6 +257,7 @@ public class ShootingHand : MonoBehaviour
         {
             Debug.Log("Hit some air");
         }
+        bulletParticle[0].Play();
 
 
 

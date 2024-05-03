@@ -55,7 +55,7 @@ public class TNT : MonoBehaviour, IDestructible
                 Vector3.Distance(col.transform.position, transform.position) / explosionRadius);
             Vector3 dir = col.transform.position - transform.position;
             
-            if (col.transform.parent.TryGetComponent(out Enemy enemy))
+            if (col.transform.TryGetComponent(out Enemy enemy))
             {
                 enemy.TakeDamage(explosionForce,dir.normalized, col.ClosestPointOnBounds(transform.position),damageToEnemy * damageFallOff, col);
             }
