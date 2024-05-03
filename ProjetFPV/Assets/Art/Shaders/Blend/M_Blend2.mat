@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_SandBrick_Blended
+  m_Name: M_Blend2
   m_Shader: {fileID: 4800000, guid: 78b53d09bd4c091439f3f1262f6dbd00, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -23,49 +23,41 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _AOA:
-        m_Texture: {fileID: 2800000, guid: 18bbb8ad11d2ca14dad34c8cd0865b9b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _AOB:
-        m_Texture: {fileID: 2800000, guid: 73a2ac34810b8b848a6627b12ace607f, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _AlbedoA:
         m_Texture: {fileID: 2800000, guid: ded6a7c95d7553a4bbc811d5b323b5f8, type: 3}
-        m_Scale: {x: 0.1, y: 0.1}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoA1:
-        m_Texture: {fileID: 2800000, guid: ded6a7c95d7553a4bbc811d5b323b5f8, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoA2:
-        m_Texture: {fileID: 2800000, guid: 768c62dcfc511fe4d839727166a5d6da, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoB:
         m_Texture: {fileID: 2800000, guid: 62c18b587438a3748b59088cc3690e33, type: 3}
-        m_Scale: {x: 0.1, y: 0.1}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoB1:
-        m_Texture: {fileID: 2800000, guid: 62c18b587438a3748b59088cc3690e33, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoC:
         m_Texture: {fileID: 2800000, guid: 287c915466c6db14ba6f7058567d360f, type: 3}
-        m_Scale: {x: 0.1, y: 0.1}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoC1:
-        m_Texture: {fileID: 2800000, guid: 287c915466c6db14ba6f7058567d360f, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoC2:
-        m_Texture: {fileID: 2800000, guid: 287c915466c6db14ba6f7058567d360f, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightA:
         m_Texture: {fileID: 2800000, guid: 5e5d893e60bf619428be7db27c92b9de, type: 3}
-        m_Scale: {x: 0.1, y: 0.1}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightB:
         m_Texture: {fileID: 2800000, guid: 13e182b53806c844d84e667613273726, type: 3}
@@ -88,15 +80,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessA:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: b91f75d74465e0441badc186e087e1e0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessB:
-        m_Texture: {fileID: 2800000, guid: 0d132ea8d7d434e4db8c66044e199143, type: 3}
+        m_Texture: {fileID: 2800000, guid: b91f75d74465e0441badc186e087e1e0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessC:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: b91f75d74465e0441badc186e087e1e0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _T_Dirt_H:
@@ -108,7 +100,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _xertbj1_8K_AO:
-        m_Texture: {fileID: 2800000, guid: a8dc23da9e347724c8551719b76f8b4e, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -126,22 +118,23 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _Blend_Smoothness: 0
-    - _Blend_SmoothnessB: 0
-    - _Blend_SmoothnessC: 0
-    - _Blend_TextureInfluence: 1.25
-    - _Blend_TextureInfluenceB: -0.04
-    - _Blend_TextureInfluenceC: 0.72
-    - _Blend_Threshold: 0.45
-    - _Blend_ThresholdA: 0.32
-    - _Blend_ThresholdB: 0.57
+    - _Blend_Smoothness: 1
+    - _Blend_SmoothnessB: -1.13
+    - _Blend_SmoothnessC: 1
+    - _Blend_TextureInfluence: 0.5
+    - _Blend_TextureInfluenceB: 26.4
+    - _Blend_TextureInfluenceC: 0.5
+    - _Blend_ThresholdA: 0
+    - _Blend_ThresholdB: -1.35
     - _Blend_ThresholdC: 0
     - _EnvironmentReflections: 1
+    - _Falloff: 1
     - _Float0: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _SpecularHighlights: 1
+    - _Tiling: 0.08
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
