@@ -35,8 +35,16 @@ public class ShootingHand : MonoBehaviour
 
     [Foldout("Shoot")] [Tooltip("Cost to convert ink into bullets")] [SerializeField]
     public float reloadCostPerBullet;
-    [Foldout("Shoot")] [SerializeField] private float surplusBulletCost;
     [Foldout("Shoot")] [SerializeField] private float trailTime;
+    [Foldout("Shoot")] [SerializeField] private float baseDamage;
+    [Foldout("Shoot")] [SerializeField] private float baseKnockBack;
+
+    [Foldout("Surplus")] [SerializeField] private float damageIncrement;
+    [Foldout("Surplus")] [SerializeField] private float knockBackIncrement;
+    [Foldout("Surplus")] [SerializeField] private float hitConeRadius;
+    [Foldout("Surplus")] [SerializeField] [Range (-1,1)] private float minDotProduct;
+    [Foldout("Surplus")] [SerializeField] [Range (1,100)] private float incrementPercentCost;
+    
     
 
     [Foldout("Refs")] public Material emptySocket;
@@ -114,7 +122,7 @@ public class ShootingHand : MonoBehaviour
                     if (sockets[i].state != SocketStates.Empty) continue;
 
                     sockets[i].socketMesh.material = superChargedSocket;
-                    decrement = (reloadCostPerBullet + surplusBulletCost);
+                    decrement = (reloadCostPerBullet);
                     sockets[i].state = SocketStates.SuperCharged;
                     player.currentInk =
                         GameManager.instance.UpdatePlayerStamina(player.currentInk, player.maxInk, -decrement);
@@ -122,6 +130,14 @@ public class ShootingHand : MonoBehaviour
                     break;
                 }
             }
+        }
+
+        if (player.inSurplus)
+        {
+            currentSocket.highlightMesh.enabled = false;
+            currentSocket = sockets[0];
+            currentSocket.socketMesh.material = superChargedSocket;
+            currentSocket.highlightMesh.enabled = true;
         }
     }
 
@@ -159,7 +175,7 @@ public class ShootingHand : MonoBehaviour
             if (reloadSuperBulletsOnSurplus && player.inSurplus)
             {
                 sockets[i].socketMesh.material = superChargedSocket;
-                decrement = (reloadCostPerBullet + surplusBulletCost);
+                decrement = (reloadCostPerBullet);
                 sockets[i].state = SocketStates.SuperCharged;
             }
             else
@@ -207,11 +223,20 @@ public class ShootingHand : MonoBehaviour
                     {
                         if (currentSocket.state == SocketStates.Loaded)
                         {
-                            enemy.TakeDamage(hit.collider, false);
+                            enemy.TakeDamage(hit.collider, false, baseDamage, baseKnockBack);
                         }
                         else
                         {
-                            enemy.TakeDamage(hit.collider, true);
+                            var surplus = player.currentInk - player.maxInk;
+                            int incrementAmount = 0;
+                            while (surplus > incrementPercentCost)
+                            {
+                                surplus -= incrementPercentCost;
+                                incrementAmount++;
+                            }
+
+                            player.currentInk = player.maxInk;
+                            enemy.TakeDamage(hit.collider, true, baseDamage + damageIncrement * incrementAmount, baseKnockBack + knockBackIncrement * incrementAmount);
                         }
 
                         GameManager.instance.HitMark(true);
@@ -233,20 +258,32 @@ public class ShootingHand : MonoBehaviour
             }
             else
             {
-                var bullet = Instantiate(bulletPrefab, origin.position + origin.up * 0.5f, Quaternion.identity);
-                bullet.transform.LookAt(hit.point);
-                bullet.rb.velocity = bullet.transform.forward * bulletSpeed;
-                bullet.superShot = currentSocket.state == SocketStates.SuperCharged;
-                bullet.meshRenderer.material = 
-                    currentSocket.state == SocketStates.SuperCharged ? superChargedSocket : loadedSocket;
-                bulletParticle[0].transform.LookAt(hit.point);
+                if (currentSocket.state == SocketStates.Loaded)
+                {
+                    var bullet = Instantiate(bulletPrefab, origin.position + origin.up * 0.5f, Quaternion.identity);
+                    bullet.transform.LookAt(hit.point);
+                
+                    bullet.rb.velocity = bullet.transform.forward * bulletSpeed;
+                    bullet.superShot = currentSocket.state == SocketStates.SuperCharged;
+                    bullet.damage = baseDamage;
+                    bullet.knockBack = baseKnockBack;
+                
+                    bullet.meshRenderer.material = 
+                        currentSocket.state == SocketStates.SuperCharged ? superChargedSocket : loadedSocket;
+                    bulletParticle[0].transform.LookAt(hit.point);
                 
                 
-                var oui = bulletParticle[^1].main;
-                var ohCestRelou = bulletParticle[0].transform.eulerAngles;
-                oui.startRotationX = ohCestRelou.x;
-                oui.startRotationY = ohCestRelou.y;
-                oui.startRotationZ = ohCestRelou.z;
+                    var oui = bulletParticle[^1].main;
+                    var ohCestRelou = bulletParticle[0].transform.eulerAngles;
+                    oui.startRotationX = ohCestRelou.x;
+                    oui.startRotationY = ohCestRelou.y;
+                    oui.startRotationZ = ohCestRelou.z;
+                }
+                else
+                {
+                    
+                }
+
             }
             
             
@@ -265,33 +302,5 @@ public class ShootingHand : MonoBehaviour
     }
 
 
-    // public List<ParticleCollisionEvent> collisionEvents;
-    // private void OnParticleCollision(GameObject other)
-    // {
-    //     var numCollisions = bulletParticle.GetCollisionEvents(other, collisionEvents);
-    //     Debug.Log("Hit something" + other.gameObject, other.gameObject);
-    //     other.TryGetComponent(out Collider collider);
-    //     if (other.CompareTag("Head"))
-    //     {
-    //         if (other.transform.TryGetComponent(out Enemy enemy))
-    //         {
-    //             enemy.TakeDamage(collider, superShot);
-    //             
-    //
-    //             GameManager.instance.HitMark(true);
-    //         }
-    //     }
-    //
-    //     if (other.gameObject.TryGetComponent(out IDestructible target))
-    //     {
-    //         target.TakeDamage();
-    //     }
-    //
-    //
-    //     //Coucou, Thomas est passé par là (jusqu'au prochain commentaire)
-    //     var decal = Instantiate(GameManager.instance.inkStainDecal, collider.GetContact(0).point + other.GetContact(0).normal * 0.02f, Quaternion.identity, other.transform);
-    //     decal.transform.forward = -collider.GetContact(0).normal;
-    //     decal.transform.RotateAround(decal.transform.position, decal.transform.forward, Random.Range(-180f, 180f));
-    //     //Je m'en vais !
-    // }
+
 }

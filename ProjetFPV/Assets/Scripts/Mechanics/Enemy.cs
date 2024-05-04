@@ -97,7 +97,7 @@ namespace Mechanics
             Debug.DrawLine(waypoints[^1].position,waypoints[0].position );
         }
 
-        public virtual void TakeDamage(Collider partHit, bool superShot)
+        public virtual void TakeDamage(Collider partHit, bool superShot, float damage, float knockBack)
         {
             for (int i = 0; i < allMasks.Length; i++)
             {

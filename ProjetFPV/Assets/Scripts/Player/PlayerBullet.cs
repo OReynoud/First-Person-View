@@ -9,7 +9,16 @@ namespace Player
     {
         public Rigidbody rb;
         public bool superShot;
+        public float damage;
+        public float knockBack;
 
+        public PlayerBullet(bool SuperShot, float Damage, float KnockBack)
+        {
+            superShot = SuperShot;
+            damage = Damage;
+            knockBack = KnockBack;
+        }
+        
         public MeshRenderer meshRenderer;
         // Start is called before the first frame update
 
@@ -22,7 +31,7 @@ namespace Player
                 if (other.transform.TryGetComponent(out Enemy enemy))
                 {
                 
-                    enemy.TakeDamage(other.collider, superShot);
+                    enemy.TakeDamage(other.collider, superShot, damage, knockBack);
                 
 
                     GameManager.instance.HitMark(true);

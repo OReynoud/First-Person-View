@@ -331,9 +331,9 @@ namespace Mechanics
             });
         }
 
-        public override void TakeDamage(Collider part, bool superShot)
+        public override void TakeDamage(Collider part, bool superShot, float damaage, float knockBack)
         {
-            base.TakeDamage(part, superShot);
+            base.TakeDamage(part, superShot,  damaage, knockBack);
             if (currentState == States.Neutral)
             {
                 currentState = States.Rush;
