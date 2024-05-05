@@ -7,6 +7,7 @@ using Player;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class ShootingHand : MonoBehaviour
@@ -41,8 +42,11 @@ public class ShootingHand : MonoBehaviour
 
     [Foldout("Surplus")] [SerializeField] private float damageIncrement;
     [Foldout("Surplus")] [SerializeField] private float knockBackIncrement;
-    [Foldout("Surplus")] [SerializeField] private float hitConeRadius;
-    [Foldout("Surplus")] [SerializeField] [Range (-1,1)] private float minDotProduct;
+    [Foldout("Surplus")] [HideInInspector] public Vector3 baseHitConeSize;
+    [Foldout("Surplus")] [SerializeField] private float hitConeSizeIncrement;
+    [Foldout("Surplus")] [SerializeField] private float hitConeAngleIncrement;
+    [Foldout("Surplus")] [SerializeField] private float baseOverheatTime;
+    [Foldout("Surplus")] [SerializeField] private float overheatTimeIncrement;
     [Foldout("Surplus")] [SerializeField] [Range (1,100)] private float incrementPercentCost;
     
     
@@ -50,7 +54,9 @@ public class ShootingHand : MonoBehaviour
     [Foldout("Refs")] public Material emptySocket;
     [Foldout("Refs")] public Material loadedSocket;
     [Foldout("Refs")] public Material superChargedSocket;
+    
     [Foldout("Refs")] [SerializeField] private PlayerBullet bulletPrefab;
+    [Foldout("Refs")] [SerializeField] private PlayerSuperShot superShot;
     [Foldout("Refs")] [SerializeField] private LineRenderer normalTrail;
     [Foldout("Refs")] [SerializeField] private LineRenderer superTrail;
     private LineRenderer currentTrail;
@@ -75,12 +81,6 @@ public class ShootingHand : MonoBehaviour
     private PlayerController player;
 
 
-    public class Bullet
-    {
-        private ParticleSystem.Particle projectile;
-    }
-
-
     public void Awake()
     {
         player = GetComponent<PlayerController>();
@@ -102,10 +102,14 @@ public class ShootingHand : MonoBehaviour
             main.startSpeed = bulletSpeed;
             particle.Stop();
         }
+
+        baseHitConeSize = superShot.transform.parent.transform.localScale;
     }
     
     //private ParticleSystem
     [HideInInspector] public bool noBullets;
+    
+    [HideInInspector] public bool overheated;
 
 
     public void Update()
@@ -200,6 +204,7 @@ public class ShootingHand : MonoBehaviour
         }
     }
 
+    private Vector3 calculatedConeDimensions;
     public void ShootWithSocket(Transform cam, Transform origin)
     {
         CameraShake.instance.ShakeOneShot(1);
@@ -228,14 +233,17 @@ public class ShootingHand : MonoBehaviour
                         else
                         {
                             var surplus = player.currentInk - player.maxInk;
+                            float incrementCost = player.maxInk * incrementPercentCost * 0.01f;
                             int incrementAmount = 0;
-                            while (surplus > incrementPercentCost)
+                            while (surplus > incrementCost)
                             {
-                                surplus -= incrementPercentCost;
+                                surplus -= incrementCost;
                                 incrementAmount++;
                             }
 
-                            player.currentInk = player.maxInk;
+                            player.currentInk =
+                                GameManager.instance.UpdatePlayerStamina(player.currentInk, player.maxInk, player.maxInk - player.currentInk);
+                            
                             enemy.TakeDamage(hit.collider, true, baseDamage + damageIncrement * incrementAmount, baseKnockBack + knockBackIncrement * incrementAmount);
                         }
 
@@ -281,7 +289,33 @@ public class ShootingHand : MonoBehaviour
                 }
                 else
                 {
+                    var surplus = player.currentInk - player.maxInk;
+                    float incrementCost = player.maxInk * incrementPercentCost * 0.01f;
+                    int incrementAmount = 0;
+                    while (surplus > incrementCost)
+                    {
+                        surplus -= incrementCost;
+                        incrementAmount++;
+                    }
                     
+                    player.currentInk =
+                        GameManager.instance.UpdatePlayerStamina(player.currentInk, player.maxInk, player.maxInk - player.currentInk - 1);
+
+
+                    
+                    superShot.damage = baseDamage + damageIncrement * incrementAmount;
+                    superShot.knockBack = baseKnockBack + knockBackIncrement * incrementAmount;
+
+                    calculatedConeDimensions = baseHitConeSize;
+                    calculatedConeDimensions += Vector3.one * hitConeSizeIncrement * incrementAmount;
+                    calculatedConeDimensions +=
+                        new Vector3(hitConeAngleIncrement, hitConeAngleIncrement, 0) * incrementAmount;
+
+                    superShot.scale = calculatedConeDimensions;
+                    superShot.gameObject.SetActive(true);
+                    StartCoroutine(OverheatCoroutine(baseOverheatTime + overheatTimeIncrement * incrementAmount));
+
+                    Debug.Log("Completed supershot with " + incrementAmount + " increments");
                 }
 
             }
@@ -299,6 +333,14 @@ public class ShootingHand : MonoBehaviour
 
 
         UpdateCurrentSocket();
+    }
+
+
+    IEnumerator OverheatCoroutine(float time)
+    {
+        overheated = true;
+        yield return new WaitForSeconds(time);
+        overheated = false;
     }
 
 

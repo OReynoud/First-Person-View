@@ -929,7 +929,7 @@ public class PlayerController : Singleton<PlayerController>
     private void Shoot(InputAction.CallbackContext obj)
     {
         if (reloading) return;
-        if (socketManager.noBullets)return;
+        if (socketManager.noBullets || socketManager.overheated)return;
         if (shootSpeedTimer > 0) return;
         if (stagger != null) StopCoroutine(stagger);
         stagger = StartCoroutine(StaggerSprint(state == PlayerStates.Sprinting));
