@@ -639,7 +639,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 var dir = offsetPosition.position - controlledProp.transform.position;
                 dir.Normalize();
-                if (playerCam.forward.y < -0.82f)
+                if (playerCam.forward.y < -0.70f)
                 {
                     CameraShake.instance.StopInfiniteShake();
                     controlledProp.ApplyTelekinesis();
@@ -724,6 +724,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 enemy.body.constraints = RigidbodyConstraints.FreezeAll;
                 enemy.isGrabbed = true;
+                enemy.knockedBack = false;
                 enemy.GrabbedBehavior(1, 0.1f, 30);
                 break;
             
@@ -769,15 +770,16 @@ public class PlayerController : Singleton<PlayerController>
 
                     var dir = Vector3.zero;
                     if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange,
-                            LayerMask.GetMask("Telekinesis")))
+                            ~LayerMask.GetMask("Telekinesis")))
                     {
-                        dir = hit.point - offsetPosition.position;
+                        dir = (hit.point + hit.normal * 0.5f) - offsetPosition.position;
+                        Debug.DrawRay(hit.point,hit.normal * 2, Color.magenta,2);
                     }
                     else
                     {
                         dir = playerCam.forward;
                     }
-
+                    
                     dir.Normalize();
                     controlledProp.body.AddForce(dir * throwForce, ForceMode.Impulse);
                 }
@@ -946,10 +948,15 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (reloading)return;
         if (currentInk < socketManager.reloadCostPerBullet) return;
-        reloading = true;
+        foreach (var socket in socketManager.sockets)
+        {
+            if (socket.state != ShootingHand.SocketStates.Empty)continue;
+            reloading = true;
+        }
+        if (!reloading)return;
+        
         reloadCoroutine = StartCoroutine(Reload2());
     }
-    
     private void UseHealPack(InputAction.CallbackContext obj)
     {
         if (currentHealPackAmount <= 0 || currentHealth >= maxHealth) return;

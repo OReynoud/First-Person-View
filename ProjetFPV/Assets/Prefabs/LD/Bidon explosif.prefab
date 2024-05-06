@@ -133,7 +133,9 @@ MonoBehaviour:
   body: {fileID: 0}
   spamBuffer: 0.6
   canBeGrabbed: 1
+  velocityLimit: 10
   thrown: 0
+  ignoreGravityTime: 0.1
   col: {fileID: 0}
 --- !u!114 &1193160553724778552
 MonoBehaviour:
@@ -150,8 +152,8 @@ MonoBehaviour:
   health: 1
   explosionRadius: 10
   explosionForce: 30
-  damageToEnemy: 2
   damageToPlayer: 2
+  damageToEnemy: 2
   damageFallOff: 1
   mask:
     serializedVersion: 2
