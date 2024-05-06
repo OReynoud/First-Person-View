@@ -9,6 +9,7 @@ public class PrefabReplacement : EditorWindow
     private int numberOfSelectedObjects;
     private GameObject go;
     private GameObject[] toSelect;
+    private bool rotateToCamera;
     
     [MenuItem("Tools/Prefab Replacement")]
     public static void ShowWindows()
@@ -24,6 +25,10 @@ public class PrefabReplacement : EditorWindow
 
         GUILayout.Label("Number of selected objects : " + Selection.count);
 
+        GUILayout.Space(10);
+
+        rotateToCamera = GUILayout.Toggle(rotateToCamera, "Rotate to Camera");
+        
         GUILayout.Space(10);
 
         int size = Mathf.Max(0, EditorGUILayout.IntField("Number of prefabs", prefab.Count));
@@ -94,9 +99,9 @@ public class PrefabReplacement : EditorWindow
             GameObject newGO = PrefabUtility.InstantiatePrefab(prefab[Random.Range(0, prefab.Count)]) as GameObject;
             newGO.transform.position = go.transform.position;
             newGO.transform.rotation = go.transform.rotation;
-            newGO.transform.localScale = go.transform.localScale;
+            //newGO.transform.localScale = go.transform.localScale;
 
-            if (go.GetComponent<Renderer>() != null)
+            if (go.GetComponent<Renderer>() != null && rotateToCamera)
             {
                 SetRotation(newGO);
             }
