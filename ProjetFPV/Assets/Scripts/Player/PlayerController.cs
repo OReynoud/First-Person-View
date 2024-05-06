@@ -657,7 +657,7 @@ public class PlayerController : Singleton<PlayerController>
                     controlledProp.body.velocity = dir * (travelSpeed *
                                                           (Vector3.Distance(controlledProp.transform.position,
                                                               offsetPosition.position) / grabDistanceBuffer));
-                    break;
+                    return;
                 }
 
                 if (grabDistanceBuffer > Vector3.Distance(controlledProp.transform.position, offsetPosition.position))
@@ -667,7 +667,7 @@ public class PlayerController : Singleton<PlayerController>
                 }
 
 
-                break;
+                return;
             
             case AbsorbInk absorbInk:
                 absorbInk.storedInk -= inkAbsorbSpeed * Time.deltaTime;
@@ -747,6 +747,16 @@ public class PlayerController : Singleton<PlayerController>
         if (controlledProp == null)
         {
             CameraShake.instance.ResetCoroutine();
+            return;
+        }
+        
+        if (currentInk < 1)
+        {
+            CameraShake.instance.StopInfiniteShake();
+            controlledProp.ApplyTelekinesis();
+            controlledProp.isGrabbed = false;
+            controlledProp = null;
+            recentlyDepletedStamina = true;
             return;
         }
 
@@ -994,7 +1004,6 @@ public class PlayerController : Singleton<PlayerController>
                     if (hit.collider.TryGetComponent(out TelekinesisObject TK))
                     {
                         if (!TK.canBeGrabbed) return;
-                        if (currentInk < 1)return;
                         controlledProp = TK;
                         controlledProp.ApplyTelekinesis();
                         return;
