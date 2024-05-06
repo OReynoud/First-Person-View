@@ -34,7 +34,7 @@ public class TelekinesisObject : ControllableProp
         else
         {
             gameObject.layer = LayerMask.NameToLayer("Default");
-            thrown = true;
+            thrown = PlayerController.instance.playerCam.forward.y > -0.70f;
         }
     }
 

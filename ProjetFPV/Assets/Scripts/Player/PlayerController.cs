@@ -639,7 +639,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 var dir = offsetPosition.position - controlledProp.transform.position;
                 dir.Normalize();
-                if (playerCam.forward.y < -0.82f)
+                if (playerCam.forward.y < -0.70f)
                 {
                     CameraShake.instance.StopInfiniteShake();
                     controlledProp.ApplyTelekinesis();
@@ -724,6 +724,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 enemy.body.constraints = RigidbodyConstraints.FreezeAll;
                 enemy.isGrabbed = true;
+                enemy.knockedBack = false;
                 enemy.GrabbedBehavior(1, 0.1f, 30);
                 break;
             

@@ -306,6 +306,7 @@ public class ShootingHand : MonoBehaviour
         }
         else
         {
+            bulletParticle[0].transform.localRotation = Quaternion.identity;
             Debug.Log("Hit some air");
         }
 

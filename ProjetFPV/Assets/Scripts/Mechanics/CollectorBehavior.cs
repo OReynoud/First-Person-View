@@ -13,7 +13,6 @@ public class CollectorBehavior : Enemy
     [HorizontalLine(color: EColor.Red)]
     [InfoBox("Collector Behavior")]
     [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro", EInfoBoxType.Warning) ]
-    [BoxGroup] public NavMeshAgent agent;
     [BoxGroup] public CollectorBullet bulletPrefab;
     [BoxGroup] public ChargerBehavior bouffonPrefab;
     [BoxGroup] public Animation transitionState;

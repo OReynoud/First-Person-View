@@ -12,8 +12,7 @@ namespace Mechanics
 {
     public class ChargerBehavior : Enemy
     {
-        [InfoBox("Bouffon Behavior")]
-        public NavMeshAgent agent;
+        
         [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro;  Cercle violet = portée de l'attaque", EInfoBoxType.Warning) ]
         [SerializeField]
         private float pathUpdateFrequency;
