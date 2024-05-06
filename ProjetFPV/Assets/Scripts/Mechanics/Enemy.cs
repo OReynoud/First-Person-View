@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 namespace Mechanics
@@ -10,7 +11,7 @@ namespace Mechanics
     public class Enemy : ControllableProp
     {
         [InfoBox("Universal Behavior")] 
-        
+        public NavMeshAgent agent;
         [BoxGroup("Masks")] public float inkIncrease = 30;
         
         [BoxGroup("Masks")] public BodyPart[] allMasks;
@@ -35,7 +36,8 @@ namespace Mechanics
 
         private int previousIndex = 0;
 
-
+        private float knockBackTimer = 0;
+        public bool knockedBack;
         private void OnValidate()
         {
             maskCount = allMasks.Length;
@@ -97,18 +99,23 @@ namespace Mechanics
             Debug.DrawLine(waypoints[^1].position,waypoints[0].position );
         }
 
+        void KnockBack()
+        {
+            
+        }
         public virtual void TakeDamage(Collider partHit, bool superShot, float damage, float knockBack)
         {
             for (int i = 0; i < allMasks.Length; i++)
             {
                 if (partHit != allMasks[i].maskCollider)continue;
 
-                allMasks[i].maskHealth--;
-                if ( allMasks[i].maskHealth <= 0 || superShot)
+                allMasks[i].maskHealth -= damage;
+                if ( allMasks[i].maskHealth <= 0)
                 {
                     allMasks[i].maskCollider.gameObject.SetActive(false);
                     allMasks[i].broken = true;
                     maskCount--;
+                    
                 }
                 break;
             }
@@ -161,6 +168,15 @@ namespace Mechanics
         // Update is called once per frame
         void Update()
         {
+            // if (knockedBack)
+            // {
+            //     knockBackTimer += Time.deltaTime;
+            //     if (knockBackTimer > 0.5f)
+            //     {
+            //         
+            //         body.constraints = RigidbodyConstraints.FreezeAll;
+            //     }
+            // }
             if (isImmobile || isGrabbed) return;
             MoveBetweenWaypoints();
         }
