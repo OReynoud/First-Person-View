@@ -947,10 +947,15 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (reloading)return;
         if (currentInk < socketManager.reloadCostPerBullet) return;
-        reloading = true;
+        foreach (var socket in socketManager.sockets)
+        {
+            if (socket.state != ShootingHand.SocketStates.Empty)continue;
+            reloading = true;
+        }
+        if (!reloading)return;
+        
         reloadCoroutine = StartCoroutine(Reload2());
     }
-    
     private void UseHealPack(InputAction.CallbackContext obj)
     {
         if (currentHealPackAmount <= 0 || currentHealth >= maxHealth) return;
