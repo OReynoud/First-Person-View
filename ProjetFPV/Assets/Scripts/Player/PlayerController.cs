@@ -770,15 +770,16 @@ public class PlayerController : Singleton<PlayerController>
 
                     var dir = Vector3.zero;
                     if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange,
-                            LayerMask.GetMask("Telekinesis")))
+                            ~LayerMask.GetMask("Telekinesis")))
                     {
-                        dir = hit.point - offsetPosition.position;
+                        dir = (hit.point + hit.normal * 0.5f) - offsetPosition.position;
+                        Debug.DrawRay(hit.point,hit.normal * 2, Color.magenta,2);
                     }
                     else
                     {
                         dir = playerCam.forward;
                     }
-
+                    
                     dir.Normalize();
                     controlledProp.body.AddForce(dir * throwForce, ForceMode.Impulse);
                 }
