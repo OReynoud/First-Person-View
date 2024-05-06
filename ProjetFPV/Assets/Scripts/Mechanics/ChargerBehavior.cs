@@ -65,7 +65,8 @@ namespace Mechanics
             Rush,
             Attack,
             Stunned,
-            Paralysed
+            Paralysed,
+            KnockBack
         }
 
         public States currentState;
@@ -101,6 +102,7 @@ namespace Mechanics
             if (currentState != States.Paralysed)
             {
                 currentState = States.Paralysed;
+                body.constraints = RigidbodyConstraints.FreezeAll;
             }
             else
             {
@@ -198,8 +200,9 @@ namespace Mechanics
         }
 
         // Update is called once per frame
-        void Update()
+        public override void Update()
         {
+            base.Update();
             switch (currentState)
             {
                 case States.Neutral:
@@ -221,6 +224,9 @@ namespace Mechanics
                         StartCoroutine(AttackPlayer());
                     }
 
+                    break;
+                case States.KnockBack:
+                    if (!knockedBack) currentState = States.Rush;
                     break;
                 case States.Attack:
                     break;
@@ -330,9 +336,9 @@ namespace Mechanics
             });
         }
 
-        public override void TakeDamage(Collider part, bool superShot, float damaage, float knockBack)
+        public override void TakeDamage(Collider part, Vector3 dir, float damage, float knockBack)
         {
-            base.TakeDamage(part, superShot,  damaage, knockBack);
+            base.TakeDamage(part, dir,  damage, knockBack);
             if (currentState == States.Neutral)
             {
                 currentState = States.Rush;
@@ -347,7 +353,13 @@ namespace Mechanics
                 if (mask.maskCollider != maskCollider)continue;
                 mask.maskHealth -= damage;
             }
-        }   
+        }
+
+        public override void KnockBack(Vector3 dir, float force)
+        {
+            base.KnockBack(dir, force);
+            currentState = States.KnockBack;
+        }
 
         public override void Die()
         {

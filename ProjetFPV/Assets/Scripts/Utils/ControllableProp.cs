@@ -25,7 +25,6 @@ public class ControllableProp : MonoBehaviour
     void Update()
     {
         
-        //body.velocity = -Vector3.forward * speed;
     }
 
     public virtual void ApplyTelekinesis()

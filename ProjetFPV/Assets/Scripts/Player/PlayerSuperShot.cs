@@ -43,7 +43,7 @@ namespace Player
             {
                 if (other.transform.parent.TryGetComponent(out Enemy enemy))
                 {
-                    enemy.TakeDamage(other, true, damage, knockBack);
+                    enemy.TakeDamage(other, PlayerController.instance.playerCam.forward, damage, knockBack);
 
 
                     GameManager.instance.HitMark(true);

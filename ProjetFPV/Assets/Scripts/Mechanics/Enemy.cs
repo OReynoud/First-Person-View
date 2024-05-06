@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using NaughtyAttributes;
@@ -99,11 +100,25 @@ namespace Mechanics
             Debug.DrawLine(waypoints[^1].position,waypoints[0].position );
         }
 
-        void KnockBack()
+        public virtual void KnockBack(Vector3 dir, float force)
         {
+            agent.enabled = false;
+            knockedBack = true;
+            knockBackTimer = 0f;
+            body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY ;
+            body.useGravity = true;
+
+            body.AddForce(dir * force, ForceMode.Impulse);
             
+            //StartCoroutine(ApplyKnockBack(dir, force));
         }
-        public virtual void TakeDamage(Collider partHit, bool superShot, float damage, float knockBack)
+
+        // IEnumerator ApplyKnockBack(Vector3 dir, float force)
+        // {
+        //     yield return new WaitForSeconds(0.1f);
+        //     
+        // }
+        public virtual void TakeDamage(Collider partHit, Vector3 knockBackDir, float damage, float knockBack)
         {
             for (int i = 0; i < allMasks.Length; i++)
             {
@@ -120,6 +135,8 @@ namespace Mechanics
                 break;
             }
 
+            if (!knockedBack && !isGrabbed) KnockBack(knockBackDir,knockBack);
+            
             if (maskCount <= 0) Die();
         }
 
@@ -166,18 +183,19 @@ namespace Mechanics
         }
 
         // Update is called once per frame
-        void Update()
+        public virtual void Update()
         {
-            // if (knockedBack)
-            // {
-            //     knockBackTimer += Time.deltaTime;
-            //     if (knockBackTimer > 0.5f)
-            //     {
-            //         
-            //         body.constraints = RigidbodyConstraints.FreezeAll;
-            //     }
-            // }
-            if (isImmobile || isGrabbed) return;
+            if (knockedBack)
+            {
+                knockBackTimer += Time.deltaTime;
+                if (knockBackTimer > 0.5f)
+                {
+                    agent.enabled = true;
+                    body.constraints = RigidbodyConstraints.FreezeAll;
+                    knockedBack = false;
+                }
+            }
+            if (isImmobile || isGrabbed || agent) return;
             MoveBetweenWaypoints();
         }
 

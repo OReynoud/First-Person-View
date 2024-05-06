@@ -242,7 +242,7 @@ public class ShootingHand : MonoBehaviour
                     {
                         if (currentSocket.state == SocketStates.Loaded)
                         {
-                            enemy.TakeDamage(hit.collider, false, baseDamage, baseKnockBack);
+                            enemy.TakeDamage(hit.collider, cam.forward, baseDamage, baseKnockBack);
                         }
                         else
                         {
@@ -259,7 +259,7 @@ public class ShootingHand : MonoBehaviour
                                 GameManager.instance.UpdatePlayerStamina(player.currentInk, player.maxInk,
                                     player.maxInk - player.currentInk);
 
-                            enemy.TakeDamage(hit.collider, true, baseDamage + damageIncrement * incrementAmount,
+                            enemy.TakeDamage(hit.collider, cam.forward, baseDamage + damageIncrement * incrementAmount,
                                 baseKnockBack + knockBackIncrement * incrementAmount);
                         }
 
