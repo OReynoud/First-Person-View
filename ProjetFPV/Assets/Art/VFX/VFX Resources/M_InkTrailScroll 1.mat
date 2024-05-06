@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-88261594182025594
+--- !u!114 &-3349272656673028035
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_VFXTKStart
-  m_Shader: {fileID: -6465566751694194690, guid: 74c0621db30ee20469e8b64cfb67c01e,
+  m_Name: M_InkTrailScroll 1
+  m_Shader: {fileID: -6465566751694194690, guid: e159346d6f44c6445a69a18850e86d56,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -37,6 +37,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Texture:
+        m_Texture: {fileID: 2800000, guid: 7488f2d9b8bea60448a04e66091fed48, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -51,12 +55,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Contrast: 3.5
-    - _NoiseScale: 10.96
+    - _FadeOut: 2.22
+    - _Offset_Y: 0.38
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Speed: 0.4
-    m_Colors:
-    - _Color: {r: 0.05482378, g: 0.072567634, b: 0.1509434, a: 0}
-    - _Remap: {r: 3.9, g: -0.63, b: 0, a: 0}
+    - _Speed: -0.88
+    m_Colors: []
   m_BuildTextureStacks: []
