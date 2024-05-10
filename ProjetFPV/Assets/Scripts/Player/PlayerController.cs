@@ -219,6 +219,7 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     public ControllableProp controlledProp;
 
+    [Foldout("Debug")] public bool inSurplus;
 
 
     #endregion
@@ -344,7 +345,6 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     private Coroutine reloadCoroutine;
-    [HideInInspector]public bool inSurplus;
     
 
     #region LogicChecks
@@ -487,7 +487,6 @@ public class PlayerController : Singleton<PlayerController>
         UpdateRestingPos();
         playerDir = Vector3.zero;
         
-        inSurplus = currentInk > maxInk;
 
         var lostHealth = (maxHealth - currentHealth) / maxHealth;
 
@@ -537,10 +536,6 @@ public class PlayerController : Singleton<PlayerController>
         {
             CheckTelekinesisTarget();
             CheckInteractableTarget();
-            if (currentInk > maxInk)
-            {
-                currentInk = GameManager.instance.UpdatePlayerStamina(currentInk,maxInk,-surplusDrainRate * Time.deltaTime);
-            }
         }
         else if (telekinesisPointer.gameObject.activeSelf)
             telekinesisPointer.gameObject.SetActive(false);

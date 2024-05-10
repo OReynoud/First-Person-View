@@ -37,20 +37,17 @@ public class ShootingHand : MonoBehaviour
     [Foldout("Shoot")] [Tooltip("Cost to convert ink into bullets")] [SerializeField]
     public float reloadCostPerBullet;
 
-    [Foldout("Shoot")] [SerializeField] private float trailTime;
-    [Foldout("Shoot")] [SerializeField] private float baseDamage;
-    [Foldout("Shoot")] [SerializeField] private float baseKnockBack;
+    [ShowIf("useHitScan")] [Foldout("Shoot")] [SerializeField] 
+    private float trailTime;
+    [Foldout("Shoot")] [SerializeField] private float damage;
+    [Foldout("Shoot")] [SerializeField] private float knockBack;
 
-    [Foldout("Surplus")] [SerializeField] private float damageIncrement;
-    [Foldout("Surplus")] [SerializeField] private float knockBackIncrement;
-    [Foldout("Surplus")] [HideInInspector] public Vector3 baseHitConeSize;
-    [Foldout("Surplus")] [SerializeField] private float hitConeSizeIncrement;
-    [Foldout("Surplus")] [SerializeField] private float hitConeAngleIncrement;
-    [Foldout("Surplus")] [SerializeField] private float baseOverheatTime;
-    [Foldout("Surplus")] [SerializeField] private float overheatTimeIncrement;
+    [Foldout("Surplus")] [SerializeField] private float surplusShotDamage;
+    [Foldout("Surplus")] [SerializeField] private float surplusKnockBack;
+    [Foldout("Surplus")] [HideInInspector] public Vector3 hitConeSize;
+    [Foldout("Surplus")] [SerializeField] private float overheatTime;
+    [Foldout("Surplus")] [SerializeField][Range(1,100)] private float percentInkCost = 50;
 
-    [Foldout("Surplus")] [SerializeField] [Range(1, 100)]
-    private float incrementPercentCost;
 
 
     [Foldout("Refs")] public Material emptySocket;
@@ -109,7 +106,7 @@ public class ShootingHand : MonoBehaviour
             particle.Stop();
         }
 
-        baseHitConeSize = superShot.transform.parent.transform.localScale;
+        hitConeSize = superShot.transform.parent.transform.localScale;
     }
 
     //private ParticleSystem
@@ -240,29 +237,7 @@ public class ShootingHand : MonoBehaviour
                 {
                     if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                     {
-                        if (currentSocket.state == SocketStates.Loaded)
-                        {
-                            enemy.TakeDamage(hit.collider, cam.forward, baseDamage, baseKnockBack);
-                        }
-                        else
-                        {
-                            var surplus = player.currentInk - player.maxInk;
-                            float incrementCost = player.maxInk * incrementPercentCost * 0.01f;
-                            int incrementAmount = 0;
-                            while (surplus > incrementCost)
-                            {
-                                surplus -= incrementCost;
-                                incrementAmount++;
-                            }
-
-                            player.currentInk =
-                                GameManager.instance.UpdatePlayerStamina(player.currentInk, player.maxInk,
-                                    player.maxInk - player.currentInk);
-
-                            enemy.TakeDamage(hit.collider, cam.forward, baseDamage + damageIncrement * incrementAmount,
-                                baseKnockBack + knockBackIncrement * incrementAmount);
-                        }
-
+                        enemy.TakeDamage(hit.collider, cam.forward, damage, knockBack);
                         GameManager.instance.HitMark(true);
                     }
                 }
@@ -289,8 +264,8 @@ public class ShootingHand : MonoBehaviour
 
                 bullet.rb.velocity = bullet.transform.forward * bulletSpeed;
                 bullet.superShot = currentSocket.state == SocketStates.SuperCharged;
-                bullet.damage = baseDamage;
-                bullet.knockBack = baseKnockBack;
+                bullet.damage = damage;
+                bullet.knockBack = knockBack;
 
                 bullet.meshRenderer.material =
                     currentSocket.state == SocketStates.SuperCharged ? superChargedSocket : loadedSocket;
@@ -318,36 +293,33 @@ public class ShootingHand : MonoBehaviour
 
     void SurplusShot()
     {
-        var surplus = player.currentInk - player.maxInk;
-        float incrementCost = player.maxInk * incrementPercentCost * 0.01f;
-        int incrementAmount = 0;
-        while (surplus > incrementCost)
-        {
-            surplus -= incrementCost;
-            incrementAmount++;
-        }
 
         player.currentInk =
             GameManager.instance.UpdatePlayerStamina(player.currentInk, player.maxInk,
-                player.maxInk - player.currentInk - 1);
+                -player.maxInk * percentInkCost * 0.01f);
 
 
-        superShot.damage = baseDamage + damageIncrement * incrementAmount;
-        superShot.knockBack = baseKnockBack + knockBackIncrement * incrementAmount;
+        superShot.damage = surplusShotDamage;
+        superShot.knockBack = surplusKnockBack;
 
-        calculatedConeDimensions = baseHitConeSize;
-        calculatedConeDimensions += Vector3.one * hitConeSizeIncrement * incrementAmount;
-        calculatedConeDimensions +=
-            new Vector3(hitConeAngleIncrement, hitConeAngleIncrement, 0) * incrementAmount;
+        calculatedConeDimensions = hitConeSize;
+        // calculatedConeDimensions += Vector3.one * hitConeSizeIncrement * incrementAmount;
+        // calculatedConeDimensions +=
+        //     new Vector3(hitConeAngleIncrement, hitConeAngleIncrement, 0) * incrementAmount;
 
         superShot.scale = calculatedConeDimensions;
         superShot.gameObject.SetActive(true);
-        StartCoroutine(OverheatCoroutine(baseOverheatTime + overheatTimeIncrement * incrementAmount));
+        StartCoroutine(OverheatCoroutine(overheatTime));
         player.inSurplus = false;
-        Debug.Log("Completed supershot with " + incrementAmount + " increments");
 
 
         UpdateCurrentSocket();
+        
+        
+        
+        
+        
+        //Debug.Log("Completed supershot with " + incrementAmount + " increments");
     }
 
     IEnumerator OverheatCoroutine(float time)

@@ -106,19 +106,21 @@ namespace Mechanics
             current += increment;
         
             if (current < 0) current = 0;
-            if (current > max * 2)
+            if (current >= max)
             {
-                current = max * 2;
+                current = max;
                 segments[0].color = Color.yellow;
+                PlayerController.instance.inSurplus = true;
             }
             else
             {
                 
+                PlayerController.instance.inSurplus = false;
                 segments[0].color = Color.black;
             }
             
             baseInkBar.fillAmount = current / max;
-            surplusInkBar.fillAmount = (current - max) / max;
+            surplusInkBar.fillAmount = PlayerController.instance.inSurplus ? 1:0;
             return current;
         }
 
