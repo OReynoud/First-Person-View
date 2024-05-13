@@ -32,8 +32,8 @@ Transform:
   m_LocalScale: {x: 0.85858, y: 0.85858, z: 0.85858}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2714118089900964309}
   - {fileID: 3858388074351108421}
+  - {fileID: 2714118089900964309}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -269.999, z: 0}
 --- !u!54 &8586051079737411682
@@ -82,10 +82,10 @@ MonoBehaviour:
   agent: {fileID: 7332121169580317388}
   inkIncrease: 5
   allMasks:
-  - maskName: 
+  - maskName: MASK ON
     origin: {x: 0, y: 0, z: 0}
     baseHealth: 0
-    maskHealth: 5
+    maskHealth: 3
     maskCollider: {fileID: 852949593265623783}
     tr: {fileID: 0}
     meshRenderer: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 1298628306984056432}
   - component: {fileID: 3882473248840860346}
   - component: {fileID: 852949593265623783}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
