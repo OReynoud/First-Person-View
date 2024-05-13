@@ -4896,14 +4896,14 @@ Transform:
   m_GameObject: {fileID: 3202176785723603381}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.22, y: 3.86, z: -0.7}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7688763601971318599}
   - {fileID: 8401739952913502926}
   m_Father: {fileID: 406083992529861099}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &5636751372391160033
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -24506,6 +24506,16 @@ PrefabInstance:
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1480567013558093344, guid: 11a070de0234e464b9e6af32d7ac373b,
+        type: 3}
+      propertyPath: InitialModule.rotation3D
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1480567013558093344, guid: 11a070de0234e464b9e6af32d7ac373b,
+        type: 3}
+      propertyPath: InitialModule.startRotationX.scalar
+      value: 1.5707963
+      objectReference: {fileID: 0}
     - target: {fileID: 2379268777816829521, guid: 11a070de0234e464b9e6af32d7ac373b,
         type: 3}
       propertyPath: looping
@@ -24575,6 +24585,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030801734195669227, guid: 11a070de0234e464b9e6af32d7ac373b,
+        type: 3}
+      propertyPath: m_RenderAlignment
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
