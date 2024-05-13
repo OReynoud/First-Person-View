@@ -206,26 +206,27 @@ MonoBehaviour:
   respawnPoint: {fileID: 0}
   knockedBack: 0
   pathUpdateFrequency: 0.5
-  disappearDuration: 0.5
+  disappearDuration: 0.1
   idleDuration: 1
-  appearDuration: 1
+  appearDuration: 0.5
   spawnPositions:
   - {fileID: 0}
   walkAreaRange: 13.6
   wanderFrequency: 4
   wanderSpeed: 6
   rushRange: 15
-  rushSpeed: 15
+  rushSpeed: 10
   atkRange: 10
   atkDamage: 2
   jumpHeight: 2
-  jumpDuration: 3
-  waitBeforeJump: 1
-  waitAfterAttack: 0.4
+  jumpDuration: 1
+  waitBeforeJump: 0.2
+  waitAfterAttack: 0.1
   currentState: 0
   arenaSpawn: 0
-  locationToSpawn: {x: 0, y: 0, z: 0}
+  collectorSpawn: 0
   arena: {fileID: 0}
+  parentEnemy: {fileID: 0}
   playerLayer:
     serializedVersion: 2
     m_Bits: 833
