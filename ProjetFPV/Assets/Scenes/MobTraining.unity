@@ -2597,21 +2597,56 @@ PrefabInstance:
       propertyPath: m_Name
       value: Collector
       objectReference: {fileID: 0}
-    - target: {fileID: 6077437072790819512, guid: a4351ed800fd0824faacfef8edd666f4,
+    - target: {fileID: 2752706187532875880, guid: a4351ed800fd0824faacfef8edd666f4,
         type: 3}
-      propertyPath: aggroRange
-      value: 15
+      propertyPath: m_LocalPosition.z
+      value: -0.574
       objectReference: {fileID: 0}
     - target: {fileID: 6077437072790819512, guid: a4351ed800fd0824faacfef8edd666f4,
         type: 3}
-      propertyPath: defaultMat
-      value: 
-      objectReference: {fileID: 2100000, guid: 3e4cf5371aa2a0b468783423e83540ca, type: 2}
+      propertyPath: maskCount
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6077437072790819512, guid: a4351ed800fd0824faacfef8edd666f4,
         type: 3}
-      propertyPath: stunnedMat
+      propertyPath: allMasks.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077437072790819512, guid: a4351ed800fd0824faacfef8edd666f4,
+        type: 3}
+      propertyPath: spawnEnemyPos.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077437072790819512, guid: a4351ed800fd0824faacfef8edd666f4,
+        type: 3}
+      propertyPath: spawnEnemyPos.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 811d1b10bc891704f9d919edfe74cc67, type: 2}
+      objectReference: {fileID: 1391973995}
+    - target: {fileID: 6077437072790819512, guid: a4351ed800fd0824faacfef8edd666f4,
+        type: 3}
+      propertyPath: spawnEnemyPos.Array.data[1]
+      value: 
+      objectReference: {fileID: 1162056140}
+    - target: {fileID: 6077437072790819512, guid: a4351ed800fd0824faacfef8edd666f4,
+        type: 3}
+      propertyPath: spawnEnemyPos.Array.data[2]
+      value: 
+      objectReference: {fileID: 1838072911}
+    - target: {fileID: 6077437072790819512, guid: a4351ed800fd0824faacfef8edd666f4,
+        type: 3}
+      propertyPath: spawnEnemyPos.Array.data[3]
+      value: 
+      objectReference: {fileID: 148881727}
+    - target: {fileID: 7674656884819219911, guid: a4351ed800fd0824faacfef8edd666f4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.5740023
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938617382009685191, guid: a4351ed800fd0824faacfef8edd666f4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.5740023
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3400,69 +3435,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1106269842}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1627918280
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1627918282}
-  - component: {fileID: 1627918281}
-  m_Layer: 0
-  m_Name: CollectorNavMesh
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1627918281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1627918280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: -334000983
-  m_CollectObjects: 2
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_UseGeometry: 0
-  m_DefaultArea: 3
-  m_GenerateLinks: 0
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 0
-  m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.33333334
-  m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 9f24d5f2202ef11498a27606ff1ddb81, type: 2}
-  m_BuildHeightMesh: 0
---- !u!4 &1627918282
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1627918280}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 10, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1708446265 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8814710695779353729, guid: dce82ebbf28195f43941531e37b8f0be,
@@ -3485,6 +3457,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1768508766}
   - component: {fileID: 1768508767}
+  - component: {fileID: 1768508768}
   m_Layer: 0
   m_Name: LD stuff
   m_TagString: Untagged
@@ -3540,6 +3513,37 @@ MonoBehaviour:
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: f5857537b07ac3f45863bf0d14d7c4ca, type: 2}
+  m_BuildHeightMesh: 0
+--- !u!114 &1768508768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768508765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: -334000983
+  m_CollectObjects: 2
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 3
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.33333334
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 41021bf62bc6bca439f06a488cfb5eed, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &1838072910
 GameObject:
@@ -4007,8 +4011,6 @@ SceneRoots:
   - {fileID: 416603549}
   - {fileID: 1309109271}
   - {fileID: 2129700201}
-  - {fileID: 1768508766}
-  - {fileID: 1627918282}
   - {fileID: 740520311}
   - {fileID: 1983654327}
   - {fileID: 1106269842}
@@ -4022,3 +4024,4 @@ SceneRoots:
   - {fileID: 702484790}
   - {fileID: 126014173}
   - {fileID: 1074253489}
+  - {fileID: 1768508766}
