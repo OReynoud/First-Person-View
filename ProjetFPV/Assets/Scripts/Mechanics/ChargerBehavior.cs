@@ -182,8 +182,9 @@ namespace Mechanics
         }
 
         [HideInInspector] public bool arenaSpawn;
-        [HideInInspector] public Vector3 locationToSpawn;
+        [HideInInspector] public bool collectorSpawn;
         [HideInInspector] public Arena arena;
+        [HideInInspector] public CollectorBehavior parentEnemy;
         public override void Start()
         {
             base.Start();
@@ -193,6 +194,12 @@ namespace Mechanics
             if (arenaSpawn)
             {
                 ArenaSpawn();
+                return;
+            }
+
+            if (collectorSpawn)
+            {
+                CollectorSpawn();
                 return;
             }
             agent.enabled = true;
@@ -365,6 +372,18 @@ namespace Mechanics
             });
         }
 
+        void CollectorSpawn()
+        {
+            currentState = States.Rush;
+            agent.enabled = false;
+            body.isKinematic = true;
+            transform.DOMove(transform.position + Vector3.up, appearDuration).OnComplete(() =>
+            {
+                body.isKinematic = false;
+                agent.enabled = true;
+            });
+        }
+
         public override void TakeDamage(Collider part, Vector3 dir, float damage, float knockBack)
         {
             base.TakeDamage(part, dir,  damage, knockBack);
@@ -402,6 +421,11 @@ namespace Mechanics
             if (arenaSpawn)
             {
                 arena.currentEnemies.Remove(this);
+            }
+
+            if (collectorSpawn)
+            {
+                parentEnemy.children.Remove(this);
             }
             
             base.Die();

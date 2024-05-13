@@ -42,6 +42,7 @@ namespace Mechanics
             base.Awake();
             bodyHitMarker.alpha = 0;
             headHitMarker.alpha = 0;
+            Ex.DefaultMask = LayerMask.GetMask("Default");
 
             // var temp = FindObjectsOfType<GameObject>();
             // foreach (var oui in temp)

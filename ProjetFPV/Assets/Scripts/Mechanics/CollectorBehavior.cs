@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Mechanics;
 using NaughtyAttributes;
@@ -14,7 +16,7 @@ public class CollectorBehavior : Enemy
     [InfoBox("Collector Behavior")]
     [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro", EInfoBoxType.Warning) ]
     [BoxGroup] public CollectorBullet bulletPrefab;
-    [BoxGroup] public ChargerBehavior bouffonPrefab;
+    [BoxGroup] public ChargerEgg spawnBulletPrefab;
     [BoxGroup] public Animation transitionState;
     [BoxGroup] public float speedTransition;
     
@@ -59,7 +61,7 @@ public class CollectorBehavior : Enemy
     private int numberOfSpawn;
     
     [Foldout("Spawn State")] [SerializeField]
-    private Transform[] spawnEnemyPos;
+    public Transform[] spawnEnemyPos;
     
     [Foldout("Spawn State")] [SerializeField]
     private float spawnBulletSpeed;
@@ -74,6 +76,8 @@ public class CollectorBehavior : Enemy
     [Foldout("Debug")] [SerializeField] private bool seenPlayer;
     [Foldout("Debug")] [SerializeField] private bool facingPlayer;
     [Foldout("Debug")] [SerializeField] private float weaknessTimer;
+    
+    [Foldout("Debug")] [SerializeField] public List<ChargerBehavior> children = new List<ChargerBehavior>();
     private Vector3 origin;
     
     
@@ -199,6 +203,8 @@ public class CollectorBehavior : Enemy
                 bulletsLeft = numberOfBullets;
                 agent.SetDestination(origin + new Vector3(Random.Range(-1f,1f) * flyAreaRange, 0,
                     Random.Range(-1f,1f) * flyAreaRange));
+                
+                TrySpawnChargers();
             }
             return;
 
@@ -215,6 +221,63 @@ public class CollectorBehavior : Enemy
         var dir = PlayerController.instance.transform.position - bulletSpawnPos[rand].position;
         var bullet = Instantiate(bulletPrefab, bulletSpawnPos[rand].position, Quaternion.LookRotation(dir.normalized));
         bullet.rb.velocity = dir * bulletSpeed;
+    }
+
+
+    private List<Transform> validSpawns = new List<Transform>();
+    private int spawnedEnemies = 0;
+    private ChargerBehavior spawnedEnemy;
+
+    private bool childrenInRange;
+    void TrySpawnChargers()
+    {
+        // Try
+        childrenInRange = false;
+        if (children.Count > 0)
+        {
+            foreach (var child in children)
+            {
+                if (Vector3.Distance(child.transform.position, transform.position) < aggroRange)
+                {
+                    childrenInRange = true;
+                    break;
+                }
+            }
+        }
+        if (childrenInRange)return;
+        
+        foreach (var spawnPos in spawnEnemyPos)
+        {
+            var dir = spawnPos.position - transform.position;
+            dir.Normalize();
+            if (Physics.Raycast(transform.position, dir, out RaycastHit hit, 100,LayerMask.GetMask("Default")))
+            {
+                if (spawnEnemyPos.Contains(hit.transform))
+                {
+                    validSpawns.Add(hit.transform);
+                }
+            }
+        }
+        if (validSpawns.Count == 0)return;
+        //
+        
+        Debug.Log("Valid spawns Found");
+        
+        // Spawn
+        foreach (var spawn in validSpawns)
+        {
+            var egg = Instantiate(spawnBulletPrefab,transform.position,Quaternion.identity);
+            egg.parent = this;
+            egg.speed = spawnBulletSpeed;
+            egg.destination = spawn;
+            egg.LayEgg();
+            
+            spawnedEnemies++;
+            if (spawnedEnemies == numberOfSpawn) break;
+        }
+        validSpawns.Clear();
+        spawnedEnemies = 0;
+        //
     }
 
     void SetAnimationTimer(bool isRetract)

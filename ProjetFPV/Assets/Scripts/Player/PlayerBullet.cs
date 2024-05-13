@@ -25,7 +25,6 @@ namespace Player
 
         private void OnCollisionEnter(Collision other)
         { 
-            Debug.Log("Hit something" + other.gameObject, other.gameObject);
             if (other.collider.CompareTag("Head"))
             {
                 if (other.transform.TryGetComponent(out Enemy enemy))

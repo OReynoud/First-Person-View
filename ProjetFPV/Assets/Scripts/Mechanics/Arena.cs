@@ -63,7 +63,6 @@ namespace Mechanics
                     }
                     var temp = Instantiate(bouffonPrefab, posToSpawn, Quaternion.identity);
                     temp.arenaSpawn = true;
-                    temp.locationToSpawn = posToSpawn;
                     temp.spawnPositions = spawnPositions;
                     temp.respawnOnDeath = false;
                     temp.arena = this;

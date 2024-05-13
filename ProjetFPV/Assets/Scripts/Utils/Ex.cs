@@ -7,6 +7,7 @@ public static class Ex
     public const string Tag_Player = "Player";
     public const string Tag_Head = "Head";
     public const string Tag_Body = "Body";
+    public static LayerMask DefaultMask;
 
     /// <summary>
     /// RETURN THE ANGLE FROM A GIVEN DIRECTION
