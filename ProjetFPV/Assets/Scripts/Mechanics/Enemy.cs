@@ -105,7 +105,7 @@ namespace Mechanics
             agent.enabled = false;
             knockedBack = true;
             knockBackTimer = 0f;
-            body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY ;
+            body.constraints = RigidbodyConstraints.FreezeRotation;
             body.useGravity = true;
 
             body.AddForce(dir * force, ForceMode.Impulse);
@@ -173,7 +173,7 @@ namespace Mechanics
         
         
             grabbedTween.Complete();
-            grabbedTween.Kill();
+            grabbedTween.Kill(true);
             var oui = Instantiate(GameManager.instance.inkStainPrefab, transform.position, transform.rotation);
             oui.storedInk = inkIncrease;
         

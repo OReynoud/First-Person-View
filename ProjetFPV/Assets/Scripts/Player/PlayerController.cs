@@ -794,7 +794,6 @@ public class PlayerController : Singleton<PlayerController>
 
                 controlledProp.isGrabbed = false;
                 controlledProp.ApplyTelekinesis();
-                controlledProp.body.constraints = RigidbodyConstraints.FreezeAll;
                 break;
             
             case AbsorbInk absorbInk:

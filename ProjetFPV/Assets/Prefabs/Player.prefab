@@ -964,8 +964,8 @@ MonoBehaviour:
   isGrounded: 0
   shootSpeedTimer: 0
   controlledProp: {fileID: 0}
-  socketManager: {fileID: 0}
   inSurplus: 0
+  socketManager: {fileID: 0}
 --- !u!114 &6171253402340276740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -997,16 +997,13 @@ MonoBehaviour:
   maxRange: 1000
   reloadCostPerBullet: 1
   trailTime: 0.3
-  baseDamage: 1
-  baseKnockBack: 20
-  damageIncrement: 0.5
-  knockBackIncrement: 5
-  baseHitConeSize: {x: 0, y: 0, z: 0}
-  hitConeSizeIncrement: 0.5
-  hitConeAngleIncrement: 0.5
-  baseOverheatTime: 1
-  overheatTimeIncrement: 0.5
-  incrementPercentCost: 10
+  damage: 0
+  knockBack: 15
+  surplusShotDamage: 0
+  surplusKnockBack: 0
+  hitConeSize: {x: 0, y: 0, z: 0}
+  overheatTime: 1
+  percentInkCost: 50
   emptySocket: {fileID: 2100000, guid: 3d843fafaff4d6e42b863c58f7c49aba, type: 2}
   loadedSocket: {fileID: 2100000, guid: 96e954d9630101a42b6b43eef3f1e8ef, type: 2}
   superChargedSocket: {fileID: 2100000, guid: 726e1866d5396af4791e88a89d7f9528, type: 2}

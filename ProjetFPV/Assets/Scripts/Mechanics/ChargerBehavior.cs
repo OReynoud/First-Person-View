@@ -51,9 +51,15 @@ namespace Mechanics
 
         [Foldout("Attack state")] [SerializeField]
         private float atkDamage;
+        
+        [Foldout("Attack state")] [SerializeField]
+        private float jumpHeight;
+        
+        [Foldout("Attack state")] [SerializeField]
+        private float jumpDuration;
     
         [Foldout("Attack state")] [SerializeField]
-        private float timeToAttack = 0.3f;
+        private float waitBeforeJump = 0.3f;
 
         [Foldout("Attack state")] [SerializeField]
         private float waitAfterAttack = 0.2f;
@@ -71,6 +77,7 @@ namespace Mechanics
 
         public States currentState;
         private bool repositioning;
+        private Coroutine attackRoutine;
 
         private void OnEnable()
         {
@@ -103,17 +110,18 @@ namespace Mechanics
             {
                 currentState = States.Paralysed;
                 body.constraints = RigidbodyConstraints.FreezeAll;
+                agent.enabled = false;
+                jumpTween.Kill();
+                jumpRotationTween.Kill(true);
+                if (attackRoutine != null)
+                {
+                    StopCoroutine(attackRoutine);
+                }
             }
             else
             {
-                currentState = States.Rush;
+                body.constraints = RigidbodyConstraints.FreezeRotation;
             }
-
-            agent.enabled = currentState != States.Paralysed;
-
-
-            if (agent.enabled)
-                agent.SetDestination(PlayerController.instance.transform.position);
         }
 
         public override void ApplyStun()
@@ -179,7 +187,7 @@ namespace Mechanics
         public override void Start()
         {
             base.Start();
-            agent.stoppingDistance = atkRange;
+            //agent.stoppingDistance = atkRange;
             agent.speed = wanderSpeed;
             
             if (arenaSpawn)
@@ -221,18 +229,26 @@ namespace Mechanics
                     }
                     if (Vector3.Distance(PlayerController.instance.transform.position, transform.position) < atkRange)
                     {
-                        StartCoroutine(AttackPlayer());
+                        attackRoutine = StartCoroutine(AttackPlayer());
                     }
 
                     break;
                 case States.KnockBack:
-                    if (!knockedBack) currentState = States.Rush;
+                    if (!knockedBack) currentState = States.Repositioning;
                     break;
                 case States.Attack:
                     break;
                 case States.Stunned:
                     break;
                 case States.Paralysed:
+                    if (PlayerController.instance.controlledProp == this) break;
+                    if (Physics.Raycast(transform.position,Vector3.down,1.5f,LayerMask.GetMask("Default")))
+                    {
+                        Debug.Log("Landed");
+                        currentState = States.Rush;
+                        agent.enabled = true;
+                        agent.SetDestination(PlayerController.instance.transform.position);
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -303,13 +319,26 @@ namespace Mechanics
             pathRoutine = StartCoroutine(SetAgentDestination());
         }
 
+        private Vector3 playerPos;
+        private Vector3 actualDestination;
+        public Tween jumpTween;
+        public Tween jumpRotationTween;
 
         IEnumerator AttackPlayer()
         {
             currentState = States.Attack;
+            playerPos = PlayerController.instance.transform.position;
+            agent.SetDestination(playerPos);
+            actualDestination = new Vector3(agent.destination.x,playerPos.y, agent.destination.z);
+            agent.enabled = false;
             Debug.Log("j'attaque le joueur");
-            yield return new WaitForSeconds(timeToAttack);
-            var colliders = Physics.OverlapSphere(transform.position + transform.forward, 1f, playerLayer);
+            yield return new WaitForSeconds(waitBeforeJump);
+            transform.rotation = Quaternion.Euler(40,transform.eulerAngles.y,transform.eulerAngles.z);
+            
+            jumpTween = transform.DOJump(actualDestination, jumpHeight, 1, jumpDuration);
+            jumpRotationTween = transform.DORotate(new Vector3(0,transform.eulerAngles.y,transform.eulerAngles.z) , jumpDuration);
+            yield return new WaitForSeconds(jumpDuration);
+            var colliders = Physics.OverlapSphere(transform.position , 2f, playerLayer);
             foreach (var col in colliders)
             {
                 if (col.TryGetComponent(out PlayerController player))
@@ -358,6 +387,13 @@ namespace Mechanics
         public override void KnockBack(Vector3 dir, float force)
         {
             base.KnockBack(dir, force);
+            
+            jumpTween.Kill();
+            jumpRotationTween.Kill(true);
+            if (attackRoutine != null)
+            {
+                StopCoroutine(attackRoutine);
+            }
             currentState = States.KnockBack;
         }
 
