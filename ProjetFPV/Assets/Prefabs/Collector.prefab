@@ -569,12 +569,13 @@ MonoBehaviour:
   body: {fileID: 7854355059500212723}
   spamBuffer: 0.6
   canBeGrabbed: 1
+  agent: {fileID: 1241907584655238362}
   inkIncrease: 100
   allMasks:
   - maskName: 
     origin: {x: 0, y: 0, z: 0}
     baseHealth: 0
-    maskHealth: 1
+    maskHealth: 10
     maskCollider: {fileID: 7108877768198502049}
     tr: {fileID: 0}
     meshRenderer: {fileID: 0}
@@ -582,7 +583,7 @@ MonoBehaviour:
   - maskName: 
     origin: {x: 0, y: 0, z: 0}
     baseHealth: 0
-    maskHealth: 1
+    maskHealth: 10
     maskCollider: {fileID: 5932459311673224766}
     tr: {fileID: 0}
     meshRenderer: {fileID: 0}
@@ -590,7 +591,7 @@ MonoBehaviour:
   - maskName: 
     origin: {x: 0, y: 0, z: 0}
     baseHealth: 0
-    maskHealth: 1
+    maskHealth: 10
     maskCollider: {fileID: 567533569060376121}
     tr: {fileID: 0}
     meshRenderer: {fileID: 0}
@@ -598,7 +599,7 @@ MonoBehaviour:
   - maskName: 
     origin: {x: 0, y: 0, z: 0}
     baseHealth: 0
-    maskHealth: 1
+    maskHealth: 10
     maskCollider: {fileID: 1640087660580208606}
     tr: {fileID: 0}
     meshRenderer: {fileID: 0}
@@ -606,7 +607,7 @@ MonoBehaviour:
   - maskName: 
     origin: {x: 0, y: 0, z: 0}
     baseHealth: 0
-    maskHealth: 1
+    maskHealth: 10
     maskCollider: {fileID: 2795214721793241833}
     tr: {fileID: 0}
     meshRenderer: {fileID: 0}
@@ -614,7 +615,7 @@ MonoBehaviour:
   - maskName: 
     origin: {x: 0, y: 0, z: 0}
     baseHealth: 0
-    maskHealth: 1
+    maskHealth: 10
     maskCollider: {fileID: 1677452753022867971}
     tr: {fileID: 0}
     meshRenderer: {fileID: 0}
@@ -622,7 +623,7 @@ MonoBehaviour:
   - maskName: 
     origin: {x: 0, y: 0, z: 0}
     baseHealth: 0
-    maskHealth: 1
+    maskHealth: 10
     maskCollider: {fileID: 2647898049084000464}
     tr: {fileID: 0}
     meshRenderer: {fileID: 0}
@@ -636,8 +637,10 @@ MonoBehaviour:
   waypoints: []
   translationSpeed: 0.1
   respawnPoint: {fileID: 0}
-  agent: {fileID: 1241907584655238362}
+  knockedBack: 0
   bulletPrefab: {fileID: 6417738176186392708, guid: e40df0befa9bd76419ddcbb840311f73,
+    type: 3}
+  spawnBulletPrefab: {fileID: -3617843816964674085, guid: 7bee5f2a608442644aed479a750f0175,
     type: 3}
   transitionState: {fileID: -5403304292338399250}
   speedTransition: 2
@@ -664,9 +667,14 @@ MonoBehaviour:
   - {fileID: 8445558961424766437}
   - {fileID: 6965692465989469609}
   weaknessTime: 1.5
-  numberOfSpawn: 0
-  spawnEnemyPos: []
-  spawnBulletSpeed: 0
+  numberOfSpawn: 2
+  spawnEnemyPos:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  spawnBulletSpeed: 5
   repositioning: 0
   timer: 0
   currentState: 0
@@ -676,6 +684,7 @@ MonoBehaviour:
   seenPlayer: 0
   facingPlayer: 0
   weaknessTimer: 0
+  children: []
   playerLayer:
     serializedVersion: 2
     m_Bits: 833

@@ -12,9 +12,10 @@ namespace Mechanics
 {
     public class ChargerBehavior : Enemy
     {
-        
-        [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro;  Cercle violet = portée de l'attaque", EInfoBoxType.Warning) ]
-        [SerializeField]
+        [HorizontalLine(color: EColor.Red)]
+        [InfoBox("Charger Behavior")]
+        [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro;  Cercle violet = portée de l'attaque", EInfoBoxType.Warning)]
+        [BoxGroup][SerializeField]
         private float pathUpdateFrequency;
 
 
@@ -78,12 +79,6 @@ namespace Mechanics
         public States currentState;
         private bool repositioning;
         private Coroutine attackRoutine;
-
-        private void OnEnable()
-        {
-            currentState = States.Neutral;
-        }
-
         private void OnDrawGizmosSelected()
         {
             Handles.color = Color.green;
@@ -102,89 +97,22 @@ namespace Mechanics
             Handles.color = Color.magenta;
             Handles.DrawWireDisc(transform.position, Vector3.up, atkRange, 2);
         }
-
-        public override void ApplyTelekinesis()
+        
+        
+        
+        private void OnEnable()
         {
-            base.ApplyTelekinesis();
-            if (currentState != States.Paralysed)
-            {
-                currentState = States.Paralysed;
-                body.constraints = RigidbodyConstraints.FreezeAll;
-                agent.enabled = false;
-                jumpTween.Kill();
-                jumpRotationTween.Kill(true);
-                if (attackRoutine != null)
-                {
-                    StopCoroutine(attackRoutine);
-                }
-            }
-            else
-            {
-                body.constraints = RigidbodyConstraints.FreezeRotation;
-            }
+            currentState = States.Neutral;
         }
-
-        public override void ApplyStun()
-        {
-            if (currentState != States.Stunned)
-            {
-                currentState = States.Stunned;
-                StartCoroutine(Stun());
-            }
-        }
-
-        IEnumerator Stun()
-        {
-            foreach (var part in allMasks)
-            {
-                if (!part.broken)
-                {
-                    part.meshRenderer.material = stunnedMat;
-                }
-            }
-            agent.enabled = false;
-            transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
-            yield return new WaitForSeconds(stunDuration);
-
-            agent.enabled = true;            
-            foreach (var part in allMasks)
-            {
-                if (!part.broken)
-                {
-                    part.meshRenderer.material = defaultMat;
-                }
-            }
-            agent.SetDestination(PlayerController.instance.transform.position);
-            currentState = States.Repositioning;
-
-        }
-
-        // Start is called before the first frame update
-        private Vector3 origin;
-
         public override void Awake()
         {
             base.Awake();
             origin = transform.position;
             agent = GetComponent<NavMeshAgent>();
         }
+        
 
-        IEnumerator Wander()
-        {
-            var oui = Random.insideUnitCircle * walkAreaRange;
-            agent.speed = wanderSpeed + Random.Range(-1f, 1f);
-            agent.SetDestination(origin + new Vector3(oui.x, 0, oui.y));
-            yield return new WaitForSeconds(wanderFrequency + Random.Range(-wanderFrequency * .2f,wanderFrequency * .2f));
-            if (currentState == States.Neutral)
-            {
-                StartCoroutine(Wander());
-            }
-        }
-
-        [HideInInspector] public bool arenaSpawn;
-        [HideInInspector] public bool collectorSpawn;
-        [HideInInspector] public Arena arena;
-        [HideInInspector] public CollectorBehavior parentEnemy;
+        
         public override void Start()
         {
             base.Start();
@@ -262,6 +190,124 @@ namespace Mechanics
             }
         }
 
+        #region Paralysed
+
+        public override void ApplyTelekinesis()
+        {
+            base.ApplyTelekinesis();
+            if (currentState != States.Paralysed)
+            {
+                currentState = States.Paralysed;
+                body.constraints = RigidbodyConstraints.FreezeAll;
+                agent.enabled = false;
+                jumpTween.Kill();
+                jumpRotationTween.Kill(true);
+                if (attackRoutine != null)
+                {
+                    StopCoroutine(attackRoutine);
+                }
+            }
+            else
+            {
+                body.constraints = RigidbodyConstraints.FreezeRotation;
+            }
+        }
+
+        #endregion
+        
+        #region Stunned
+
+        public override void ApplyStun()
+        {
+            if (currentState != States.Stunned)
+            {
+                currentState = States.Stunned;
+                StartCoroutine(Stun());
+            }
+        }
+
+        IEnumerator Stun()
+        {
+            foreach (var part in allMasks)
+            {
+                if (!part.broken)
+                {
+                    part.meshRenderer.material = stunnedMat;
+                }
+            }
+            agent.enabled = false;
+            transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
+            yield return new WaitForSeconds(stunDuration);
+
+            agent.enabled = true;            
+            foreach (var part in allMasks)
+            {
+                if (!part.broken)
+                {
+                    part.meshRenderer.material = defaultMat;
+                }
+            }
+            agent.SetDestination(PlayerController.instance.transform.position);
+            currentState = States.Repositioning;
+
+        }
+
+        #endregion
+        
+        #region Wander
+
+        private Vector3 origin;
+        IEnumerator Wander()
+        {
+            var oui = Random.insideUnitCircle * walkAreaRange;
+            agent.speed = wanderSpeed + Random.Range(-1f, 1f);
+            agent.SetDestination(origin + new Vector3(oui.x, 0, oui.y));
+            yield return new WaitForSeconds(wanderFrequency + Random.Range(-wanderFrequency * .2f,wanderFrequency * .2f));
+            if (currentState == States.Neutral)
+            {
+                StartCoroutine(Wander());
+            }
+        }
+
+        void TryDetectPlayer()
+        {
+            var dir = PlayerController.instance.transform.position - transform.position;
+            Debug.DrawRay(transform.position, dir.normalized * 5, Color.magenta);
+            if (!Physics.Raycast(transform.position, dir.normalized, out RaycastHit hit, rushRange, playerLayer)) return;
+            if (!hit.collider.gameObject.CompareTag("Player")) return;
+
+            Debug.Log("Player Detected");
+            currentState = States.Repositioning;
+            agent.speed = rushSpeed;
+            SetAgentDestination();
+        }
+
+        #endregion
+
+        #region Rush
+
+        
+        private Coroutine pathRoutine;
+
+        private IEnumerator SetAgentDestination()
+        {
+            yield return new WaitForSeconds(pathUpdateFrequency);
+            while (currentState != States.Rush)
+            {
+                yield return new WaitForSeconds(pathUpdateFrequency);
+            }
+
+
+            agent.SetDestination(PlayerController.instance.transform.position);
+
+            pathRoutine = StartCoroutine(SetAgentDestination());
+        }
+
+
+        #endregion
+
+        #region Reposition
+
         private IEnumerator Reposition()
         {
             agent.enabled = false;
@@ -295,37 +341,11 @@ namespace Mechanics
             });
         }
 
+        #endregion
+        
+        #region Attack
+
         public LayerMask playerLayer;
-
-        void TryDetectPlayer()
-        {
-            var dir = PlayerController.instance.transform.position - transform.position;
-            Debug.DrawRay(transform.position, dir.normalized * 5, Color.magenta);
-            if (!Physics.Raycast(transform.position, dir.normalized, out RaycastHit hit, rushRange, playerLayer)) return;
-            if (!hit.collider.gameObject.CompareTag("Player")) return;
-
-            Debug.Log("Player Detected");
-            currentState = States.Repositioning;
-            agent.speed = rushSpeed;
-            SetAgentDestination();
-        }
-
-        private Coroutine pathRoutine;
-
-        private IEnumerator SetAgentDestination()
-        {
-            yield return new WaitForSeconds(pathUpdateFrequency);
-            while (currentState != States.Rush)
-            {
-                yield return new WaitForSeconds(pathUpdateFrequency);
-            }
-
-
-            agent.SetDestination(PlayerController.instance.transform.position);
-
-            pathRoutine = StartCoroutine(SetAgentDestination());
-        }
-
         private Vector3 playerPos;
         private Vector3 actualDestination;
         public Tween jumpTween;
@@ -359,7 +379,13 @@ namespace Mechanics
             currentState = States.Repositioning;
         }
 
-        
+        #endregion
+
+        #region SpawnTypes
+        [HideInInspector] public bool arenaSpawn;
+        [HideInInspector] public bool collectorSpawn;
+        [HideInInspector] public Arena arena;
+        [HideInInspector] public CollectorBehavior parentEnemy;
         void ArenaSpawn()
         {
             currentState = States.Rush;
@@ -383,6 +409,9 @@ namespace Mechanics
                 agent.enabled = true;
             });
         }
+
+        #endregion
+
 
         public override void TakeDamage(Collider part, Vector3 dir, float damage, float knockBack)
         {

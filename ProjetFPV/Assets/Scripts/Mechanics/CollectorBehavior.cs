@@ -11,17 +11,18 @@ using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class CollectorBehavior : Enemy
-{    
+{
     [HorizontalLine(color: EColor.Red)]
     [InfoBox("Collector Behavior")]
-    [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro", EInfoBoxType.Warning) ]
-    [BoxGroup] public CollectorBullet bulletPrefab;
+    [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro", EInfoBoxType.Warning)]
+    [BoxGroup]
+    public CollectorBullet bulletPrefab;
+
     [BoxGroup] public ChargerEgg spawnBulletPrefab;
     [BoxGroup] public Animation transitionState;
     [BoxGroup] public float speedTransition;
-    
-    [SerializeField]
-    //private float pathUpdateFrequency;
+
+
     public enum States
     {
         Roam,
@@ -30,42 +31,43 @@ public class CollectorBehavior : Enemy
         Stunned,
         Paralysed
     }
+
     [Foldout("Roam State")] [SerializeField]
     private float flyAreaRange;
-    
+
     [Foldout("Roam State")] [SerializeField]
     private float aggroRange;
-    
+
     [Foldout("Roam State")] [SerializeField]
     private float flySpeed;
-    
+
     [Foldout("Roam State")] [SerializeField]
     private float aggressiveFlySpeed;
-    
+
     [Foldout("Shoot State")] [SerializeField]
     private int numberOfBullets;
 
     [Foldout("Shoot State")] [SerializeField]
     private float bulletSpeed;
-    
+
     [Foldout("Shoot State")] [SerializeField]
     private float timeBetweenBullets;
 
     [Foldout("Shoot State")] [SerializeField]
     private Transform[] bulletSpawnPos;
-    
+
     [Foldout("Shoot State")] [SerializeField]
     private float weaknessTime;
-    
+
     [Foldout("Spawn State")] [SerializeField]
     private int numberOfSpawn;
-    
+
     [Foldout("Spawn State")] [SerializeField]
     public Transform[] spawnEnemyPos;
-    
+
     [Foldout("Spawn State")] [SerializeField]
     private float spawnBulletSpeed;
-    
+
     private AnimationCurve transitionCurve = new AnimationCurve();
     [Foldout("Debug")] [SerializeField] private bool repositioning;
     [Foldout("Debug")] [SerializeField] private float timer;
@@ -76,11 +78,11 @@ public class CollectorBehavior : Enemy
     [Foldout("Debug")] [SerializeField] private bool seenPlayer;
     [Foldout("Debug")] [SerializeField] private bool facingPlayer;
     [Foldout("Debug")] [SerializeField] private float weaknessTimer;
-    
+
     [Foldout("Debug")] [SerializeField] public List<ChargerBehavior> children = new List<ChargerBehavior>();
     private Vector3 origin;
-    
-    
+
+
     private void OnDrawGizmosSelected()
     {
         Handles.color = Color.green;
@@ -92,9 +94,11 @@ public class CollectorBehavior : Enemy
         {
             Handles.DrawWireDisc(transform.position, Vector3.up, flyAreaRange, 2);
         }
+
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position,aggroRange);
+        Gizmos.DrawWireSphere(transform.position, aggroRange);
     }
+
     // Update is called once per frame
     public override void Awake()
     {
@@ -103,6 +107,7 @@ public class CollectorBehavior : Enemy
         transitionCurve.AddKey(speedTransition, 1);
         origin = transform.position;
     }
+
     public override void Start()
     {
         base.Start();
@@ -123,14 +128,14 @@ public class CollectorBehavior : Enemy
         {
             agent.speed = aggressiveFlySpeed;
         }
-        
+
         switch (currentState)
         {
             case States.Roam:
                 AnimateMasks(true);
                 if (agent.remainingDistance <= agent.stoppingDistance)
                 {
-                    if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                    if (repositioning && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f))
                     {
                         repositioning = false;
                         var dir = PlayerController.instance.transform.position - transform.position;
@@ -145,13 +150,13 @@ public class CollectorBehavior : Enemy
                                 Debug.Log("Player Detected");
                             }
                         }
-
                     }
                 }
+
                 if (repositioning) break;
                 repositioning = true;
-                agent.SetDestination(origin + new Vector3(Random.Range(-1f,1f) * flyAreaRange, 0,
-                    Random.Range(-1f,1f) * flyAreaRange));
+                agent.SetDestination(origin + new Vector3(Random.Range(-1f, 1f) * flyAreaRange, 0,
+                    Random.Range(-1f, 1f) * flyAreaRange));
                 break;
             case States.Repositioning:
                 AnimateMasks(true);
@@ -163,21 +168,26 @@ public class CollectorBehavior : Enemy
                 {
                     ShootMethod();
                 }
+
                 break;
             case States.Stunned:
                 break;
             case States.Paralysed:
+                AnimateMasks(false);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
+    
+
+    #region Shoot
 
     void RotateModel()
     {
         var dir = PlayerController.instance.transform.position - transform.position;
         dir.Normalize();
-        dir = new Vector3(dir.x,0,dir.z);
+        dir = new Vector3(dir.x, 0, dir.z);
         //var angle = Mathf.Atan2(dir.z, dir.x);
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), rotationSpeed);
         if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir)) < 10)
@@ -188,8 +198,8 @@ public class CollectorBehavior : Enemy
         {
             facingPlayer = false;
         }
-
     }
+
     private void ShootMethod()
     {
         if (bulletsLeft <= 0)
@@ -201,14 +211,15 @@ public class CollectorBehavior : Enemy
                 agent.enabled = true;
                 currentState = States.Roam;
                 bulletsLeft = numberOfBullets;
-                agent.SetDestination(origin + new Vector3(Random.Range(-1f,1f) * flyAreaRange, 0,
-                    Random.Range(-1f,1f) * flyAreaRange));
-                
+                agent.SetDestination(origin + new Vector3(Random.Range(-1f, 1f) * flyAreaRange, 0,
+                    Random.Range(-1f, 1f) * flyAreaRange));
+
                 TrySpawnChargers();
             }
-            return;
 
+            return;
         }
+
         if (bulletTimer < timeBetweenBullets)
         {
             bulletTimer += Time.deltaTime;
@@ -229,6 +240,7 @@ public class CollectorBehavior : Enemy
     private ChargerBehavior spawnedEnemy;
 
     private bool childrenInRange;
+
     void TrySpawnChargers()
     {
         // Try
@@ -244,13 +256,14 @@ public class CollectorBehavior : Enemy
                 }
             }
         }
-        if (childrenInRange)return;
-        
+
+        if (childrenInRange) return;
+
         foreach (var spawnPos in spawnEnemyPos)
         {
             var dir = spawnPos.position - transform.position;
             dir.Normalize();
-            if (Physics.Raycast(transform.position, dir, out RaycastHit hit, 100,LayerMask.GetMask("Default")))
+            if (Physics.Raycast(transform.position, dir, out RaycastHit hit, 100, LayerMask.GetMask("Default")))
             {
                 if (spawnEnemyPos.Contains(hit.transform))
                 {
@@ -258,27 +271,73 @@ public class CollectorBehavior : Enemy
                 }
             }
         }
-        if (validSpawns.Count == 0)return;
+
+        if (validSpawns.Count == 0) return;
         //
-        
+
         Debug.Log("Valid spawns Found");
-        
+
         // Spawn
         foreach (var spawn in validSpawns)
         {
-            var egg = Instantiate(spawnBulletPrefab,transform.position,Quaternion.identity);
+            var egg = Instantiate(spawnBulletPrefab, transform.position, Quaternion.identity);
             egg.parent = this;
             egg.speed = spawnBulletSpeed;
             egg.destination = spawn;
             egg.LayEgg();
-            
+
             spawnedEnemies++;
             if (spawnedEnemies == numberOfSpawn) break;
         }
+
         validSpawns.Clear();
         spawnedEnemies = 0;
         //
     }
+
+    #endregion
+
+    #region Stunned
+
+    public override void ApplyStun()
+    {
+        if (currentState != States.Stunned)
+        {
+            currentState = States.Stunned;
+            StartCoroutine(Stun());
+        }
+    }
+
+    IEnumerator Stun()
+    {
+        foreach (var part in allMasks)
+        {
+            if (!part.broken)
+            {
+                part.meshRenderer.material = stunnedMat;
+            }
+        }
+
+        agent.enabled = false;
+        transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
+        yield return new WaitForSeconds(stunDuration);
+
+        agent.enabled = true;
+        foreach (var part in allMasks)
+        {
+            if (!part.broken)
+            {
+                part.meshRenderer.material = defaultMat;
+            }
+        }
+
+        agent.SetDestination(PlayerController.instance.transform.position);
+        currentState = States.Repositioning;
+    }
+
+    #endregion
+    
+    #region Anim
 
     void SetAnimationTimer(bool isRetract)
     {
@@ -308,43 +367,28 @@ public class CollectorBehavior : Enemy
                 timer -= Time.deltaTime;
             }
         }
-        transitionState.clip.SampleAnimation(gameObject,transitionCurve.Evaluate(timer));
+
+        transitionState.clip.SampleAnimation(gameObject, transitionCurve.Evaluate(timer));
     }
-    
-    public override void ApplyStun()
+
+    #endregion
+
+    public override void ApplyTelekinesis()
     {
-        if (currentState != States.Stunned)
+        base.ApplyTelekinesis();
+        if (currentState != States.Paralysed)
         {
-            currentState = States.Stunned;
-            StartCoroutine(Stun());
+            currentState = States.Paralysed;
+            body.constraints = RigidbodyConstraints.FreezeAll;
+            agent.enabled = false;
+        }
+        else
+        {
+            currentState = States.Roam;
+            repositioning = false;
+            agent.enabled = true;
         }
     }
 
-    IEnumerator Stun()
-    {
-        foreach (var part in allMasks)
-        {
-            if (!part.broken)
-            {
-                part.meshRenderer.material = stunnedMat;
-            }
-        }
-        agent.enabled = false;
-        transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
-        yield return new WaitForSeconds(stunDuration);
-
-        agent.enabled = true;            
-        foreach (var part in allMasks)
-        {
-            if (!part.broken)
-            {
-                part.meshRenderer.material = defaultMat;
-            }
-        }
-        agent.SetDestination(PlayerController.instance.transform.position);
-        currentState = States.Repositioning;
-
-    }
-    
 
 }

@@ -720,7 +720,14 @@ public class PlayerController : Singleton<PlayerController>
                 enemy.body.constraints = RigidbodyConstraints.FreezeAll;
                 enemy.isGrabbed = true;
                 enemy.knockedBack = false;
-                enemy.GrabbedBehavior(1, 0.1f, 30);
+                if (enemy is ChargerBehavior chargerBehavior)
+                {
+                    chargerBehavior.GrabbedBehavior(1, 0.1f, 30);
+                }
+                else
+                {
+                    enemy.GrabbedBehavior(0, 0.1f, 30);
+                }
                 break;
             
         }
