@@ -479,6 +479,8 @@ public class PlayerController : Singleton<PlayerController>
     // Update is called once per frame
     private void Update()
     {
+        UpdateTKCylinder(); // THOMAS
+        
         UpdateRestingPos();
         playerDir = Vector3.zero;
         
@@ -749,6 +751,7 @@ public class PlayerController : Singleton<PlayerController>
         
         if (currentInk < 1)
         {
+            ThrowTKObject(); // THOMAS
             CameraShake.instance.StopInfiniteShake();
             controlledProp.ApplyTelekinesis();
             controlledProp.isGrabbed = false;
@@ -766,6 +769,8 @@ public class PlayerController : Singleton<PlayerController>
                 }
                 else
                 {
+                    ThrowTKObject(); // THOMAS
+                    
                     controlledProp.isGrabbed = false;
 
                     currentInk =
@@ -1002,6 +1007,8 @@ public class PlayerController : Singleton<PlayerController>
                         if (!TK.canBeGrabbed) return;
                         controlledProp = TK;
                         controlledProp.ApplyTelekinesis();
+
+                        CreateCylinder(TK.gameObject); // THOMAS
                         return;
                     }
 
@@ -1080,6 +1087,44 @@ public class PlayerController : Singleton<PlayerController>
 
     #endregion
 
+    [SerializeField] private Transform tkSocket; // THOMAS 
+    private GameObject tkCylinder; // THOMAS 
+    private Transform tkPoint; // THOMAS 
+
+    void CreateCylinder(GameObject tkObject) // THOMAS (whole method)
+    {
+        if (tkCylinder != null)
+        {
+            Destroy(tkCylinder);
+        }
+        
+        tkPoint = tkObject.transform;
+        
+        var cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        cylinder.transform.position = tkSocket.position + 0.5f * (tkPoint.position - tkSocket.position);
+        cylinder.transform.up = tkPoint.position - tkSocket.position;
+        cylinder.transform.localScale = new Vector3(0.2f, Vector3.Distance(tkPoint.position, tkSocket.position) / 2f, 0.2f);
+        cylinder.GetComponent<Renderer>().material.color = Color.black; // TEMPORAIRE
+        cylinder.GetComponent<CapsuleCollider>().enabled = false; // TEMPORAIRE
+
+        tkCylinder = cylinder;
+    }
+
+    void UpdateTKCylinder() // THOMAS (whole method)
+    {
+        if (tkCylinder == null) return;
+        
+        tkCylinder.transform.position = tkSocket.position + 0.5f * (tkPoint.position - tkSocket.position);
+        tkCylinder.transform.up = tkPoint.position - tkSocket.position;
+        tkCylinder.transform.localScale = new Vector3(0.2f, Vector3.Distance(tkPoint.position, tkSocket.position) / 2f, 0.2f);
+    }
+
+    void ThrowTKObject() // THOMAS (whole method)
+    {
+        if (tkCylinder == null) return;
+        
+        Destroy(tkCylinder);
+    }
 
     #region Deprecated
     

@@ -950,7 +950,7 @@ MonoBehaviour:
   throwCost: 2
   throwForce: 300
   inkAbsorbSpeed: 30
-  amplitude: 0.008
+  amplitude: 0.0003
   frequeny: 10
   toggleSpeed: 0
   sideTilting: 0
@@ -966,6 +966,7 @@ MonoBehaviour:
   controlledProp: {fileID: 0}
   inSurplus: 0
   socketManager: {fileID: 0}
+  tkSocket: {fileID: 300607404488667709}
 --- !u!114 &6171253402340276740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6895,6 +6896,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &7916969724114701366
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 300607404488667709}
+  m_Layer: 11
+  m_Name: tkSocket
+  m_TagString: Untagged
+  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &300607404488667709
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916969724114701366}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.074, y: 0.903, z: -0.09}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8092773862637584861}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7963865459006595146
 GameObject:
   m_ObjectHideFlags: 0
@@ -8987,7 +9019,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 18127f62494e9ec48ac29000874aeec7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 300607404488667709}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18127f62494e9ec48ac29000874aeec7, type: 3}
 --- !u!4 &8092773862637584861 stripped
