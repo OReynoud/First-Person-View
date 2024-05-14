@@ -123,8 +123,9 @@ public class CollectorBehavior : Enemy
     public LayerMask playerLayer;
     public float rotationSpeed;
 
-    void Update()
+    public override void Update()
     {
+        base.Update();
         if (seenPlayer)
         {
             agent.speed = aggressiveFlySpeed;
@@ -412,6 +413,14 @@ public class CollectorBehavior : Enemy
             agent.enabled = true;
         }
     }
+    
+    public override void KnockBack(Vector3 dir, float force)
+    {
+        base.KnockBack(dir,force);
+        body.constraints |= RigidbodyConstraints.FreezePositionY;
+        body.useGravity = false;
 
+        //StartCoroutine(ApplyKnockBack(dir, force));
+    }
 
 }
