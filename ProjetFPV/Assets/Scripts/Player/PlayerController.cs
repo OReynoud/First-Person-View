@@ -757,7 +757,6 @@ public class PlayerController : Singleton<PlayerController>
             return;
         }
 
-        CameraShake.instance.StopInfiniteShake();
         switch (controlledProp)
         {
             case TelekinesisObject:
@@ -810,6 +809,7 @@ public class PlayerController : Singleton<PlayerController>
         if (currentInk < 0) currentInk = 0;
         StartCoroutine(controlledProp.BufferGrabbing());
         controlledProp = null;
+        CameraShake.instance.StopInfiniteShake();
     }
 
     #endregion
