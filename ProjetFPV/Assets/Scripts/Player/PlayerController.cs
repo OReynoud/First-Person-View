@@ -4,14 +4,9 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Mechanics;
 using NaughtyAttributes;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class PlayerController : Singleton<PlayerController>
@@ -766,7 +761,6 @@ public class PlayerController : Singleton<PlayerController>
         switch (controlledProp)
         {
             case TelekinesisObject:
-                controlledProp.ApplyTelekinesis();
                 if (!controlledProp.isGrabbed)
                 {
                     controlledProp.body.velocity *= 0.1f;
@@ -796,6 +790,7 @@ public class PlayerController : Singleton<PlayerController>
                     controlledProp.body.AddForce(dir * throwForce, ForceMode.Impulse);
                 }
 
+                controlledProp.ApplyTelekinesis();
                 break;
             case Enemy:
 

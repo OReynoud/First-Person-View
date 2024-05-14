@@ -30,11 +30,8 @@ namespace Player
                 if (other.transform.TryGetComponent(out Enemy enemy))
                 {
                     enemy.TakeDamage(other.collider, transform.forward, damage, knockBack);
-                
-
                     GameManager.instance.HitMark(true);
                     
-        
                     Destroy(gameObject);
                     return;
                 }

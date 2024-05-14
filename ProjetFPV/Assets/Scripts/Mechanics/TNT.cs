@@ -16,6 +16,8 @@ public class TNT : MonoBehaviour, IDestructible
     [Range(0,1)][SerializeField] private float damageFallOff = 0.2f;
     [SerializeField] private LayerMask mask;
     [SerializeField] private GameObject explosionMesh;
+    
+    [SerializeField] private GameObject barrelMesh;
     private TelekinesisObject tk;
 
     public void OnDrawGizmosSelected()
@@ -83,7 +85,7 @@ public class TNT : MonoBehaviour, IDestructible
         }
 
         //Moche en attendant le bon VFX
-        GetComponent<MeshRenderer>().enabled = false;
+        barrelMesh.SetActive(false);
         transform.GetChild(0).GetComponent<ParticleSystem>().Play();
         //
         
