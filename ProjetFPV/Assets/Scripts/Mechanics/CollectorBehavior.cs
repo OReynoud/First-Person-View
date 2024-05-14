@@ -20,7 +20,7 @@ public class CollectorBehavior : Enemy
 
     [BoxGroup] public ChargerEgg spawnBulletPrefab;
     [BoxGroup] public Animation transitionState;
-    [BoxGroup] public float speedTransition;
+    [BoxGroup] public float transitionTime;
 
 
     public enum States
@@ -29,7 +29,8 @@ public class CollectorBehavior : Enemy
         Repositioning,
         Shoot,
         Stunned,
-        Paralysed
+        Paralysed,
+        KnockBack
     }
 
     [Foldout("Roam State")] [SerializeField]
@@ -104,7 +105,7 @@ public class CollectorBehavior : Enemy
     {
         base.Awake();
         transitionCurve.AddKey(0, 0);
-        transitionCurve.AddKey(speedTransition, 1);
+        transitionCurve.AddKey(transitionTime, 1);
         origin = transform.position;
     }
 
@@ -148,6 +149,7 @@ public class CollectorBehavior : Enemy
                                 agent.enabled = false;
                                 currentState = States.Shoot;
                                 Debug.Log("Player Detected");
+                                return;
                             }
                         }
                     }
@@ -174,6 +176,9 @@ public class CollectorBehavior : Enemy
                 break;
             case States.Paralysed:
                 AnimateMasks(false);
+                break;
+            case States.KnockBack:
+                if (!knockedBack) currentState = States.Roam;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -343,7 +348,7 @@ public class CollectorBehavior : Enemy
     {
         if (isRetract)
         {
-            timer = speedTransition;
+            timer = transitionTime;
         }
         else
         {
@@ -353,11 +358,20 @@ public class CollectorBehavior : Enemy
 
     void AnimateMasks(bool isRetract)
     {
+        //activeMasks = timer >= transitionTime * 0.5f;
         if (!isRetract)
         {
-            if (timer < speedTransition)
+            if (timer < transitionTime)
             {
                 timer += Time.deltaTime;
+            }
+
+            if (!allMasks[0].maskCollider.enabled && timer >= transitionTime * 0.5f)
+            {
+                foreach (var mask in allMasks)
+                {
+                    mask.maskCollider.enabled = true;
+                }
             }
         }
         else
@@ -366,9 +380,18 @@ public class CollectorBehavior : Enemy
             {
                 timer -= Time.deltaTime;
             }
+            if (allMasks[0].maskCollider.enabled && timer <= transitionTime * 0.5f)
+            {
+                foreach (var mask in allMasks)
+                {
+                    mask.maskCollider.enabled = false;
+                }
+            }
         }
 
         transitionState.clip.SampleAnimation(gameObject, transitionCurve.Evaluate(timer));
+        
+        
     }
 
     #endregion
