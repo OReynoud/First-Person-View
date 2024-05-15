@@ -146,6 +146,7 @@ public class ShootingHand : MonoBehaviour
             currentSocket.state = SocketStates.SuperCharged;
             currentSocket.socketMesh.material = superChargedSocket;
             currentSocket.highlightMesh.enabled = true;
+            noBullets = false;
         }
     }
 

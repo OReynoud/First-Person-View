@@ -56,6 +56,9 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Refs")] [SerializeField] public CapsuleCollider standingCollider;
     [Foldout("Refs")] [SerializeField] private CapsuleCollider crouchedCollider;
+    
+    [Foldout("Refs")] [SerializeField] private ParticleSystem[] VFX_TKStart;
+    [Foldout("Refs")] [SerializeField] private ParticleSystem VFX_TKEnd;
 
     #endregion
 
@@ -1008,7 +1011,7 @@ public class PlayerController : Singleton<PlayerController>
                         controlledProp = TK;
                         controlledProp.ApplyTelekinesis();
 
-                        CreateCylinder(TK.gameObject); // THOMAS
+                        CreateCylinder(hit.collider); // THOMAS
                         return;
                     }
 
@@ -1027,6 +1030,8 @@ public class PlayerController : Singleton<PlayerController>
                         if (currentInk < 1)return;
                         controlledProp = enemy;
                         controlledProp.ApplyTelekinesis();
+                        
+                        CreateCylinder(hit.collider);
                         return;
                     }
 
@@ -1089,40 +1094,55 @@ public class PlayerController : Singleton<PlayerController>
 
     [SerializeField] private Transform tkSocket; // THOMAS 
     private GameObject tkCylinder; // THOMAS 
-    private Transform tkPoint; // THOMAS 
+    private Vector3 tkPoint; // THOMAS 
+    private Collider tempColl;
 
-    void CreateCylinder(GameObject tkObject) // THOMAS (whole method)
+    void CreateCylinder(Collider tkColl) // THOMAS (whole method)
     {
         if (tkCylinder != null)
         {
             Destroy(tkCylinder);
         }
+        tempColl = tkColl;
         
-        tkPoint = tkObject.transform;
+        tkPoint = tempColl.ClosestPoint(tkSocket.position);
         
         var cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        cylinder.transform.position = tkSocket.position + 0.5f * (tkPoint.position - tkSocket.position);
-        cylinder.transform.up = tkPoint.position - tkSocket.position;
-        cylinder.transform.localScale = new Vector3(0.2f, Vector3.Distance(tkPoint.position, tkSocket.position) / 2f, 0.2f);
+        cylinder.transform.position = tkSocket.position + 0.5f * (tkPoint - tkSocket.position);
+        cylinder.transform.up = tkPoint - tkSocket.position;
+        cylinder.transform.localScale = new Vector3(0.2f, Vector3.Distance(tkPoint, tkSocket.position) / 2f, 0.2f);
         cylinder.GetComponent<Renderer>().material.color = Color.black; // TEMPORAIRE
         cylinder.GetComponent<CapsuleCollider>().enabled = false; // TEMPORAIRE
 
         tkCylinder = cylinder;
+
+        VFX_TKStart[0].Play();
+        VFX_TKStart[1].Play();
+
     }
 
     void UpdateTKCylinder() // THOMAS (whole method)
     {
         if (tkCylinder == null) return;
         
-        tkCylinder.transform.position = tkSocket.position + 0.5f * (tkPoint.position - tkSocket.position);
-        tkCylinder.transform.up = tkPoint.position - tkSocket.position;
-        tkCylinder.transform.localScale = new Vector3(0.2f, Vector3.Distance(tkPoint.position, tkSocket.position) / 2f, 0.2f);
+        
+        tkPoint = tempColl.ClosestPoint(tkSocket.position);
+        VFX_TKStart[1].transform.position = tkPoint;
+        tkCylinder.transform.position = tkSocket.position + 0.5f * (tkPoint - tkSocket.position);
+        tkCylinder.transform.up = tkPoint - tkSocket.position;
+        tkCylinder.transform.localScale = new Vector3(0.2f, Vector3.Distance(tkPoint, tkSocket.position) / 2f, 0.2f);
     }
 
     void ThrowTKObject() // THOMAS (whole method)
     {
         if (tkCylinder == null) return;
-        
+        foreach (var vfx in VFX_TKStart)
+        {
+            vfx.Stop();
+            vfx.SetParticles(null, 0);
+        }
+        VFX_TKEnd.Play();
+
         Destroy(tkCylinder);
     }
 
