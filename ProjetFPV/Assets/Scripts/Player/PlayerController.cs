@@ -803,6 +803,7 @@ public class PlayerController : Singleton<PlayerController>
                 
                 controlledProp.isGrabbed = false;
                 controlledProp.ApplyTelekinesis();
+                ThrowTKObject();
                 break;
             
             case AbsorbInk absorbInk:

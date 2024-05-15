@@ -28,6 +28,9 @@ namespace Mechanics
 
         [Foldout("Reposition state")] [SerializeField]
         private float appearDuration = 0.5f;
+        
+        // [Foldout("Reposition state")] [SerializeField]
+        // private float appearDuration = 0.5f;
 
         [Foldout("Reposition state")] [SerializeField]
         public Transform[] spawnPositions;
@@ -49,15 +52,18 @@ namespace Mechanics
 
         [Foldout("Attack state")] [SerializeField]
         private float atkRange;
-
+        
         [Foldout("Attack state")] [SerializeField]
         private float atkDamage;
         
         [Foldout("Attack state")] [SerializeField]
+        private float jumpOverShoot;
+      
+        [Foldout("Attack state")] [SerializeField]
         private float jumpHeight;
         
-        [Foldout("Attack state")] [SerializeField]
-        private float jumpDuration;
+        [MinMaxSlider(0f,10f)][Foldout("Attack state")] [SerializeField]
+        private Vector2 jumpDuration;
     
         [Foldout("Attack state")] [SerializeField]
         private float waitBeforeJump = 0.3f;
@@ -200,7 +206,7 @@ namespace Mechanics
             {
                 currentState = States.Paralysed;
                 body.constraints = RigidbodyConstraints.FreezeAll;
-                InteruptAttack();
+                InterruptAttack();
             }
             else
             {
@@ -231,7 +237,7 @@ namespace Mechanics
                 }
             }
             body.constraints = RigidbodyConstraints.FreezeRotation;
-            InteruptAttack();
+            InterruptAttack();
             transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
             yield return new WaitForSeconds(stunDuration);
 
@@ -351,26 +357,27 @@ namespace Mechanics
         IEnumerator AttackPlayer()
         {
             currentState = States.Attack;
-            playerPos = PlayerController.instance.transform.position;
+            playerPos = PlayerController.instance.transform.position + transform.forward;
             agent.SetDestination(playerPos);
             actualDestination = new Vector3(agent.destination.x,playerPos.y, agent.destination.z);
             agent.enabled = false;
             Debug.Log("j'attaque le joueur");
             yield return new WaitForSeconds(waitBeforeJump);
             transform.rotation = Quaternion.Euler(40,transform.eulerAngles.y,transform.eulerAngles.z);
-            
-            jumpTween = transform.DOJump(actualDestination, jumpHeight, 1, jumpDuration);
-            jumpRotationTween = transform.DORotate(new Vector3(0,transform.eulerAngles.y,transform.eulerAngles.z) , jumpDuration);
-            yield return new WaitForSeconds(jumpDuration);
-            var colliders = Physics.OverlapSphere(transform.position , 2f, playerLayer);
-            foreach (var col in colliders)
-            {
-                if (col.TryGetComponent(out PlayerController player))
-                {
-                    Debug.Log("J'ai touché le joueur");
-                    player.TakeDamage(atkDamage);
-                }
-            }
+
+            var calcJumpTime = (Vector3.Distance(transform.position, playerPos) * jumpDuration.y)/atkRange;
+            if (calcJumpTime < jumpDuration.x) calcJumpTime = jumpDuration.x;
+            jumpTween = transform.DOJump(actualDestination + transform.forward * jumpOverShoot, jumpHeight, 1, calcJumpTime);
+            jumpRotationTween = transform.DORotate(new Vector3(0,transform.eulerAngles.y,transform.eulerAngles.z) , calcJumpTime);
+            yield return new WaitForSeconds(calcJumpTime);
+            // var colliders = Physics.OverlapSphere(transform.position , 2f, playerLayer);
+            // foreach (var col in colliders)
+            // {
+            //     if (col.TryGetComponent(out PlayerController player))
+            //     {
+            //         player.TakeDamage(atkDamage);
+            //     }
+            // }
 
             yield return new WaitForSeconds(waitAfterAttack);
             currentState = States.Repositioning;
@@ -457,7 +464,7 @@ namespace Mechanics
             base.Die();
         }
 
-        void InteruptAttack()
+        void InterruptAttack()
         {
             agent.enabled = false;
             jumpTween.Kill();
@@ -466,6 +473,14 @@ namespace Mechanics
             {
                 StopCoroutine(attackRoutine);
             }
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (currentState != States.Attack || !other.gameObject.TryGetComponent(out PlayerController player)) return;
+            
+            Debug.Log("J'ai touché le joueur");
+            player.TakeDamage(atkDamage);
         }
 
         Vector3 GetRandomSpawnPoint()
