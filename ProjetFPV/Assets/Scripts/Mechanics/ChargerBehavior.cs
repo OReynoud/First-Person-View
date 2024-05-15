@@ -177,7 +177,8 @@ namespace Mechanics
                     break;
                 case States.Paralysed:
                     if (PlayerController.instance.controlledProp == this) break;
-                    if (Physics.Raycast(transform.position,Vector3.down,1.5f,LayerMask.GetMask("Default")))
+                    //Debug.DrawRay(transform.position,Vector3.down * 1.5f);
+                    if (Physics.Raycast(transform.position,Vector3.down,1.7f,LayerMask.GetMask("Default")))
                     {
                         Debug.Log("Landed");
                         currentState = States.Rush;
@@ -199,13 +200,7 @@ namespace Mechanics
             {
                 currentState = States.Paralysed;
                 body.constraints = RigidbodyConstraints.FreezeAll;
-                agent.enabled = false;
-                jumpTween.Kill();
-                jumpRotationTween.Kill(true);
-                if (attackRoutine != null)
-                {
-                    StopCoroutine(attackRoutine);
-                }
+                InteruptAttack();
             }
             else
             {
@@ -235,7 +230,8 @@ namespace Mechanics
                     part.meshRenderer.material = stunnedMat;
                 }
             }
-            agent.enabled = false;
+            body.constraints = RigidbodyConstraints.FreezeRotation;
+            InteruptAttack();
             transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
             yield return new WaitForSeconds(stunDuration);
 
@@ -247,6 +243,7 @@ namespace Mechanics
                     part.meshRenderer.material = defaultMat;
                 }
             }
+            body.constraints = RigidbodyConstraints.FreezeAll;
             agent.SetDestination(PlayerController.instance.transform.position);
             currentState = States.Repositioning;
 
@@ -458,6 +455,17 @@ namespace Mechanics
             }
             
             base.Die();
+        }
+
+        void InteruptAttack()
+        {
+            agent.enabled = false;
+            jumpTween.Kill();
+            jumpRotationTween.Kill(true);
+            if (attackRoutine != null)
+            {
+                StopCoroutine(attackRoutine);
+            }
         }
 
         Vector3 GetRandomSpawnPoint()
