@@ -14,6 +14,7 @@ namespace Mechanics
 
         public float timeBetweenSpawns;
         public float timeBetweenWaves;
+        public float playerProximityTolerance = 5;
 
         public ChargerBehavior bouffonPrefab;
 
@@ -41,26 +42,23 @@ namespace Mechanics
             StartCoroutine(ArenaEvent());
         }
 
+        List<Transform> tempList = new List<Transform>();
+
         IEnumerator ArenaEvent()
         {
             foreach (var spawns in spawnCount)
             {
-                List<Transform> tempList = spawnPositions.ToList();
+                tempList = FillValidList();
                 for (int i = 0; i < spawns; i++)
                 {
                     int rand = 0;
                     Vector3 posToSpawn;
                     if (tempList.Count == 0)
-                    {
-                        
-                        rand = Random.Range(0, spawnPositions.Length);
-                        posToSpawn = spawnPositions[rand].position + Vector3.down * 5;
-                    }
-                    else
-                    {
-                        rand = Random.Range(0, tempList.Count);
-                        posToSpawn = tempList[rand].position + Vector3.down * 5;
-                    }
+                        tempList = FillValidList();
+                    
+                    rand = Random.Range(0, tempList.Count);
+                    posToSpawn = tempList[rand].position + Vector3.down * 5;
+
                     var temp = Instantiate(bouffonPrefab, posToSpawn, Quaternion.identity);
                     temp.arenaSpawn = true;
                     temp.spawnPositions = spawnPositions;
@@ -85,7 +83,7 @@ namespace Mechanics
         {
             if (!finishedSpawning) return;
             if (currentEnemies.Count != 0) return;
-            if (destroying)return;
+            if (destroying) return;
             destroying = true;
             DestroyMethod();
         }
@@ -96,9 +94,32 @@ namespace Mechanics
             {
                 go.SetActive(false);
             }
-            Destroy(gameObject,10);
+
+            Destroy(gameObject, 10);
         }
 
         private bool destroying;
+
+
+        List<Transform> FillValidList()
+        {
+            List<Transform> temp = new List<Transform>();
+            foreach (var pos in spawnPositions)
+            {
+                if (Vector3.Distance(pos.position, PlayerController.instance.transform.position)
+                    < playerProximityTolerance)
+                    continue;
+
+                temp.Add(pos);
+            }
+
+            if (tempList.Count == 0)
+            {
+                Debug.LogError("Aucun spawn valide trouvé, le joueur est trop près de tous les spawns possibles");
+                return spawnPositions.ToList();
+            }
+
+            return temp;
+        }
     }
 }

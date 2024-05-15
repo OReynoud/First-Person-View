@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using DG.Tweening;
 using NaughtyAttributes;
@@ -29,8 +30,8 @@ namespace Mechanics
         [Foldout("Reposition state")] [SerializeField]
         private float appearDuration = 0.5f;
         
-        // [Foldout("Reposition state")] [SerializeField]
-        // private float appearDuration = 0.5f;
+        [Foldout("Reposition state")] [SerializeField]
+        private float playerProximityTolerance = 5f;
 
         [Foldout("Reposition state")] [SerializeField]
         public Transform[] spawnPositions;
@@ -483,10 +484,27 @@ namespace Mechanics
             player.TakeDamage(atkDamage);
         }
 
+        private List<Vector3> validPos;
         Vector3 GetRandomSpawnPoint()
         {
-            var random = Random.Range(0, spawnPositions.Length);
-            return spawnPositions[random].position;
+            validPos.Clear();
+            foreach (var pos in spawnPositions)
+            {
+                if (Vector3.Distance(pos.position, PlayerController.instance.transform.position) 
+                    < playerProximityTolerance) 
+                    continue;
+                
+                validPos.Add(pos.position);
+            }
+
+            var random = Random.Range(0, validPos.Count);
+            if (validPos.Count == 0)
+            {
+                Debug.LogError("Aucun spawn valide trouvé, le joueur est trop près de tous les spawns possibles");
+                random = Random.Range(0, spawnPositions.Length);
+                return spawnPositions[random].position;
+            }
+            return validPos[random];
         }
     }
 }
