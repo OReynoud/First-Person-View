@@ -797,7 +797,7 @@ public class PlayerController : Singleton<PlayerController>
                 controlledProp.ApplyTelekinesis();
                 break;
             case Enemy:
-
+                
                 controlledProp.isGrabbed = false;
                 controlledProp.ApplyTelekinesis();
                 break;

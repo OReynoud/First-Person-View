@@ -50,6 +50,9 @@ public class CollectorBehavior : Enemy
 
     [Foldout("Shoot State")] [SerializeField]
     private float bulletSpeed;
+    
+    [Foldout("Shoot State")] [SerializeField]
+    private float bulletDamage = 1;
 
     [Foldout("Shoot State")] [SerializeField]
     private float timeBetweenBullets;
@@ -238,6 +241,7 @@ public class CollectorBehavior : Enemy
         var dir = PlayerController.instance.transform.position - bulletSpawnPos[rand].position;
         var bullet = Instantiate(bulletPrefab, bulletSpawnPos[rand].position, Quaternion.LookRotation(dir.normalized));
         bullet.rb.velocity = dir * bulletSpeed;
+        bullet.damage = bulletDamage;
     }
 
 
@@ -408,6 +412,7 @@ public class CollectorBehavior : Enemy
         }
         else
         {
+            
             currentState = States.Roam;
             repositioning = false;
             agent.enabled = true;

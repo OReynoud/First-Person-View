@@ -88,15 +88,12 @@ namespace Mechanics
 
         public void OnDrawGizmosSelected()
         {
-            if (isImmobile)
-            {
-                return;
-            }
+            if (isImmobile) return;
+            
             for (int i = 1; i < waypoints.Count; i++)
             {
                 Debug.DrawLine(waypoints[i - 1].position,waypoints[i].position );
             }
-        
             Debug.DrawLine(waypoints[^1].position,waypoints[0].position );
         }
 
@@ -110,14 +107,9 @@ namespace Mechanics
 
             body.AddForce(dir * force, ForceMode.Impulse);
             
-            //StartCoroutine(ApplyKnockBack(dir, force));
         }
 
-        // IEnumerator ApplyKnockBack(Vector3 dir, float force)
-        // {
-        //     yield return new WaitForSeconds(0.1f);
-        //     
-        // }
+
         public virtual void TakeDamage(Collider partHit, Vector3 knockBackDir, float damage, float knockBack)
         {
             for (int i = 0; i < allMasks.Length; i++)
@@ -162,16 +154,12 @@ namespace Mechanics
             }
 
             if (maskCount <= 0) Die();
-            // body.constraints = RigidbodyConstraints.None;
-            // body.useGravity = true;
-            // body.AddForceAtPosition(knockBackDir * knockBackValue,pointOfForce, ForceMode.Impulse);
         }
 
         public virtual void Die()
         {
             GameManager.instance.OnKillEnemy();
-        
-        
+            
             grabbedTween.Complete();
             grabbedTween.Kill(true);
             var oui = Instantiate(GameManager.instance.inkStainPrefab, transform.position, transform.rotation);
@@ -220,7 +208,7 @@ namespace Mechanics
         private Tweener grabbedTween;
         public void GrabbedBehavior(float levitateValue, float shakeAmplitude, int shakeFrequency)
         {
-            transform.DOMove(transform.position + Vector3.up * levitateValue, 0.2f).OnComplete(() =>
+            grabbedTween = transform.DOMove(transform.position + Vector3.up * levitateValue, 0.2f).OnComplete(() =>
             {
                 GrabTween(shakeAmplitude, shakeFrequency);
                 CameraShake.instance.StartInfiniteShake(0);
@@ -234,7 +222,9 @@ namespace Mechanics
                 if (isGrabbed)
                 {
                     GrabTween(shakeAmplitude, shakeFrequency);
+                    return;
                 }
+                CameraShake.instance.StopInfiniteShake();
             });
         }
     }
