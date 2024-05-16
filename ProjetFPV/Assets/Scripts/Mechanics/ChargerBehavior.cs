@@ -320,8 +320,8 @@ namespace Mechanics
             foreach (var part in allMasks)
             {
                 part.maskCollider.enabled = false;
-                part.tr.DOLocalMove(Vector3.zero, disappearDuration);
-                part.tr.DOScale(Vector3.one * 0.8f, disappearDuration * 0.5f);
+                part.tr.DOLocalMove(origin + Vector3.down * 0.5f, disappearDuration);
+                part.tr.DOScale(temp * 0.8f, disappearDuration * 0.5f);
             }
 
             body.isKinematic = true;

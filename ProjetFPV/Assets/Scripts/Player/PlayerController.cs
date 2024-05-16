@@ -146,6 +146,10 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Telekinesis")] [Tooltip("Cost per second of using telekinesis on an enemy")] [SerializeField]
     private float holdEnemyCost;
+    
+    [Foldout("Telekinesis")]
+    [SerializeField]
+    [Range(0,1)]public float holdObjectYTolerance = 0.6f;
 
     [Foldout("Telekinesis")] [Tooltip("Cost of releasing an object from telekinesis")] [SerializeField]
     private float throwCost;
@@ -636,7 +640,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 var dir = offsetPosition.position - controlledProp.transform.position;
                 dir.Normalize();
-                if (playerCam.forward.y < -0.60f)
+                if (playerCam.forward.y < -holdObjectYTolerance)
                 {
                     CameraShake.instance.StopInfiniteShake();
                     controlledProp.ApplyTelekinesis();
@@ -1110,10 +1114,11 @@ public class PlayerController : Singleton<PlayerController>
 
     [SerializeField] private Transform tkSocket; // THOMAS 
     [SerializeField] private GameObject cylinderPrefab; // THOMAS
+    [Range(0f, 5f)] [SerializeField] private float tkCylinderSize;
     private GameObject tkCylinder; // THOMAS 
     private Vector3 tkPoint; // THOMAS 
     private Collider tempColl;
-
+    
     void CreateCylinder(Collider tkColl) // THOMAS (whole method)
     {
         if (tkCylinder != null)
@@ -1124,9 +1129,10 @@ public class PlayerController : Singleton<PlayerController>
         
         tkPoint = tempColl.ClosestPoint(tkSocket.position);
 
-        var cylinder = Instantiate(cylinderPrefab, tkSocket.position + 0.5f * (tkPoint - tkSocket.position), Quaternion.identity);
-        cylinder.transform.up = tkPoint - tkSocket.position;
-        cylinder.transform.localScale = new Vector3(0.2f, Vector3.Distance(tkPoint, tkSocket.position) / 2f, 0.2f);
+        var cylinder = Instantiate(cylinderPrefab, tkSocket.position, Quaternion.identity);
+        
+        cylinder.transform.forward = tkPoint - tkSocket.position;
+        cylinder.transform.localScale = new Vector3(tkCylinderSize, tkCylinderSize, Vector3.Distance(tkPoint, tkSocket.position) / 2f);
         tkCylinder = cylinder;
 
         VFX_TKStart[0].Play();
@@ -1138,12 +1144,11 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (tkCylinder == null) return;
         
-        
         tkPoint = tempColl.ClosestPoint(tkSocket.position);
         VFX_TKStart[1].transform.position = tkPoint;
-        tkCylinder.transform.position = tkSocket.position + 0.5f * (tkPoint - tkSocket.position);
-        tkCylinder.transform.up = tkPoint - tkSocket.position;
-        tkCylinder.transform.localScale = new Vector3(0.2f, Vector3.Distance(tkPoint, tkSocket.position) / 2f, 0.2f);
+        tkCylinder.transform.position = tkSocket.position;
+        tkCylinder.transform.forward = tkPoint - tkSocket.position;
+        tkCylinder.transform.localScale = new Vector3(tkCylinderSize, tkCylinderSize, Vector3.Distance(tkPoint, tkSocket.position) / 2f);
     }
 
     void ThrowTKObject() // THOMAS (whole method)
