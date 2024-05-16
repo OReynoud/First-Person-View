@@ -1094,6 +1094,7 @@ public class PlayerController : Singleton<PlayerController>
     #endregion
 
     [SerializeField] private Transform tkSocket; // THOMAS 
+    [SerializeField] private GameObject cylinderPrefab; // THOMAS
     private GameObject tkCylinder; // THOMAS 
     private Vector3 tkPoint; // THOMAS 
     private Collider tempColl;
@@ -1107,14 +1108,10 @@ public class PlayerController : Singleton<PlayerController>
         tempColl = tkColl;
         
         tkPoint = tempColl.ClosestPoint(tkSocket.position);
-        
-        var cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        cylinder.transform.position = tkSocket.position + 0.5f * (tkPoint - tkSocket.position);
+
+        var cylinder = Instantiate(cylinderPrefab, tkSocket.position + 0.5f * (tkPoint - tkSocket.position), Quaternion.identity);
         cylinder.transform.up = tkPoint - tkSocket.position;
         cylinder.transform.localScale = new Vector3(0.2f, Vector3.Distance(tkPoint, tkSocket.position) / 2f, 0.2f);
-        cylinder.GetComponent<Renderer>().material.color = Color.black; // TEMPORAIRE
-        cylinder.GetComponent<CapsuleCollider>().enabled = false; // TEMPORAIRE
-
         tkCylinder = cylinder;
 
         VFX_TKStart[0].Play();
