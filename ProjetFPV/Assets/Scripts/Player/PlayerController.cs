@@ -167,10 +167,13 @@ public class PlayerController : Singleton<PlayerController>
     private float amplitude;
 
     [Foldout("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField]
-    private float frequeny;
-
-    [Foldout("Bobbing")] [Tooltip("(NOT USED YET) Minimum velocity for bobbing to start")] [SerializeField]
-    private float toggleSpeed;
+    private float crouchFrequency;
+    
+    [Foldout("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField]
+    private float walkFrequency;
+    
+    [Foldout("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField]
+    private float sprintFrequency;
 
     [Foldout("Bobbing")]
     [Tooltip("(NOT USED YET) Camera tilting (in degrees) when player is moving left or right")]
@@ -190,7 +193,6 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool appliedForce;
 
-    [Foldout("Debug")] [SerializeField] private bool bobbing;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     public bool canMove = true;
@@ -634,7 +636,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 var dir = offsetPosition.position - controlledProp.transform.position;
                 dir.Normalize();
-                if (playerCam.forward.y < -0.70f)
+                if (playerCam.forward.y < -0.60f)
                 {
                     CameraShake.instance.StopInfiniteShake();
                     controlledProp.ApplyTelekinesis();
@@ -1050,11 +1052,24 @@ public class PlayerController : Singleton<PlayerController>
 
     #region Bobbing
 
+    private float usingFrequency;
     Vector3 FootStepMotion()
     {
         Vector3 pos = Vector3.zero;
-        pos.y += Mathf.Sin(Time.time * frequeny) * amplitude;
-        pos.x += Mathf.Cos(Time.time * frequeny / 2) * amplitude * 0.5f;
+        switch (state)
+        {
+            case PlayerStates.Standing:
+                usingFrequency = walkFrequency;
+                break;
+            case PlayerStates.Sprinting:
+                usingFrequency = sprintFrequency;
+                break;
+            case PlayerStates.Crouching:
+                usingFrequency = crouchFrequency;
+                break;
+        }
+        pos.y += Mathf.Sin(Time.time * usingFrequency) * amplitude;
+        pos.x += Mathf.Cos(Time.time * usingFrequency / 2) * amplitude * 0.5f;
         
 
         return pos;
