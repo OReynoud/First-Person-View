@@ -146,6 +146,10 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Telekinesis")] [Tooltip("Cost per second of using telekinesis on an enemy")] [SerializeField]
     private float holdEnemyCost;
+    
+    [Foldout("Telekinesis")]
+    [SerializeField]
+    [Range(0,1)]public float holdObjectYTolerance = 0.6f;
 
     [Foldout("Telekinesis")] [Tooltip("Cost of releasing an object from telekinesis")] [SerializeField]
     private float throwCost;
@@ -167,10 +171,13 @@ public class PlayerController : Singleton<PlayerController>
     private float amplitude;
 
     [Foldout("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField]
-    private float frequeny;
-
-    [Foldout("Bobbing")] [Tooltip("(NOT USED YET) Minimum velocity for bobbing to start")] [SerializeField]
-    private float toggleSpeed;
+    private float crouchFrequency;
+    
+    [Foldout("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField]
+    private float walkFrequency;
+    
+    [Foldout("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField]
+    private float sprintFrequency;
 
     [Foldout("Bobbing")]
     [Tooltip("(NOT USED YET) Camera tilting (in degrees) when player is moving left or right")]
@@ -190,7 +197,6 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private bool appliedForce;
 
-    [Foldout("Debug")] [SerializeField] private bool bobbing;
 
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     public bool canMove = true;
@@ -469,10 +475,10 @@ public class PlayerController : Singleton<PlayerController>
     private IEnumerator Reload2()
     {
         
-        socketManager.ReloadSockets();
         reloadBasePos = shootingHand.localPosition;
         shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * ReloadHandMove, 0.4f);
         yield return new WaitForSeconds(currentInk < maxInk ? reloadSpeed : socketManager.surplusReloadTime);
+        socketManager.ReloadSockets();
         shootingHand.DOLocalMove(reloadBasePos, 0.4f);
 
         reloading = false;
@@ -634,7 +640,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 var dir = offsetPosition.position - controlledProp.transform.position;
                 dir.Normalize();
-                if (playerCam.forward.y < -0.70f)
+                if (playerCam.forward.y < -holdObjectYTolerance)
                 {
                     CameraShake.instance.StopInfiniteShake();
                     controlledProp.ApplyTelekinesis();
@@ -1050,11 +1056,24 @@ public class PlayerController : Singleton<PlayerController>
 
     #region Bobbing
 
+    private float usingFrequency;
     Vector3 FootStepMotion()
     {
         Vector3 pos = Vector3.zero;
-        pos.y += Mathf.Sin(Time.time * frequeny) * amplitude;
-        pos.x += Mathf.Cos(Time.time * frequeny / 2) * amplitude * 0.5f;
+        switch (state)
+        {
+            case PlayerStates.Standing:
+                usingFrequency = walkFrequency;
+                break;
+            case PlayerStates.Sprinting:
+                usingFrequency = sprintFrequency;
+                break;
+            case PlayerStates.Crouching:
+                usingFrequency = crouchFrequency;
+                break;
+        }
+        pos.y += Mathf.Sin(Time.time * usingFrequency) * amplitude;
+        pos.x += Mathf.Cos(Time.time * usingFrequency / 2) * amplitude * 0.5f;
         
 
         return pos;
@@ -1094,10 +1113,12 @@ public class PlayerController : Singleton<PlayerController>
     #endregion
 
     [SerializeField] private Transform tkSocket; // THOMAS 
+    [SerializeField] private GameObject cylinderPrefab; // THOMAS
+    [Range(0f, 5f)] [SerializeField] private float tkCylinderSize;
     private GameObject tkCylinder; // THOMAS 
     private Vector3 tkPoint; // THOMAS 
     private Collider tempColl;
-
+    
     void CreateCylinder(Collider tkColl) // THOMAS (whole method)
     {
         if (tkCylinder != null)
@@ -1107,14 +1128,11 @@ public class PlayerController : Singleton<PlayerController>
         tempColl = tkColl;
         
         tkPoint = tempColl.ClosestPoint(tkSocket.position);
-        
-        var cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        cylinder.transform.position = tkSocket.position + 0.5f * (tkPoint - tkSocket.position);
-        cylinder.transform.up = tkPoint - tkSocket.position;
-        cylinder.transform.localScale = new Vector3(0.2f, Vector3.Distance(tkPoint, tkSocket.position) / 2f, 0.2f);
-        cylinder.GetComponent<Renderer>().material.color = Color.black; // TEMPORAIRE
-        cylinder.GetComponent<CapsuleCollider>().enabled = false; // TEMPORAIRE
 
+        var cylinder = Instantiate(cylinderPrefab, tkSocket.position, Quaternion.identity);
+        
+        cylinder.transform.forward = tkPoint - tkSocket.position;
+        cylinder.transform.localScale = new Vector3(tkCylinderSize, tkCylinderSize, Vector3.Distance(tkPoint, tkSocket.position) / 2f);
         tkCylinder = cylinder;
 
         VFX_TKStart[0].Play();
@@ -1126,12 +1144,11 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (tkCylinder == null) return;
         
-        
         tkPoint = tempColl.ClosestPoint(tkSocket.position);
         VFX_TKStart[1].transform.position = tkPoint;
-        tkCylinder.transform.position = tkSocket.position + 0.5f * (tkPoint - tkSocket.position);
-        tkCylinder.transform.up = tkPoint - tkSocket.position;
-        tkCylinder.transform.localScale = new Vector3(0.2f, Vector3.Distance(tkPoint, tkSocket.position) / 2f, 0.2f);
+        tkCylinder.transform.position = tkSocket.position;
+        tkCylinder.transform.forward = tkPoint - tkSocket.position;
+        tkCylinder.transform.localScale = new Vector3(tkCylinderSize, tkCylinderSize, Vector3.Distance(tkPoint, tkSocket.position) / 2f);
     }
 
     void ThrowTKObject() // THOMAS (whole method)

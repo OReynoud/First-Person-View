@@ -816,8 +816,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   volume: {fileID: 925616782057724675}
-  maxInk: 15
-  currentInk: 5
+  maxInk: 100
+  currentInk: 90
   maxHealth: 10
   currentHealth: 0
   healPackCapacity: 4
@@ -950,7 +950,7 @@ MonoBehaviour:
   runningFOV: 58
   lerpFOV: 0.08
   surplusDrainRate: 0
-  reloadSpeed: 2
+  reloadSpeed: 1
   restingPosOffset: {x: 1, y: 1, z: 2.5}
   travelSpeed: 45
   grabDistanceBuffer: 15
@@ -960,14 +960,14 @@ MonoBehaviour:
   throwForce: 300
   inkAbsorbSpeed: 30
   amplitude: 0.0003
-  frequeny: 10
-  toggleSpeed: 0
+  crouchFrequency: 0
+  walkFrequency: 0
+  sprintFrequency: 0
   sideTilting: 0
   shootingHand: {fileID: 0}
   currentHealPackAmount: 2
   inputVelocity: {x: 0, y: 0, z: 0}
   appliedForce: 0
-  bobbing: 0
   canMove: 1
   isJumping: 0
   isGrounded: 0
@@ -976,6 +976,7 @@ MonoBehaviour:
   inSurplus: 0
   socketManager: {fileID: 0}
   tkSocket: {fileID: 300607404488667709}
+  cylinderPrefab: {fileID: 0}
 --- !u!114 &6171253402340276740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9196,6 +9197,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 1.169
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291152959630344808, guid: 4cb0ecf3c34509d4fab90534f1efd360,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7810139553860964354, guid: 4cb0ecf3c34509d4fab90534f1efd360,
         type: 3}

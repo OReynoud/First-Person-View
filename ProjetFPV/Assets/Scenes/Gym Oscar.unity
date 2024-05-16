@@ -5848,6 +5848,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &687659681 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 300607404488667709, guid: dce82ebbf28195f43941531e37b8f0be,
+    type: 3}
+  m_PrefabInstance: {fileID: 2129700201}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &690218194
 GameObject:
   m_ObjectHideFlags: 0
@@ -9580,23 +9586,38 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
         type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.84
       objectReference: {fileID: 0}
     - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
         type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.0756092
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.11
+      value: -22
       objectReference: {fileID: 0}
     - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4722032637743178541, guid: 5779a3586bb9ccf439591ca7701719f9,
         type: 3}
@@ -9617,21 +9638,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TNT Object (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213067938974385105, guid: 5779a3586bb9ccf439591ca7701719f9,
-        type: 3}
-      propertyPath: damageFallOff
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213067938974385105, guid: 5779a3586bb9ccf439591ca7701719f9,
-        type: 3}
-      propertyPath: damageToEnemy
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213067938974385105, guid: 5779a3586bb9ccf439591ca7701719f9,
-        type: 3}
-      propertyPath: damageToPlayer
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15562,6 +15568,32 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: tkSocket
+      value: 
+      objectReference: {fileID: 687659681}
+    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: cylinderPrefab
+      value: 
+      objectReference: {fileID: 3605899409314457073, guid: f8ef3f8c5ce9af644a583475d9d9b521,
+        type: 3}
+    - target: {fileID: 300607404488667709, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.074000746
+      objectReference: {fileID: 0}
+    - target: {fileID: 300607404488667709, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.1101954
+      objectReference: {fileID: 0}
+    - target: {fileID: 300607404488667709, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.17507553
+      objectReference: {fileID: 0}
     - target: {fileID: 1171924708256431230, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16113,6 +16145,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Collector
+      objectReference: {fileID: 0}
+    - target: {fileID: 2369480406398844795, guid: a4351ed800fd0824faacfef8edd666f4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6077437072790819512, guid: a4351ed800fd0824faacfef8edd666f4,
         type: 3}
