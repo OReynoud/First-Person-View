@@ -950,15 +950,16 @@ MonoBehaviour:
   runningFOV: 58
   lerpFOV: 0.08
   surplusDrainRate: 0
-  reloadSpeed: 1
+  reloadSpeed: 2
   restingPosOffset: {x: 1, y: 1, z: 2.5}
   travelSpeed: 45
   grabDistanceBuffer: 15
   holdObjectCost: 0
   holdEnemyCost: 0.5
+  holdObjectYTolerance: 0.6
   throwCost: 2
   throwForce: 300
-  inkAbsorbSpeed: 30
+  inkAbsorbSpeed: 10
   amplitude: 0.0003
   crouchFrequency: 0
   walkFrequency: 0
@@ -976,7 +977,9 @@ MonoBehaviour:
   inSurplus: 0
   socketManager: {fileID: 0}
   tkSocket: {fileID: 300607404488667709}
-  cylinderPrefab: {fileID: 0}
+  cylinderPrefab: {fileID: 3605899409314457073, guid: f8ef3f8c5ce9af644a583475d9d9b521,
+    type: 3}
+  tkCylinderSize: 2.5
 --- !u!114 &6171253402340276740
 MonoBehaviour:
   m_ObjectHideFlags: 0
