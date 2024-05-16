@@ -146,6 +146,10 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Telekinesis")] [Tooltip("Cost per second of using telekinesis on an enemy")] [SerializeField]
     private float holdEnemyCost;
+    
+    [Foldout("Telekinesis")]
+    [SerializeField]
+    [Range(0,1)]public float holdObjectYTolerance = 0.6f;
 
     [Foldout("Telekinesis")] [Tooltip("Cost of releasing an object from telekinesis")] [SerializeField]
     private float throwCost;
@@ -636,7 +640,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 var dir = offsetPosition.position - controlledProp.transform.position;
                 dir.Normalize();
-                if (playerCam.forward.y < -0.60f)
+                if (playerCam.forward.y < -holdObjectYTolerance)
                 {
                     CameraShake.instance.StopInfiniteShake();
                     controlledProp.ApplyTelekinesis();
