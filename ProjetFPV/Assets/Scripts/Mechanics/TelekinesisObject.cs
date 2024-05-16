@@ -62,13 +62,12 @@ public class TelekinesisObject : ControllableProp
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            if (other.gameObject.TryGetComponent(out Enemy enemy))
-            {
+            var enemy = other.collider.GetComponentInParent<Enemy>();
                 Debug.Log("Stunned an enemy");
                 enemy.ApplyStun();
                 
                 StartCoroutine(NotThrown());
-            }
+            
         }
     }
 

@@ -1029,10 +1029,11 @@ public class PlayerController : Singleton<PlayerController>
                         controlledProp.ApplyTelekinesis();
                         return;
                     }
-
-
-                    if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
+                    
+                    
+                    if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
                     {
+                        var enemy = hit.collider.GetComponentInParent<Enemy>();
                         if (!enemy.canBeGrabbed) return;
                         if (currentInk < 1)return;
                         controlledProp = enemy;

@@ -45,6 +45,9 @@ public class CollectorBehavior : Enemy
     [Foldout("Roam State")] [SerializeField]
     private float aggressiveFlySpeed;
 
+    [Foldout("Roam State")] [SerializeField]
+    private float idleTime;
+    
     [Foldout("Shoot State")] [SerializeField]
     private int numberOfBullets;
 
@@ -75,6 +78,7 @@ public class CollectorBehavior : Enemy
     private AnimationCurve transitionCurve = new AnimationCurve();
     [Foldout("Debug")] [SerializeField] private bool repositioning;
     [Foldout("Debug")] [SerializeField] private float timer;
+    [Foldout("Debug")] [SerializeField] private float idleTimer;
     [Foldout("Debug")] public States currentState;
     [Foldout("Debug")] [SerializeField] private float bulletTimer;
     [Foldout("Debug")] [SerializeField] private float bulletsLeft;
@@ -134,6 +138,8 @@ public class CollectorBehavior : Enemy
             agent.speed = aggressiveFlySpeed;
         }
 
+        var dir = PlayerController.instance.transform.position - transform.position;
+        RaycastHit hit;
         switch (currentState)
         {
             case States.Roam:
@@ -143,19 +149,21 @@ public class CollectorBehavior : Enemy
                     if (repositioning && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f))
                     {
                         repositioning = false;
-                        var dir = PlayerController.instance.transform.position - transform.position;
                         Debug.DrawRay(transform.position, dir.normalized * 5, Color.magenta);
-                        if (Physics.Raycast(transform.position, dir.normalized, out RaycastHit hit, aggroRange,
+                        if (Physics.Raycast(transform.position, dir.normalized, out hit, aggroRange,
                                 playerLayer))
                         {
                             if (hit.collider.gameObject.CompareTag("Player"))
                             {
+                                seenPlayer = true;
                                 agent.enabled = false;
                                 currentState = States.Shoot;
                                 Debug.Log("Player Detected");
                                 return;
                             }
                         }
+
+                        currentState = States.Repositioning;
                     }
                 }
 
@@ -166,6 +174,24 @@ public class CollectorBehavior : Enemy
                 break;
             case States.Repositioning:
                 AnimateMasks(true);
+                idleTimer += Time.deltaTime;
+                if (idleTimer >= idleTime)
+                {
+                    idleTimer = 0;
+                    currentState = States.Roam;
+                }
+                repositioning = false;
+                if (Physics.Raycast(transform.position, dir.normalized, out hit, aggroRange,
+                        playerLayer))
+                {
+                    if (hit.collider.gameObject.CompareTag("Player"))
+                    {
+                        seenPlayer = true;
+                        agent.enabled = false;
+                        currentState = States.Shoot;
+                        Debug.Log("Player Detected");
+                    }
+                }
                 break;
             case States.Shoot:
                 AnimateMasks(false);

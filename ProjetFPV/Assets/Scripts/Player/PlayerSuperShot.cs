@@ -18,7 +18,7 @@ namespace Player
         public Vector3 scale;
 
 
-        public PlayerSuperShot( float Damage, float KnockBack)
+        public PlayerSuperShot(float Damage, float KnockBack)
         {
             damage = Damage;
             knockBack = KnockBack;
@@ -39,15 +39,13 @@ namespace Player
         private void OnTriggerEnter(Collider other)
         {
             if (!ValidateHit(other)) return;
-            if (other.CompareTag("Head"))
+            if (other.CompareTag(Ex.Tag_Head))
             {
-                if (other.transform.parent.TryGetComponent(out Enemy enemy))
-                {
-                    enemy.TakeDamage(other, PlayerController.instance.playerCam.forward, damage, knockBack);
+                var enemy = other.GetComponentInParent<Enemy>();
+                enemy.TakeDamage(other, PlayerController.instance.playerCam.forward, damage, knockBack);
 
 
-                    GameManager.instance.HitMark(true);
-                }
+                GameManager.instance.HitMark(true);
             }
 
             if (other.gameObject.TryGetComponent(out IDestructible target))
@@ -68,14 +66,14 @@ namespace Player
         {
             var dir = PlayerController.instance.transform.position - other.transform.position;
             dir.Normalize();
-            Debug.DrawRay(other.transform.position,dir * 5, Color.blue, 3f);
-            
+            Debug.DrawRay(other.transform.position, dir * 5, Color.blue, 3f);
+
             Physics.Raycast(
                 other.transform.position,
                 dir,
                 out RaycastHit hit,
                 1000, mask);
-            
+
             return hit.collider.CompareTag(Ex.Tag_Player);
         }
 

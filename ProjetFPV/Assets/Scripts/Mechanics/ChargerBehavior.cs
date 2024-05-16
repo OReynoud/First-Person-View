@@ -320,7 +320,7 @@ namespace Mechanics
             foreach (var part in allMasks)
             {
                 part.maskCollider.enabled = false;
-                part.tr.DOLocalMove(origin + Vector3.down * 0.5f, disappearDuration);
+                part.tr.DOLocalMove(part.tr.localPosition + Vector3.down * 0.5f, disappearDuration);
                 part.tr.DOScale(temp * 0.8f, disappearDuration * 0.5f);
             }
 
