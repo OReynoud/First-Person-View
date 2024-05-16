@@ -469,10 +469,10 @@ public class PlayerController : Singleton<PlayerController>
     private IEnumerator Reload2()
     {
         
-        socketManager.ReloadSockets();
         reloadBasePos = shootingHand.localPosition;
         shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * ReloadHandMove, 0.4f);
         yield return new WaitForSeconds(currentInk < maxInk ? reloadSpeed : socketManager.surplusReloadTime);
+        socketManager.ReloadSockets();
         shootingHand.DOLocalMove(reloadBasePos, 0.4f);
 
         reloading = false;

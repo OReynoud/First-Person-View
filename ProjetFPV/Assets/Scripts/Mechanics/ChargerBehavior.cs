@@ -381,6 +381,7 @@ namespace Mechanics
             // }
 
             yield return new WaitForSeconds(waitAfterAttack);
+            hasDealtDamage = false;
             currentState = States.Repositioning;
         }
 
@@ -476,15 +477,17 @@ namespace Mechanics
             }
         }
 
+        private bool hasDealtDamage = false;
         private void OnCollisionEnter(Collision other)
         {
-            if (currentState != States.Attack || !other.gameObject.TryGetComponent(out PlayerController player)) return;
-            
+            if (currentState != States.Attack || !other.gameObject.TryGetComponent(out PlayerController player) || hasDealtDamage) return;
+
+            hasDealtDamage = true;
             Debug.Log("J'ai touché le joueur");
             player.TakeDamage(atkDamage);
         }
 
-        private List<Vector3> validPos;
+        private List<Vector3> validPos = new List<Vector3>();
         Vector3 GetRandomSpawnPoint()
         {
             validPos.Clear();
