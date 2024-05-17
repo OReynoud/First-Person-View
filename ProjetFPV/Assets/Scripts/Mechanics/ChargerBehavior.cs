@@ -117,12 +117,13 @@ namespace Mechanics
             origin = transform.position;
             agent = GetComponent<NavMeshAgent>();
         }
-        
 
-        
+
+        private float timeràLaCon;
         public override void Start()
         {
-            base.Start();
+            base.Start();                        
+            timeràLaCon = 0.2f;
             //agent.stoppingDistance = atkRange;
             agent.speed = wanderSpeed;
             
@@ -184,13 +185,15 @@ namespace Mechanics
                     break;
                 case States.Paralysed:
                     if (PlayerController.instance.controlledProp == this) break;
-                    //Debug.DrawRay(transform.position,Vector3.down * 1.5f);
+                    timeràLaCon -= Time.deltaTime;
+                    if (timeràLaCon > 0) break;
                     if (Physics.Raycast(transform.position,Vector3.down,1.7f,LayerMask.GetMask("Default")))
                     {
                         Debug.Log("Landed");
                         currentState = States.Rush;
                         agent.enabled = true;
                         agent.SetDestination(PlayerController.instance.transform.position);
+                        timeràLaCon = 0.2f;
                     }
                     break;
                 default:
