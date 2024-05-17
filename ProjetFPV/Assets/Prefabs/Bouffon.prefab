@@ -100,10 +100,10 @@ MonoBehaviour:
   respawnPoint: {fileID: 0}
   knockedBack: 0
   pathUpdateFrequency: 0.5
-  disappearDuration: 0.1
-  idleDuration: 1
+  disappearDuration: 0.5
+  idleDuration: 0.2
   appearDuration: 0.5
-  playerProximityTolerance: 5
+  playerProximityTolerance: 6
   spawnPositions:
   - {fileID: 0}
   - {fileID: 0}
@@ -114,14 +114,14 @@ MonoBehaviour:
   wanderFrequency: 4
   wanderSpeed: 6
   rushRange: 15
-  rushSpeed: 10
-  atkRange: 10
+  rushSpeed: 15
+  atkRange: 8
   atkDamage: 2
-  jumpOverShoot: 5
+  jumpOverShoot: 4
   jumpHeight: 2
-  jumpDuration: {x: 0.5, y: 0.8}
-  waitBeforeJump: 0.2
-  waitAfterAttack: 0.1
+  jumpDuration: {x: 0.5, y: 0.6}
+  waitBeforeJump: 0
+  waitAfterAttack: 0.3
   currentState: 0
   playerLayer:
     serializedVersion: 2
@@ -245,6 +245,31 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: -1937172835371718790, guid: 5c9bfd65936915f4194f29d19f43431d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.022
+      objectReference: {fileID: 0}
+    - target: {fileID: -1937172835371718790, guid: 5c9bfd65936915f4194f29d19f43431d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1937172835371718790, guid: 5c9bfd65936915f4194f29d19f43431d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1937172835371718790, guid: 5c9bfd65936915f4194f29d19f43431d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1937172835371718790, guid: 5c9bfd65936915f4194f29d19f43431d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -180
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5c9bfd65936915f4194f29d19f43431d,
         type: 3}
       propertyPath: m_Name
@@ -318,8 +343,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.95725
-  m_Center: {x: 0.0677367, y: 0.5870608, z: -0.18273512}
+  m_Radius: 2.13345
+  m_Center: {x: -0.05967751, y: 0.58706117, z: -0.18273517}
 --- !u!1 &515783274776720934 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7201164319274219508, guid: 5c9bfd65936915f4194f29d19f43431d,
@@ -345,8 +370,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.844636, y: 10.261984, z: 3.9127376}
-  m_Center: {x: 0.09621337, y: 5.0931478, z: -0.8629094}
+  m_Size: {x: 5.0910273, y: 10.494594, z: 3.9127376}
+  m_Center: {x: -0.2248457, y: 5.209451, z: -0.86290944}
 --- !u!4 &2067860790537050561 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5c9bfd65936915f4194f29d19f43431d,
