@@ -708,6 +708,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6473887197865536909}
   - component: {fileID: 10083582493029471}
+  - component: {fileID: 3195528043847791162}
   - component: {fileID: 6171253402340276740}
   - component: {fileID: 2788651801690148795}
   - component: {fileID: 7444262524379830578}
@@ -949,17 +950,8 @@ MonoBehaviour:
   normalFOV: 60
   runningFOV: 58
   lerpFOV: 0.08
-  surplusDrainRate: 0
   reloadSpeed: 2
   restingPosOffset: {x: 1, y: 1, z: 2.5}
-  travelSpeed: 45
-  grabDistanceBuffer: 15
-  holdObjectCost: 0
-  holdEnemyCost: 0.5
-  holdObjectYTolerance: 0.6
-  throwCost: 2
-  throwForce: 300
-  inkAbsorbSpeed: 10
   amplitude: 0.005
   crouchFrequency: 10
   walkFrequency: 10
@@ -975,7 +967,43 @@ MonoBehaviour:
   shootSpeedTimer: 0
   controlledProp: {fileID: 0}
   inSurplus: 0
+  recentlyDepletedStamina: 0
   socketManager: {fileID: 0}
+  tkManager: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  camera1: {fileID: 0}
+--- !u!114 &3195528043847791162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239935718432516662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed0ae6a53dde6b4084467d3c6314687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VFX_TKStart:
+  - {fileID: 224363733389938247}
+  - {fileID: 9165414210304266799}
+  - {fileID: 6324377235512445725}
+  - {fileID: 7697394074837728169}
+  - {fileID: 4910306077451094998}
+  - {fileID: 6981066689834466007}
+  - {fileID: 3420604456925789989}
+  VFX_TKEnd: {fileID: 2388143115255138818}
+  controlledProp: {fileID: 0}
+  travelSpeed: 45
+  grabDistanceBuffer: 15
+  holdObjectCost: 0
+  holdEnemyCost: 0
+  holdObjectYTolerance: 0.6
+  throwCost: 2
+  throwForce: 300
+  inkAbsorbSpeed: 10
   tkSocket: {fileID: 300607404488667709}
   cylinderPrefab: {fileID: 3605899409314457073, guid: f8ef3f8c5ce9af644a583475d9d9b521,
     type: 3}
