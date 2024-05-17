@@ -329,6 +329,7 @@ namespace Mechanics
             yield return new WaitForSeconds(disappearDuration + idleDuration);
             
             transform.position = GetRandomSpawnPoint() + Vector3.down * 5;
+            transform.LookAt(new Vector3(PlayerController.instance.transform.position.x, transform.position.y,PlayerController.instance.transform.position.z));
             transform.DOMove(transform.position + Vector3.up * 5, appearDuration).OnComplete(() =>
             {
                 repositioning = false;
@@ -364,22 +365,16 @@ namespace Mechanics
             agent.enabled = false;
             Debug.Log("j'attaque le joueur");
             yield return new WaitForSeconds(waitBeforeJump);
-            transform.rotation = Quaternion.Euler(40,transform.eulerAngles.y,transform.eulerAngles.z);
 
             var calcJumpTime = (Vector3.Distance(transform.position, playerPos) * jumpDuration.y)/atkRange;
             if (calcJumpTime < jumpDuration.x) calcJumpTime = jumpDuration.x;
             jumpTween = transform.DOJump(actualDestination + transform.forward * jumpOverShoot, jumpHeight, 1, calcJumpTime);
+            
+            transform.rotation = Quaternion.Euler(40,transform.eulerAngles.y,transform.eulerAngles.z);
             jumpRotationTween = transform.DORotate(new Vector3(0,transform.eulerAngles.y,transform.eulerAngles.z) , calcJumpTime);
             yield return new WaitForSeconds(calcJumpTime);
-            // var colliders = Physics.OverlapSphere(transform.position , 2f, playerLayer);
-            // foreach (var col in colliders)
-            // {
-            //     if (col.TryGetComponent(out PlayerController player))
-            //     {
-            //         player.TakeDamage(atkDamage);
-            //     }
-            // }
-
+            
+            
             yield return new WaitForSeconds(waitAfterAttack);
             hasDealtDamage = false;
             currentState = States.Repositioning;
