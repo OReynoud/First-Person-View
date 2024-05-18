@@ -831,7 +831,7 @@ MonoBehaviour:
   rightHand: {fileID: 5165173587874108569}
   telekinesisPointer: {fileID: 1055164273525986397}
   offsetPosition: {fileID: 8918532052287260627}
-  restingPosOffset: {x: 1, y: 1, z: 2.5}
+  restingPosOffset: {x: 1, y: 0.5, z: 2.5}
   standingCollider: {fileID: 7813115355682138035}
   crouchedCollider: {fileID: 4500119090424759972}
   VFX_TKStart:
@@ -996,7 +996,8 @@ MonoBehaviour:
   - {fileID: 3420604456925789989}
   VFX_TKEnd: {fileID: 2388143115255138818}
   controlledProp: {fileID: 0}
-  travelSpeed: 45
+  regularTravelSpeed: 35
+  heavyTravelSpeed: 10
   grabDistanceBuffer: 15
   holdObjectCost: 0
   holdEnemyCost: 1
