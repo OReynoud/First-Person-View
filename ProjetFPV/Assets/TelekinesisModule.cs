@@ -112,6 +112,8 @@ public class TelekinesisModule : MonoBehaviour
 
             case AbsorbInk absorbInk:
                 absorbInk.storedInk -= inkAbsorbSpeed * Time.deltaTime;
+                main.currentInk =
+                    GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, inkAbsorbSpeed * Time.deltaTime);
                 var lerpValue = Mathf.Clamp(1 - absorbInk.storedInk / absorbInk.maxInk, 0, 0.8f);
                 absorbInk.transform.localScale = Vector3.Lerp(absorbInk.baseScale, Vector3.zero, lerpValue);
 
@@ -133,7 +135,7 @@ public class TelekinesisModule : MonoBehaviour
             case Enemy enemy:
                 
                 main.currentInk =
-                    GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, -holdEnemyCost);
+                    GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, -holdEnemyCost * Time.deltaTime);
                 
                 tempWorldToScreen = main.camera1.WorldToScreenPoint(controlledProp.transform.position);
                 if (tempWorldToScreen.x < 0 || tempWorldToScreen.x > Screen.width ||
@@ -176,7 +178,7 @@ public class TelekinesisModule : MonoBehaviour
                 break;
         }
 
-        if (main.currentInk < 1)
+        if (main.currentInk <= 0.1f)
         {
             CameraShake.instance.StopInfiniteShake();
             controlledProp.ApplyTelekinesis();
