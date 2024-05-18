@@ -20,12 +20,7 @@ public class ControllableProp : MonoBehaviour
         body = GetComponent<Rigidbody>();
         canBeGrabbed = true;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 
     public virtual void ApplyTelekinesis()
     {

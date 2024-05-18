@@ -99,7 +99,14 @@ public class TelekinesisModule : MonoBehaviour
                 controlledProp.ApplyTelekinesis();
                 return;
             }
-                    
+             
+            if (hit.collider.TryGetComponent(out UnstableObject unstable))
+            {
+                if (!unstable.canBeGrabbed) return;
+                controlledProp = unstable;
+                controlledProp.ApplyTelekinesis();
+                return;
+            }
                     
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
@@ -299,6 +306,9 @@ public class TelekinesisModule : MonoBehaviour
             case HeavyObject heavy:
                 Release_HeavyObject();
                 break;
+            case UnstableObject unstable:
+                Release_ObjectToFall(unstable);
+                break;
         }
 
         if (main.currentInk < 0) main.currentInk = 0;
@@ -360,9 +370,9 @@ public class TelekinesisModule : MonoBehaviour
         controlledProp.isGrabbed = false;
         controlledProp.ApplyTelekinesis();
     }
-    public void Release_ObjectToFall()
+    public void Release_ObjectToFall(UnstableObject unstable)
     {
-        
+        controlledProp.ApplyTelekinesis();
     }
     
     [SerializeField] private Transform tkSocket; // THOMAS 
