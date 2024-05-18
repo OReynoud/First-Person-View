@@ -248,18 +248,15 @@ public class TelekinesisModule : MonoBehaviour
     {                
         var dir = transform.position + transform.forward * heavy.restingDistanceToPlayer - controlledProp.transform.position;
         dir.Normalize();
-        if (!controlledProp.isGrabbed)
-        {
-            controlledProp.body.velocity = dir * regularTravelSpeed;
-        }
-        else
-        {
-            controlledProp.body.velocity = dir * (regularTravelSpeed *
-                                                  (Vector3.Distance(controlledProp.transform.position,
-                                                      offsetPosition.position) / grabDistanceBuffer));
-            return;
-        }
 
+        var magnitude = Mathf.Clamp(heavyTravelSpeed *
+                         (Vector3.Distance(controlledProp.transform.position,
+                             offsetPosition.position) / grabDistanceBuffer),heavyTravelSpeed * 0.3f,heavyTravelSpeed * 2f);
+        
+        controlledProp.body.velocity = dir * magnitude;
+        
+
+        if (controlledProp.isGrabbed) return;
         if (grabDistanceBuffer > Vector3.Distance(controlledProp.transform.position, transform.position + transform.forward * heavy.restingDistanceToPlayer))
         {
             controlledProp.isGrabbed = true;
@@ -298,6 +295,9 @@ public class TelekinesisModule : MonoBehaviour
             
             case AbsorbInk absorbInk:
                 Release_AbsorbInk(absorbInk);
+                break;
+            case HeavyObject heavy:
+                Release_HeavyObject();
                 break;
         }
 
@@ -357,7 +357,8 @@ public class TelekinesisModule : MonoBehaviour
     
     public void Release_HeavyObject()
     {
-        
+        controlledProp.isGrabbed = false;
+        controlledProp.ApplyTelekinesis();
     }
     public void Release_ObjectToFall()
     {

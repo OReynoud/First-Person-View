@@ -1,11 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HeavyObject : ControllableProp
 {
-    public float restingDistanceToPlayer;
+    public float restingDistanceToPlayer = 5;
     // Start is called before the first frame update
+
+    public void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawSphere(transform.position + transform.forward * restingDistanceToPlayer, 0.1f);
+    }
+
     public override void Awake()
     {
         base.Awake();
@@ -15,15 +22,13 @@ public class HeavyObject : ControllableProp
     {
         body.useGravity = !body.useGravity;
 
-        if (gameObject.layer == LayerMask.NameToLayer("Default"))
+        if (!body.useGravity)
         {
-            gameObject.layer = LayerMask.NameToLayer("Telekinesis");
             body.constraints = RigidbodyConstraints.FreezeRotation;
         }
         else
         {
             body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-            gameObject.layer = LayerMask.NameToLayer("Default");
         }
     }
 }
