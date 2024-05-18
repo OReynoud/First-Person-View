@@ -53,6 +53,13 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Refs")] [SerializeField] private Transform rightHand;
     [Foldout("Refs")] [SerializeField] private RectTransform telekinesisPointer;
     [Foldout("Refs")] [SerializeField] public Transform offsetPosition;
+    [Foldout("Refs")]
+    [InfoBox(
+        "Blue ball indicates the resting Position (Must be updated manually in editor via the button 'Update Resting Pos' at the bottom, otherwise updates automatically in play mode)")]
+    [Label("RestingPos")]
+    [SerializeField]
+    private Vector3 restingPosOffset;
+    
 
     [Foldout("Refs")] [SerializeField] public CapsuleCollider standingCollider;
     [Foldout("Refs")] [SerializeField] private CapsuleCollider crouchedCollider;
@@ -117,15 +124,7 @@ public class PlayerController : Singleton<PlayerController>
 
     #endregion
 
-    #region Telekinesis Variables
 
-    [Foldout("Telekinesis")]
-    [InfoBox(
-        "Blue ball indicates the resting Position (Must be updated manually in editor via the button 'Update Resting Pos' at the bottom, otherwise updates automatically in play mode)")]
-    [Label("RestingPos")]
-    [SerializeField]
-    private Vector3 restingPosOffset;
-    #endregion
 
     #region Bobbing Variables
 

@@ -831,6 +831,7 @@ MonoBehaviour:
   rightHand: {fileID: 5165173587874108569}
   telekinesisPointer: {fileID: 1055164273525986397}
   offsetPosition: {fileID: 8918532052287260627}
+  restingPosOffset: {x: 1, y: 1, z: 2.5}
   standingCollider: {fileID: 7813115355682138035}
   crouchedCollider: {fileID: 4500119090424759972}
   VFX_TKStart:
@@ -951,7 +952,6 @@ MonoBehaviour:
   runningFOV: 58
   lerpFOV: 0.08
   reloadSpeed: 2
-  restingPosOffset: {x: 1, y: 0.5, z: 2.5}
   amplitude: 0.005
   crouchFrequency: 10
   walkFrequency: 10
@@ -999,7 +999,7 @@ MonoBehaviour:
   travelSpeed: 45
   grabDistanceBuffer: 15
   holdObjectCost: 0
-  holdEnemyCost: 0
+  holdEnemyCost: 1
   holdObjectYTolerance: 0.6
   throwCost: 2
   throwForce: 300
