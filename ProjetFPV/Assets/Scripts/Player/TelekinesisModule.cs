@@ -17,8 +17,11 @@ public class TelekinesisModule : MonoBehaviour
 
     private Transform offsetPosition;
     
-    [Foldout("Telekinesis")] [Tooltip("How fast the targeted object travels to the resting position")] [SerializeField]
-    private float travelSpeed;
+    [Foldout("Telekinesis")] [Tooltip("How fast the targeted TelekinesisObject travels to the resting position")] [SerializeField]
+    private float regularTravelSpeed;
+    
+    [Foldout("Telekinesis")] [Tooltip("How fast the targeted HeavyObject travels to the resting position")] [SerializeField]
+    private float heavyTravelSpeed;
 
     [Foldout("Telekinesis")]
     [Tooltip(
@@ -64,7 +67,55 @@ public class TelekinesisModule : MonoBehaviour
     {
         UpdateTKCylinder();
     }
+    public void FindControllableProp()
+    {
+        if (Physics.Raycast(main.playerCam.position, main.playerCam.forward, out RaycastHit hit, main.socketManager.maxRange, main.socketManager.shootMask))
+        {
+            CameraShake.instance.ShakeOneShot(2);
+            if (hit.collider.TryGetComponent(out TelekinesisObject TK))
+            {
+                if (!TK.canBeGrabbed) return;
+                controlledProp = TK;
+                controlledProp.ApplyTelekinesis();
 
+                CreateCylinder(hit.collider); // THOMAS
+                return;
+            }
+            
+            if (hit.collider.TryGetComponent(out HeavyObject heavy))
+            {
+                if (!heavy.canBeGrabbed) return;
+                controlledProp = heavy;
+                controlledProp.ApplyTelekinesis();
+
+                CreateCylinder(hit.collider); // THOMAS
+                return;
+            }
+
+            if (hit.collider.TryGetComponent(out AbsorbInk absorb))
+            {
+                if (!absorb.canBeGrabbed) return;
+                controlledProp = absorb;
+                controlledProp.ApplyTelekinesis();
+                return;
+            }
+                    
+                    
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            {
+                var enemy = hit.collider.GetComponentInParent<Enemy>();
+                if (!enemy.canBeGrabbed) return;
+                if (main.currentInk < 1)return;
+                controlledProp = enemy;
+                controlledProp.ApplyTelekinesis();
+                        
+                CreateCylinder(hit.collider);
+                return;
+            }
+
+
+        }
+    }
 
     private Vector3 tempWorldToScreen;
 
@@ -91,11 +142,11 @@ public class TelekinesisModule : MonoBehaviour
 
                 if (!controlledProp.isGrabbed)
                 {
-                    controlledProp.body.velocity = dir * travelSpeed;
+                    controlledProp.body.velocity = dir * regularTravelSpeed;
                 }
                 else
                 {
-                    controlledProp.body.velocity = dir * (travelSpeed *
+                    controlledProp.body.velocity = dir * (regularTravelSpeed *
                                                           (Vector3.Distance(controlledProp.transform.position,
                                                               offsetPosition.position) / grabDistanceBuffer));
                     return;
@@ -176,6 +227,10 @@ public class TelekinesisModule : MonoBehaviour
                 }
 
                 break;
+            
+            case HeavyObject heavy:
+                Hold_HeavyObject(heavy);
+                return;
         }
 
         if (main.currentInk <= 0.1f)
@@ -188,43 +243,27 @@ public class TelekinesisModule : MonoBehaviour
         }
     }
 
-    public void FindControllableProp()
-    {
-        if (Physics.Raycast(main.playerCam.position, main.playerCam.forward, out RaycastHit hit, main.socketManager.maxRange, main.socketManager.shootMask))
+
+    void Hold_HeavyObject(HeavyObject heavy)
+    {                
+        var dir = transform.position + transform.forward * heavy.restingDistanceToPlayer - controlledProp.transform.position;
+        dir.Normalize();
+        if (!controlledProp.isGrabbed)
         {
-            CameraShake.instance.ShakeOneShot(2);
-            if (hit.collider.TryGetComponent(out TelekinesisObject TK))
-            {
-                if (!TK.canBeGrabbed) return;
-                controlledProp = TK;
-                controlledProp.ApplyTelekinesis();
+            controlledProp.body.velocity = dir * regularTravelSpeed;
+        }
+        else
+        {
+            controlledProp.body.velocity = dir * (regularTravelSpeed *
+                                                  (Vector3.Distance(controlledProp.transform.position,
+                                                      offsetPosition.position) / grabDistanceBuffer));
+            return;
+        }
 
-                CreateCylinder(hit.collider); // THOMAS
-                return;
-            }
-
-            if (hit.collider.TryGetComponent(out AbsorbInk absorb))
-            {
-                if (!absorb.canBeGrabbed) return;
-                controlledProp = absorb;
-                controlledProp.ApplyTelekinesis();
-                return;
-            }
-                    
-                    
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-            {
-                var enemy = hit.collider.GetComponentInParent<Enemy>();
-                if (!enemy.canBeGrabbed) return;
-                if (main.currentInk < 1)return;
-                controlledProp = enemy;
-                controlledProp.ApplyTelekinesis();
-                        
-                CreateCylinder(hit.collider);
-                return;
-            }
-
-
+        if (grabDistanceBuffer > Vector3.Distance(controlledProp.transform.position, transform.position + transform.forward * heavy.restingDistanceToPlayer))
+        {
+            controlledProp.isGrabbed = true;
+            CameraShake.instance.StartInfiniteShake(0);
         }
     }
     
