@@ -120,6 +120,7 @@ namespace Mechanics
             {
                 if (partHit != allMasks[i].maskCollider)continue;
 
+                GameManager.instance.VFX_EnemyHitMethod(partHit.transform.position);
                 allMasks[i].maskHealth -= damage;
                 if ( allMasks[i].maskHealth <= 0)
                 {
@@ -146,7 +147,8 @@ namespace Mechanics
             for (int i = 0; i < allMasks.Length; i++)
             {
                 if (maskCollider != allMasks[i].maskCollider)continue;
-
+                
+                GameManager.instance.VFX_EnemyHitMethod(pointOfForce);
                 allMasks[i].maskHealth -= damage;
                 if ( allMasks[i].maskHealth <= 0)
                 {

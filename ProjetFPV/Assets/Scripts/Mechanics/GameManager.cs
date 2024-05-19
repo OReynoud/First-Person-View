@@ -25,6 +25,7 @@ namespace Mechanics
         [SerializeField] public TextMeshProUGUI interactText;
         [SerializeField] public GameObject gameOver;
         [SerializeField] public GameObject inkStainDecal;
+        [SerializeField] public ParticleSystem[] VFX_EnemyHit;
         
 
         public AbsorbInk inkStainPrefab;
@@ -203,6 +204,13 @@ namespace Mechanics
         public void Reload()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        public void VFX_EnemyHitMethod(Vector3 position)
+        {
+            VFX_EnemyHit[0].transform.position = position;
+            VFX_EnemyHit[0].transform.LookAt(PlayerController.instance.transform.position);
+            VFX_EnemyHit[0].Play();
         }
     }
 }
