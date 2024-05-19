@@ -86,6 +86,8 @@ namespace Mechanics
         public States currentState;
         private bool repositioning;
         private Coroutine attackRoutine;
+
+#if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
             Handles.color = Color.green;
@@ -104,6 +106,8 @@ namespace Mechanics
             Handles.color = Color.magenta;
             Handles.DrawWireDisc(transform.position, Vector3.up, atkRange, 2);
         }
+        
+#endif
         
         
         

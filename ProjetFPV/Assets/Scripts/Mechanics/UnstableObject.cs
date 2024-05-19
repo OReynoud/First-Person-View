@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
 using Mechanics;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -47,7 +48,7 @@ public class UnstableObject : ControllableProp
     float yPos; 
     float xPos;
     Vector3 aimedPos;
-
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     { 
         if(EditorApplication.isPlaying ) return;
@@ -77,7 +78,6 @@ public class UnstableObject : ControllableProp
         }
 
     }
-
     private async void Start()
     {
         await Task.Delay(100);
@@ -86,6 +86,9 @@ public class UnstableObject : ControllableProp
             Topple();
         }
     }
+#endif
+
+
 
 
     private bool hitPlayer;

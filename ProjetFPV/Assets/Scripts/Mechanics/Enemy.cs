@@ -39,10 +39,14 @@ namespace Mechanics
 
         private float knockBackTimer = 0;
         public bool knockedBack;
+
+#if UNITY_EDITOR
         private void OnValidate()
         {
             maskCount = allMasks.Length;
         }
+        
+#endif
 
 
         // Start is called before the first frame update
