@@ -247,6 +247,7 @@ public class TelekinesisModule : MonoBehaviour
             controlledProp.isGrabbed = false;
             controlledProp = null;
             main.recentlyDepletedStamina = true;
+            main.animManager.LeftHand_Release();
         }
     }
 
@@ -288,6 +289,7 @@ public class TelekinesisModule : MonoBehaviour
             controlledProp.isGrabbed = false;
             controlledProp = null;
             main.recentlyDepletedStamina = true;
+            main.animManager.LeftHand_Release();
             return;
         }
 
@@ -315,6 +317,7 @@ public class TelekinesisModule : MonoBehaviour
         StartCoroutine(controlledProp.BufferGrabbing());
         controlledProp = null;
         CameraShake.instance.StopInfiniteShake();
+        main.animManager.LeftHand_Release();
     }
 
     public void Release_TKObject()

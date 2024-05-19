@@ -200,6 +200,7 @@ public class PlayerController : Singleton<PlayerController>
     [HideInInspector] public bool recentlyDepletedStamina = false;
     [HideInInspector] public ShootingHand socketManager;
     [HideInInspector] public TelekinesisModule tkManager;
+    [HideInInspector] public AnimHandsController animManager;
 
     #endregion
 
@@ -252,14 +253,16 @@ public class PlayerController : Singleton<PlayerController>
     public override void Awake()
     {
         base.Awake();
-        rb = GetComponent<Rigidbody>();
         camera1 = Camera.main;
+        rb = GetComponent<Rigidbody>();
         inputs = GetComponent<PlayerInput>();
+        socketManager = GetComponent<ShootingHand>();
+        tkManager = GetComponent<TelekinesisModule>();
+        animManager = GetComponent<AnimHandsController>();
+        
         inputs.actions.Enable();
         currentControls = inputs.actions.FindActionMap(currentInputMap);
-        socketManager = GetComponent<ShootingHand>();
 
-        playerLayer = LayerMask.GetMask("Player") + socketManager.shootMask;
 
         RegisterInputs();
 
@@ -269,7 +272,8 @@ public class PlayerController : Singleton<PlayerController>
 
         startPos = camera1.transform.localPosition;
         currentHealth = maxHealth;
-        tkManager = GetComponent<TelekinesisModule>();
+        
+        playerLayer = LayerMask.GetMask("Player") + socketManager.shootMask;
     }
     
     public void TakeDamage(float damage)
@@ -438,9 +442,12 @@ public class PlayerController : Singleton<PlayerController>
     {
         
         reloadBasePos = shootingHand.localPosition;
-        shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * ReloadHandMove, 0.4f);
+        //shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * ReloadHandMove, 0.4f);
+        animManager.RightHand_ReloadStart();
         yield return new WaitForSeconds(currentInk < maxInk ? reloadSpeed : socketManager.surplusReloadTime);
         socketManager.ReloadSockets();
+        
+        animManager.RightHand_ReloadEnd();
         shootingHand.DOLocalMove(reloadBasePos, 0.4f);
 
         reloading = false;
@@ -776,6 +783,7 @@ public class PlayerController : Singleton<PlayerController>
             {
                 
                 tkManager.FindControllableProp();
+                if(tkManager.controlledProp)animManager.LeftHand_Grab();
                 return;
             }
 

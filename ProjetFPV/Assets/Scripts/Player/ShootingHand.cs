@@ -166,7 +166,7 @@ public class ShootingHand : MonoBehaviour
 
 
         if (noBullets)
-            player.RequestReload(new InputAction.CallbackContext());
+            player.animManager.ChainShootToReload();
 
         currentSocket.highlightMesh.enabled = true;
     }
@@ -214,7 +214,7 @@ public class ShootingHand : MonoBehaviour
     public void ShootWithSocket(Transform cam, Transform origin)
     {
         CameraShake.instance.ShakeOneShot(1);
-
+        player.animManager.RightHand_Shoot();
         if (currentSocket.state == SocketStates.SuperCharged)
         {
             SurplusShot();
