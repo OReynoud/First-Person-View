@@ -90,11 +90,11 @@ public class ShootingHand : MonoBehaviour
         currentSocket = sockets[0];
         foreach (var ammo in sockets)
         {
-            ammo.highlightMesh.enabled = false;
+            //ammo.highlightMesh.enabled = false;
             ammo.state = SocketStates.Loaded;
         }
 
-        currentSocket.highlightMesh.enabled = true;
+        //currentSocket.highlightMesh.enabled = true;
 
 
         ParticleSystem oui = new ParticleSystem();
@@ -109,7 +109,6 @@ public class ShootingHand : MonoBehaviour
         hitConeSize = superShot.transform.parent.transform.localScale;
     }
 
-    //private ParticleSystem
     [HideInInspector] public bool noBullets;
 
     [HideInInspector] public bool overheated;
@@ -141,18 +140,18 @@ public class ShootingHand : MonoBehaviour
 
         if (player.inSurplus)
         {
-            currentSocket.highlightMesh.enabled = false;
+            //currentSocket.highlightMesh.enabled = false;
             currentSocket = sockets[0];
             currentSocket.state = SocketStates.SuperCharged;
             currentSocket.socketMesh.material = superChargedSocket;
-            currentSocket.highlightMesh.enabled = true;
+            //currentSocket.highlightMesh.enabled = true;
             noBullets = false;
         }
     }
 
     void UpdateCurrentSocket() //Pouce, majeur, annulaire, auriculaire. Haha je suis drole
     {
-        currentSocket.highlightMesh.enabled = false;
+        //currentSocket.highlightMesh.enabled = false;
         currentSocket.socketMesh.material = emptySocket;
         currentSocket.state = SocketStates.Empty;
         noBullets = true;
@@ -168,7 +167,7 @@ public class ShootingHand : MonoBehaviour
         if (noBullets)
             player.animManager.ChainShootToReload();
 
-        currentSocket.highlightMesh.enabled = true;
+        //currentSocket.highlightMesh.enabled = true;
     }
 
     private float decrement = 0;
@@ -199,12 +198,12 @@ public class ShootingHand : MonoBehaviour
         }
 
         noBullets = false;
-        currentSocket.highlightMesh.enabled = false;
+        //currentSocket.highlightMesh.enabled = false;
         foreach (var ammo in sockets)
         {
             if (ammo.state == SocketStates.Empty) continue;
             currentSocket = ammo;
-            currentSocket.highlightMesh.enabled = true;
+            //currentSocket.highlightMesh.enabled = true;
             break;
         }
     }
@@ -260,7 +259,7 @@ public class ShootingHand : MonoBehaviour
             }
             else
             {
-                var bullet = Instantiate(bulletPrefab, origin.position + origin.up * 0.5f, Quaternion.identity);
+                var bullet = Instantiate(bulletPrefab, origin.position - origin.right * 0.5f, Quaternion.identity);
                 bullet.transform.LookAt(hit.point);
 
                 bullet.rb.velocity = bullet.transform.forward * bulletSpeed;
