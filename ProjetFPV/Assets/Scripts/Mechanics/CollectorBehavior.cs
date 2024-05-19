@@ -284,7 +284,7 @@ public class CollectorBehavior : Enemy
         bulletsLeft--;
         bulletTimer = 0;
         var rand = Random.Range(0, bulletSpawnPos.Length);
-        var dir = PlayerController.instance.transform.position - bulletSpawnPos[rand].position;
+        var dir = PlayerController.instance.playerCam.position - bulletSpawnPos[rand].position + new Vector3(Random.Range(-0.5f,0.5f),Random.Range(-0.5f,0.5f),0);
         Debug.DrawRay( bulletSpawnPos[rand].position,dir.normalized * 10, Color.cyan, 5);
         var bullet = Instantiate(bulletPrefab, bulletSpawnPos[rand].position, Quaternion.LookRotation(dir.normalized));
         bullet_VFX[0].transform.position = bulletSpawnPos[rand].position;
