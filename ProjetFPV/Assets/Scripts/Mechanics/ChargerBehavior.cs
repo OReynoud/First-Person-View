@@ -174,8 +174,12 @@ namespace Mechanics
                     {
                         pathRoutine = StartCoroutine(SetAgentDestination());
                     }
-                    if (Vector3.Distance(PlayerController.instance.transform.position, transform.position) < atkRange)
+                    var dir = PlayerController.instance.transform.position - transform.position;
+                    if (Physics.Raycast(transform.position, dir.normalized, out RaycastHit hit, rushRange, playerLayer) 
+                        && 
+                        Vector3.Distance(PlayerController.instance.transform.position, transform.position) < atkRange)
                     {
+                        if (!hit.collider.gameObject.CompareTag("Player")) break;
                         attackRoutine = StartCoroutine(AttackPlayer());
                     }
 

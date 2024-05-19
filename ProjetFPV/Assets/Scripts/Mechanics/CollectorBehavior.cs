@@ -41,6 +41,8 @@ public class CollectorBehavior : Enemy
 
     [Foldout("Roam State")] [SerializeField]
     private float aggroRange;
+    [Foldout("Roam State")] [SerializeField]
+    private float aggressiveAggroRange;
 
     [Foldout("Roam State")] [SerializeField]
     private float flySpeed;
@@ -128,6 +130,8 @@ public class CollectorBehavior : Enemy
             main.startSpeed = bulletSpeed;
             vfx.Stop();
         }
+
+        aggressiveAggroRange = aggroRange * 5;
     }
 
     public override void Start()
@@ -150,6 +154,7 @@ public class CollectorBehavior : Enemy
         if (seenPlayer)
         {
             agent.speed = aggressiveFlySpeed;
+            aggroRange = aggressiveAggroRange;
         }
 
         var dir = PlayerController.instance.transform.position - transform.position;
@@ -219,6 +224,7 @@ public class CollectorBehavior : Enemy
             case States.Stunned:
                 break;
             case States.Paralysed:
+                seenPlayer = true;
                 AnimateMasks(false);
                 break;
             case States.KnockBack:
@@ -357,6 +363,7 @@ public class CollectorBehavior : Enemy
     {
         if (currentState != States.Stunned)
         {
+            seenPlayer = true;
             currentState = States.Stunned;
             StartCoroutine(Stun());
         }
