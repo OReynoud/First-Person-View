@@ -95,6 +95,7 @@ public class UnstableObject : ControllableProp
 
     private void OnCollisionEnter(Collision other)
     {
+        if (!toppled)return;
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             var enemy = other.collider.GetComponentInParent<Enemy>();
@@ -109,6 +110,7 @@ public class UnstableObject : ControllableProp
 
     private void OnCollisionStay(Collision other)
     {
+        if (!toppled)return;
         Debug.Log("Poussez");
         if (other.gameObject.TryGetComponent(out PlayerController player))
         {
@@ -123,6 +125,7 @@ public class UnstableObject : ControllableProp
 
     private void OnCollisionExit(Collision other)
     {    
+        if (!toppled)return;
         if (other.gameObject.TryGetComponent(out PlayerController player))
         {
             var dir = player.transform.position - transform.position;
