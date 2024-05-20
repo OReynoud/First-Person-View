@@ -140,14 +140,17 @@ namespace Mechanics
 
             if (bodyHit)
             {
-                tempRandom = Random.Range(0, allMasks.Length);
-                allMasks[tempRandom].maskHealth -= damage;
-                if ( allMasks[tempRandom].maskHealth <= 0)
+                foreach (var mask in allMasks)
                 {
-                    GameManager.instance.VFX_EnemyHitMethod(allMasks[tempRandom].maskCollider.transform.position);
-                    allMasks[tempRandom].maskCollider.gameObject.SetActive(false);
-                    allMasks[tempRandom].broken = true;
-                    maskCount--;
+                    if (mask.broken)continue;
+                    mask.maskHealth -= damage;
+                    if ( mask.maskHealth <= 0)
+                    {
+                        GameManager.instance.VFX_EnemyHitMethod(allMasks[tempRandom].maskCollider.transform.position);
+                        mask.maskCollider.gameObject.SetActive(false);
+                        mask.broken = true;
+                        maskCount--;
+                    }
                 }
             }
 
