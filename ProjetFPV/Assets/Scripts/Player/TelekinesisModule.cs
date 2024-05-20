@@ -140,10 +140,12 @@ public class TelekinesisModule : MonoBehaviour
                 if (main.playerCam.forward.y < -holdObjectYTolerance)
                 {
                     CameraShake.instance.StopInfiniteShake();
+                    main.recentlyDepletedStamina = true;
                     controlledProp.ApplyTelekinesis();
                     controlledProp.isGrabbed = false;
                     controlledProp = null;
-                    main.recentlyDepletedStamina = true;
+                    ThrowTKObject();
+                    main.animManager.LeftHand_Release();
                     return;
                 }
 
@@ -248,6 +250,7 @@ public class TelekinesisModule : MonoBehaviour
             controlledProp = null;
             main.recentlyDepletedStamina = true;
             main.animManager.LeftHand_Release();
+            ThrowTKObject();
         }
     }
 
@@ -285,10 +288,10 @@ public class TelekinesisModule : MonoBehaviour
         if (main.currentInk < 1)
         {
             CameraShake.instance.StopInfiniteShake();
+            main.recentlyDepletedStamina = true;
             controlledProp.ApplyTelekinesis();
             controlledProp.isGrabbed = false;
             controlledProp = null;
-            main.recentlyDepletedStamina = true;
             main.animManager.LeftHand_Release();
             return;
         }
@@ -416,7 +419,7 @@ public class TelekinesisModule : MonoBehaviour
         tkCylinder.transform.localScale = new Vector3(tkCylinderSize, tkCylinderSize, Vector3.Distance(tkPoint, tkSocket.position) / 2f);
     }
 
-    void ThrowTKObject() // THOMAS (whole method)
+    public void ThrowTKObject() // THOMAS (whole method)
     {
         if (tkCylinder == null) return;
         foreach (var vfx in VFX_TKStart)

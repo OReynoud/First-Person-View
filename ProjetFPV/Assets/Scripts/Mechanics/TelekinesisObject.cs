@@ -34,7 +34,13 @@ public class TelekinesisObject : ControllableProp
         else
         {
             gameObject.layer = LayerMask.NameToLayer("Default");
-            thrown = PlayerController.instance.playerCam.forward.y > -0.70f;
+            if (PlayerController.instance.recentlyDepletedStamina)
+            {
+                thrown = false;
+                return;
+            }
+            thrown = PlayerController.instance.playerCam.forward.y > -PlayerController.instance.tkManager.holdObjectYTolerance;
+            
         }
     }
 
