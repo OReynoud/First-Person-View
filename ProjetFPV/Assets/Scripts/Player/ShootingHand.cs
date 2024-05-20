@@ -39,8 +39,10 @@ public class ShootingHand : MonoBehaviour
 
     [ShowIf("useHitScan")] [Foldout("Shoot")] [SerializeField] 
     private float trailTime;
-    [Foldout("Shoot")] [SerializeField] private float damage;
-    [Foldout("Shoot")] [SerializeField] private float knockBack;
+    [Foldout("Shoot")] [SerializeField] private float weakSpotDamage;
+    [Foldout("Shoot")] [SerializeField] private float weakSpotKnockBack;
+    [Foldout("Shoot")] [SerializeField] private float bodyDamage;
+    [Foldout("Shoot")] [SerializeField] private float bodyKnockBack;
 
     [Foldout("Surplus")] [SerializeField] private float surplusShotDamage;
     [Foldout("Surplus")] [SerializeField] private float surplusKnockBack;
@@ -237,7 +239,7 @@ public class ShootingHand : MonoBehaviour
                 {
                     if (hit.collider.transform.parent.TryGetComponent(out Enemy enemy))
                     {
-                        enemy.TakeDamage(hit.collider, cam.forward, damage, knockBack);
+                        enemy.TakeDamage(hit.collider, cam.forward, weakSpotDamage, weakSpotKnockBack);
                         GameManager.instance.HitMark(true);
                     }
                 }
@@ -264,8 +266,10 @@ public class ShootingHand : MonoBehaviour
 
                 bullet.rb.velocity = bullet.transform.forward * bulletSpeed;
                 bullet.superShot = currentSocket.state == SocketStates.SuperCharged;
-                bullet.damage = damage;
-                bullet.knockBack = knockBack;
+                bullet.weakSpotDamage = weakSpotDamage;
+                bullet.bodyDamage = bodyDamage;
+                bullet.bodyKnockBack = bodyKnockBack;
+                bullet.weakSpotKnockBack = weakSpotKnockBack;
 
                 bullet.meshRenderer.material =
                     currentSocket.state == SocketStates.SuperCharged ? superChargedSocket : loadedSocket;

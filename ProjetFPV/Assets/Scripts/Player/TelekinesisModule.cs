@@ -85,6 +85,7 @@ public class TelekinesisModule : MonoBehaviour
             if (hit.collider.TryGetComponent(out HeavyObject heavy))
             {
                 if (!heavy.canBeGrabbed) return;
+                if (main.playerCam.forward.y < -holdObjectYTolerance)return;
                 controlledProp = heavy;
                 controlledProp.ApplyTelekinesis();
 
