@@ -33,9 +33,9 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] //[ProgressBar("maxInk", EColor.Green)]
     public float currentInk;
     
-    [SerializeField] private int maxHealth = 10; 
+    [SerializeField] public int maxHealth = 10; 
     [SerializeField] [ProgressBar("maxHealth", EColor.Red)]
-    private float currentHealth;
+    public float currentHealth;
     [SerializeField] public int healPackCapacity;
     [SerializeField] private float healAmount;
     //[SerializeField] private float timeToRegenerateHealth;
