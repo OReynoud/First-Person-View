@@ -146,7 +146,7 @@ public class TelekinesisModule : MonoBehaviour
                     controlledProp.isGrabbed = false;
                     controlledProp = null;
                     ThrowTKObject();
-                    main.animManager.LeftHand_Release();
+                    main.animManager.LeftHand_Reset();
                     return;
                 }
 
@@ -294,7 +294,7 @@ public class TelekinesisModule : MonoBehaviour
             controlledProp.body.velocity *= 0.1f;
             controlledProp.isGrabbed = false;
             controlledProp = null;
-            main.animManager.LeftHand_Release();
+            main.animManager.LeftHand_Reset();
             return;
         }
 
@@ -309,7 +309,12 @@ public class TelekinesisModule : MonoBehaviour
             
             case AbsorbInk absorbInk:
                 Release_AbsorbInk(absorbInk);
-                break;
+                if (main.currentInk < 0) main.currentInk = 0;
+                StartCoroutine(controlledProp.BufferGrabbing());
+                controlledProp = null;
+                CameraShake.instance.StopInfiniteShake();
+                main.animManager.LeftHand_Reset();
+                return;
             case HeavyObject heavy:
                 Release_HeavyObject();
                 break;
@@ -386,10 +391,13 @@ public class TelekinesisModule : MonoBehaviour
     [SerializeField] private Transform tkSocket; // THOMAS 
     [SerializeField] private GameObject cylinderPrefab; // THOMAS
     [Range(0f, 5f)] [SerializeField] private float tkCylinderSize;
+    [Range(0f, 10f)] [SerializeField] private float tkCylinderExpansionSpeed = 5;
     private GameObject tkCylinder; // THOMAS 
     private Vector3 tkPoint; // THOMAS 
     private Collider tempColl;
-    
+
+
+    private float cylinderTimer;
     void CreateCylinder(Collider tkColl) // THOMAS (whole method)
     {
         if (tkCylinder != null)
@@ -397,7 +405,7 @@ public class TelekinesisModule : MonoBehaviour
             Destroy(tkCylinder);
         }
         tempColl = tkColl;
-        
+        cylinderTimer = 0;
         tkPoint = tempColl.ClosestPoint(tkSocket.position);
 
         var cylinder = Instantiate(cylinderPrefab, tkSocket.position, Quaternion.identity);
@@ -413,14 +421,16 @@ public class TelekinesisModule : MonoBehaviour
     void UpdateTKCylinder() // THOMAS (whole method)
     {
         if (tkCylinder == null) return;
-        
+        if (cylinderTimer < 1)
+        {
+            cylinderTimer += tkCylinderExpansionSpeed * Time.deltaTime;
+        }
         tkPoint = tempColl.ClosestPoint(tkSocket.position);
         VFX_TKStart[1].transform.position = tkPoint;
         tkCylinder.transform.position = tkSocket.position;
         tkCylinder.transform.forward = tkPoint - tkSocket.position;
-        tkCylinder.transform.localScale = new Vector3(tkCylinderSize, tkCylinderSize, Vector3.Distance(tkPoint, tkSocket.position) / 2f);
+        tkCylinder.transform.localScale = new Vector3(tkCylinderSize * cylinderTimer, tkCylinderSize * cylinderTimer, Vector3.Distance(tkPoint, tkSocket.position) / 2f);
     }
-
     public void ThrowTKObject() // THOMAS (whole method)
     {
         if (tkCylinder == null) return;

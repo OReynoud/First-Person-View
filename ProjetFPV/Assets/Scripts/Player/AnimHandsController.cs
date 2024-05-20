@@ -41,6 +41,11 @@ public class AnimHandsController : MonoBehaviour
         LeftHand_Hold();
 
     }
+    public void LeftHand_Reset()
+    {
+        leftHand.Play("A_Reset");
+        LeftHand_StopHold();
+    }
     public void LeftHand_Release()
     {
         leftHand.Play("A_ReleaseBis");
