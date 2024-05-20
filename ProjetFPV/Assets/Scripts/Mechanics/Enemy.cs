@@ -6,6 +6,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 namespace Mechanics
 {
@@ -115,12 +116,17 @@ namespace Mechanics
         }
 
 
+        private int tempRandom;
+        bool bodyHit = true;
+        
         public virtual void TakeDamage(Collider partHit, Vector3 knockBackDir, float damage, float knockBack)
         {
+            bodyHit = true;
             for (int i = 0; i < allMasks.Length; i++)
             {
                 if (partHit != allMasks[i].maskCollider)continue;
 
+                bodyHit = false;
                 GameManager.instance.VFX_EnemyHitMethod(partHit.transform.position);
                 allMasks[i].maskHealth -= damage;
                 if ( allMasks[i].maskHealth <= 0)
@@ -128,12 +134,24 @@ namespace Mechanics
                     allMasks[i].maskCollider.gameObject.SetActive(false);
                     allMasks[i].broken = true;
                     maskCount--;
-                    
                 }
                 break;
             }
 
-            if (!knockedBack && !isGrabbed) KnockBack(knockBackDir,knockBack);
+            if (bodyHit)
+            {
+                tempRandom = Random.Range(0, allMasks.Length);
+                allMasks[tempRandom].maskHealth -= damage;
+                if ( allMasks[tempRandom].maskHealth <= 0)
+                {
+                    GameManager.instance.VFX_EnemyHitMethod(allMasks[tempRandom].maskCollider.transform.position);
+                    allMasks[tempRandom].maskCollider.gameObject.SetActive(false);
+                    allMasks[tempRandom].broken = true;
+                    maskCount--;
+                }
+            }
+
+            if (!knockedBack && !isGrabbed && !bodyHit) KnockBack(knockBackDir,knockBack);
             
             if (maskCount <= 0) Die();
         }

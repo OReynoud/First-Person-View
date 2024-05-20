@@ -9,14 +9,16 @@ namespace Player
     {
         public Rigidbody rb;
         public bool superShot;
-        public float damage;
-        public float knockBack;
+        public float weakSpotDamage;
+        public float weakSpotKnockBack;
+        public float bodyDamage;
+        public float bodyKnockBack;
 
-        public PlayerBullet(bool SuperShot, float Damage, float KnockBack)
+        public PlayerBullet(bool SuperShot, float WeakSpotDamage, float WeakSpotKnockBack)
         {
             superShot = SuperShot;
-            damage = Damage;
-            knockBack = KnockBack;
+            weakSpotDamage = WeakSpotDamage;
+            weakSpotKnockBack = WeakSpotKnockBack;
         }
 
         public MeshRenderer meshRenderer;
@@ -28,8 +30,18 @@ namespace Player
             if (other.collider.CompareTag(Ex.Tag_Head))
             {
                 var enemy = other.collider.GetComponentInParent<Enemy>();
-                enemy.TakeDamage(other.collider, transform.forward, damage, knockBack);
+                enemy.TakeDamage(other.collider, transform.forward, weakSpotDamage, weakSpotKnockBack);
                 GameManager.instance.HitMark(true);
+
+                Destroy(gameObject);
+                return;
+            }
+            
+            if (other.collider.CompareTag(Ex.Tag_Body))
+            {
+                var enemy = other.collider.GetComponentInParent<Enemy>();
+                enemy.TakeDamage(other.collider, transform.forward, bodyDamage, bodyKnockBack);
+                GameManager.instance.HitMark(false);
 
                 Destroy(gameObject);
                 return;

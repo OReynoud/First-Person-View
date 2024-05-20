@@ -87,7 +87,7 @@ namespace Mechanics
             else
             {
                 if (bodyHit != null)StopCoroutine(bodyHit);
-                headHit = StartCoroutine(FadeHitMark(false));
+                bodyHit = StartCoroutine(FadeHitMark(false));
             }
         }
 
