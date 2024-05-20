@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using DG.Tweening;
 using NaughtyAttributes;
 using UnityEditor;
@@ -80,12 +81,14 @@ namespace Mechanics
             Attack,
             Stunned,
             Paralysed,
-            KnockBack
+            KnockBack,
+            Dying
         }
 
         public States currentState;
         private bool repositioning;
         private Coroutine attackRoutine;
+        private Animation anim;
 
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
@@ -120,6 +123,7 @@ namespace Mechanics
             base.Awake();
             origin = transform.position;
             agent = GetComponent<NavMeshAgent>();
+            anim = GetComponent<Animation>();
         }
 
 
@@ -190,6 +194,7 @@ namespace Mechanics
                 case States.Attack:
                     break;
                 case States.Stunned:
+                    if (!anim.isPlaying) anim.Play("TEMP_StunLoop");
                     break;
                 case States.Paralysed:
                     if (PlayerController.instance.controlledProp == this) break;
@@ -251,8 +256,11 @@ namespace Mechanics
             body.constraints = RigidbodyConstraints.FreezeRotation;
             InterruptAttack();
             transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
+            anim.Play("TEMP_StunStart");
             yield return new WaitForSeconds(stunDuration);
 
+            anim.Stop();
+            anim.Play("TEMP_StunEnd");
             agent.enabled = true;            
             foreach (var part in allMasks)
             {
@@ -457,8 +465,20 @@ namespace Mechanics
             currentState = States.KnockBack;
         }
 
-        public override void Die()
+        public override async void Die()
         {
+            anim.Play("A_BouffonDeath");
+            GameManager.instance.OnKillEnemy();
+            
+            grabbedTween.Complete();
+            grabbedTween.Kill(true);
+            var oui = Instantiate(GameManager.instance.inkStainPrefab, transform.position, transform.rotation);
+            oui.storedInk = inkIncrease;
+            transform.DOMove(new Vector3(transform.position.x,0,transform.position.z), 0.4f).SetEase(Ease.InCubic);
+            while (anim.isPlaying)
+            {
+                await Task.Delay(10);
+            }
             if (arenaSpawn)
             {
                 arena.currentEnemies.Remove(this);
@@ -468,8 +488,9 @@ namespace Mechanics
             {
                 parentEnemy.children.Remove(this);
             }
-            
-            base.Die();
+        
+            if (respawnOnDeath) GameManager.instance.Respawn(this);
+            gameObject.SetActive(false);
         }
 
         void InterruptAttack()

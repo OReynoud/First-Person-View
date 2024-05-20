@@ -24,6 +24,7 @@ public class ChargerEgg : MonoBehaviour
             {
                 spawnedEnemy = Instantiate(toSpawn,destination.position,Quaternion.identity);
                 spawnedEnemy.collectorSpawn = true;
+                spawnedEnemy.parentEnemy = parent;
                 spawnedEnemy.spawnPositions = parent.spawnEnemyPos;
                 parent.children.Add(spawnedEnemy);
                 Destroy(gameObject);

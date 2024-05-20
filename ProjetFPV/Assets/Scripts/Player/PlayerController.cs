@@ -474,7 +474,6 @@ public class PlayerController : Singleton<PlayerController>
             TelekinesisInput();
         }
 
-        ArmBobbing();
         if (shootSpeedTimer >= 0)
         {
             shootSpeedTimer -= Time.deltaTime;
@@ -517,6 +516,11 @@ public class PlayerController : Singleton<PlayerController>
         
     }
 
+    private void FixedUpdate()
+    {
+        
+        ArmBobbing();
+    }
 
     private void LateUpdate()
     {

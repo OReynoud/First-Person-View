@@ -43,7 +43,6 @@ public class TNT : MonoBehaviour, IDestructible
         var baseSize = main.startSize.constant;
         main = VFX_Explosion[1].main;
         main.startSize = explosionRadius * 2;
-        Debug.Log(baseSize);
 
         float sizeIncreaseFactor = explosionRadius * 2 / baseSize;
         for (int i = 2; i < VFX_Explosion.Length; i++)

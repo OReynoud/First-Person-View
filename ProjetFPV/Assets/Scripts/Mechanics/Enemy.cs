@@ -39,6 +39,7 @@ namespace Mechanics
 
         private float knockBackTimer = 0;
         public bool knockedBack;
+        private bool die;
 
 #if UNITY_EDITOR
         private void OnValidate()
@@ -159,6 +160,7 @@ namespace Mechanics
                 break;
             }
 
+            
             if (maskCount <= 0) Die();
         }
 
@@ -168,7 +170,7 @@ namespace Mechanics
             
             grabbedTween.Complete();
             grabbedTween.Kill(true);
-            var oui = Instantiate(GameManager.instance.inkStainPrefab, transform.position, transform.rotation);
+            var oui = Instantiate(GameManager.instance.inkStainPrefab, transform.position + Vector3.up, transform.rotation);
             oui.storedInk = inkIncrease;
         
             if (respawnOnDeath) GameManager.instance.Respawn(this);
@@ -211,7 +213,7 @@ namespace Mechanics
             }
         }
 
-        private Tweener grabbedTween;
+        private protected Tweener grabbedTween;
         public void GrabbedBehavior(float levitateValue, float shakeAmplitude, int shakeFrequency)
         {
             grabbedTween = transform.DOMove(transform.position + Vector3.up * levitateValue, 0.2f).OnComplete(() =>
