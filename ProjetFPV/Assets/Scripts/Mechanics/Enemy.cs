@@ -172,7 +172,7 @@ namespace Mechanics
             grabbedTween.Kill(true);
             var oui = Instantiate(GameManager.instance.inkStainPrefab, transform.position + Vector3.up, transform.rotation);
             oui.storedInk = inkIncrease;
-        
+            if (isGrabbed)PlayerController.instance.ReleaseProp(new InputAction.CallbackContext());
             if (respawnOnDeath) GameManager.instance.Respawn(this);
             gameObject.SetActive(false);
 

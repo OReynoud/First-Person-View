@@ -57,6 +57,8 @@ public class TNT : MonoBehaviour, IDestructible
     {
         if (health <= -1)return;
         health--;
+        GetComponent<Collider>().enabled = false;
+        
         if (TryGetComponent(out TelekinesisObject tk))
         {
             tk.body.isKinematic = true;

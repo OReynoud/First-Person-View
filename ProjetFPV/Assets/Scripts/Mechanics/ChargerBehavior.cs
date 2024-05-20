@@ -8,6 +8,7 @@ using NaughtyAttributes;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 namespace Mechanics
@@ -470,6 +471,7 @@ namespace Mechanics
             anim.Play("A_BouffonDeath");
             GameManager.instance.OnKillEnemy();
             
+            if (isGrabbed)PlayerController.instance.ReleaseProp(new InputAction.CallbackContext());
             grabbedTween.Complete();
             grabbedTween.Kill(true);
             var oui = Instantiate(GameManager.instance.inkStainPrefab, transform.position, transform.rotation);
