@@ -112,7 +112,7 @@ public class TelekinesisModule : MonoBehaviour
             {
                 var enemy = hit.collider.GetComponentInParent<Enemy>();
                 if (!enemy.canBeGrabbed) return;
-                if (main.currentInk < 1)return;
+                if (main.currentInk < 0.1f)return;
                 controlledProp = enemy;
                 controlledProp.ApplyTelekinesis();
                         
@@ -290,6 +290,7 @@ public class TelekinesisModule : MonoBehaviour
             CameraShake.instance.StopInfiniteShake();
             main.recentlyDepletedStamina = true;
             controlledProp.ApplyTelekinesis();
+            controlledProp.body.velocity *= 0.1f;
             controlledProp.isGrabbed = false;
             controlledProp = null;
             main.animManager.LeftHand_Release();
