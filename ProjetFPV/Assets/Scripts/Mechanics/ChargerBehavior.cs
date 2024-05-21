@@ -37,6 +37,9 @@ namespace Mechanics
 
         [Foldout("Reposition state")] [SerializeField]
         public Transform[] spawnPositions;
+        
+        [Foldout("Reposition state")] [SerializeField]
+        [Range(0,1)]public float percentHealthToTriggerReposition = 0.5f;
 
         [Foldout("Neutral state")] [SerializeField]
         private float walkAreaRange;
@@ -64,6 +67,9 @@ namespace Mechanics
       
         [Foldout("Attack state")] [SerializeField]
         private float jumpHeight;
+        
+        [Foldout("Attack state")] [SerializeField]
+        private float predictDistance;
         
         [MinMaxSlider(0f,10f)][Foldout("Attack state")] [SerializeField]
         private Vector2 jumpDuration;
@@ -159,6 +165,7 @@ namespace Mechanics
             StartCoroutine(Wander());
         }
 
+        private bool tpViaDmg = false;
         // Update is called once per frame
         public override void Update()
         {
@@ -190,7 +197,18 @@ namespace Mechanics
 
                     break;
                 case States.KnockBack:
-                    if (!knockedBack) currentState = States.Repositioning;
+                    if (!knockedBack)
+                    {
+                        if (!tpViaDmg && allMasks[0].maskHealth <= allMasks[0].baseHealth * percentHealthToTriggerReposition)
+                        {
+                            tpViaDmg = true;
+                            currentState = States.Repositioning;
+                        }
+                        else
+                        {
+                            currentState = States.Rush;
+                        }
+                    }
                     break;
                 case States.Attack:
                     break;
@@ -379,13 +397,21 @@ namespace Mechanics
         IEnumerator AttackPlayer()
         {
             currentState = States.Attack;
-            playerPos = PlayerController.instance.transform.position + transform.forward;
-            agent.SetDestination(playerPos);
-            actualDestination = new Vector3(agent.destination.x,playerPos.y, agent.destination.z);
             agent.enabled = false;
             Debug.Log("j'attaque le joueur");
-            yield return new WaitForSeconds(waitBeforeJump);
+            var t = Time.time + waitBeforeJump;
+            while (Time.time < t)
+            {
+                playerPos = PlayerController.instance.transform.position;
+                transform.LookAt(playerPos);
+                transform.rotation = Quaternion.Euler(0,transform.eulerAngles.y,transform.eulerAngles.z);
+                yield return null;
+            }
 
+            playerPos = PlayerController.instance.transform.position + transform.forward;
+            actualDestination = playerPos + PlayerController.instance.rb.velocity.normalized * predictDistance;
+            transform.LookAt(actualDestination);
+            transform.rotation = Quaternion.Euler(0,transform.eulerAngles.y,transform.eulerAngles.z);
             var calcJumpTime = (Vector3.Distance(transform.position, playerPos) * jumpDuration.y)/atkRange;
             if (calcJumpTime < jumpDuration.x) calcJumpTime = jumpDuration.x;
             jumpTween = transform.DOJump(actualDestination + transform.forward * jumpOverShoot, jumpHeight, 1, calcJumpTime);

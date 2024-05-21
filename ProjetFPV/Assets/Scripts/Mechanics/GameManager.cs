@@ -111,18 +111,13 @@ namespace Mechanics
             if (current >= max)
             {
                 current = max;
-                segments[0].color = Color.yellow;
-                PlayerController.instance.inSurplus = true;
             }
             else
             {
-                
-                PlayerController.instance.inSurplus = false;
                 segments[0].color = Color.black;
             }
             
             baseInkBar.fillAmount = current / max;
-            surplusInkBar.fillAmount = PlayerController.instance.inSurplus ? 1:0;
             return current;
         }
 

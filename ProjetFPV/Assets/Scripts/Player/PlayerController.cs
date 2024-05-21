@@ -184,7 +184,6 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     public ControllableProp controlledProp;
 
-    [Foldout("Debug")] public bool inSurplus;
 
 
     #endregion
@@ -413,8 +412,10 @@ public class PlayerController : Singleton<PlayerController>
 
     void CheckInteractableTarget()
     {
-        if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, 4, ~LayerMask.GetMask("Player")))
+        if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, 4, ~LayerMask.GetMask("Player"))
+            && playerCam.forward.y > -tkManager.holdObjectYTolerance)
         {
+            if (hit.transform.position.y < transform.position.y)return;
             if (hit.transform.TryGetComponent(out ICanInteract interactable))
             {
                 if (!GameManager.instance.interactText.enabled)
@@ -444,7 +445,7 @@ public class PlayerController : Singleton<PlayerController>
         reloadBasePos = shootingHand.localPosition;
         //shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * ReloadHandMove, 0.4f);
         animManager.RightHand_ReloadStart();
-        yield return new WaitForSeconds(currentInk < maxInk ? reloadSpeed : socketManager.surplusReloadTime);
+        yield return new WaitForSeconds(reloadSpeed);
         socketManager.ReloadSockets();
         
         animManager.RightHand_ReloadEnd();
@@ -614,12 +615,10 @@ public class PlayerController : Singleton<PlayerController>
         if (canMove)
         {
             rb.constraints = RigidbodyConstraints.FreezeRotation;
-            currentControls.Enable();
         }
         else
         {
             rb.constraints = RigidbodyConstraints.FreezeAll;
-            currentControls.Disable();
         }
     }
 
@@ -670,6 +669,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void ToggleCrouch(InputAction.CallbackContext obj)
     {
+        if (!canMove) return;
         hands.localPosition = Vector3.Lerp(hands.localPosition, startPos, 0.6f);
 
         if (obj.canceled)
@@ -693,6 +693,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void ToggleSprint(InputAction.CallbackContext obj)
     {
+        if (!canMove) return;
         hands.localPosition = startPos;
         if (obj.canceled)
         {
@@ -714,9 +715,12 @@ public class PlayerController : Singleton<PlayerController>
     
     private void Interact(InputAction.CallbackContext obj)
     {
+        if (!canMove) return;
         Debug.DrawRay(playerCam.position,camera1.transform.forward * 4, Color.blue,3);
-        if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, 4, ~LayerMask.GetMask("Player")))
+        if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, 4, ~LayerMask.GetMask("Player")) && 
+            playerCam.forward.y > -tkManager.holdObjectYTolerance)
         {
+            if (hit.transform.position.y < transform.position.y)return;
             if (hit.transform.TryGetComponent(out ICanInteract interactable))
             {
                 interactable.Interact(-hit.normal);
@@ -727,6 +731,7 @@ public class PlayerController : Singleton<PlayerController>
     private bool superShot;
     private void Shoot(InputAction.CallbackContext obj)
     {
+        if (!canMove) return;
         if (reloading) return;
         if (socketManager.noBullets || socketManager.overheated)return;
         if (shootSpeedTimer > 0) return;
@@ -743,6 +748,7 @@ public class PlayerController : Singleton<PlayerController>
     private bool reloading = false;
     public void RequestReload(InputAction.CallbackContext obj)
     {
+        if (!canMove) return;
         if (reloading)return;
         if (currentInk < socketManager.reloadCostPerBullet) return;
         foreach (var socket in socketManager.sockets)
@@ -756,6 +762,7 @@ public class PlayerController : Singleton<PlayerController>
     }
     private void UseHealPack(InputAction.CallbackContext obj)
     {
+        if (!canMove) return;
         if (currentHealPackAmount <= 0 || currentHealth >= maxHealth) return;
         currentHealPackAmount--;
         GameManager.instance.UpdateHealPackUI();
