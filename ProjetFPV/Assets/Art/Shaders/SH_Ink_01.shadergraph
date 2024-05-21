@@ -4,6 +4,9 @@
     "m_ObjectId": "86636311add04281b75d2df20006d475",
     "m_Properties": [
         {
+            "m_Id": "41ee494bb9e44222b803be4aa947026c"
+        },
+        {
             "m_Id": "d017de0573ef45999efaf89fbe355a6c"
         },
         {
@@ -414,10 +417,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1100.0,
-            "y": -303.0,
-            "width": 145.99993896484376,
-            "height": 33.999969482421878
+            "x": -1173.0,
+            "y": -324.0,
+            "width": 146.0,
+            "height": 34.0
         }
     },
     "m_Slots": [
@@ -902,6 +905,34 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "41ee494bb9e44222b803be4aa947026c",
+    "m_Guid": {
+        "m_GuidSerialized": "78db893f-a8ba-4395-ba00-71f14fd6af48"
+    },
+    "m_Name": "Fresnel Contrast",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Fresnel Contrast",
+    "m_DefaultReferenceName": "_Fresnel_Contrast",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 1.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "4485b988542944e1800991b73dec1803",
@@ -1196,6 +1227,21 @@
     "m_Property": {
         "m_Id": "3d0db2f136e84ef08ea6db60f021b209"
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "71cb6b1c828a4bd9a1e1685e0b821830",
+    "m_Id": -1356281387,
+    "m_DisplayName": "Fresnel Contrast",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_Fresnel_Contrast",
+    "m_StageCapability": 3,
+    "m_Value": 1.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -1843,6 +1889,9 @@
         },
         {
             "m_Id": "d017de0573ef45999efaf89fbe355a6c"
+        },
+        {
+            "m_Id": "41ee494bb9e44222b803be4aa947026c"
         }
     ]
 }
@@ -2143,6 +2192,9 @@
             "m_Id": "f509dffbe70a474bb192b5ffde2c8bd6"
         },
         {
+            "m_Id": "71cb6b1c828a4bd9a1e1685e0b821830"
+        },
+        {
             "m_Id": "fa242c5de7224379a3b547c86233bdf3"
         },
         {
@@ -2182,7 +2234,8 @@
         "1502c230-260e-4771-a049-8d456a3c4f4a",
         "223816dd-2d62-4ed8-8744-c8e4a189cea2",
         "70eb4769-74ed-46f3-bcd1-9ea0c6b70e91",
-        "7148d69c-5dd2-41d7-a84b-3e63146f01d0"
+        "7148d69c-5dd2-41d7-a84b-3e63146f01d0",
+        "0336a745-c3cd-4a1f-9261-b488cfccb56e"
     ],
     "m_PropertyIds": [
         1713195785,
@@ -2196,7 +2249,8 @@
         1571918324,
         719779481,
         126375422,
-        -2086621198
+        -2086621198,
+        -1356281387
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
