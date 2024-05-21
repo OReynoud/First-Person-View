@@ -384,7 +384,14 @@ namespace Mechanics
             currentState = States.Attack;
             agent.enabled = false;
             Debug.Log("j'attaque le joueur");
-            yield return new WaitForSeconds(waitBeforeJump);
+            var t = Time.time + waitBeforeJump;
+            while (Time.time < t)
+            {
+                playerPos = PlayerController.instance.transform.position;
+                transform.LookAt(playerPos);
+                transform.rotation = Quaternion.Euler(0,transform.eulerAngles.y,transform.eulerAngles.z);
+                yield return null;
+            }
 
             playerPos = PlayerController.instance.transform.position + transform.forward;
             actualDestination = playerPos + PlayerController.instance.rb.velocity.normalized * predictDistance;
