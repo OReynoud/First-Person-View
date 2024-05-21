@@ -65,6 +65,9 @@ namespace Mechanics
         [Foldout("Attack state")] [SerializeField]
         private float jumpHeight;
         
+        [Foldout("Attack state")] [SerializeField]
+        private float predictDistance;
+        
         [MinMaxSlider(0f,10f)][Foldout("Attack state")] [SerializeField]
         private Vector2 jumpDuration;
     
@@ -379,13 +382,14 @@ namespace Mechanics
         IEnumerator AttackPlayer()
         {
             currentState = States.Attack;
-            playerPos = PlayerController.instance.transform.position + transform.forward;
-            agent.SetDestination(playerPos);
-            actualDestination = new Vector3(agent.destination.x,playerPos.y, agent.destination.z);
             agent.enabled = false;
             Debug.Log("j'attaque le joueur");
             yield return new WaitForSeconds(waitBeforeJump);
 
+            playerPos = PlayerController.instance.transform.position + transform.forward;
+            actualDestination = playerPos + PlayerController.instance.rb.velocity.normalized * predictDistance;
+            transform.LookAt(actualDestination);
+            transform.rotation = Quaternion.Euler(0,transform.eulerAngles.y,transform.eulerAngles.z);
             var calcJumpTime = (Vector3.Distance(transform.position, playerPos) * jumpDuration.y)/atkRange;
             if (calcJumpTime < jumpDuration.x) calcJumpTime = jumpDuration.x;
             jumpTween = transform.DOJump(actualDestination + transform.forward * jumpOverShoot, jumpHeight, 1, calcJumpTime);

@@ -184,7 +184,6 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     public ControllableProp controlledProp;
 
-    [Foldout("Debug")] public bool inSurplus;
 
 
     #endregion
@@ -444,7 +443,7 @@ public class PlayerController : Singleton<PlayerController>
         reloadBasePos = shootingHand.localPosition;
         //shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * ReloadHandMove, 0.4f);
         animManager.RightHand_ReloadStart();
-        yield return new WaitForSeconds(currentInk < maxInk ? reloadSpeed : socketManager.surplusReloadTime);
+        yield return new WaitForSeconds(reloadSpeed);
         socketManager.ReloadSockets();
         
         animManager.RightHand_ReloadEnd();

@@ -44,11 +44,11 @@ public class ShootingHand : MonoBehaviour
     [Foldout("Shoot")] [SerializeField] private float bodyDamage;
     [Foldout("Shoot")] [SerializeField] private float bodyKnockBack;
 
-    [Foldout("Surplus")] [SerializeField] private float surplusShotDamage;
-    [Foldout("Surplus")] [SerializeField] private float surplusKnockBack;
-    [Foldout("Surplus")] [HideInInspector] public Vector3 hitConeSize;
-    [Foldout("Surplus")] [SerializeField] private float overheatTime;
-    [Foldout("Surplus")] [SerializeField][Range(1,100)] private float percentInkCost = 50;
+    // [Foldout("Surplus")] [SerializeField] private float surplusShotDamage;
+    // [Foldout("Surplus")] [SerializeField] private float surplusKnockBack;
+    // [Foldout("Surplus")] [HideInInspector] public Vector3 hitConeSize;
+    // [Foldout("Surplus")] [SerializeField] private float overheatTime;
+    // [Foldout("Surplus")] [SerializeField][Range(1,100)] private float percentInkCost = 50;
 
 
 
@@ -63,26 +63,7 @@ public class ShootingHand : MonoBehaviour
     [Foldout("Refs")] [SerializeField] private LineRenderer superTrail;
     private LineRenderer currentTrail;
 
-
-    [InfoBox(
-        "Si coché, des balles super-chargées seront périodiquement et automatiquement insérés dans les cartouches vides en utilisant le surplus d'encre")]
-    [BoxGroup("AutoLoad")]
-    public bool autoLoadOnSurplus;
-
-
-    [ShowIf("autoLoadOnSurplus")] [BoxGroup("AutoLoad")]
-    public float timeToAutoLoad = 0.3f;
-
-    private float autoLoadTimer;
-
-    [InfoBox(
-        "Si coché, pendant la recharge des balles super-chargées seront chargées en utilisant le surplus d'encre. La durée de la recharge pendant le surplus peut etre modifiée pour être plus courte")]
-    [BoxGroup("Surplus Reload")]
-    public bool reloadSuperBulletsOnSurplus;
-
-    [ShowIf("reloadSuperBulletsOnSurplus")] [BoxGroup("Surplus Reload")]
-    public float surplusReloadTime = 0.5f;
-
+    
     private PlayerController player;
 
 
@@ -108,7 +89,6 @@ public class ShootingHand : MonoBehaviour
             particle.Stop();
         }
 
-        hitConeSize = superShot.transform.parent.transform.localScale;
     }
 
     [HideInInspector] public bool noBullets;
@@ -118,37 +98,7 @@ public class ShootingHand : MonoBehaviour
 
     public void Update()
     {
-        if (autoLoadOnSurplus && player.inSurplus)
-        {
-            autoLoadTimer += Time.deltaTime;
-            if (autoLoadTimer >= timeToAutoLoad)
-            {
-                autoLoadTimer = 0;
-
-                for (int i = sockets.Count - 1; i >= 0; i--)
-                {
-                    if (sockets[i].state != SocketStates.Empty) continue;
-
-                    sockets[i].socketMesh.material = superChargedSocket;
-                    decrement = (reloadCostPerBullet);
-                    sockets[i].state = SocketStates.SuperCharged;
-                    player.currentInk =
-                        GameManager.instance.UpdatePlayerStamina(player.currentInk, player.maxInk, -decrement);
-                    noBullets = false;
-                    break;
-                }
-            }
-        }
-
-        if (player.inSurplus)
-        {
-            //currentSocket.highlightMesh.enabled = false;
-            currentSocket = sockets[0];
-            currentSocket.state = SocketStates.SuperCharged;
-            currentSocket.socketMesh.material = superChargedSocket;
-            //currentSocket.highlightMesh.enabled = true;
-            noBullets = false;
-        }
+        
     }
 
     void UpdateCurrentSocket() //Pouce, majeur, annulaire, auriculaire. Haha je suis drole
@@ -182,18 +132,11 @@ public class ShootingHand : MonoBehaviour
 
             if (sockets[i].state != SocketStates.Empty) continue;
 
-            if (reloadSuperBulletsOnSurplus && player.inSurplus)
-            {
-                sockets[i].socketMesh.material = superChargedSocket;
-                decrement = (reloadCostPerBullet);
-                sockets[i].state = SocketStates.SuperCharged;
-            }
-            else
-            {
+
                 sockets[i].socketMesh.material = loadedSocket;
                 decrement = reloadCostPerBullet;
                 sockets[i].state = SocketStates.Loaded;
-            }
+            
 
             player.currentInk =
                 GameManager.instance.UpdatePlayerStamina(player.currentInk, player.maxInk, -decrement);
@@ -216,11 +159,6 @@ public class ShootingHand : MonoBehaviour
     {
         CameraShake.instance.ShakeOneShot(1);
         player.animManager.RightHand_Shoot();
-        if (currentSocket.state == SocketStates.SuperCharged)
-        {
-            SurplusShot();
-            return;
-        }
 
         if (Physics.Raycast(cam.position, cam.forward, out RaycastHit hit, maxRange, shootMask))
         {
@@ -295,43 +233,43 @@ public class ShootingHand : MonoBehaviour
         UpdateCurrentSocket();
     }
 
-    void SurplusShot()
-    {
-
-        player.currentInk =
-            GameManager.instance.UpdatePlayerStamina(player.currentInk, player.maxInk,
-                -player.maxInk * percentInkCost * 0.01f);
-
-
-        superShot.damage = surplusShotDamage;
-        superShot.knockBack = surplusKnockBack;
-
-        calculatedConeDimensions = hitConeSize;
-        // calculatedConeDimensions += Vector3.one * hitConeSizeIncrement * incrementAmount;
-        // calculatedConeDimensions +=
-        //     new Vector3(hitConeAngleIncrement, hitConeAngleIncrement, 0) * incrementAmount;
-
-        superShot.scale = calculatedConeDimensions;
-        superShot.gameObject.SetActive(true);
-        StartCoroutine(OverheatCoroutine(overheatTime));
-        player.inSurplus = false;
-
-
-        UpdateCurrentSocket();
-        
-        
-        
-        
-        
-        //Debug.Log("Completed supershot with " + incrementAmount + " increments");
-    }
-
-    IEnumerator OverheatCoroutine(float time)
-    {
-        overheated = true;
-        overHeatFeedback.SetActive(true);
-        yield return new WaitForSeconds(time);
-        overHeatFeedback.SetActive(false);
-        overheated = false;
-    }
+    // void SurplusShot()
+    // {
+    //
+    //     player.currentInk =
+    //         GameManager.instance.UpdatePlayerStamina(player.currentInk, player.maxInk,
+    //             -player.maxInk * percentInkCost * 0.01f);
+    //
+    //
+    //     superShot.damage = surplusShotDamage;
+    //     superShot.knockBack = surplusKnockBack;
+    //
+    //     calculatedConeDimensions = hitConeSize;
+    //     // calculatedConeDimensions += Vector3.one * hitConeSizeIncrement * incrementAmount;
+    //     // calculatedConeDimensions +=
+    //     //     new Vector3(hitConeAngleIncrement, hitConeAngleIncrement, 0) * incrementAmount;
+    //
+    //     superShot.scale = calculatedConeDimensions;
+    //     superShot.gameObject.SetActive(true);
+    //     StartCoroutine(OverheatCoroutine(overheatTime));
+    //     player.inSurplus = false;
+    //
+    //
+    //     UpdateCurrentSocket();
+    //     
+    //     
+    //     
+    //     
+    //     
+    //     //Debug.Log("Completed supershot with " + incrementAmount + " increments");
+    // }
+    //
+    // IEnumerator OverheatCoroutine(float time)
+    // {
+    //     overheated = true;
+    //     overHeatFeedback.SetActive(true);
+    //     yield return new WaitForSeconds(time);
+    //     overHeatFeedback.SetActive(false);
+    //     overheated = false;
+    // }
 }
