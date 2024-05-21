@@ -37,6 +37,9 @@ namespace Mechanics
 
         [Foldout("Reposition state")] [SerializeField]
         public Transform[] spawnPositions;
+        
+        [Foldout("Reposition state")] [SerializeField]
+        [Range(0,1)]public float percentHealthToTriggerReposition = 0.5f;
 
         [Foldout("Neutral state")] [SerializeField]
         private float walkAreaRange;
@@ -162,6 +165,7 @@ namespace Mechanics
             StartCoroutine(Wander());
         }
 
+        private bool tpViaDmg = false;
         // Update is called once per frame
         public override void Update()
         {
@@ -193,7 +197,18 @@ namespace Mechanics
 
                     break;
                 case States.KnockBack:
-                    if (!knockedBack) currentState = States.Repositioning;
+                    if (!knockedBack)
+                    {
+                        if (!tpViaDmg && allMasks[0].maskHealth <= allMasks[0].baseHealth * percentHealthToTriggerReposition)
+                        {
+                            tpViaDmg = true;
+                            currentState = States.Repositioning;
+                        }
+                        else
+                        {
+                            currentState = States.Rush;
+                        }
+                    }
                     break;
                 case States.Attack:
                     break;
