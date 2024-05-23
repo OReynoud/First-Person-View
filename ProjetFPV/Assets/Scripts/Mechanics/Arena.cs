@@ -40,6 +40,7 @@ namespace Mechanics
             }
 
             StartCoroutine(ArenaEvent());
+            //SON
         }
 
         List<Transform> tempList = new List<Transform>();

@@ -31,4 +31,12 @@ public class HeavyObject : ControllableProp
             body.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         }
     }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (body.velocity.y > 1 && !isGrabbed)
+        {
+            //SON
+        }
+    }
 }

@@ -280,26 +280,13 @@ public class PlayerController : Singleton<PlayerController>
         CameraShake.instance.ShakeOneShot(3);
         currentHealth -= damage;
 
+        //SON
         if (currentHealth <= 0)
         {
             Debug.Log("Je suis mort");
             GameManager.instance.PlayerDeath();
         }
     }
-
-    //private Coroutine Regen;
-
-    // private IEnumerator Regenerate()
-            // {
-            //     yield return new WaitForSeconds(timeToRegenerateHealth);
-            //     while (currentHealth < maxHealth)
-            //     {
-            //         currentHealth += regenSpeed * Time.deltaTime;
-            //         yield return null;
-            //     }
-            //
-            //     currentHealth = maxHealth;
-            // }
 
     private void OnDisable()
     {
@@ -391,6 +378,15 @@ public class PlayerController : Singleton<PlayerController>
         }
 
         return check;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        var y = 3;
+        if (rb.velocity.y > y)
+        {
+            //SON
+        }
     }
 
     private void CheckTelekinesisTarget()
@@ -553,6 +549,8 @@ public class PlayerController : Singleton<PlayerController>
         if (appliedForce)
         {
             moveInputTimer += Time.deltaTime;
+            
+            //SON DE MARCHE, LA FONCTION EST EN UPDATE
         }
         else
         {
@@ -685,6 +683,7 @@ public class PlayerController : Singleton<PlayerController>
         else
         {
             state = PlayerStates.Crouching;
+            //SON
         }
 
         crouchedCollider.enabled = state == PlayerStates.Crouching;
@@ -707,6 +706,7 @@ public class PlayerController : Singleton<PlayerController>
         else
         {
             state = PlayerStates.Sprinting;
+            //SON
         }
     }
 
@@ -740,9 +740,11 @@ public class PlayerController : Singleton<PlayerController>
 
         socketManager.ShootWithSocket(playerCam, shootingHand);
 
+        
+        // SON
         audioSource.pitch = Random.Range(0.9f, 1.1f);
         audioSource.PlayOneShot(shootClip);
-
+        // SON
     }
     
     private bool reloading = false;
@@ -758,6 +760,7 @@ public class PlayerController : Singleton<PlayerController>
         }
         if (!reloading)return;
         
+        //SON
         reloadCoroutine = StartCoroutine(Reload2());
     }
     private void UseHealPack(InputAction.CallbackContext obj)
@@ -771,6 +774,8 @@ public class PlayerController : Singleton<PlayerController>
         {
             currentHealth = maxHealth;
         }
+        
+        //SON
     }
 
     private Coroutine stagger;

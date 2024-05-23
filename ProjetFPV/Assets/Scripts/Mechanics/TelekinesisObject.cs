@@ -75,6 +75,8 @@ public class TelekinesisObject : ControllableProp
                 StartCoroutine(NotThrown());
             
         }
+        
+        //SON
     }
 
     IEnumerator NotThrown()

@@ -98,6 +98,8 @@ public class TelekinesisModule : MonoBehaviour
                 if (!absorb.canBeGrabbed) return;
                 controlledProp = absorb;
                 controlledProp.ApplyTelekinesis();
+                
+                //SON
                 return;
             }
              
@@ -121,7 +123,7 @@ public class TelekinesisModule : MonoBehaviour
                 return;
             }
 
-
+            //SON
         }
     }
 
@@ -132,110 +134,15 @@ public class TelekinesisModule : MonoBehaviour
         switch (controlledProp)
         {
             case TelekinesisObject:
-                
-                main.currentInk =
-                    GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, -holdObjectCost);
-                
-                var dir = offsetPosition.position - controlledProp.transform.position;
-                dir.Normalize();
-                if (main.playerCam.forward.y < -holdObjectYTolerance)
-                {
-                    CameraShake.instance.StopInfiniteShake();
-                    main.recentlyDepletedStamina = true;
-                    controlledProp.ApplyTelekinesis();
-                    controlledProp.isGrabbed = false;
-                    controlledProp = null;
-                    ThrowTKObject();
-                    main.animManager.LeftHand_Reset();
-                    return;
-                }
-
-                if (!controlledProp.isGrabbed)
-                {
-                    controlledProp.body.velocity = dir * regularTravelSpeed;
-                }
-                else
-                {
-                    controlledProp.body.velocity = dir * (regularTravelSpeed *
-                                                          (Vector3.Distance(controlledProp.transform.position,
-                                                              offsetPosition.position) / grabDistanceBuffer));
-                    return;
-                }
-
-                if (grabDistanceBuffer > Vector3.Distance(controlledProp.transform.position, offsetPosition.position))
-                {
-                    controlledProp.isGrabbed = true;
-                    CameraShake.instance.StartInfiniteShake(0);
-                }
-
-
+                Hold_TelekinesisObject();
                 return;
 
             case AbsorbInk absorbInk:
-                absorbInk.storedInk -= inkAbsorbSpeed * Time.deltaTime;
-                main.currentInk =
-                    GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, inkAbsorbSpeed * Time.deltaTime);
-                var lerpValue = Mathf.Clamp(1 - absorbInk.storedInk / absorbInk.maxInk, 0, 0.8f);
-                absorbInk.transform.localScale = Vector3.Lerp(absorbInk.baseScale, Vector3.zero, lerpValue);
-
-                if (!controlledProp.isGrabbed)
-                {
-                    controlledProp.isGrabbed = true;
-                    CameraShake.instance.StartInfiniteShake(0);
-                }
-
-                if (absorbInk.storedInk < 0)
-                {
-                    main.recentlyDepletedStamina = true;
-                    main.ReleaseProp(new InputAction.CallbackContext());
-                    return;
-                }
-
+                Hold_AbsorbInk(absorbInk);
                 return;
 
             case Enemy enemy:
-                
-                main.currentInk =
-                    GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, -holdEnemyCost * Time.deltaTime);
-                
-                tempWorldToScreen = main.camera1.WorldToScreenPoint(controlledProp.transform.position);
-                if (tempWorldToScreen.x < 0 || tempWorldToScreen.x > Screen.width ||
-                    tempWorldToScreen.y < 0 || tempWorldToScreen.y > Screen.height ||
-                    tempWorldToScreen.z < 0)
-                {
-                    main.recentlyDepletedStamina = true;
-                    main.ReleaseProp(new InputAction.CallbackContext());
-                    return;
-                }
-
-                Vector3 dir2 = controlledProp.transform.position - transform.position;
-                if (Physics.Raycast(controlledProp.transform.position, -dir2.normalized, out RaycastHit hit,
-                        main.socketManager.maxRange,
-                        main.playerLayer))
-                {
-                    if (!hit.collider.TryGetComponent(out PlayerController controller))
-                    {
-                        main.recentlyDepletedStamina = true;
-                        main.ReleaseProp(new InputAction.CallbackContext());
-                        return;
-                    }
-                }
-
-                if (enemy.isGrabbed) break;
-
-
-                enemy.body.constraints = RigidbodyConstraints.FreezeAll;
-                enemy.isGrabbed = true;
-                enemy.knockedBack = false;
-                if (enemy is ChargerBehavior chargerBehavior)
-                {
-                    chargerBehavior.GrabbedBehavior(1, 0.1f, 30);
-                }
-                else
-                {
-                    enemy.GrabbedBehavior(0, 0.1f, 30);
-                }
-
+                Hold_Enemy(enemy);
                 break;
             
             case HeavyObject heavy:
@@ -256,6 +163,114 @@ public class TelekinesisModule : MonoBehaviour
     }
 
 
+    void Hold_AbsorbInk(AbsorbInk absorbInk)
+    {
+        absorbInk.storedInk -= inkAbsorbSpeed * Time.deltaTime;
+        main.currentInk =
+            GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, inkAbsorbSpeed * Time.deltaTime);
+        var lerpValue = Mathf.Clamp(1 - absorbInk.storedInk / absorbInk.maxInk, 0, 0.8f);
+        absorbInk.transform.localScale = Vector3.Lerp(absorbInk.baseScale, Vector3.zero, lerpValue);
+
+        if (!controlledProp.isGrabbed)
+        {
+            controlledProp.isGrabbed = true;
+            CameraShake.instance.StartInfiniteShake(0);
+        }
+
+        if (absorbInk.storedInk < 0)
+        {
+            main.recentlyDepletedStamina = true;
+            main.ReleaseProp(new InputAction.CallbackContext());
+        }
+
+    }
+
+    void Hold_Enemy(Enemy enemy)
+    {
+        main.currentInk =
+            GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, -holdEnemyCost * Time.deltaTime);
+                
+        tempWorldToScreen = main.camera1.WorldToScreenPoint(controlledProp.transform.position);
+        if (tempWorldToScreen.x < 0 || tempWorldToScreen.x > Screen.width ||
+            tempWorldToScreen.y < 0 || tempWorldToScreen.y > Screen.height ||
+            tempWorldToScreen.z < 0)
+        {
+            main.recentlyDepletedStamina = true;
+            main.ReleaseProp(new InputAction.CallbackContext());
+            return;
+        }
+
+        Vector3 dir2 = controlledProp.transform.position - transform.position;
+        if (Physics.Raycast(controlledProp.transform.position, -dir2.normalized, out RaycastHit hit,
+                main.socketManager.maxRange,
+                main.playerLayer))
+        {
+            if (!hit.collider.TryGetComponent(out PlayerController controller))
+            {
+                main.recentlyDepletedStamina = true;
+                main.ReleaseProp(new InputAction.CallbackContext());
+                return;
+            }
+        }
+
+        //SON
+        if (enemy.isGrabbed) return;
+
+
+        enemy.body.constraints = RigidbodyConstraints.FreezeAll;
+        enemy.isGrabbed = true;
+        enemy.knockedBack = false;
+        if (enemy is ChargerBehavior chargerBehavior)
+        {
+            chargerBehavior.GrabbedBehavior(1, 0.1f, 30);
+        }
+        else
+        {
+            enemy.GrabbedBehavior(0, 0.1f, 30);
+        }
+    }
+    void Hold_TelekinesisObject()
+    {
+        main.currentInk =
+            GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, -holdObjectCost);
+                
+        var dir = offsetPosition.position - controlledProp.transform.position;
+        dir.Normalize();
+        if (main.playerCam.forward.y < -holdObjectYTolerance)
+        {
+            CameraShake.instance.StopInfiniteShake();
+            main.recentlyDepletedStamina = true;
+            controlledProp.ApplyTelekinesis();
+            controlledProp.isGrabbed = false;
+            controlledProp = null;
+            ThrowTKObject();
+            main.animManager.LeftHand_Reset();
+            return;
+        }
+
+        
+        if (!controlledProp.isGrabbed)
+        {
+            controlledProp.body.velocity = dir * regularTravelSpeed;
+        }
+        else
+        {
+            controlledProp.body.velocity = dir * (regularTravelSpeed *
+                                                  (Vector3.Distance(controlledProp.transform.position,
+                                                      offsetPosition.position) / grabDistanceBuffer));
+            
+            //SON
+            return;
+        }
+
+        if (grabDistanceBuffer > Vector3.Distance(controlledProp.transform.position, offsetPosition.position))
+        {
+            controlledProp.isGrabbed = true;
+            CameraShake.instance.StartInfiniteShake(0);
+        }
+
+
+    }
     void Hold_HeavyObject(HeavyObject heavy)
     {                
         var dir = transform.position + transform.forward * heavy.restingDistanceToPlayer - controlledProp.transform.position;
@@ -298,6 +313,7 @@ public class TelekinesisModule : MonoBehaviour
             return;
         }
 
+        
         switch (controlledProp)
         {
             case TelekinesisObject:
@@ -322,12 +338,14 @@ public class TelekinesisModule : MonoBehaviour
                 Release_ObjectToFall(unstable);
                 break;
         }
-
+        
         if (main.currentInk < 0) main.currentInk = 0;
         StartCoroutine(controlledProp.BufferGrabbing());
         controlledProp = null;
         CameraShake.instance.StopInfiniteShake();
         main.animManager.LeftHand_Release();
+        
+        //SON
     }
 
     public void Release_TKObject()

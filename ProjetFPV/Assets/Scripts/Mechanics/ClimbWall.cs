@@ -28,6 +28,8 @@ namespace Mechanics
         {
             player.ImmobilizePlayer();
 
+            //SON
+            
             float angle = new Vector2(dir.z, dir.x).GetAngleFromVector();
             var rotationValue = new Vector3(0, angle, 0);
             Vector2 wallPoint = new Vector2(

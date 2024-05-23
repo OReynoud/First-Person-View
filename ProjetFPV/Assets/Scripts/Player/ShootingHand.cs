@@ -117,7 +117,11 @@ public class ShootingHand : MonoBehaviour
 
 
         if (noBullets)
+        {
             player.animManager.ChainShootToReload();
+            
+            //SON
+        }
 
         //currentSocket.highlightMesh.enabled = true;
     }

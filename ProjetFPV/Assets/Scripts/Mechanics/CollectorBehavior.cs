@@ -183,6 +183,8 @@ public class CollectorBehavior : Enemy
                         }
 
                         currentState = States.Repositioning;
+                        
+                        //SON
                     }
                 }
 
@@ -292,6 +294,8 @@ public class CollectorBehavior : Enemy
         bullet_VFX[0].Play();
         bullet.rb.velocity = dir.normalized * bulletSpeed;
         bullet.damage = bulletDamage;
+        
+        //SON
     }
 
 
@@ -394,6 +398,8 @@ public class CollectorBehavior : Enemy
 
         agent.SetDestination(PlayerController.instance.transform.position);
         currentState = States.Repositioning;
+        
+        //SON
     }
 
     #endregion
@@ -479,4 +485,10 @@ public class CollectorBehavior : Enemy
         //StartCoroutine(ApplyKnockBack(dir, force));
     }
 
+    public override void Die()
+    {
+        //SON
+        
+        base.Die();
+    }
 }

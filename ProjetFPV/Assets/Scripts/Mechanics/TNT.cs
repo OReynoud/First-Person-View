@@ -59,6 +59,9 @@ public class TNT : MonoBehaviour, IDestructible
         health--;
         GetComponent<Collider>().enabled = false;
         
+        
+        
+        
         if (TryGetComponent(out TelekinesisObject tk))
         {
             tk.body.isKinematic = true;
@@ -100,10 +103,9 @@ public class TNT : MonoBehaviour, IDestructible
             }
         }
 
-        //Moche en attendant le bon VFX
         barrelMesh.SetActive(false);
         VFX_Explosion[0].Play();
-        //
+        //SON
         
         Destroy(gameObject,VFX_Explosion[0].main.duration);
     }
