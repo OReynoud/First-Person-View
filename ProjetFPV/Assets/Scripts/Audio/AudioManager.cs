@@ -9,7 +9,7 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] AudioSource music2;
     private int currentMusicSource;
 
-    [SerializeField] private AudioSource prefabAudioSource;
+    [SerializeField] private GameObject prefabAudioSource;
     
     private float GetVolume(int category, int sound) // Appeler cette fonction avec l'index affiché dans le tableau de sound design
     {
@@ -22,10 +22,11 @@ public class AudioManager : Singleton<AudioManager>
     /// <param name="randomPitchIntensity">L'intensité du pitch randomisé. 0 = pitch du son originel.</param>
     public void PlaySound(int category, int sound, Vector3 position, float randomPitchIntensity)
     {
-        var newAudioSource = Instantiate(prefabAudioSource, position, Quaternion.identity);
+        var newAudioSourceObject = Instantiate(prefabAudioSource, position, Quaternion.identity);
+        var newAudioSource = newAudioSourceObject.GetComponent<AudioSource>();
         newAudioSource.volume = GetVolume(category, sound);
         newAudioSource.pitch = Random.Range(-randomPitchIntensity, randomPitchIntensity);
-        newAudioSource.PlayOneShot(categories[category].sounds[sound].sound);
+        newAudioSource.PlayOneShot(categories[category].sounds[sound].sounds[Random.Range(0, categories[category].sounds[sound].sounds.Count)]);
     }
 }
 

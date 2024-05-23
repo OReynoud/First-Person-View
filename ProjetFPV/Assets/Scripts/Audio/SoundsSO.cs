@@ -14,6 +14,6 @@ public class SoundsSO : ScriptableObject
 public class Sound
 {
     public string name;
-    public AudioClip sound;
+    public List<AudioClip> sounds;
     [Range(0f, 1f)] public float volume;
 }
