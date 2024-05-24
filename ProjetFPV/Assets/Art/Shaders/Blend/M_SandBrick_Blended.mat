@@ -68,7 +68,7 @@ Material:
         m_Scale: {x: 0.1, y: 0.1}
         m_Offset: {x: 0, y: 0}
     - _HeightB:
-        m_Texture: {fileID: 2800000, guid: 13e182b53806c844d84e667613273726, type: 3}
+        m_Texture: {fileID: 2800000, guid: 654e1a6315375db49966cf32be712c3b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightC:
@@ -87,16 +87,32 @@ Material:
         m_Texture: {fileID: 2800000, guid: 9cb6d9eca1b2a1e408f85ea330bcc342, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _RoughnessA:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _RoughnessB:
+    - _RMH:
         m_Texture: {fileID: 2800000, guid: 0d132ea8d7d434e4db8c66044e199143, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RMHA:
+        m_Texture: {fileID: 2800000, guid: 768c62dcfc511fe4d839727166a5d6da, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RMHB:
+        m_Texture: {fileID: 2800000, guid: 09f4f1b7db5913947897ac567b54104c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RMHC:
+        m_Texture: {fileID: 2800000, guid: 0d132ea8d7d434e4db8c66044e199143, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RoughnessA:
+        m_Texture: {fileID: 2800000, guid: 768c62dcfc511fe4d839727166a5d6da, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RoughnessB:
+        m_Texture: {fileID: 2800000, guid: 09f4f1b7db5913947897ac567b54104c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _RoughnessC:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: b91f75d74465e0441badc186e087e1e0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _T_Dirt_H:
@@ -127,21 +143,30 @@ Material:
     m_Floats:
     - _AlphaCutoff: 0.5
     - _Blend_Smoothness: 0
+    - _Blend_Smoothness1: 0
     - _Blend_SmoothnessB: 0
     - _Blend_SmoothnessC: 0
-    - _Blend_TextureInfluence: 1.25
+    - _Blend_TextureInfluence: 0.16
+    - _Blend_TextureInfluence1: 1.92
     - _Blend_TextureInfluenceB: -0.04
     - _Blend_TextureInfluenceC: 0.72
+    - _Blend_TextureInfluence_A: 1.25
+    - _Blend_TextureInfluence_B: 1.25
     - _Blend_Threshold: 0.45
     - _Blend_ThresholdA: 0.32
+    - _Blend_ThresholdA1: 0.32
     - _Blend_ThresholdB: 0.57
     - _Blend_ThresholdC: 0
     - _EnvironmentReflections: 1
+    - _Falloff: 1
     - _Float0: 0
+    - _Keyword0: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _ShowVertexColor: 0
     - _SpecularHighlights: 1
+    - _Tiling: 0.1
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
