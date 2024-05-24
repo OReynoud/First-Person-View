@@ -100,6 +100,7 @@ public class TelekinesisModule : MonoBehaviour
                 controlledProp.ApplyTelekinesis();
                 
                 //SON
+                AudioManager.instance.PlaySound(3, 2, gameObject, 0.1f);
                 return;
             }
              
@@ -124,6 +125,7 @@ public class TelekinesisModule : MonoBehaviour
             }
 
             //SON
+            AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f);
         }
     }
 
@@ -345,6 +347,7 @@ public class TelekinesisModule : MonoBehaviour
         CameraShake.instance.StopInfiniteShake();
         main.animManager.LeftHand_Release();
         
+        AudioManager.instance.PlaySound(3, 15, gameObject, 0.2f);
         //SON
     }
 

@@ -27,15 +27,14 @@ public class AudioManager : Singleton<AudioManager>
     /// <param name="sound">Le son joué dans la catégorie, référencé dans le tableur.</param>
     /// <param name="position">La position de l'objet qui émet le son.</param>
     /// <param name="randomPitchIntensity">L'intensité du pitch randomisé. 0 = pitch du son originel.</param>
-    public void PlaySound(int category, int sound, Vector3 position, float randomPitchIntensity)
+    public void PlaySound(int category, int sound, GameObject go, float randomPitchIntensity)
     {
-        var newAudioSourceObject = Instantiate(prefabAudioSource, position, Quaternion.identity);
+        var newAudioSourceObject = Instantiate(prefabAudioSource, go.transform.position, Quaternion.identity, go.transform);
         var newAudioSource = newAudioSourceObject.GetComponent<AudioSource>();
         newAudioSource.clip = categories[category].sounds[sound].sounds[Random.Range(0, categories[category].sounds[sound].sounds.Count)];
         newAudioSource.volume = GetVolume(category, sound);
         newAudioSource.pitch = 1 - Random.Range(-randomPitchIntensity, randomPitchIntensity);
         newAudioSourceObject.SetActive(true);
-        //newAudioSource.PlayOneShot(categories[category].sounds[sound].sounds[Random.Range(0, categories[category].sounds[sound].sounds.Count)]);
         Destroy(newAudioSourceObject, categories[category].sounds[sound].sounds[Random.Range(0, categories[category].sounds[sound].sounds.Count)].length + 0.3f);
     }
 
@@ -96,7 +95,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         if (Input.GetKeyDown(KeyCode.G))
         {
-            PlaySound(1, 2, transform.position, 0.1f);
+            PlaySound(1, 2, transform.gameObject, 0.1f);
         }
         if (Input.GetKeyDown(KeyCode.H))
         {

@@ -202,6 +202,13 @@ public class PlayerController : Singleton<PlayerController>
     [HideInInspector] public AnimHandsController animManager;
 
     #endregion
+    
+    #region Audio Variables
+
+    private float walkTimer;
+    [SerializeField] private float audioWalkSpeed;
+    
+    #endregion
 
 
     [Button]
@@ -386,6 +393,7 @@ public class PlayerController : Singleton<PlayerController>
         if (rb.velocity.y > y)
         {
             //SON
+            AudioManager.instance.PlaySound(3, 9, gameObject, 0.1f);
         }
     }
 
@@ -454,6 +462,8 @@ public class PlayerController : Singleton<PlayerController>
     // Update is called once per frame
     private void Update()
     { // THOMAS
+
+        walkTimer -= Time.deltaTime;
         
         UpdateRestingPos();
         playerDir = Vector3.zero;
@@ -551,6 +561,31 @@ public class PlayerController : Singleton<PlayerController>
             moveInputTimer += Time.deltaTime;
             
             //SON DE MARCHE, LA FONCTION EST EN UPDATE
+
+            if (walkTimer <= 0)
+            {
+                AudioManager.instance.PlaySound(3, 4, gameObject, 0.1f);
+                walkTimer = state == PlayerStates.Sprinting ? audioWalkSpeed / 2f : audioWalkSpeed;
+                
+                switch (state)
+                {
+                    case PlayerStates.Standing:
+                        walkTimer = audioWalkSpeed;
+                        break;
+
+                    case PlayerStates.Sprinting:
+                        walkTimer = audioWalkSpeed / 1.3f;
+                        break;
+
+                    case PlayerStates.Crouching:
+                        walkTimer = audioWalkSpeed * 1.6f;
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+            }
         }
         else
         {
@@ -684,6 +719,7 @@ public class PlayerController : Singleton<PlayerController>
         {
             state = PlayerStates.Crouching;
             //SON
+            AudioManager.instance.PlaySound(3, 10, gameObject, 0.15f);
         }
 
         crouchedCollider.enabled = state == PlayerStates.Crouching;
@@ -742,8 +778,9 @@ public class PlayerController : Singleton<PlayerController>
 
         
         // SON
-        audioSource.pitch = Random.Range(0.9f, 1.1f);
-        audioSource.PlayOneShot(shootClip);
+        AudioManager.instance.PlaySound(3, 1, gameObject, 0.1f);
+        // audioSource.pitch = Random.Range(0.9f, 1.1f);
+        // audioSource.PlayOneShot(shootClip);
         // SON
     }
     
@@ -761,6 +798,7 @@ public class PlayerController : Singleton<PlayerController>
         if (!reloading)return;
         
         //SON
+        AudioManager.instance.PlaySound(3, 3, gameObject, 0.1f);
         reloadCoroutine = StartCoroutine(Reload2());
     }
     private void UseHealPack(InputAction.CallbackContext obj)
@@ -776,6 +814,7 @@ public class PlayerController : Singleton<PlayerController>
         }
         
         //SON
+        AudioManager.instance.PlaySound(3, 16, gameObject, 0.1f);
     }
 
     private Coroutine stagger;
