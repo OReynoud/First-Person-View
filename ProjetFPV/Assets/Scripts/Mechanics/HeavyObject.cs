@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AmplifyShaderEditor;
 using UnityEngine;
 
 public class HeavyObject : ControllableProp
@@ -36,6 +37,7 @@ public class HeavyObject : ControllableProp
     {
         if (body.velocity.y > 1 && !isGrabbed)
         {
+            AudioManager.instance.PlaySound(1, 1, gameObject, 0.1f);
             //SON
         }
     }
