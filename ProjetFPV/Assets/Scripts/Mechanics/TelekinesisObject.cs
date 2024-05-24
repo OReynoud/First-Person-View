@@ -77,6 +77,8 @@ public class TelekinesisObject : ControllableProp
         }
         
         //SON
+
+        AudioManager.instance.PlaySound(1, 2, gameObject, 0.2f);
     }
 
     IEnumerator NotThrown()

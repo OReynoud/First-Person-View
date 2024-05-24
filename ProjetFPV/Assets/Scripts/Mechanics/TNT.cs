@@ -106,8 +106,10 @@ public class TNT : MonoBehaviour, IDestructible
         barrelMesh.SetActive(false);
         VFX_Explosion[0].Play();
         //SON
+
+        AudioManager.instance.PlaySound(1, 0, gameObject, 0.05f);
         
-        Destroy(gameObject,VFX_Explosion[0].main.duration);
+        Destroy(gameObject,VFX_Explosion[0].main.duration + 1f);
     }
     
     private void OnCollisionEnter(Collision other)
