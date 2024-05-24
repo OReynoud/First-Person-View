@@ -37,7 +37,7 @@ public class HeavyObject : ControllableProp
     {
         if (body.velocity.y > 1 && !isGrabbed)
         {
-            AudioManager.instance.PlaySound(1, 1, gameObject, 0.1f);
+            AudioManager.instance.PlaySound(1, 1, gameObject, 0.1f, false);
             //SON
         }
     }

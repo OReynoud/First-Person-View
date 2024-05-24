@@ -51,6 +51,9 @@ public class TelekinesisModule : MonoBehaviour
     [SerializeField]
     public float inkAbsorbSpeed;
 
+    private bool isGrabbingAnObject;
+    private GameObject holdTKAudio;
+    
     #endregion
 
     
@@ -71,6 +74,10 @@ public class TelekinesisModule : MonoBehaviour
     {
         if (Physics.Raycast(main.playerCam.position, main.playerCam.forward, out RaycastHit hit, main.socketManager.maxRange, main.socketManager.shootMask))
         {
+            //SON
+            AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
+            isGrabbingAnObject = true;
+            
             CameraShake.instance.ShakeOneShot(2);
             if (hit.collider.TryGetComponent(out TelekinesisObject TK))
             {
@@ -100,7 +107,7 @@ public class TelekinesisModule : MonoBehaviour
                 controlledProp.ApplyTelekinesis();
                 
                 //SON
-                AudioManager.instance.PlaySound(3, 2, gameObject, 0.1f);
+                AudioManager.instance.PlaySound(3, 2, gameObject, 0.1f, false);
                 return;
             }
              
@@ -123,9 +130,6 @@ public class TelekinesisModule : MonoBehaviour
                 CreateCylinder(hit.collider);
                 return;
             }
-
-            //SON
-            AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f);
         }
     }
 
@@ -260,6 +264,13 @@ public class TelekinesisModule : MonoBehaviour
             controlledProp.body.velocity = dir * (regularTravelSpeed *
                                                   (Vector3.Distance(controlledProp.transform.position,
                                                       offsetPosition.position) / grabDistanceBuffer));
+
+            if (isGrabbingAnObject)
+            {
+                holdTKAudio = AudioManager.instance.PlaySound(3, 14, gameObject, 0.2f, true);
+                
+                isGrabbingAnObject = false;
+            }
             
             //SON
             return;
@@ -347,7 +358,9 @@ public class TelekinesisModule : MonoBehaviour
         CameraShake.instance.StopInfiniteShake();
         main.animManager.LeftHand_Release();
         
-        AudioManager.instance.PlaySound(3, 15, gameObject, 0.2f);
+        AudioManager.instance.PlaySound(3, 15, gameObject, 0.2f, false);
+        
+        isGrabbingAnObject = false;
         //SON
     }
 
@@ -359,7 +372,6 @@ public class TelekinesisModule : MonoBehaviour
         }
         else
         {
-                    
             controlledProp.isGrabbed = false;
 
             main.currentInk =
@@ -454,6 +466,8 @@ public class TelekinesisModule : MonoBehaviour
     }
     public void ThrowTKObject() // THOMAS (whole method)
     {
+        Destroy(holdTKAudio);
+        
         if (tkCylinder == null) return;
         foreach (var vfx in VFX_TKStart)
         {

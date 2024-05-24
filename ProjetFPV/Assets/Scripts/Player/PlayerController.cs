@@ -394,7 +394,7 @@ public class PlayerController : Singleton<PlayerController>
         if (rb.velocity.y > y)
         {
             //SON
-            AudioManager.instance.PlaySound(3, 9, gameObject, 0.1f);
+            AudioManager.instance.PlaySound(3, 9, gameObject, 0.1f, false);
         }
     }
 
@@ -418,9 +418,9 @@ public class PlayerController : Singleton<PlayerController>
     void CheckInteractableTarget()
     {
         if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, 4, ~LayerMask.GetMask("Player"))
-            && playerCam.forward.y > -tkManager.holdObjectYTolerance)
+            && playerCam.forward.y > -tkManager.holdObjectYTolerance)   
         {
-            if (hit.transform.position.y < transform.position.y)return;
+            // if (hit.transform.position.y < transform.position.y)return; //THOMAS - Cette ligne marchait pas
             if (hit.transform.TryGetComponent(out ICanInteract interactable))
             {
                 if (!GameManager.instance.interactText.enabled)
@@ -565,7 +565,7 @@ public class PlayerController : Singleton<PlayerController>
 
             if (walkTimer <= 0)
             {
-                AudioManager.instance.PlaySound(3, isOnWood ? 0 : 4, gameObject, 0.1f);
+                AudioManager.instance.PlaySound(3, isOnWood ? 0 : 4, gameObject, 0.1f, false);
                 walkTimer = state == PlayerStates.Sprinting ? audioWalkSpeed / 2f : audioWalkSpeed;
                 
                 switch (state)
@@ -720,7 +720,7 @@ public class PlayerController : Singleton<PlayerController>
         {
             state = PlayerStates.Crouching;
             //SON
-            AudioManager.instance.PlaySound(3, 10, gameObject, 0.15f);
+            AudioManager.instance.PlaySound(3, 10, gameObject, 0.15f, false);
         }
 
         crouchedCollider.enabled = state == PlayerStates.Crouching;
@@ -757,7 +757,7 @@ public class PlayerController : Singleton<PlayerController>
         if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, 4, ~LayerMask.GetMask("Player")) && 
             playerCam.forward.y > -tkManager.holdObjectYTolerance)
         {
-            if (hit.transform.position.y < transform.position.y)return;
+            //if (hit.transform.position.y < transform.position.y)return; //THOMAS - Cette ligne marchait pas
             if (hit.transform.TryGetComponent(out ICanInteract interactable))
             {
                 interactable.Interact(-hit.normal);
@@ -779,7 +779,7 @@ public class PlayerController : Singleton<PlayerController>
 
         
         // SON
-        AudioManager.instance.PlaySound(3, 1, gameObject, 0.1f);
+        AudioManager.instance.PlaySound(3, 1, gameObject, 0.1f, false);
         // audioSource.pitch = Random.Range(0.9f, 1.1f);
         // audioSource.PlayOneShot(shootClip);
         // SON
@@ -799,7 +799,7 @@ public class PlayerController : Singleton<PlayerController>
         if (!reloading)return;
         
         //SON
-        AudioManager.instance.PlaySound(3, 3, gameObject, 0.1f);
+        AudioManager.instance.PlaySound(3, 3, gameObject, 0.1f, false);
         reloadCoroutine = StartCoroutine(Reload2());
     }
     private void UseHealPack(InputAction.CallbackContext obj)
@@ -815,7 +815,7 @@ public class PlayerController : Singleton<PlayerController>
         }
         
         //SON
-        AudioManager.instance.PlaySound(3, 16, gameObject, 0.1f);
+        AudioManager.instance.PlaySound(3, 16, gameObject, 0.1f, false);
     }
 
     private Coroutine stagger;
