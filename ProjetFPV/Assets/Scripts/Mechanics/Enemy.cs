@@ -6,6 +6,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 namespace Mechanics
 {
@@ -39,10 +40,15 @@ namespace Mechanics
 
         private float knockBackTimer = 0;
         public bool knockedBack;
+        private bool die;
+
+#if UNITY_EDITOR
         private void OnValidate()
         {
             maskCount = allMasks.Length;
         }
+        
+#endif
 
 
         // Start is called before the first frame update
@@ -110,24 +116,45 @@ namespace Mechanics
         }
 
 
+        private int tempRandom;
+        bool bodyHit = true;
+        
         public virtual void TakeDamage(Collider partHit, Vector3 knockBackDir, float damage, float knockBack)
         {
+            bodyHit = true;
             for (int i = 0; i < allMasks.Length; i++)
             {
                 if (partHit != allMasks[i].maskCollider)continue;
 
+                bodyHit = false;
+                GameManager.instance.VFX_EnemyHitMethod(partHit.transform.position);
                 allMasks[i].maskHealth -= damage;
                 if ( allMasks[i].maskHealth <= 0)
                 {
                     allMasks[i].maskCollider.gameObject.SetActive(false);
                     allMasks[i].broken = true;
                     maskCount--;
-                    
                 }
                 break;
             }
 
-            if (!knockedBack && !isGrabbed) KnockBack(knockBackDir,knockBack);
+            if (bodyHit)
+            {
+                foreach (var mask in allMasks)
+                {
+                    if (mask.broken)continue;
+                    mask.maskHealth -= damage;
+                    if ( mask.maskHealth <= 0)
+                    {
+                        GameManager.instance.VFX_EnemyHitMethod(allMasks[tempRandom].maskCollider.transform.position);
+                        mask.maskCollider.gameObject.SetActive(false);
+                        mask.broken = true;
+                        maskCount--;
+                    }
+                }
+            }
+
+            if (!knockedBack && !isGrabbed && !bodyHit) KnockBack(knockBackDir,knockBack);
             
             if (maskCount <= 0) Die();
         }
@@ -142,7 +169,8 @@ namespace Mechanics
             for (int i = 0; i < allMasks.Length; i++)
             {
                 if (maskCollider != allMasks[i].maskCollider)continue;
-
+                
+                GameManager.instance.VFX_EnemyHitMethod(pointOfForce);
                 allMasks[i].maskHealth -= damage;
                 if ( allMasks[i].maskHealth <= 0)
                 {
@@ -153,6 +181,7 @@ namespace Mechanics
                 break;
             }
 
+            
             if (maskCount <= 0) Die();
         }
 
@@ -162,9 +191,9 @@ namespace Mechanics
             
             grabbedTween.Complete();
             grabbedTween.Kill(true);
-            var oui = Instantiate(GameManager.instance.inkStainPrefab, transform.position, transform.rotation);
+            var oui = Instantiate(GameManager.instance.inkStainPrefab, transform.position + Vector3.up, transform.rotation);
             oui.storedInk = inkIncrease;
-        
+            if (isGrabbed)PlayerController.instance.ReleaseProp(new InputAction.CallbackContext());
             if (respawnOnDeath) GameManager.instance.Respawn(this);
             gameObject.SetActive(false);
 
@@ -205,7 +234,7 @@ namespace Mechanics
             }
         }
 
-        private Tweener grabbedTween;
+        private protected Tweener grabbedTween;
         public void GrabbedBehavior(float levitateValue, float shakeAmplitude, int shakeFrequency)
         {
             grabbedTween = transform.DOMove(transform.position + Vector3.up * levitateValue, 0.2f).OnComplete(() =>

@@ -28,6 +28,9 @@ namespace Mechanics
         {
             player.ImmobilizePlayer();
 
+            //SON
+            AudioManager.instance.PlaySound(3, 17, player.gameObject, 0.1f);
+            
             float angle = new Vector2(dir.z, dir.x).GetAngleFromVector();
             var rotationValue = new Vector3(0, angle, 0);
             Vector2 wallPoint = new Vector2(

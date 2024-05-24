@@ -10,6 +10,7 @@ namespace Mechanics
             
             PlayerController.instance.currentHealPackAmount++;
             GameManager.instance.UpdateHealPackUI();
+            //SON
             Destroy(gameObject);
         }
 

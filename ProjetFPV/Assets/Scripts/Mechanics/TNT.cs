@@ -15,9 +15,9 @@ public class TNT : MonoBehaviour, IDestructible
     [SerializeField] private float damageToEnemy = 5;
     [Range(0,1)][SerializeField] private float damageFallOff = 0.2f;
     [SerializeField] private LayerMask mask;
-    [SerializeField] private GameObject explosionMesh;
     
     [SerializeField] private GameObject barrelMesh;
+    [SerializeField] private ParticleSystem[] VFX_Explosion;
     private TelekinesisObject tk;
 
     public void OnDrawGizmosSelected()
@@ -38,12 +38,30 @@ public class TNT : MonoBehaviour, IDestructible
     private void Awake()
     {
         tk = GetComponent<TelekinesisObject>();
+
+        var main = VFX_Explosion[1].main;
+        var baseSize = main.startSize.constant;
+        main = VFX_Explosion[1].main;
+        main.startSize = explosionRadius * 2;
+
+        float sizeIncreaseFactor = explosionRadius * 2 / baseSize;
+        for (int i = 2; i < VFX_Explosion.Length; i++)
+        {
+            main = VFX_Explosion[i].main;
+            baseSize = main.startSize.constant;
+            main.startSize =  baseSize * sizeIncreaseFactor;
+        }
     }
 
     public void OnDestroy()
     {
         if (health <= -1)return;
         health--;
+        GetComponent<Collider>().enabled = false;
+        
+        
+        
+        
         if (TryGetComponent(out TelekinesisObject tk))
         {
             tk.body.isKinematic = true;
@@ -85,14 +103,11 @@ public class TNT : MonoBehaviour, IDestructible
             }
         }
 
-        //Moche en attendant le bon VFX
         barrelMesh.SetActive(false);
-        transform.GetChild(0).GetComponent<ParticleSystem>().Play();
-        //
+        VFX_Explosion[0].Play();
+        //SON
         
-        explosionMesh.SetActive(true);
-        explosionMesh.transform.localScale = new Vector3(1/transform.localScale.x ,1/transform.localScale.y,1/transform.localScale.z) * explosionForce;
-        Destroy(gameObject,1f);
+        Destroy(gameObject,VFX_Explosion[0].main.duration);
     }
     
     private void OnCollisionEnter(Collision other)

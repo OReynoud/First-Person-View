@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using DG.Tweening;
 using NaughtyAttributes;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 namespace Mechanics
@@ -35,6 +37,9 @@ namespace Mechanics
 
         [Foldout("Reposition state")] [SerializeField]
         public Transform[] spawnPositions;
+        
+        [Foldout("Reposition state")] [SerializeField]
+        [Range(0,1)]public float percentHealthToTriggerReposition = 0.5f;
 
         [Foldout("Neutral state")] [SerializeField]
         private float walkAreaRange;
@@ -63,6 +68,9 @@ namespace Mechanics
         [Foldout("Attack state")] [SerializeField]
         private float jumpHeight;
         
+        [Foldout("Attack state")] [SerializeField]
+        private float predictDistance;
+        
         [MinMaxSlider(0f,10f)][Foldout("Attack state")] [SerializeField]
         private Vector2 jumpDuration;
     
@@ -80,12 +88,16 @@ namespace Mechanics
             Attack,
             Stunned,
             Paralysed,
-            KnockBack
+            KnockBack,
+            Dying
         }
 
         public States currentState;
         private bool repositioning;
         private Coroutine attackRoutine;
+        private Animation anim;
+
+#if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
             Handles.color = Color.green;
@@ -105,6 +117,8 @@ namespace Mechanics
             Handles.DrawWireDisc(transform.position, Vector3.up, atkRange, 2);
         }
         
+#endif
+        
         
         
         private void OnEnable()
@@ -116,13 +130,15 @@ namespace Mechanics
             base.Awake();
             origin = transform.position;
             agent = GetComponent<NavMeshAgent>();
+            anim = GetComponent<Animation>();
         }
-        
 
-        
+
+        private float timeràLaCon;
         public override void Start()
         {
-            base.Start();
+            base.Start();                        
+            timeràLaCon = 0.2f;
             //agent.stoppingDistance = atkRange;
             agent.speed = wanderSpeed;
             
@@ -149,6 +165,7 @@ namespace Mechanics
             StartCoroutine(Wander());
         }
 
+        private bool tpViaDmg = false;
         // Update is called once per frame
         public override void Update()
         {
@@ -169,28 +186,46 @@ namespace Mechanics
                     {
                         pathRoutine = StartCoroutine(SetAgentDestination());
                     }
-                    if (Vector3.Distance(PlayerController.instance.transform.position, transform.position) < atkRange)
+                    var dir = PlayerController.instance.transform.position - transform.position;
+                    if (Physics.Raycast(transform.position, dir.normalized, out RaycastHit hit, rushRange, playerLayer) 
+                        && 
+                        Vector3.Distance(PlayerController.instance.transform.position, transform.position) < atkRange)
                     {
+                        if (!hit.collider.gameObject.CompareTag("Player")) break;
                         attackRoutine = StartCoroutine(AttackPlayer());
                     }
 
                     break;
                 case States.KnockBack:
-                    if (!knockedBack) currentState = States.Repositioning;
+                    if (!knockedBack)
+                    {
+                        if (!tpViaDmg && allMasks[0].maskHealth <= allMasks[0].baseHealth * percentHealthToTriggerReposition)
+                        {
+                            tpViaDmg = true;
+                            currentState = States.Repositioning;
+                        }
+                        else
+                        {
+                            currentState = States.Rush;
+                        }
+                    }
                     break;
                 case States.Attack:
                     break;
                 case States.Stunned:
+                    if (!anim.isPlaying) anim.Play("TEMP_StunLoop");
                     break;
                 case States.Paralysed:
                     if (PlayerController.instance.controlledProp == this) break;
-                    //Debug.DrawRay(transform.position,Vector3.down * 1.5f);
+                    timeràLaCon -= Time.deltaTime;
+                    if (timeràLaCon > 0) break;
                     if (Physics.Raycast(transform.position,Vector3.down,1.7f,LayerMask.GetMask("Default")))
                     {
                         Debug.Log("Landed");
                         currentState = States.Rush;
                         agent.enabled = true;
                         agent.SetDestination(PlayerController.instance.transform.position);
+                        timeràLaCon = 0.2f;
                     }
                     break;
                 default:
@@ -240,8 +275,11 @@ namespace Mechanics
             body.constraints = RigidbodyConstraints.FreezeRotation;
             InterruptAttack();
             transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
+            anim.Play("TEMP_StunStart");
             yield return new WaitForSeconds(stunDuration);
 
+            anim.Stop();
+            anim.Play("TEMP_StunEnd");
             agent.enabled = true;            
             foreach (var part in allMasks)
             {
@@ -359,13 +397,21 @@ namespace Mechanics
         IEnumerator AttackPlayer()
         {
             currentState = States.Attack;
-            playerPos = PlayerController.instance.transform.position + transform.forward;
-            agent.SetDestination(playerPos);
-            actualDestination = new Vector3(agent.destination.x,playerPos.y, agent.destination.z);
             agent.enabled = false;
             Debug.Log("j'attaque le joueur");
-            yield return new WaitForSeconds(waitBeforeJump);
+            var t = Time.time + waitBeforeJump;
+            while (Time.time < t)
+            {
+                playerPos = PlayerController.instance.transform.position;
+                transform.LookAt(playerPos);
+                transform.rotation = Quaternion.Euler(0,transform.eulerAngles.y,transform.eulerAngles.z);
+                yield return null;
+            }
 
+            playerPos = PlayerController.instance.transform.position + transform.forward;
+            actualDestination = playerPos + PlayerController.instance.rb.velocity.normalized * predictDistance;
+            transform.LookAt(actualDestination);
+            transform.rotation = Quaternion.Euler(0,transform.eulerAngles.y,transform.eulerAngles.z);
             var calcJumpTime = (Vector3.Distance(transform.position, playerPos) * jumpDuration.y)/atkRange;
             if (calcJumpTime < jumpDuration.x) calcJumpTime = jumpDuration.x;
             jumpTween = transform.DOJump(actualDestination + transform.forward * jumpOverShoot, jumpHeight, 1, calcJumpTime);
@@ -446,8 +492,21 @@ namespace Mechanics
             currentState = States.KnockBack;
         }
 
-        public override void Die()
+        public override async void Die()
         {
+            anim.Play("A_BouffonDeath");
+            GameManager.instance.OnKillEnemy();
+            
+            if (isGrabbed)PlayerController.instance.ReleaseProp(new InputAction.CallbackContext());
+            grabbedTween.Complete();
+            grabbedTween.Kill(true);
+            var oui = Instantiate(GameManager.instance.inkStainPrefab, transform.position, transform.rotation);
+            oui.storedInk = inkIncrease;
+            transform.DOMove(new Vector3(transform.position.x,0,transform.position.z), 0.4f).SetEase(Ease.InCubic);
+            while (anim.isPlaying)
+            {
+                await Task.Delay(10);
+            }
             if (arenaSpawn)
             {
                 arena.currentEnemies.Remove(this);
@@ -457,8 +516,9 @@ namespace Mechanics
             {
                 parentEnemy.children.Remove(this);
             }
-            
-            base.Die();
+        
+            if (respawnOnDeath) GameManager.instance.Respawn(this);
+            gameObject.SetActive(false);
         }
 
         void InterruptAttack()

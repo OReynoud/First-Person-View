@@ -5,6 +5,7 @@ using System.Linq;
 using DG.Tweening;
 using Mechanics;
 using NaughtyAttributes;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -21,6 +22,8 @@ public class CollectorBehavior : Enemy
     [BoxGroup] public ChargerEgg spawnBulletPrefab;
     [BoxGroup] public Animation transitionState;
     [BoxGroup] public float transitionTime;
+    [BoxGroup] public ParticleSystem[] bullet_VFX;
+    
 
 
     public enum States
@@ -38,6 +41,8 @@ public class CollectorBehavior : Enemy
 
     [Foldout("Roam State")] [SerializeField]
     private float aggroRange;
+    [Foldout("Roam State")] [SerializeField]
+    private float aggressiveAggroRange;
 
     [Foldout("Roam State")] [SerializeField]
     private float flySpeed;
@@ -91,6 +96,7 @@ public class CollectorBehavior : Enemy
     private Vector3 origin;
 
 
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         Handles.color = Color.green;
@@ -106,6 +112,8 @@ public class CollectorBehavior : Enemy
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, aggroRange);
     }
+#endif
+
 
     // Update is called once per frame
     public override void Awake()
@@ -114,6 +122,16 @@ public class CollectorBehavior : Enemy
         transitionCurve.AddKey(0, 0);
         transitionCurve.AddKey(transitionTime, 1);
         origin = transform.position;
+        
+        var main = new ParticleSystem().main;
+        foreach (var vfx in bullet_VFX)
+        {
+            main = vfx.main;
+            main.startSpeed = bulletSpeed;
+            vfx.Stop();
+        }
+
+        aggressiveAggroRange = aggroRange * 5;
     }
 
     public override void Start()
@@ -136,6 +154,7 @@ public class CollectorBehavior : Enemy
         if (seenPlayer)
         {
             agent.speed = aggressiveFlySpeed;
+            aggroRange = aggressiveAggroRange;
         }
 
         var dir = PlayerController.instance.transform.position - transform.position;
@@ -164,6 +183,8 @@ public class CollectorBehavior : Enemy
                         }
 
                         currentState = States.Repositioning;
+                        
+                        //SON
                     }
                 }
 
@@ -205,6 +226,7 @@ public class CollectorBehavior : Enemy
             case States.Stunned:
                 break;
             case States.Paralysed:
+                seenPlayer = true;
                 AnimateMasks(false);
                 break;
             case States.KnockBack:
@@ -264,10 +286,16 @@ public class CollectorBehavior : Enemy
         bulletsLeft--;
         bulletTimer = 0;
         var rand = Random.Range(0, bulletSpawnPos.Length);
-        var dir = PlayerController.instance.transform.position - bulletSpawnPos[rand].position;
+        var dir = PlayerController.instance.playerCam.position - bulletSpawnPos[rand].position + new Vector3(Random.Range(-0.5f,0.5f),Random.Range(-0.5f,0.5f),0);
+        Debug.DrawRay( bulletSpawnPos[rand].position,dir.normalized * 10, Color.cyan, 5);
         var bullet = Instantiate(bulletPrefab, bulletSpawnPos[rand].position, Quaternion.LookRotation(dir.normalized));
-        bullet.rb.velocity = dir * bulletSpeed;
+        bullet_VFX[0].transform.position = bulletSpawnPos[rand].position;
+        bullet_VFX[0].transform.rotation = Quaternion.LookRotation(dir.normalized);
+        bullet_VFX[0].Play();
+        bullet.rb.velocity = dir.normalized * bulletSpeed;
         bullet.damage = bulletDamage;
+        
+        //SON
     }
 
 
@@ -339,6 +367,7 @@ public class CollectorBehavior : Enemy
     {
         if (currentState != States.Stunned)
         {
+            seenPlayer = true;
             currentState = States.Stunned;
             StartCoroutine(Stun());
         }
@@ -369,6 +398,8 @@ public class CollectorBehavior : Enemy
 
         agent.SetDestination(PlayerController.instance.transform.position);
         currentState = States.Repositioning;
+        
+        //SON
     }
 
     #endregion
@@ -454,4 +485,10 @@ public class CollectorBehavior : Enemy
         //StartCoroutine(ApplyKnockBack(dir, force));
     }
 
+    public override void Die()
+    {
+        //SON
+        
+        base.Die();
+    }
 }
