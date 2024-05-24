@@ -107,7 +107,7 @@ public class TNT : MonoBehaviour, IDestructible
         VFX_Explosion[0].Play();
         //SON
 
-        AudioManager.instance.PlaySound(1, 0, gameObject, 0.05f);
+        AudioManager.instance.PlaySound(1, 0, gameObject, 0.05f, false);
         
         Destroy(gameObject,VFX_Explosion[0].main.duration + 1f);
     }

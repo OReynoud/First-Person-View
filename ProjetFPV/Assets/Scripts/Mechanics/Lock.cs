@@ -18,7 +18,7 @@ public class Lock : MonoBehaviour, IDestructible
     {
         door.lockBroken = true;
         
-        AudioManager.instance.PlaySound(1, 5, gameObject.transform.parent.transform.parent.gameObject, 0.1f);
+        AudioManager.instance.PlaySound(1, 5, gameObject.transform.parent.transform.parent.gameObject, 0.1f, false);
         
         Destroy(transform.parent.gameObject);
     }

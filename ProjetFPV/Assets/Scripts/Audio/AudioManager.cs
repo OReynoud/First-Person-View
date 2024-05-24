@@ -27,7 +27,8 @@ public class AudioManager : Singleton<AudioManager>
     /// <param name="sound">Le son joué dans la catégorie, référencé dans le tableur.</param>
     /// <param name="position">La position de l'objet qui émet le son.</param>
     /// <param name="randomPitchIntensity">L'intensité du pitch randomisé. 0 = pitch du son originel.</param>
-    public void PlaySound(int category, int sound, GameObject go, float randomPitchIntensity)
+    /// <param name="loop">Détermine si le son doit loop. Dans ce cas, le gameobject doit être détruit manuellement.</param>
+    public GameObject PlaySound(int category, int sound, GameObject go, float randomPitchIntensity, bool loop)
     {
         var newAudioSourceObject = Instantiate(prefabAudioSource, go.transform.position, Quaternion.identity, go.transform);
         var newAudioSource = newAudioSourceObject.GetComponent<AudioSource>();
@@ -35,7 +36,16 @@ public class AudioManager : Singleton<AudioManager>
         newAudioSource.volume = GetVolume(category, sound);
         newAudioSource.pitch = 1 - Random.Range(-randomPitchIntensity, randomPitchIntensity);
         newAudioSourceObject.SetActive(true);
-        Destroy(newAudioSourceObject, categories[category].sounds[sound].sounds[Random.Range(0, categories[category].sounds[sound].sounds.Count)].length + 0.3f);
+        if (loop)
+        {
+            newAudioSource.loop = true;
+        }
+        else
+        {
+            Destroy(newAudioSourceObject, categories[category].sounds[sound].sounds[Random.Range(0, categories[category].sounds[sound].sounds.Count)].length + 0.3f);
+        }
+        
+        return newAudioSourceObject;
     }
 
     /// <param name="category">La catégorie de la musique, référencée dans le tableur (de 0 à 8).</param>
@@ -95,7 +105,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         if (Input.GetKeyDown(KeyCode.G))
         {
-            PlaySound(1, 2, transform.gameObject, 0.1f);
+            PlaySound(1, 2, transform.gameObject, 0.1f, false);
         }
         if (Input.GetKeyDown(KeyCode.H))
         {

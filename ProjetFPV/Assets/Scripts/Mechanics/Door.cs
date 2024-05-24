@@ -23,7 +23,7 @@ public class Door : MonoBehaviour, ICanInteract
     {
         if (!lockBroken) return;
 
-        AudioManager.instance.PlaySound(1, 3, gameObject, 0.1f);
+        AudioManager.instance.PlaySound(1, 3, gameObject, 0.1f, false);
 
         Debug.Log(transform.rotation.y + "|" + transform.localRotation.y);
         
