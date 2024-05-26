@@ -17,6 +17,12 @@ public class AudioSubtitles : MonoBehaviour
     
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            hasToCount = true;
+            hasToDisplay = true;
+        }
+        
         if (!hasToCount) return;
         
         subtitlesUI.gameObject.SetActive(hasToDisplay);
