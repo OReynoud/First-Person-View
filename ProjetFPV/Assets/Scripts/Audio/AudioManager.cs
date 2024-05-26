@@ -91,38 +91,14 @@ public class AudioManager : Singleton<AudioManager>
         from.gameObject.SetActive(false);
     }
 
-    public void MuffleSound()
+    public void MuffleSound() // Appeler à la pause
     {
         muffleSnapshot.TransitionTo(snapshotTransitionTime);
     }
 
-    public void UnMuffleSound()
+    public void UnMuffleSound() // Appeler à la sortie de pause
     {
         defaultSnapshot.TransitionTo(snapshotTransitionTime);
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            PlaySound(1, 2, transform.gameObject, 0.1f, false);
-        }
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            SwapMusics(2, 1, 4f);
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            SwapMusics(2, 0, 4f);
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            MuffleSound();
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            UnMuffleSound();
-        }
     }
 }
 
