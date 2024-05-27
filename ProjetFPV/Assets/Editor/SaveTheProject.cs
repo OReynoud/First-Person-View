@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SaveTheProject : EditorWindow
 {
-    [MenuItem("Tools/Save the Project")]
+    [MenuItem("Tools/GameObject Merger")]
     public static void ShowWindows()
     {
         GetWindow(typeof(SaveTheProject));
@@ -15,6 +15,12 @@ public class SaveTheProject : EditorWindow
     private void OnGUI()
     {
         GUILayout.Space(30);
+
+        GUILayout.Label("Instructions : \n\nCe tool permet de merge plusieurs mesh en un seul. \nLors de la fusion, les materials sont perdus. Un seul material \nne peut être assigné au nouveau mesh, " +
+                        "il ne faut donc fusionner \nque les gameobject qui ont le même material. Avant de merge, il faut \nspécifier un nom pour le mesh qui va ainsi être crée. Si ce nom est déjà pris, une \n" +
+                        "erreur va apparaître dans la console. Les meshs générés sont stockés dans \nAssets/Art/Meshes/Modulaire/Prefab/CombinedMeshes.");
+        
+        GUILayout.Space(30);
         
         GUILayout.Label("Number of selected objects : " + Selection.count);
         
@@ -25,7 +31,7 @@ public class SaveTheProject : EditorWindow
         
         GUILayout.Space(15);
         
-        if (GUILayout.Button("Click here to save the project",  GUILayout.Height(50f)))
+        if (GUILayout.Button("Click here to merge game objects",  GUILayout.Height(50f)))
         {
             Merge();
         
