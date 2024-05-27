@@ -84,7 +84,4 @@ public class SaveTheProject : EditorWindow
     }
     
     // METTRE LA POSITION AU BON ENDROIT
-    // AJOUTER UNE ZONE STRING
-    // VERIFIER QU'UN FICHIER N'EXISTE PAS DEJA
-    
 }
