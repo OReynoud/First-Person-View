@@ -1,5 +1,3 @@
-using System;
-using Codice.Client.BaseCommands.Merge.Xml;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,11 +9,18 @@ public class SaveTheProject : EditorWindow
         GetWindow(typeof(SaveTheProject));
     }
 
+    private string fileName;
+    private string savePath = "Assets/Art/Meshes/Modulaire/Prefab/CombinedMeshes/";
+    
     private void OnGUI()
     {
         GUILayout.Space(30);
         
         GUILayout.Label("Number of selected objects : " + Selection.count);
+        
+        GUILayout.Space(15);
+
+        fileName = GUILayout.TextField(fileName, "File Name");
         
         GUILayout.Space(15);
         
@@ -28,6 +33,14 @@ public class SaveTheProject : EditorWindow
 
     private void Merge()
     {
+        var path = savePath + fileName;
+
+        if (fileName == "" || System.IO.File.Exists(path))
+        {
+            Debug.LogError("Ce fichier existe déjà et risque d'être remplacé. Choisissez un nom différent");
+            return;
+        }
+        
         CombineInstance[] combineInstances = new CombineInstance[Selection.count];
         
         for (int i = 0; i < Selection.count; i++)
@@ -59,6 +72,9 @@ public class SaveTheProject : EditorWindow
         {
             DestroyImmediate(go);
         }
+        
+        AssetDatabase.CreateAsset(meshFilter.sharedMesh, path);
+        AssetDatabase.SaveAssets();
     }
     
     // METTRE LA POSITION AU BON ENDROIT
