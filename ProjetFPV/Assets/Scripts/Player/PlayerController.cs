@@ -297,7 +297,6 @@ public class PlayerController : Singleton<PlayerController>
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
         currentInk = GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, 0);
         CheckShootingHand();
     }
@@ -411,7 +410,7 @@ public class PlayerController : Singleton<PlayerController>
 
     void CheckInteractableTarget()
     {
-        if (Physics.SphereCast(playerCam.position, interactDistance, playerCam.forward, out RaycastHit hit, 4, ~LayerMask.GetMask("Player"))
+        if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, interactDistance, ~LayerMask.GetMask("Player"))
             && playerCam.forward.y > -tkManager.holdObjectYTolerance)   
         {
             // if (hit.transform.position.y < transform.position.y)return; //THOMAS - Cette ligne marchait pas
@@ -748,7 +747,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (!canMove) return;
         Debug.DrawRay(playerCam.position,camera1.transform.forward * 4, Color.blue,3);
-        if (Physics.SphereCast(playerCam.position, interactDistance, playerCam.forward, out RaycastHit hit, 4, ~LayerMask.GetMask("Player")) && 
+        if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, interactDistance, ~LayerMask.GetMask("Player")) && 
             playerCam.forward.y > -tkManager.holdObjectYTolerance)
         {
             //if (hit.transform.position.y < transform.position.y)return; //THOMAS - Cette ligne marchait pas
