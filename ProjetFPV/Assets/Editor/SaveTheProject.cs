@@ -60,4 +60,9 @@ public class SaveTheProject : EditorWindow
             DestroyImmediate(go);
         }
     }
+    
+    // METTRE LA POSITION AU BON ENDROIT
+    // AJOUTER UNE ZONE STRING
+    // VERIFIER QU'UN FICHIER N'EXISTE PAS DEJA
+    
 }
