@@ -364,10 +364,12 @@ namespace Mechanics
 
             body.isKinematic = true;
             transform.DOMove(transform.position + Vector3.down * 5, disappearDuration);
+            AudioManager.instance.PlaySound(8, 6, gameObject, 0.1f, false);
             yield return new WaitForSeconds(disappearDuration + idleDuration);
             
             transform.position = GetRandomSpawnPoint() + Vector3.down * 5;
             transform.LookAt(new Vector3(PlayerController.instance.transform.position.x, transform.position.y,PlayerController.instance.transform.position.z));
+            AudioManager.instance.PlaySound(8, 1, gameObject, 0.1f, false);
             transform.DOMove(transform.position + Vector3.up * 5, appearDuration).OnComplete(() =>
             {
                 repositioning = false;
