@@ -19,6 +19,7 @@ public class TNT : MonoBehaviour, IDestructible
     [SerializeField] private GameObject barrelMesh;
     [SerializeField] private ParticleSystem[] VFX_Explosion;
     private TelekinesisObject tk;
+    private bool soundPlayed;
 
     public void OnDrawGizmosSelected()
     {
@@ -58,9 +59,6 @@ public class TNT : MonoBehaviour, IDestructible
         if (health <= -1)return;
         health--;
         GetComponent<Collider>().enabled = false;
-        
-        
-        
         
         if (TryGetComponent(out TelekinesisObject tk))
         {
@@ -107,7 +105,12 @@ public class TNT : MonoBehaviour, IDestructible
         VFX_Explosion[0].Play();
         //SON
 
-        AudioManager.instance.PlaySound(1, 0, gameObject, 0.05f, false);
+        if (!soundPlayed)
+        {
+            AudioManager.instance.PlaySound(1, 0, gameObject, 0.05f, false);
+            soundPlayed = true;
+        }
+        
         
         Destroy(gameObject,VFX_Explosion[0].main.duration + 1f);
     }
