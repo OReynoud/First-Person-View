@@ -46,11 +46,16 @@ public class SaveTheProject : EditorWindow
             Debug.LogError("Ce fichier existe déjà et risque d'être remplacé. Choisissez un nom différent");
             return;
         }
+
+        var parentGO = new GameObject("CombinedMeshParent");
+        parentGO.transform.position = Vector3.zero;
+        parentGO.transform.rotation = Quaternion.identity;
         
         CombineInstance[] combineInstances = new CombineInstance[Selection.count];
         
         for (int i = 0; i < Selection.count; i++)
         {
+            Selection.gameObjects[i].transform.parent = parentGO.transform;
             // Crée une nouvelle instance de CombineInstance pour chaque GameObject
             combineInstances[i].mesh = Selection.gameObjects[i].GetComponent<MeshFilter>().sharedMesh;
             combineInstances[i].transform = Matrix4x4.TRS( Selection.gameObjects[i].transform.localPosition,
@@ -60,7 +65,8 @@ public class SaveTheProject : EditorWindow
         
         // Crée un nouveau GameObject pour contenir le Mesh combiné
         GameObject combinedObject = new GameObject("CombinedMesh");
-        combinedObject.transform.position = Selection.gameObjects[0].transform.position;
+        combinedObject.transform.parent = parentGO.transform;
+        combinedObject.transform.position = Vector3.zero;
         
         // Ajoute un MeshFilter et un MeshRenderer au nouveau GameObject
         MeshFilter meshFilter = combinedObject.AddComponent<MeshFilter>();
