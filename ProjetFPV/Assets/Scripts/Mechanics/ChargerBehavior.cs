@@ -365,6 +365,11 @@ namespace Mechanics
             body.isKinematic = true;
             transform.DOMove(transform.position + Vector3.down * 5, disappearDuration);
             AudioManager.instance.PlaySound(8, 6, gameObject, 0.1f, false);
+            if (Random.Range(0f, 1f) <= 0.3f)
+            {
+                AudioManager.instance.PlaySound(8, 7, gameObject, 0.1f, false);
+            }
+            
             yield return new WaitForSeconds(disappearDuration + idleDuration);
             
             transform.position = GetRandomSpawnPoint() + Vector3.down * 5;
