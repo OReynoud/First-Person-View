@@ -305,7 +305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7896912293664307126
 RectTransform:
   m_ObjectHideFlags: 0
@@ -577,7 +577,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3060805367450853622
 RectTransform:
   m_ObjectHideFlags: 0
@@ -693,7 +693,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51a0ba1f0bed084896949d9bb67cc6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootClip: {fileID: 8300000, guid: c2f6b5c7f9aea9547ac922a9ebf90bb0, type: 3}
   rb: {fileID: 0}
   vignetteIntensity:
     serializedVersion: 2
@@ -762,6 +761,7 @@ MonoBehaviour:
   currentHealth: 0
   healPackCapacity: 4
   healAmount: 10
+  interactDistance: 0
   currentInputMap: ControlsLeftShoot
   inputs: {fileID: 739510780194846137}
   playerCam: {fileID: 7127425910194321269}
@@ -3793,7 +3793,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6239005035128904802
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4732,7 +4732,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4281305089173378260
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5256,7 +5256,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &788861323696924387
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6426,7 +6426,7 @@ GameObject:
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8918532052287260627
 Transform:
   m_ObjectHideFlags: 0
@@ -7265,6 +7265,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: -5552135564655057696, guid: 96832417b71a6c74baafb7abee094bca,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -5301140191985935983, guid: 4282ba24dd6669745ad8cd0024ba6a8c,
+        type: 3}
+    - target: {fileID: -5552135564655057696, guid: 96832417b71a6c74baafb7abee094bca,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0125709ef346bd34585eaf3a9c7436b3, type: 2}
     - target: {fileID: -5384680314342950087, guid: 96832417b71a6c74baafb7abee094bca,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8538,6 +8549,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.90932554
       objectReference: {fileID: 0}
+    - target: {fileID: 173130566439781121, guid: d501e05ae76e6fe4ca1566e3a6cee272,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -5301140191985935983, guid: 4282ba24dd6669745ad8cd0024ba6a8c,
+        type: 3}
+    - target: {fileID: 173130566439781121, guid: d501e05ae76e6fe4ca1566e3a6cee272,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0125709ef346bd34585eaf3a9c7436b3, type: 2}
     - target: {fileID: 336284317937062032, guid: d501e05ae76e6fe4ca1566e3a6cee272,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
