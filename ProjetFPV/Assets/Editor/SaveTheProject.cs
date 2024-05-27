@@ -42,7 +42,6 @@ public class SaveTheProject : EditorWindow
         // Crée un nouveau GameObject pour contenir le Mesh combiné
         GameObject combinedObject = new GameObject("CombinedMesh");
         combinedObject.transform.position = Selection.gameObjects[0].transform.position;
-        combinedObject.transform.parent = Selection.gameObjects[0].transform;
         
         // Ajoute un MeshFilter et un MeshRenderer au nouveau GameObject
         MeshFilter meshFilter = combinedObject.AddComponent<MeshFilter>();
@@ -58,7 +57,7 @@ public class SaveTheProject : EditorWindow
 
         foreach (GameObject go in Selection.gameObjects)
         {
-            go.SetActive(false);
+            DestroyImmediate(go);
         }
     }
 }
