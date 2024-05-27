@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IDestructible
 {
     public void TakeDamage();
-    public void OnDestroy();
+    public void OnDestroyEvent();
 }

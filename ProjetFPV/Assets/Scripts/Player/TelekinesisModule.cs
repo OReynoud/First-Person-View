@@ -329,8 +329,8 @@ public class TelekinesisModule : MonoBehaviour
         
         switch (controlledProp)
         {
-            case TelekinesisObject:
-                Release_TKObject();
+            case TelekinesisObject tkObject:
+                Release_TKObject(tkObject);
                 break;
             case Enemy:
                 Release_Enemy();
@@ -364,7 +364,7 @@ public class TelekinesisModule : MonoBehaviour
         //SON
     }
 
-    public void Release_TKObject()
+    public void Release_TKObject(TelekinesisObject telekinesisObject)
     {
         if (!controlledProp.isGrabbed)
         {
@@ -383,6 +383,7 @@ public class TelekinesisModule : MonoBehaviour
             if (Physics.Raycast(main.playerCam.position, main.playerCam.forward, out RaycastHit hit, main.socketManager.maxRange,
                     ~LayerMask.GetMask("Telekinesis")))
             {
+                if (hit.collider.gameObject.layer == LayerMask.GetMask("Enemy")) telekinesisObject.AimAtEnemy(hit.transform);
                 dir = (hit.point + hit.normal * 0.5f) - offsetPosition.position;
                 Debug.DrawRay(hit.point,hit.normal * 2, Color.magenta,2);
             }
@@ -392,7 +393,7 @@ public class TelekinesisModule : MonoBehaviour
             }
                     
             dir.Normalize();
-            controlledProp.body.AddForce(dir * throwForce, ForceMode.Impulse);
+            telekinesisObject.body.AddForce(dir * throwForce, ForceMode.Impulse);
         }
 
         controlledProp.ApplyTelekinesis();

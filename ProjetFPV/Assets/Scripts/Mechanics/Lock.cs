@@ -11,10 +11,10 @@ public class Lock : MonoBehaviour, IDestructible
     
     public void TakeDamage()
     {
-       OnDestroy();
+       OnDestroyEvent();
     }
 
-    public void OnDestroy()
+    public void OnDestroyEvent()
     {
         door.lockBroken = true;
         

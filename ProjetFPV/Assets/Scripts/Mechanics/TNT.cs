@@ -32,7 +32,7 @@ public class TNT : MonoBehaviour, IDestructible
         health--;
         if (health <= 0)
         {
-            OnDestroy();
+            OnDestroyEvent();
         }
     }
 
@@ -54,7 +54,7 @@ public class TNT : MonoBehaviour, IDestructible
         }
     }
 
-    public void OnDestroy()
+    public void OnDestroyEvent()
     {
         if (health <= -1)return;
         health--;
@@ -85,7 +85,7 @@ public class TNT : MonoBehaviour, IDestructible
                 {
                     transform.DOMove(transform.position, 0.08f).OnComplete((() =>
                     {
-                        tnt.OnDestroy();
+                        tnt.OnDestroyEvent();
                     }));
                 }
             }
@@ -121,7 +121,7 @@ public class TNT : MonoBehaviour, IDestructible
         Debug.Log("COLLIDE");
         
         health = 0;
-        OnDestroy();
+        OnDestroyEvent();
         
     }
 }
