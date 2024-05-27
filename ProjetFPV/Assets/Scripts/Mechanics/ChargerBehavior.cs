@@ -423,7 +423,7 @@ namespace Mechanics
             var calcJumpTime = (Vector3.Distance(transform.position, playerPos) * jumpDuration.y)/atkRange;
             if (calcJumpTime < jumpDuration.x) calcJumpTime = jumpDuration.x;
             jumpTween = transform.DOJump(actualDestination + transform.forward * jumpOverShoot, jumpHeight, 1, calcJumpTime);
-            
+            AudioManager.instance.PlaySound(8, 0, gameObject, 0.1f, false);
             transform.rotation = Quaternion.Euler(40,transform.eulerAngles.y,transform.eulerAngles.z);
             jumpRotationTween = transform.DORotate(new Vector3(0,transform.eulerAngles.y,transform.eulerAngles.z) , calcJumpTime);
             yield return new WaitForSeconds(calcJumpTime);
@@ -473,6 +473,8 @@ namespace Mechanics
         public override void TakeDamage(Collider part, Vector3 dir, float damage, float knockBack)
         {
             base.TakeDamage(part, dir,  damage, knockBack);
+            AudioManager.instance.PlaySound(8, 5, gameObject, 0.1f, false);
+            
             if (currentState == States.Neutral)
             {
                 currentState = States.Rush;
@@ -482,6 +484,7 @@ namespace Mechanics
         public override void TakeDamage(float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce, float damage, Collider maskCollider)
         {
             base.TakeDamage(knockBackValue, knockBackDir, pointOfForce, damage, maskCollider);
+            AudioManager.instance.PlaySound(8, 5, gameObject, 0.1f, false);
             foreach (var mask in allMasks)
             {
                 if (mask.maskCollider != maskCollider)continue;
