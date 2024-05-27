@@ -10,7 +10,7 @@ public class SaveTheProject : EditorWindow
     }
 
     private string fileName;
-    private string savePath = "Assets/Art/Meshes/Modulaire/Prefab/CombinedMeshes/";
+    private string savePath = "Assets/Art/Meshes/Modulaire/Prefab/CombinedMeshes";
     
     private void OnGUI()
     {
@@ -20,7 +20,8 @@ public class SaveTheProject : EditorWindow
         
         GUILayout.Space(15);
 
-        fileName = GUILayout.TextField(fileName, "File Name");
+        GUILayout.Label("File name : ");
+        fileName = GUILayout.TextField(fileName);
         
         GUILayout.Space(15);
         
@@ -33,9 +34,14 @@ public class SaveTheProject : EditorWindow
 
     private void Merge()
     {
-        var path = savePath + fileName;
+        var path = savePath + "/" + fileName + ".asset";
 
-        if (fileName == "" || System.IO.File.Exists(path))
+        if (fileName == "")
+        {
+            Debug.LogError("Précisez un nom pour votre fichier");
+            return;
+        }
+        if (System.IO.File.Exists(path))
         {
             Debug.LogError("Ce fichier existe déjà et risque d'être remplacé. Choisissez un nom différent");
             return;
