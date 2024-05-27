@@ -137,7 +137,10 @@ namespace Mechanics
         private float timeràLaCon;
         public override void Start()
         {
-            base.Start();                        
+            base.Start(); 
+            
+            AudioManager.instance.PlaySound(8, 1, gameObject, 0.1f, false);
+            
             timeràLaCon = 0.2f;
             //agent.stoppingDistance = atkRange;
             agent.speed = wanderSpeed;

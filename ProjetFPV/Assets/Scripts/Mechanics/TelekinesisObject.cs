@@ -13,6 +13,7 @@ public class TelekinesisObject : ControllableProp
     private Transform target;
     public float ignoreGravityTime = 3;
     [SerializeField]private Collider col;
+    [SerializeField] private float maxAutoAimDistance; //THOMAS WAS HERE
 
     public override void Awake()
     {
@@ -62,7 +63,7 @@ public class TelekinesisObject : ControllableProp
         {
             var dir = target.position - transform.position;
             body.velocity = dir.normalized * body.velocity.magnitude;
-            if (Vector3.Distance(target.position, transform.position) < 3)
+            if (Vector3.Distance(target.position, transform.position) < maxAutoAimDistance) // THOMAS WAS HERE
                 aim = false;
         }
     }
