@@ -1,5 +1,3 @@
-using System;
-using Codice.Client.BaseCommands.Merge.Xml;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,11 +9,19 @@ public class SaveTheProject : EditorWindow
         GetWindow(typeof(SaveTheProject));
     }
 
+    private string fileName;
+    private string savePath = "Assets/Art/Meshes/Modulaire/Prefab/CombinedMeshes";
+    
     private void OnGUI()
     {
         GUILayout.Space(30);
         
         GUILayout.Label("Number of selected objects : " + Selection.count);
+        
+        GUILayout.Space(15);
+
+        GUILayout.Label("File name : ");
+        fileName = GUILayout.TextField(fileName);
         
         GUILayout.Space(15);
         
@@ -28,10 +34,28 @@ public class SaveTheProject : EditorWindow
 
     private void Merge()
     {
+        var path = savePath + "/" + fileName + ".asset";
+
+        if (fileName == "")
+        {
+            Debug.LogError("Précisez un nom pour votre fichier");
+            return;
+        }
+        if (System.IO.File.Exists(path))
+        {
+            Debug.LogError("Ce fichier existe déjà et risque d'être remplacé. Choisissez un nom différent");
+            return;
+        }
+
+        var parentGO = new GameObject("CombinedMeshParent");
+        parentGO.transform.position = Vector3.zero;
+        parentGO.transform.rotation = Quaternion.identity;
+        
         CombineInstance[] combineInstances = new CombineInstance[Selection.count];
         
         for (int i = 0; i < Selection.count; i++)
         {
+            Selection.gameObjects[i].transform.parent = parentGO.transform;
             // Crée une nouvelle instance de CombineInstance pour chaque GameObject
             combineInstances[i].mesh = Selection.gameObjects[i].GetComponent<MeshFilter>().sharedMesh;
             combineInstances[i].transform = Matrix4x4.TRS( Selection.gameObjects[i].transform.localPosition,
@@ -41,7 +65,8 @@ public class SaveTheProject : EditorWindow
         
         // Crée un nouveau GameObject pour contenir le Mesh combiné
         GameObject combinedObject = new GameObject("CombinedMesh");
-        combinedObject.transform.position = Selection.gameObjects[0].transform.position;
+        combinedObject.transform.parent = parentGO.transform;
+        combinedObject.transform.position = Vector3.zero;
         
         // Ajoute un MeshFilter et un MeshRenderer au nouveau GameObject
         MeshFilter meshFilter = combinedObject.AddComponent<MeshFilter>();
@@ -59,5 +84,10 @@ public class SaveTheProject : EditorWindow
         {
             DestroyImmediate(go);
         }
+        
+        AssetDatabase.CreateAsset(meshFilter.sharedMesh, path);
+        AssetDatabase.SaveAssets();
     }
+    
+    // METTRE LA POSITION AU BON ENDROIT
 }
