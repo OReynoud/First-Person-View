@@ -139,8 +139,6 @@ namespace Mechanics
         {
             base.Start(); 
             
-            AudioManager.instance.PlaySound(8, 1, gameObject, 0.1f, false);
-            
             timeràLaCon = 0.2f;
             //agent.stoppingDistance = atkRange;
             agent.speed = wanderSpeed;
@@ -445,6 +443,7 @@ namespace Mechanics
         [HideInInspector] public CollectorBehavior parentEnemy;
         void ArenaSpawn()
         {
+            AudioManager.instance.PlaySound(8, 1, gameObject, 0.1f, false);
             currentState = States.Rush;
             agent.enabled = false;
             body.isKinematic = true;
@@ -457,6 +456,7 @@ namespace Mechanics
 
         void CollectorSpawn()
         {
+            AudioManager.instance.PlaySound(8, 1, gameObject, 0.1f, false);
             currentState = States.Rush;
             agent.enabled = false;
             body.isKinematic = true;
