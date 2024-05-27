@@ -9,6 +9,8 @@ public class TelekinesisObject : ControllableProp
 {
     public float velocityLimit = 10;
     public bool thrown;
+    private bool aim;
+    private Transform target;
     public float ignoreGravityTime = 3;
     [SerializeField]private Collider col;
 
@@ -55,6 +57,14 @@ public class TelekinesisObject : ControllableProp
         {
             body.useGravity = true;
         }
+
+        if (aim)
+        {
+            var dir = target.position - transform.position;
+            body.velocity = dir.normalized * body.velocity.magnitude;
+            if (Vector3.Distance(target.position, transform.position) < 3)
+                aim = false;
+        }
     }
 
     private void OnCollisionEnter(Collision other)
@@ -85,5 +95,11 @@ public class TelekinesisObject : ControllableProp
     {
         yield return new WaitForSeconds(0.2f);
         thrown = false;
+    }
+
+    public void AimAtEnemy(Transform enemy)
+    {
+        target = enemy;
+        aim = true;
     }
 }
