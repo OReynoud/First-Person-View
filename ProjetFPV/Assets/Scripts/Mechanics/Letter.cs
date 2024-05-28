@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using Mechanics;
 using TMPro;
@@ -44,6 +43,8 @@ public class Letter : MonoBehaviour, ICanInteract
 
     void Update()
     {
+        if (!collectibleCamera.activeInHierarchy) return;
+        
         // Obtenir la position de la souris
         Vector3 mousePosition = Input.mousePosition;
 
@@ -54,12 +55,14 @@ public class Letter : MonoBehaviour, ICanInteract
         float angleX = (mousePosition.x - objectScreenPosition.x) / Screen.width * rotationSpeed;
 
         // Appliquer la rotation à l'objet autour de l'axe X uniquement
-        uiObject.transform.Rotate(Vector3.right, -angleX * Time.deltaTime, Space.World);
+        uiObject.transform.Rotate(uiObject.transform.right, -angleX * Time.deltaTime, Space.World);
     }
 
     void OpenLetterInFullScreen()
     {
-        // Retirer les contrôles du joueur
+        GameManager.instance.HideUI();
+        PlayerController.instance.ImmobilizePlayer();
+        PlayerController.instance.LockCam();
         
         Cursor.lockState = CursorLockMode.Confined;
         
@@ -73,7 +76,9 @@ public class Letter : MonoBehaviour, ICanInteract
 
     void CloseLetterInFullScreen()
     {
-        // Remettre les contrôles du joueur
+        GameManager.instance.ShowUI();
+        PlayerController.instance.ImmobilizePlayer();
+        PlayerController.instance.LockCam();
         
         Cursor.lockState = CursorLockMode.Locked;
         

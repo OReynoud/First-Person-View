@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using Unity.AI.Navigation;
 using Unity.VisualScripting;
@@ -14,6 +15,7 @@ namespace Mechanics
 {
     public class GameManager : Singleton<GameManager>
     {
+        [SerializeField] private CanvasGroup playerUI;
         [SerializeField] private CanvasGroup bodyHitMarker;
         [SerializeField] private CanvasGroup headHitMarker;
         [SerializeField] private CanvasGroup crosshairTK;
@@ -206,6 +208,16 @@ namespace Mechanics
             VFX_EnemyHit[0].transform.position = position;
             VFX_EnemyHit[0].transform.LookAt(PlayerController.instance.transform.position);
             VFX_EnemyHit[0].Play();
+        }
+
+        public void HideUI()
+        {
+            playerUI.DOFade(0f, 1f);
+        }
+
+        public void ShowUI()
+        {
+            playerUI.DOFade(1f, 1f);
         }
     }
 }

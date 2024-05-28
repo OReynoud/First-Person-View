@@ -679,9 +679,17 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    private bool lockedCam;
+
+    public void LockCam()
+    {
+        lockedCam = !lockedCam;
+    }
 
     void Rotate()
     {
+        if (lockedCam) return;
+        
         rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCam.localEulerAngles = new Vector3(rotationX, playerCam.localEulerAngles.y, playerCam.localEulerAngles.z);
@@ -745,7 +753,7 @@ public class PlayerController : Singleton<PlayerController>
     
     private void Interact(InputAction.CallbackContext obj)
     {
-        if (!canMove) return;
+        if (!canMove && !lockedCam) return; //THOMAS
         Debug.DrawRay(playerCam.position,camera1.transform.forward * 4, Color.blue,3);
         if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, interactDistance, ~LayerMask.GetMask("Player")) && 
             playerCam.forward.y > -tkManager.holdObjectYTolerance)
