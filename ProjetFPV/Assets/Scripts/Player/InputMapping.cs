@@ -125,6 +125,15 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""749678ce-9a9e-4718-8b9e-6a88d560ce01"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -259,6 +268,17 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""action"": ""UseHealPack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41eb8eb2-cabc-49d8-b112-f90fcf9f11cd"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -351,6 +371,15 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""name"": ""Reload"",
                     ""type"": ""Button"",
                     ""id"": ""0eb52c6f-da4e-47a5-88db-39c530de42f7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""76d7dc5f-319d-4d30-a68c-265ed6696c3f"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -467,6 +496,17 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f5a85bf7-f60d-400b-b828-9a92e2009505"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -486,6 +526,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         m_ControlsLeftShoot_Reload = m_ControlsLeftShoot.FindAction("Reload", throwIfNotFound: true);
         m_ControlsLeftShoot_Interact = m_ControlsLeftShoot.FindAction("Interact", throwIfNotFound: true);
         m_ControlsLeftShoot_UseHealPack = m_ControlsLeftShoot.FindAction("UseHealPack", throwIfNotFound: true);
+        m_ControlsLeftShoot_Escape = m_ControlsLeftShoot.FindAction("Escape", throwIfNotFound: true);
         // ControlsRightShoot
         m_ControlsRightShoot = asset.FindActionMap("ControlsRightShoot", throwIfNotFound: true);
         m_ControlsRightShoot_Forward = m_ControlsRightShoot.FindAction("Forward", throwIfNotFound: true);
@@ -498,6 +539,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         m_ControlsRightShoot_Shoot = m_ControlsRightShoot.FindAction("Shoot", throwIfNotFound: true);
         m_ControlsRightShoot_Telekinesis = m_ControlsRightShoot.FindAction("Telekinesis", throwIfNotFound: true);
         m_ControlsRightShoot_Reload = m_ControlsRightShoot.FindAction("Reload", throwIfNotFound: true);
+        m_ControlsRightShoot_Escape = m_ControlsRightShoot.FindAction("Escape", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -570,6 +612,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     private readonly InputAction m_ControlsLeftShoot_Reload;
     private readonly InputAction m_ControlsLeftShoot_Interact;
     private readonly InputAction m_ControlsLeftShoot_UseHealPack;
+    private readonly InputAction m_ControlsLeftShoot_Escape;
     public struct ControlsLeftShootActions
     {
         private @InputMapping m_Wrapper;
@@ -585,6 +628,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         public InputAction @Reload => m_Wrapper.m_ControlsLeftShoot_Reload;
         public InputAction @Interact => m_Wrapper.m_ControlsLeftShoot_Interact;
         public InputAction @UseHealPack => m_Wrapper.m_ControlsLeftShoot_UseHealPack;
+        public InputAction @Escape => m_Wrapper.m_ControlsLeftShoot_Escape;
         public InputActionMap Get() { return m_Wrapper.m_ControlsLeftShoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -627,6 +671,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @UseHealPack.started += instance.OnUseHealPack;
             @UseHealPack.performed += instance.OnUseHealPack;
             @UseHealPack.canceled += instance.OnUseHealPack;
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
         }
 
         private void UnregisterCallbacks(IControlsLeftShootActions instance)
@@ -664,6 +711,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @UseHealPack.started -= instance.OnUseHealPack;
             @UseHealPack.performed -= instance.OnUseHealPack;
             @UseHealPack.canceled -= instance.OnUseHealPack;
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
         }
 
         public void RemoveCallbacks(IControlsLeftShootActions instance)
@@ -695,6 +745,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
     private readonly InputAction m_ControlsRightShoot_Shoot;
     private readonly InputAction m_ControlsRightShoot_Telekinesis;
     private readonly InputAction m_ControlsRightShoot_Reload;
+    private readonly InputAction m_ControlsRightShoot_Escape;
     public struct ControlsRightShootActions
     {
         private @InputMapping m_Wrapper;
@@ -709,6 +760,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         public InputAction @Shoot => m_Wrapper.m_ControlsRightShoot_Shoot;
         public InputAction @Telekinesis => m_Wrapper.m_ControlsRightShoot_Telekinesis;
         public InputAction @Reload => m_Wrapper.m_ControlsRightShoot_Reload;
+        public InputAction @Escape => m_Wrapper.m_ControlsRightShoot_Escape;
         public InputActionMap Get() { return m_Wrapper.m_ControlsRightShoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -748,6 +800,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
         }
 
         private void UnregisterCallbacks(IControlsRightShootActions instance)
@@ -782,6 +837,9 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
         }
 
         public void RemoveCallbacks(IControlsRightShootActions instance)
@@ -812,6 +870,7 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         void OnReload(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnUseHealPack(InputAction.CallbackContext context);
+        void OnEscape(InputAction.CallbackContext context);
     }
     public interface IControlsRightShootActions
     {
@@ -825,5 +884,6 @@ public partial class @InputMapping: IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnTelekinesis(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnEscape(InputAction.CallbackContext context);
     }
 }

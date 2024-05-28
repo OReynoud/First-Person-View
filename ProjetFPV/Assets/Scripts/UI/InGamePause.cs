@@ -1,15 +1,43 @@
 using DG.Tweening;
+using Mechanics;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class InGamePause : MonoBehaviour
 {
     [SerializeField] private CanvasGroup pauseCanva;
     [SerializeField] private Options optionsScript;
-
-    void Update()
+    private PlayerInput inputs;
+    private InputActionMap currentControls;
+    
+    void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.O))
+        inputs = GetComponent<PlayerInput>();
+        currentControls = inputs.actions.FindActionMap(PlayerController.instance.currentInputMap);
+        RegisterInputs();
+    }
+
+    void RegisterInputs()
+    {
+        currentControls.Enable();
+        currentControls.FindAction("Escape", true).started += Escape;
+    }
+
+    void Escape(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Appelé");
+        
+        if (optionsScript.optionsCanva.gameObject.activeInHierarchy)
+        {
+            optionsScript.CloseOptions();
+        }
+        else if (pauseCanva.gameObject.activeInHierarchy)
+        {
+            Resume();
+        }
+        else
         {
             OpenPause();
         }
@@ -17,19 +45,29 @@ public class InGamePause : MonoBehaviour
     
     public void OpenPause()
     {
-        pauseCanva.DOFade(1f, 1f);
-        // Stop le temps
-        // Activer le curseur
+        AudioManager.instance.MuffleSound();
+        
+        pauseCanva.gameObject.SetActive(true);
+        pauseCanva.DOFade(1f, 0.5f);
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
+        
+        GameManager.instance.HideUI();
+        PlayerController.instance.ImmobilizePlayer();
+        PlayerController.instance.LockCam();
     }
 
     public void Resume()
     {
-        pauseCanva.DOFade(0f, 1f);
-        Time.timeScale = 1f;
+        AudioManager.instance.UnMuffleSound();
+        
+        pauseCanva.DOFade(0f, 0.2f).OnComplete(()=>pauseCanva.gameObject.SetActive(false));
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        
+        GameManager.instance.HideUI();
+        PlayerController.instance.ImmobilizePlayer();
+        PlayerController.instance.LockCam();
     }
 
     public void OpenOptions()
