@@ -176,7 +176,7 @@ Transform:
   m_GameObject: {fileID: 212169932425458574}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5099999, z: 0}
+  m_LocalPosition: {x: 0, y: 0.607, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -647,7 +647,6 @@ GameObject:
   - component: {fileID: 10083582493029471}
   - component: {fileID: 3195528043847791162}
   - component: {fileID: 6171253402340276740}
-  - component: {fileID: 2788651801690148795}
   - component: {fileID: 7444262524379830578}
   - component: {fileID: 739510780194846137}
   - component: {fileID: 7813115355682138035}
@@ -761,7 +760,7 @@ MonoBehaviour:
   currentHealth: 0
   healPackCapacity: 4
   healAmount: 10
-  interactDistance: 0
+  interactDistance: 4
   currentInputMap: ControlsLeftShoot
   inputs: {fileID: 739510780194846137}
   playerCam: {fileID: 7127425910194321269}
@@ -888,7 +887,7 @@ MonoBehaviour:
     m_Bits: 65
   lookXLimit: 75
   normalFOV: 60
-  runningFOV: 58
+  runningFOV: 65
   lerpFOV: 0.08
   reloadSpeed: 2
   amplitude: 0.005
@@ -999,23 +998,6 @@ MonoBehaviour:
     type: 3}
   noBullets: 0
   overheated: 0
---- !u!114 &2788651801690148795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1239935718432516662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0dbe9b61735ed44f85932cf0da645a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frontRC: {fileID: 7392715935690071276}
-  backRC: {fileID: 2340682711907133276}
-  cam: {fileID: 5842867412959891476}
-  angle: {x: 0, y: 0, z: 0.08715574, w: 0.9961947}
-  speed: 1.6
 --- !u!54 &7444262524379830578
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1117,9 +1099,9 @@ CapsuleCollider:
   m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 1.2256818
+  m_Height: 1.67
   m_Direction: 1
-  m_Center: {x: 0, y: -0.3871591, z: 0}
+  m_Center: {x: 0, y: -0.16, z: 0}
 --- !u!82 &6921202048059391438
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2832,7 +2814,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8718492654356727475
 Transform:
   m_ObjectHideFlags: 0
@@ -3793,7 +3775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6239005035128904802
 RectTransform:
   m_ObjectHideFlags: 0

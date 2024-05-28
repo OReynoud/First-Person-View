@@ -483,24 +483,24 @@ public class PlayerController : Singleton<PlayerController>
         switch (state)
         {
             case PlayerStates.Crouching:
-                playerCam.position =
-                    Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.8f);
+                playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.2f);
                 break;
 
             case PlayerStates.Sprinting:
-                playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
+                playerCam.position = Vector3.Lerp(playerCam.position, transform.position + Vector3.up * 0.5f, 0.2f);
                 //playerCam.position = transform.position;
-                playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
-                    playerCam.position.z);
+                //playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f, playerCam.position.z);
 
-                camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, runningFOV, lerpFOV);
+                if (appliedForce)
+                {
+                    camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, runningFOV, lerpFOV);
+                }
                 break;
 
             case PlayerStates.Standing:
-                playerCam.position = Vector3.Lerp(playerCam.position, transform.position, 0.8f);
+                playerCam.position = Vector3.Lerp(playerCam.position, transform.position + Vector3.up * 0.5f, 0.2f);
                 //playerCam.position = transform.position;
-                playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,
-                    playerCam.position.z);
+                //playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,playerCam.position.z);
 
                 camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, normalFOV, lerpFOV);
                 break;
