@@ -1,12 +1,12 @@
 using UnityEditor;
 using UnityEngine;
 
-public class SaveTheProject : EditorWindow
+public class GameObjectMerger : EditorWindow
 {
     [MenuItem("Tools/GameObject Merger")]
     public static void ShowWindows()
     {
-        GetWindow(typeof(SaveTheProject));
+        GetWindow(typeof(GameObjectMerger));
     }
 
     private string fileName;
