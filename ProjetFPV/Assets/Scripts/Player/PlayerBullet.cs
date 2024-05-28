@@ -1,3 +1,4 @@
+using System;
 using Mechanics;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -13,6 +14,7 @@ namespace Player
         public float weakSpotKnockBack;
         public float bodyDamage;
         public float bodyKnockBack;
+        private bool hasCollided;
 
         public PlayerBullet(bool SuperShot, float WeakSpotDamage, float WeakSpotKnockBack)
         {
@@ -27,6 +29,9 @@ namespace Player
 
         private void OnCollisionEnter(Collision other)
         {
+            if (hasCollided) return;
+            hasCollided = true;
+            
             if (other.collider.CompareTag(Ex.Tag_Head))
             {
                 var enemy = other.collider.GetComponentInParent<Enemy>();
@@ -65,6 +70,11 @@ namespace Player
             //Je m'en vais !
 
             Destroy(gameObject);
+        }
+
+        private void LateUpdate()
+        {
+            hasCollided = false;
         }
     }
 }

@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using Mechanics;
-using NaughtyAttributes;
 using UnityEngine;
 [RequireComponent(typeof(TelekinesisObject))]
 public class TNT : MonoBehaviour, IDestructible
@@ -19,7 +15,6 @@ public class TNT : MonoBehaviour, IDestructible
     [SerializeField] private GameObject barrelMesh;
     [SerializeField] private ParticleSystem[] VFX_Explosion;
     private TelekinesisObject tk;
-    private bool soundPlayed;
 
     public void OnDrawGizmosSelected()
     {
@@ -56,8 +51,6 @@ public class TNT : MonoBehaviour, IDestructible
 
     public void OnDestroyEvent()
     {
-        if (health <= -1)return;
-        health--;
         GetComponent<Collider>().enabled = false;
         
         if (TryGetComponent(out TelekinesisObject tk))
@@ -103,22 +96,15 @@ public class TNT : MonoBehaviour, IDestructible
 
         barrelMesh.SetActive(false);
         VFX_Explosion[0].Play();
-        //SON
-
-        if (!soundPlayed)
-        {
-            AudioManager.instance.PlaySound(1, 0, gameObject, 0.05f, false);
-            soundPlayed = true;
-        }
         
+        AudioManager.instance.PlaySound(1, 0, gameObject, 0.05f, false);
         
         Destroy(gameObject,VFX_Explosion[0].main.duration + 1f);
     }
     
     private void OnCollisionEnter(Collision other)
     {
-        if (!tk.thrown)return;
-        Debug.Log("COLLIDE");
+        if (!tk.thrown || health <= 0)return;
         
         health = 0;
         OnDestroyEvent();
