@@ -10,6 +10,7 @@ public class CinematicManager : Singleton<CinematicManager>
     [SerializeField] private Image topLine;
     [SerializeField] private Image bottomLine;
     [SerializeField] private Image fullScreenBlack;
+    [SerializeField] private GameObject arms;
 
     public void StartCinematic()
     {
@@ -18,15 +19,25 @@ public class CinematicManager : Singleton<CinematicManager>
     
     private IEnumerator StartCinematicCoroutine()
     {
+        var leftArm = arms.transform.GetChild(2);
+        var rightArm = arms.transform.GetChild(3);
+        
+        var posLeft = leftArm.localPosition;
+        var posRight = rightArm.localPosition;
+        
         topLine.rectTransform.DOAnchorPosY(0, 2f);
         bottomLine.rectTransform.DOAnchorPosY(0, 2f);
         playerUI.DOFade(0f, 1f);
+        leftArm.transform.DOLocalMove(posLeft + 0.6f * arms.transform.right - 0.8f * leftArm.transform.up, 2f).SetEase(Ease.InOutQuad);
+        rightArm.transform.DOLocalMove(posRight - 0.6f * arms.transform.right - 0.8f * rightArm.transform.up, 2f).SetEase(Ease.InOutQuad);
 
         yield return new WaitForSeconds(5f);
         
         topLine.rectTransform.DOAnchorPosY(topLine.rectTransform.rect.height, 2f);
         bottomLine.rectTransform.DOAnchorPosY(-bottomLine.rectTransform.rect.height, 2f);
         playerUI.DOFade(1f, 1f);
+        arms.transform.GetChild(2).transform.DOLocalMove(posLeft, 2f).SetEase(Ease.InOutQuad);
+        arms.transform.GetChild(3).transform.DOLocalMove(posRight, 2f).SetEase(Ease.InOutQuad);
     }
 
     public void StartFullScreen(float speed)
