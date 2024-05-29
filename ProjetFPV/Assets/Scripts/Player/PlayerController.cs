@@ -466,7 +466,7 @@ public class PlayerController : Singleton<PlayerController>
             appliedForce = true;
             HorizontalMovement();
 
-            camera1.transform.parent.transform.localRotation = Quaternion.Lerp(camera1.transform.parent.transform.localRotation, Quaternion.Euler(-20,0,0), Time.deltaTime * 0.2f);
+            camera1.transform.parent.transform.localRotation = Quaternion.Lerp(camera1.transform.parent.transform.localRotation, Quaternion.Euler(-20,0,0), Time.deltaTime * 0.1f);
             return;
         }
         
@@ -610,7 +610,7 @@ public class PlayerController : Singleton<PlayerController>
         switch (state)
         {
             case PlayerStates.Standing:
-                inputVelocity = playerDir * (runCurve.Evaluate(moveInputTimer) * runVelocity) / (isControled ? 4f : 1f) ;
+                inputVelocity = playerDir * (runCurve.Evaluate(moveInputTimer) * runVelocity) / (isControled ? 6f : 1f) ;
                 Mathf.Clamp(moveInputTimer, 0, runCurve.keys[^1].time);
                 break;
 
