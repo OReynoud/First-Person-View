@@ -32,6 +32,8 @@ namespace Player
             if (hasCollided) return;
             hasCollided = true;
             
+            Debug.LogFormat("<color=yellow>Collision :</color> {0}",other.gameObject.name);
+            
             if (other.collider.CompareTag(Ex.Tag_Head))
             {
                 var enemy = other.collider.GetComponentInParent<Enemy>();

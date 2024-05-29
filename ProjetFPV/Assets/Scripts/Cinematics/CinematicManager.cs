@@ -13,13 +13,17 @@ public class CinematicManager : Singleton<CinematicManager>
 
     public void StartCinematic()
     {
+        StartCoroutine(StartCinematicCoroutine());
+    }
+    
+    private IEnumerator StartCinematicCoroutine()
+    {
         topLine.rectTransform.DOAnchorPosY(0, 2f);
         bottomLine.rectTransform.DOAnchorPosY(0, 2f);
         playerUI.DOFade(0f, 1f);
-    }
-    
-    public void EndCinematic()
-    {
+
+        yield return new WaitForSeconds(5f);
+        
         topLine.rectTransform.DOAnchorPosY(topLine.rectTransform.rect.height, 2f);
         bottomLine.rectTransform.DOAnchorPosY(-bottomLine.rectTransform.rect.height, 2f);
         playerUI.DOFade(1f, 1f);
