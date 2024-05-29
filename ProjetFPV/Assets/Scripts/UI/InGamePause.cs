@@ -34,6 +34,8 @@ public class InGamePause : MonoBehaviour
     
     public void OpenPause()
     {
+        if (PlayerController.instance.isControled) return;
+        
         AudioManager.instance.MuffleSound();
         
         pauseCanva.gameObject.SetActive(true);

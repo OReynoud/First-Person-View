@@ -1,13 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using DG.Tweening;
 using Mechanics;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class PlayerController : Singleton<PlayerController>
 {
@@ -460,6 +464,25 @@ public class PlayerController : Singleton<PlayerController>
     { // THOMAS
         walkTimer -= Time.deltaTime;
 
+        #region Cinématique bandes noires
+        
+        if (!canMove && isEndingCinematic)
+        {
+            camera1.transform.parent.transform.localRotation = Quaternion.Lerp(camera1.transform.parent.transform.localRotation, Quaternion.Euler(2,0,0), Time.deltaTime * 1.2f);
+            return;
+        }
+        
+        if (!canMove && isRepositiong)
+        {
+            playerDir += new Vector3(cinematicStartPos.x, transform.position.y, cinematicStartPos.z) - transform.position;
+            appliedForce = true;
+            HorizontalMovement();
+            
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(0,0,0), Time.deltaTime * 0.8f);
+            camera1.transform.parent.transform.localRotation = Quaternion.Lerp(camera1.transform.parent.transform.localRotation, Quaternion.Euler(-40,0,0), Time.deltaTime * 0.1f);
+            return;
+        }
+        
         if (!canMove && isControled)
         {
             playerDir += transform.forward;
@@ -469,6 +492,8 @@ public class PlayerController : Singleton<PlayerController>
             camera1.transform.parent.transform.localRotation = Quaternion.Lerp(camera1.transform.parent.transform.localRotation, Quaternion.Euler(-40,0,0), Time.deltaTime * 0.1f);
             return;
         }
+        
+        #endregion
         
         UpdateRestingPos();
         playerDir = Vector3.zero;
@@ -570,7 +595,7 @@ public class PlayerController : Singleton<PlayerController>
             if (walkTimer <= 0)
             {
                 AudioManager.instance.PlaySound(3, isOnWood ? 0 : 4, gameObject, 0.1f, false);
-                walkTimer = state == PlayerStates.Sprinting ? audioWalkSpeed / 2f : audioWalkSpeed;
+                walkTimer = state == PlayerStates.Sprinting ? audioWalkSpeed / 2f : isControled ? audioWalkSpeed * 3f : audioWalkSpeed;
                 
                 switch (state)
                 {
@@ -610,19 +635,17 @@ public class PlayerController : Singleton<PlayerController>
         switch (state)
         {
             case PlayerStates.Standing:
-                inputVelocity = playerDir * (runCurve.Evaluate(moveInputTimer) * runVelocity) / (isControled ? 6f : 1f) ;
+                inputVelocity = playerDir * (runCurve.Evaluate(moveInputTimer) * runVelocity) / ((isControled || isRepositiong) ? 6f : 1f);
                 Mathf.Clamp(moveInputTimer, 0, runCurve.keys[^1].time);
                 break;
 
             case PlayerStates.Sprinting:
-                inputVelocity = playerDir * (sprintCurve.Evaluate(moveInputTimer) *
-                                             sprintVelocity);
+                inputVelocity = playerDir * (sprintCurve.Evaluate(moveInputTimer) * sprintVelocity);
                 Mathf.Clamp(moveInputTimer, 0, sprintCurve.keys[^1].time);
                 break;
 
             case PlayerStates.Crouching:
-                inputVelocity = playerDir * (crouchCurve.Evaluate(moveInputTimer) *
-                                             crouchVelocity);
+                inputVelocity = playerDir * (crouchCurve.Evaluate(moveInputTimer) * crouchVelocity);
                 Mathf.Clamp(moveInputTimer, 0, crouchCurve.keys[^1].time);
                 break;
 
@@ -929,19 +952,57 @@ public class PlayerController : Singleton<PlayerController>
 
     #endregion
 
-    private bool isControled;
+    #region Cinématique bandes noires
     
-    public void TakeControlIntroTornado()
+    public bool isControled;
+    private bool isRepositiong;
+    private bool isEndingCinematic;
+    private Vector3 cinematicStartPos;
+    private Vector3 cinematicStartDir;
+    
+    public void TakeControlIntroTornado(Vector3 startPos, Vector3 startDir)
     {
-        canMove = !canMove; 
+        cinematicStartPos = startPos;
+        cinematicStartDir = startDir;
+        canMove = false; 
         StartCoroutine(TakeControlCoroutine());
     }
 
     private IEnumerator TakeControlCoroutine()
     {
+        isControled = true;
+        
         yield return new WaitForSeconds(0.5f);
+
+        state = PlayerStates.Standing;
+
+        isRepositiong = true;
         
-        isControled = !isControled;
-        
+        yield return new WaitForSeconds(Vector3.Distance(cinematicStartPos, transform.position) * 1.5f);
+
+        isRepositiong = false;
+
+        yield return new WaitForSeconds(4f);
+
+        StartCoroutine(StopControlIntroTornado());
     }
+
+    private IEnumerator StopControlIntroTornado()
+    {
+        isEndingCinematic = true;
+        isRepositiong = false;
+
+        yield return new WaitForSeconds(2f);
+        
+        canMove = true;
+        isControled = false;
+        isEndingCinematic = false;
+
+        playerDir += Vector3.zero;
+        appliedForce = false;
+        HorizontalMovement();
+    }
+    
+    #endregion
+    
 }

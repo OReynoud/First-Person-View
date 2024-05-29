@@ -12,12 +12,12 @@ public class CinematicManager : Singleton<CinematicManager>
     [SerializeField] private Image fullScreenBlack;
     [SerializeField] private GameObject arms;
 
-    public void StartCinematic()
+    public void StartCinematic(Vector3 startPos, Vector3 forwardDir)
     {
-        StartCoroutine(StartCinematicCoroutine());
+        StartCoroutine(StartCinematicCoroutine(startPos, forwardDir));
     }
     
-    private IEnumerator StartCinematicCoroutine()
+    private IEnumerator StartCinematicCoroutine(Vector3 startPos, Vector3 forwardDir)
     {
         var leftArm = arms.transform.GetChild(2);
         var rightArm = arms.transform.GetChild(3);
@@ -30,15 +30,15 @@ public class CinematicManager : Singleton<CinematicManager>
         playerUI.DOFade(0f, 1f);
         leftArm.transform.DOLocalMove(posLeft + 0.6f * arms.transform.right - 0.8f * leftArm.transform.up, 2f).SetEase(Ease.InOutQuad);
         rightArm.transform.DOLocalMove(posRight - 0.6f * arms.transform.right - 0.8f * rightArm.transform.up, 2f).SetEase(Ease.InOutQuad);
-        PlayerController.instance.TakeControlIntroTornado();
+        PlayerController.instance.TakeControlIntroTornado(startPos, forwardDir);
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(8.5f);
         
         topLine.rectTransform.DOAnchorPosY(topLine.rectTransform.rect.height, 2f);
         bottomLine.rectTransform.DOAnchorPosY(-bottomLine.rectTransform.rect.height, 2f);
         playerUI.DOFade(1f, 1f);
         arms.transform.GetChild(2).transform.DOLocalMove(posLeft, 2f).SetEase(Ease.InOutQuad);
-        arms.transform.GetChild(3).transform.DOLocalMove(posRight, 2f).SetEase(Ease.InOutQuad).OnComplete(()=>PlayerController.instance.TakeControlIntroTornado());
+        arms.transform.GetChild(3).transform.DOLocalMove(posRight, 2f).SetEase(Ease.InOutQuad);
     }
 
     public void StartFullScreen(float speed)
@@ -61,7 +61,7 @@ public class CinematicManager : Singleton<CinematicManager>
     private IEnumerator IntroCoroutine()
     {
         StartFullScreen(0f);
-        StartCinematic();
+        //StartCinematic();
         yield return new WaitForSeconds(2f);
         EndFullScreen(3f);
         introCamera.transform.DORotate(new Vector3(34, -18.8f, 0), 25f).SetEase(Ease.InQuad);

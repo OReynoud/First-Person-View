@@ -11,7 +11,7 @@ public class CallCinematic : MonoBehaviour
         switch (cinematicToCall)
         {
             case 1:
-                CinematicManager.instance.StartCinematic();
+                CinematicManager.instance.StartCinematic(transform.GetChild(0).transform.position, transform.GetChild(0).transform.forward);
                 Destroy(gameObject);
                 break;
         }
