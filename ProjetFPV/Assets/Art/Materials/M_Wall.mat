@@ -39,6 +39,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 41e3bc58f4753bc46a4ce08fce9dd68a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _AlbedoC:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _HeightA:
         m_Texture: {fileID: 2800000, guid: 768c62dcfc511fe4d839727166a5d6da, type: 3}
         m_Scale: {x: 2, y: 2}
@@ -53,6 +57,22 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _NormalB:
         m_Texture: {fileID: 2800000, guid: ff2366e266794ae458d1dafbb386ef42, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalC:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RMHA:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RMHB:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RMHC:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessA:
@@ -83,13 +103,21 @@ Material:
     m_Floats:
     - _AlphaCutoff: 0.5
     - _Blend_Smoothness: 0.05
+    - _Blend_Smoothness1: -0.48
     - _Blend_TextureInfluence: 0.41
+    - _Blend_TextureInfluence_A: 0
+    - _Blend_TextureInfluence_B: 0
     - _Blend_Threshold: 0.13
+    - _Blend_ThresholdA: 0
+    - _Blend_ThresholdA1: 0
     - _EnvironmentReflections: 1
+    - _Falloff: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _ShowVertexColor: 0
     - _SpecularHighlights: 1
+    - _Tiling: 0.1
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
