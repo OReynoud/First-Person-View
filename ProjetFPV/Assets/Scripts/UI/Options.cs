@@ -17,19 +17,19 @@ public class Options : MonoBehaviour
     {
         if (!PlayerPrefs.HasKey("Sensitivity"))
         {
-            PlayerPrefs.SetInt("Sensitivity", (int)sensitivitySlider.value);
+            PlayerPrefs.SetInt("Sensitivity", 50);
         }
         if (!PlayerPrefs.HasKey("MasterVolume"))
         {
-            PlayerPrefs.SetInt("MasterVolume", (int)masterSlider.value);
+            PlayerPrefs.SetInt("MasterVolume", 0);
         }
         if (!PlayerPrefs.HasKey("MusicVolume"))
         {
-            PlayerPrefs.SetInt("MusicVolume", (int)musicSlider.value);
+            PlayerPrefs.SetInt("MusicVolume", 0);
         }
         if (!PlayerPrefs.HasKey("SFXVolume"))
         {
-            PlayerPrefs.SetInt("SFXVolume", (int)sfxSlider.value);
+            PlayerPrefs.SetInt("SFXVolume", 0);
         }
 
         sensitivitySlider.value = PlayerPrefs.GetInt("Sensitivity");
@@ -61,7 +61,7 @@ public class Options : MonoBehaviour
 
     public void Sensitivity()
     {
-        
+        PlayerController.instance.sensitivity = sensitivitySlider.value / 50f;
     }
     
     public void MasterAudio()

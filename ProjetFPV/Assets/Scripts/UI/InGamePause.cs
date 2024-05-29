@@ -11,22 +11,11 @@ public class InGamePause : MonoBehaviour
     [SerializeField] private Options optionsScript;
     private PlayerInput inputs;
     private InputActionMap currentControls;
-    
-    void Awake()
-    {
-        inputs = GetComponent<PlayerInput>();
-        currentControls = inputs.actions.FindActionMap(PlayerController.instance.currentInputMap);
-        RegisterInputs();
-    }
 
-    void RegisterInputs()
+    public void Escape(InputAction.CallbackContext obj)
     {
-        currentControls.Enable();
-        currentControls.FindAction("Escape", true).started += Escape;
-    }
-
-    void Escape(InputAction.CallbackContext obj)
-    {
+        if (!obj.started) return;
+        
         Debug.Log("Appelé");
         
         if (optionsScript.optionsCanva.gameObject.activeInHierarchy)
