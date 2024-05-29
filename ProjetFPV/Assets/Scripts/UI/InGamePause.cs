@@ -54,7 +54,7 @@ public class InGamePause : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         
-        GameManager.instance.HideUI();
+        GameManager.instance.ShowUI();
         PlayerController.instance.ImmobilizePlayer();
         PlayerController.instance.LockCam();
     }
