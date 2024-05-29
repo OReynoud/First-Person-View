@@ -37,6 +37,8 @@ public class PlayerController : Singleton<PlayerController>
     //[SerializeField] private float regenSpeed;
     [SerializeField] private float interactDistance;
 
+    [HideInInspector] public float sensitivity;
+
     #region Refs
 
     [Dropdown("GetInputMaps")] [Foldout("Refs")]
@@ -690,11 +692,11 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (lockedCam) return;
         
-        rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+        rotationX += -Input.GetAxis("Mouse Y") * lookSpeed * sensitivity;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCam.localEulerAngles = new Vector3(rotationX, playerCam.localEulerAngles.y, playerCam.localEulerAngles.z);
 
-        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed * sensitivity, 0);
 
         var camRotation = new Vector3(playerCam.localEulerAngles.x,0,
             playerCam.localEulerAngles.z);
