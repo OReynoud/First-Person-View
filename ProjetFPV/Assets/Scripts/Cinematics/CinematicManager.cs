@@ -30,6 +30,7 @@ public class CinematicManager : Singleton<CinematicManager>
         playerUI.DOFade(0f, 1f);
         leftArm.transform.DOLocalMove(posLeft + 0.6f * arms.transform.right - 0.8f * leftArm.transform.up, 2f).SetEase(Ease.InOutQuad);
         rightArm.transform.DOLocalMove(posRight - 0.6f * arms.transform.right - 0.8f * rightArm.transform.up, 2f).SetEase(Ease.InOutQuad);
+        PlayerController.instance.TakeControlIntroTornado();
 
         yield return new WaitForSeconds(5f);
         
@@ -37,7 +38,7 @@ public class CinematicManager : Singleton<CinematicManager>
         bottomLine.rectTransform.DOAnchorPosY(-bottomLine.rectTransform.rect.height, 2f);
         playerUI.DOFade(1f, 1f);
         arms.transform.GetChild(2).transform.DOLocalMove(posLeft, 2f).SetEase(Ease.InOutQuad);
-        arms.transform.GetChild(3).transform.DOLocalMove(posRight, 2f).SetEase(Ease.InOutQuad);
+        arms.transform.GetChild(3).transform.DOLocalMove(posRight, 2f).SetEase(Ease.InOutQuad).OnComplete(()=>PlayerController.instance.TakeControlIntroTornado());
     }
 
     public void StartFullScreen(float speed)

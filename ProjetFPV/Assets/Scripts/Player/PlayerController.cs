@@ -458,8 +458,17 @@ public class PlayerController : Singleton<PlayerController>
     // Update is called once per frame
     private void Update()
     { // THOMAS
-
         walkTimer -= Time.deltaTime;
+
+        if (!canMove && isControled)
+        {
+            playerDir += transform.forward;
+            appliedForce = true;
+            HorizontalMovement();
+
+            camera1.transform.parent.transform.localRotation = Quaternion.Lerp(camera1.transform.parent.transform.localRotation, Quaternion.Euler(-20,0,0), Time.deltaTime * 0.2f);
+            return;
+        }
         
         UpdateRestingPos();
         playerDir = Vector3.zero;
@@ -601,8 +610,7 @@ public class PlayerController : Singleton<PlayerController>
         switch (state)
         {
             case PlayerStates.Standing:
-                inputVelocity = playerDir *
-                                (runCurve.Evaluate(moveInputTimer) * runVelocity);
+                inputVelocity = playerDir * (runCurve.Evaluate(moveInputTimer) * runVelocity) / (isControled ? 4f : 1f) ;
                 Mathf.Clamp(moveInputTimer, 0, runCurve.keys[^1].time);
                 break;
 
@@ -920,4 +928,20 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     #endregion
+
+    private bool isControled;
+    
+    public void TakeControlIntroTornado()
+    {
+        canMove = !canMove; 
+        StartCoroutine(TakeControlCoroutine());
+    }
+
+    private IEnumerator TakeControlCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+        
+        isControled = !isControled;
+        
+    }
 }
