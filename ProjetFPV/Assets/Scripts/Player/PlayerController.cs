@@ -466,7 +466,7 @@ public class PlayerController : Singleton<PlayerController>
             appliedForce = true;
             HorizontalMovement();
 
-            camera1.transform.parent.transform.localRotation = Quaternion.Lerp(camera1.transform.parent.transform.localRotation, Quaternion.Euler(-20,0,0), Time.deltaTime * 0.1f);
+            camera1.transform.parent.transform.localRotation = Quaternion.Lerp(camera1.transform.parent.transform.localRotation, Quaternion.Euler(-40,0,0), Time.deltaTime * 0.1f);
             return;
         }
         

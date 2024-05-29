@@ -74,14 +74,13 @@ public class TelekinesisModule : MonoBehaviour
     {
         if (Physics.Raycast(main.playerCam.position, main.playerCam.forward, out RaycastHit hit, main.socketManager.maxRange, main.socketManager.shootMask))
         {
-            //SON
-            AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
             isGrabbingAnObject = true;
             
             CameraShake.instance.ShakeOneShot(2);
             if (hit.collider.TryGetComponent(out TelekinesisObject TK))
             {
                 if (!TK.canBeGrabbed) return;
+                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 controlledProp = TK;
                 controlledProp.ApplyTelekinesis();
 
@@ -92,6 +91,7 @@ public class TelekinesisModule : MonoBehaviour
             if (hit.collider.TryGetComponent(out HeavyObject heavy))
             {
                 if (!heavy.canBeGrabbed) return;
+                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 if (heavy.transform.position.y < transform.position.y)return;
                 controlledProp = heavy;
                 controlledProp.ApplyTelekinesis();
@@ -103,10 +103,10 @@ public class TelekinesisModule : MonoBehaviour
             if (hit.collider.TryGetComponent(out AbsorbInk absorb))
             {
                 if (!absorb.canBeGrabbed) return;
+                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 controlledProp = absorb;
                 controlledProp.ApplyTelekinesis();
                 
-                //SON
                 AudioManager.instance.PlaySound(3, 2, gameObject, 0.1f, false);
                 return;
             }
@@ -114,6 +114,7 @@ public class TelekinesisModule : MonoBehaviour
             if (hit.collider.TryGetComponent(out UnstableObject unstable))
             {
                 if (!unstable.canBeGrabbed) return;
+                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 controlledProp = unstable;
                 controlledProp.ApplyTelekinesis();
                 return;
@@ -124,6 +125,7 @@ public class TelekinesisModule : MonoBehaviour
                 var enemy = hit.collider.GetComponentInParent<Enemy>();
                 if (!enemy.canBeGrabbed) return;
                 if (main.currentInk < 0.1f)return;
+                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 controlledProp = enemy;
                 controlledProp.ApplyTelekinesis();
                         
