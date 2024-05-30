@@ -40,7 +40,7 @@ namespace Mechanics
             }
 
             StartCoroutine(ArenaEvent());
-            //SON
+            AudioManager.instance.PlayUISound(5, 2, 0f);
         }
 
         List<Transform> tempList = new List<Transform>();

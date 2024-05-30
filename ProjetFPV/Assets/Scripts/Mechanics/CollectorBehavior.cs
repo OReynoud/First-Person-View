@@ -236,12 +236,18 @@ public class CollectorBehavior : Enemy
                 throw new ArgumentOutOfRangeException();
         }
     }
-    
 
+    private GameObject audioBuildUp;
+    
     #region Shoot
 
     void RotateModel()
     {
+        if (audioBuildUp == null)
+        {
+            audioBuildUp = AudioManager.instance.PlaySound(7, 4, gameObject, 0f, true);
+        }
+        
         var dir = PlayerController.instance.transform.position - transform.position;
         dir.Normalize();
         dir = new Vector3(dir.x, 0, dir.z);
@@ -259,6 +265,11 @@ public class CollectorBehavior : Enemy
 
     private void ShootMethod()
     {
+        if (audioBuildUp != null)
+        {
+            Destroy(audioBuildUp);
+        }
+        
         if (bulletsLeft <= 0)
         {
             weaknessTimer += Time.deltaTime;

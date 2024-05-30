@@ -19,6 +19,8 @@ public class ChargerEgg : MonoBehaviour
 
     public void LayEgg()
     {
+        var eggSound = AudioManager.instance.PlaySound(7, 6, gameObject, 0f, true);
+        
         transform.DOMove(destination.position, Vector3.Distance(transform.position,destination.position)/speed).SetEase(Ease.Linear).OnComplete((
             () =>
             {
@@ -27,6 +29,7 @@ public class ChargerEgg : MonoBehaviour
                 spawnedEnemy.parentEnemy = parent;
                 spawnedEnemy.spawnPositions = parent.spawnEnemyPos;
                 parent.children.Add(spawnedEnemy);
+                Destroy(eggSound);
                 Destroy(gameObject);
             }));
     }
