@@ -294,7 +294,9 @@ public class CollectorBehavior : Enemy
         bullet_VFX[0].Play();
         bullet.rb.velocity = dir.normalized * bulletSpeed;
         bullet.damage = bulletDamage;
-        
+
+        AudioManager.instance.PlaySound(7, 0, gameObject, 0.1f, false);
+
         //SON
     }
 
@@ -483,6 +485,12 @@ public class CollectorBehavior : Enemy
         body.useGravity = false;
 
         //StartCoroutine(ApplyKnockBack(dir, force));
+    }
+    
+    public override void TakeDamage(Collider part, Vector3 dir, float damage, float knockBack)
+    {
+        base.TakeDamage(part, dir,  damage, knockBack);
+        AudioManager.instance.PlaySound(7, 8, gameObject, 0.1f, false);
     }
 
     public override void Die()
