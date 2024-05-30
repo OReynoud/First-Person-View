@@ -20,6 +20,8 @@ public class PlayerController : Singleton<PlayerController>
 
     private InputActionMap currentControls;
 
+    [SerializeField] private AudioSource heartBeatAudioSource;
+    private float heartBeatVolume;
     [Tooltip("Intensité de la vignette selon les PV perdus")] 
     [SerializeField] private AnimationCurve vignetteIntensity; //Intensité de la vignette
 
@@ -303,6 +305,7 @@ public class PlayerController : Singleton<PlayerController>
 
     void Start()
     {
+        heartBeatVolume = AudioManager.instance.GetVolume(3, 18);
         currentInk = GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, 0);
         CheckShootingHand();
     }
@@ -502,6 +505,7 @@ public class PlayerController : Singleton<PlayerController>
         var lostHealth = (maxHealth - currentHealth) / maxHealth;
 
         volume.weight = Mathf.Lerp(volume.weight, vignetteIntensity.Evaluate(lostHealth), .01f);
+        heartBeatAudioSource.volume = lostHealth * heartBeatVolume;
         
         if (canMove)
         {

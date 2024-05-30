@@ -18,7 +18,7 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private AudioMixerSnapshot muffleSnapshot;
     [SerializeField] [Range(0f, 1f)] private float snapshotTransitionTime;
     
-    private float GetVolume(int category, int sound) // Appeler cette fonction avec l'index affiché dans le tableau de sound design
+    public float GetVolume(int category, int sound) // Appeler cette fonction avec l'index affiché dans le tableau de sound design
     {
         return categories[category].sounds[sound].volume;
     }
