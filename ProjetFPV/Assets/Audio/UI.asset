@@ -13,9 +13,15 @@ MonoBehaviour:
   m_Name: UI
   m_EditorClassIdentifier: 
   sounds:
-  - name: Hover
-    volume: 0
-  - name: Press
-    volume: 0
+  - name: Open
+    sounds:
+    - {fileID: 8300000, guid: b2342ac23d8e701489b22c8051f47d9e, type: 3}
+    volume: 1
   - name: Back
-    volume: 0
+    sounds:
+    - {fileID: 8300000, guid: db269d3fa37158f4fb5dfbf323e36c9c, type: 3}
+    volume: 1
+  - name: Press
+    sounds:
+    - {fileID: 8300000, guid: 8bb84c3cb1ffe5040933695c7db56b58, type: 3}
+    volume: 1

@@ -47,6 +47,24 @@ public class AudioManager : Singleton<AudioManager>
         
         return newAudioSourceObject;
     }
+    
+    public GameObject PlayUISound(int category, int sound, float randomPitchIntensity)
+    {
+        var newAudioSourceObject = Instantiate(prefabAudioSource, Vector3.zero, Quaternion.identity);
+        var newAudioSource = newAudioSourceObject.GetComponent<AudioSource>();
+        newAudioSource.spatialBlend = 0f;
+        newAudioSource.bypassEffects = true;
+        newAudioSource.bypassReverbZones = true;
+        newAudioSource.bypassListenerEffects = true;
+        newAudioSource.clip = categories[category].sounds[sound].sounds[Random.Range(0, categories[category].sounds[sound].sounds.Count)];
+        newAudioSource.volume = GetVolume(category, sound);
+        newAudioSource.pitch = 1 - Random.Range(-randomPitchIntensity, randomPitchIntensity);
+        newAudioSourceObject.SetActive(true);
+        
+        Destroy(newAudioSourceObject, categories[category].sounds[sound].sounds[Random.Range(0, categories[category].sounds[sound].sounds.Count)].length + 0.3f);
+        
+        return newAudioSourceObject;
+    }
 
     /// <param name="category">La catégorie de la musique, référencée dans le tableur (de 0 à 8).</param>
     /// <param name="sound">La musique jouée dans la catégorie, référencée dans le tableur.</param>

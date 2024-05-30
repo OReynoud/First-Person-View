@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class Options : MonoBehaviour
 {
     public CanvasGroup optionsCanva;
-    [SerializeField] private InGamePause inGamePauseScript;
     [SerializeField] private AudioMixer mixer;
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private Slider masterSlider;
@@ -40,12 +39,14 @@ public class Options : MonoBehaviour
     
     public void OpenOptions()
     {
+        AudioManager.instance.PlayUISound(0, 0, 0f);
         optionsCanva.gameObject.SetActive(true);
         optionsCanva.DOFade(1f, 0.5f);
     }
 
     public void CloseOptions()
     {
+        AudioManager.instance.PlayUISound(0, 1, 0f);
         PlayerPrefs.SetInt("Sensitivity", (int)sensitivitySlider.value);
         PlayerPrefs.SetInt("MasterVolume", (int)masterSlider.value);
         PlayerPrefs.SetInt("MusicVolume", (int)musicSlider.value);
@@ -56,6 +57,7 @@ public class Options : MonoBehaviour
 
     public void ToggleFullScreen()
     {
+        AudioManager.instance.PlayUISound(0, 2, 0.05f);
         Screen.fullScreen = !Screen.fullScreen;
     }
 

@@ -16,8 +16,6 @@ public class InGamePause : MonoBehaviour
     {
         if (!obj.started) return;
         
-        Debug.Log("Appelé");
-        
         if (optionsScript.optionsCanva.gameObject.activeInHierarchy)
         {
             optionsScript.CloseOptions();
@@ -37,6 +35,8 @@ public class InGamePause : MonoBehaviour
         if (PlayerController.instance.isControled) return;
         
         AudioManager.instance.MuffleSound();
+
+        AudioManager.instance.PlayUISound(0, 0, 0f);
         
         pauseCanva.gameObject.SetActive(true);
         pauseCanva.DOFade(1f, 0.5f);
@@ -51,6 +51,8 @@ public class InGamePause : MonoBehaviour
     public void Resume()
     {
         AudioManager.instance.UnMuffleSound();
+        
+        AudioManager.instance.PlayUISound(0, 1, 0f);
         
         pauseCanva.DOFade(0f, 0.2f).OnComplete(()=>pauseCanva.gameObject.SetActive(false));
         Cursor.lockState = CursorLockMode.Locked;
@@ -73,12 +75,16 @@ public class InGamePause : MonoBehaviour
 
     public void BackToMenu()
     {
-        Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }
 
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void ClickSound()
+    {
+        AudioManager.instance.PlayUISound(0, 2, 0.05f);
     }
 }
