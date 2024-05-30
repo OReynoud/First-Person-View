@@ -209,7 +209,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private float walkTimer;
     [SerializeField] private float audioWalkSpeed;
-    [HideInInspector] public bool isOnWood;
+    [HideInInspector] public int isOnWood;
     
     #endregion
 
@@ -598,7 +598,7 @@ public class PlayerController : Singleton<PlayerController>
 
             if (walkTimer <= 0)
             {
-                AudioManager.instance.PlaySound(3, isOnWood ? 0 : 4, gameObject, 0.1f, false);
+                AudioManager.instance.PlaySound(3, isOnWood > 0 ? 0 : 4, gameObject, 0.1f, false);
                 walkTimer = state == PlayerStates.Sprinting ? audioWalkSpeed / 2f : isControled ? audioWalkSpeed * 3f : audioWalkSpeed;
                 
                 switch (state)
@@ -891,11 +891,18 @@ public class PlayerController : Singleton<PlayerController>
     //THOMAS --> Permet de passer au son de bois
     private void OnTriggerEnter(Collider other)
     {
-        isOnWood = true;
+        if (other.CompareTag("InteriorArea"))
+        {
+            isOnWood++;
+        }
+        
     }
     private void OnTriggerExit(Collider other)
     {
-        isOnWood = false;
+        if (other.CompareTag("InteriorArea"))
+        {
+            isOnWood--;
+        }
     }
 
     #region Bobbing
