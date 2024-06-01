@@ -1,4 +1,5 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -11,6 +12,8 @@ public class Options : MonoBehaviour
     [SerializeField] private Slider masterSlider;
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
+    [SerializeField] private Slider subtitlesSlider;
+    [SerializeField] private TextMeshProUGUI subtitles;
 
     void Start()
     {
@@ -30,11 +33,21 @@ public class Options : MonoBehaviour
         {
             PlayerPrefs.SetInt("SFXVolume", 0);
         }
+        if (!PlayerPrefs.HasKey("SubtitlesSize"))
+        {
+            PlayerPrefs.SetInt("SubtitlesSize", 50);
+        }
 
         sensitivitySlider.value = PlayerPrefs.GetInt("Sensitivity");
         masterSlider.value = PlayerPrefs.GetInt("MasterVolume");
         musicSlider.value = PlayerPrefs.GetInt("MusicVolume");
         sfxSlider.value = PlayerPrefs.GetInt("SFXVolume");
+        subtitlesSlider.value = PlayerPrefs.GetInt("SubtitlesSize");
+
+        if (subtitles != null)
+        {
+            subtitles.fontSize = PlayerPrefs.GetInt("SubtitlesSize");
+        }
     }
     
     public void OpenOptions()
@@ -51,6 +64,7 @@ public class Options : MonoBehaviour
         PlayerPrefs.SetInt("MasterVolume", (int)masterSlider.value);
         PlayerPrefs.SetInt("MusicVolume", (int)musicSlider.value);
         PlayerPrefs.SetInt("SFXVolume", (int)sfxSlider.value);
+        PlayerPrefs.SetInt("SubtitlesSize", (int)subtitlesSlider.value);
         
         optionsCanva.DOFade(0f, 0.2f).OnComplete(()=>optionsCanva.gameObject.SetActive(false));
     }
@@ -63,6 +77,8 @@ public class Options : MonoBehaviour
 
     public void Sensitivity()
     {
+        if (PlayerController.instance == null) return;
+        
         PlayerController.instance.sensitivity = sensitivitySlider.value / 50f;
     }
     
@@ -79,5 +95,12 @@ public class Options : MonoBehaviour
     public void SFXAudio()
     {
         mixer.SetFloat("sfxVolume", sfxSlider.value);
+    }
+
+    public void ChangeSubtitlesSize()
+    {
+        if (subtitles == null) return;
+        
+        subtitles.fontSize = subtitlesSlider.value;
     }
 }

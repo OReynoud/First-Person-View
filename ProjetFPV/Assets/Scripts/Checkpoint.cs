@@ -1,19 +1,22 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Mechanics;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    public Transform respawnPoint;
-
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            //GameManager.instance.actualRespawnPoint = respawnPoint;
+            var savePosition = other.transform.position;
+            var inkLevel = PlayerController.instance.GetInk();
+            var healKits = PlayerController.instance.GetHealKits();
+
+            PlayerPrefs.SetFloat("SavePosX", savePosition.x);
+            PlayerPrefs.SetFloat("SavePosY", savePosition.y);
+            PlayerPrefs.SetFloat("SavePosZ", savePosition.z);
+            PlayerPrefs.SetFloat("SaveInkLevel", inkLevel);
+            PlayerPrefs.SetInt("SaveHealKits", healKits);
+            
+            Destroy(gameObject);
         }
     }
 }
