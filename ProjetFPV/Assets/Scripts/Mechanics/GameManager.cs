@@ -200,6 +200,7 @@ namespace Mechanics
 
         public void Reload()
         {
+            PlayerPrefs.SetInt("isReloadingSave", 1);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 

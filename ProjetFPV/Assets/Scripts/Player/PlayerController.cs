@@ -305,6 +305,30 @@ public class PlayerController : Singleton<PlayerController>
 
     void Start()
     {
+        if (!PlayerPrefs.HasKey("isReloadingSave"))
+        {
+            PlayerPrefs.SetInt("isReloadingSave", 0);
+        }
+        
+        if (PlayerPrefs.GetInt("isReloadingSave") == 1)
+        {
+            transform.position = new Vector3(PlayerPrefs.GetFloat("SavePosX"), PlayerPrefs.GetFloat("SavePosY"),
+                PlayerPrefs.GetFloat("SavePosZ"));
+            currentInk = PlayerPrefs.GetFloat("SaveInkLevel");
+            currentHealPackAmount = PlayerPrefs.GetInt("SaveHealKits");
+            
+            PlayerPrefs.SetInt("isReloadingSave", 0);
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("SavePosX", transform.position.x);
+            PlayerPrefs.SetFloat("SavePosY", transform.position.y);
+            PlayerPrefs.SetFloat("SavePosZ", transform.position.z);
+            PlayerPrefs.SetFloat("SaveInkLevel", currentInk);
+            PlayerPrefs.SetInt("SaveHealKits", currentHealPackAmount);
+        }
+        
+        
         heartBeatVolume = AudioManager.instance.GetVolume(3, 18);
         currentInk = GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, 0);
         CheckShootingHand();
@@ -1016,4 +1040,17 @@ public class PlayerController : Singleton<PlayerController>
     
     #endregion
     
+    #region Save
+    
+    public float GetInk()
+    {
+        return currentInk;
+    }
+
+    public int GetHealKits()
+    {
+        return currentHealPackAmount;
+    }
+    
+    #endregion
 }

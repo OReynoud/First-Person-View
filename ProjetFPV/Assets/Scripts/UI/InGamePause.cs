@@ -1,9 +1,11 @@
 using DG.Tweening;
 using Mechanics;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class InGamePause : MonoBehaviour
 {
@@ -11,7 +13,24 @@ public class InGamePause : MonoBehaviour
     [SerializeField] private Options optionsScript;
     private PlayerInput inputs;
     private InputActionMap currentControls;
+    [SerializeField] private Button continueGame;
 
+    void Start()
+    {
+        if (continueGame == null) return;
+        
+        if (!PlayerPrefs.HasKey("SavePosX"))
+        {
+            continueGame.interactable = false;
+            continueGame.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.grey;
+        }
+        else
+        {
+            continueGame.interactable = true;
+            continueGame.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.white;
+        }
+    }
+    
     public void Escape(InputAction.CallbackContext obj)
     {
         if (!obj.started) return;
@@ -19,6 +38,10 @@ public class InGamePause : MonoBehaviour
         if (optionsScript.optionsCanva.gameObject.activeInHierarchy)
         {
             optionsScript.CloseOptions();
+        }
+        else if (pauseCanva == null)
+        {
+            return;
         }
         else if (pauseCanva.gameObject.activeInHierarchy)
         {
@@ -86,5 +109,19 @@ public class InGamePause : MonoBehaviour
     public void ClickSound()
     {
         AudioManager.instance.PlayUISound(0, 2, 0.05f);
+    }
+
+    public void NewGame()
+    {
+        PlayerPrefs.SetInt("isReloadingSave", 0);
+        
+        SceneManager.LoadScene("LevelDesign");
+    }
+
+    public void ContinueGame()
+    {
+        PlayerPrefs.SetInt("isReloadingSave", 1);
+        
+        SceneManager.LoadScene("LevelDesign");
     }
 }
