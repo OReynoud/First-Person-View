@@ -79,6 +79,18 @@ Material:
         m_Texture: {fileID: 2800000, guid: 9cb6d9eca1b2a1e408f85ea330bcc342, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RMHA:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RMHB:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RMHC:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _RoughnessA:
         m_Texture: {fileID: 2800000, guid: b91f75d74465e0441badc186e087e1e0, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -119,12 +131,16 @@ Material:
     m_Floats:
     - _AlphaCutoff: 0.5
     - _Blend_Smoothness: 0.64
+    - _Blend_Smoothness1: 0.1
     - _Blend_SmoothnessB: -1.13
     - _Blend_SmoothnessC: 0.85
     - _Blend_TextureInfluence: 1.09
     - _Blend_TextureInfluenceB: 26.4
     - _Blend_TextureInfluenceC: 0.5
+    - _Blend_TextureInfluence_A: 0
+    - _Blend_TextureInfluence_B: 0
     - _Blend_ThresholdA: 0
+    - _Blend_ThresholdA1: 0
     - _Blend_ThresholdB: -1.35
     - _Blend_ThresholdC: 0.37
     - _EnvironmentReflections: 1
@@ -133,6 +149,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _ShowVertexColor: 0
     - _SpecularHighlights: 1
     - _Tiling: 0.5
     m_Colors:
