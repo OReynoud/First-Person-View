@@ -236,12 +236,18 @@ public class CollectorBehavior : Enemy
                 throw new ArgumentOutOfRangeException();
         }
     }
-    
 
+    private GameObject audioBuildUp;
+    
     #region Shoot
 
     void RotateModel()
     {
+        if (audioBuildUp == null)
+        {
+            audioBuildUp = AudioManager.instance.PlaySound(7, 4, gameObject, 0f, true);
+        }
+        
         var dir = PlayerController.instance.transform.position - transform.position;
         dir.Normalize();
         dir = new Vector3(dir.x, 0, dir.z);
@@ -259,6 +265,11 @@ public class CollectorBehavior : Enemy
 
     private void ShootMethod()
     {
+        if (audioBuildUp != null)
+        {
+            Destroy(audioBuildUp);
+        }
+        
         if (bulletsLeft <= 0)
         {
             weaknessTimer += Time.deltaTime;
@@ -294,7 +305,9 @@ public class CollectorBehavior : Enemy
         bullet_VFX[0].Play();
         bullet.rb.velocity = dir.normalized * bulletSpeed;
         bullet.damage = bulletDamage;
-        
+
+        AudioManager.instance.PlaySound(7, 0, gameObject, 0.1f, false);
+
         //SON
     }
 
@@ -483,6 +496,12 @@ public class CollectorBehavior : Enemy
         body.useGravity = false;
 
         //StartCoroutine(ApplyKnockBack(dir, force));
+    }
+    
+    public override void TakeDamage(Collider part, Vector3 dir, float damage, float knockBack)
+    {
+        base.TakeDamage(part, dir,  damage, knockBack);
+        AudioManager.instance.PlaySound(7, 8, gameObject, 0.1f, false);
     }
 
     public override void Die()

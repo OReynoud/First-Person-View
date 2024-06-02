@@ -18,7 +18,7 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private AudioMixerSnapshot muffleSnapshot;
     [SerializeField] [Range(0f, 1f)] private float snapshotTransitionTime;
     
-    private float GetVolume(int category, int sound) // Appeler cette fonction avec l'index affiché dans le tableau de sound design
+    public float GetVolume(int category, int sound) // Appeler cette fonction avec l'index affiché dans le tableau de sound design
     {
         return categories[category].sounds[sound].volume;
     }
@@ -44,6 +44,24 @@ public class AudioManager : Singleton<AudioManager>
         {
             Destroy(newAudioSourceObject, categories[category].sounds[sound].sounds[Random.Range(0, categories[category].sounds[sound].sounds.Count)].length + 0.3f);
         }
+        
+        return newAudioSourceObject;
+    }
+    
+    public GameObject PlayUISound(int category, int sound, float randomPitchIntensity)
+    {
+        var newAudioSourceObject = Instantiate(prefabAudioSource, Vector3.zero, Quaternion.identity);
+        var newAudioSource = newAudioSourceObject.GetComponent<AudioSource>();
+        newAudioSource.spatialBlend = 0f;
+        newAudioSource.bypassEffects = true;
+        newAudioSource.bypassReverbZones = true;
+        newAudioSource.bypassListenerEffects = true;
+        newAudioSource.clip = categories[category].sounds[sound].sounds[Random.Range(0, categories[category].sounds[sound].sounds.Count)];
+        newAudioSource.volume = GetVolume(category, sound);
+        newAudioSource.pitch = 1 - Random.Range(-randomPitchIntensity, randomPitchIntensity);
+        newAudioSourceObject.SetActive(true);
+        
+        Destroy(newAudioSourceObject, categories[category].sounds[sound].sounds[Random.Range(0, categories[category].sounds[sound].sounds.Count)].length + 0.3f);
         
         return newAudioSourceObject;
     }

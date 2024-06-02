@@ -14,18 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - name: Shoot
-    volume: 0
+    sounds:
+    - {fileID: 8300000, guid: a3eb04fee64d14f45a12836626e61fc0, type: 3}
+    volume: 1
   - name: Death
+    sounds: []
     volume: 0
   - name: Ball State
+    sounds: []
     volume: 0
   - name: Aggro
+    sounds: []
     volume: 0
   - name: Shoot Build Up
-    volume: 0
+    sounds:
+    - {fileID: 8300000, guid: e1cd19b3f89ecac42afbb303c74cb046, type: 3}
+    volume: 0.828
   - name: Roaming
+    sounds: []
     volume: 0
   - name: Spawn Bouffon
-    volume: 0
+    sounds:
+    - {fileID: 8300000, guid: 6aafd20ae25621d47b6c93881c3c83c2, type: 3}
+    volume: 0.899
   - name: Spawn
+    sounds: []
     volume: 0
+  - name: DamageTaken
+    sounds:
+    - {fileID: 8300000, guid: 2fc430eb8a7ad594e861b3cb9c667b3d, type: 3}
+    volume: 1

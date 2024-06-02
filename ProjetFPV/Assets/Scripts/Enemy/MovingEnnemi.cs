@@ -17,6 +17,7 @@ public class MovingEnnemi : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            AudioManager.instance.PlaySound(5, 1, gameObject, 0f, false);
             triggered = true;
         }
     }
@@ -30,7 +31,7 @@ public class MovingEnnemi : MonoBehaviour
 
         if (actor.position == destination.position)
         {
-            Destroy(transform.parent.gameObject);
+            Destroy(transform.parent.gameObject, 2f);
         }
     }
 }

@@ -220,7 +220,7 @@ namespace Mechanics
                     if (PlayerController.instance.controlledProp == this) break;
                     timeràLaCon -= Time.deltaTime;
                     if (timeràLaCon > 0) break;
-                    if (Physics.Raycast(transform.position,Vector3.down,1.7f,LayerMask.GetMask("Default")))
+                    if (Physics.Raycast(transform.position,Vector3.down,1.7f,LayerMask.GetMask("Ground")))
                     {
                         Debug.Log("Landed");
                         currentState = States.Rush;

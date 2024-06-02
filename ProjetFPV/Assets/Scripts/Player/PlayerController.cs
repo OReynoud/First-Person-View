@@ -20,6 +20,8 @@ public class PlayerController : Singleton<PlayerController>
 
     private InputActionMap currentControls;
 
+    [SerializeField] private AudioSource heartBeatAudioSource;
+    private float heartBeatVolume;
     [Tooltip("Intensité de la vignette selon les PV perdus")] 
     [SerializeField] private AnimationCurve vignetteIntensity; //Intensité de la vignette
 
@@ -207,7 +209,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private float walkTimer;
     [SerializeField] private float audioWalkSpeed;
-    [HideInInspector] public bool isOnWood;
+    [HideInInspector] public int isOnWood;
     
     #endregion
 
@@ -303,6 +305,31 @@ public class PlayerController : Singleton<PlayerController>
 
     void Start()
     {
+        if (!PlayerPrefs.HasKey("isReloadingSave"))
+        {
+            PlayerPrefs.SetInt("isReloadingSave", 0);
+        }
+        
+        if (PlayerPrefs.GetInt("isReloadingSave") == 1)
+        {
+            transform.position = new Vector3(PlayerPrefs.GetFloat("SavePosX"), PlayerPrefs.GetFloat("SavePosY"),
+                PlayerPrefs.GetFloat("SavePosZ"));
+            currentInk = PlayerPrefs.GetFloat("SaveInkLevel");
+            currentHealPackAmount = PlayerPrefs.GetInt("SaveHealKits");
+            
+            PlayerPrefs.SetInt("isReloadingSave", 0);
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("SavePosX", transform.position.x);
+            PlayerPrefs.SetFloat("SavePosY", transform.position.y);
+            PlayerPrefs.SetFloat("SavePosZ", transform.position.z);
+            PlayerPrefs.SetFloat("SaveInkLevel", currentInk);
+            PlayerPrefs.SetInt("SaveHealKits", currentHealPackAmount);
+        }
+        
+        
+        heartBeatVolume = AudioManager.instance.GetVolume(3, 18);
         currentInk = GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, 0);
         CheckShootingHand();
     }
@@ -502,6 +529,7 @@ public class PlayerController : Singleton<PlayerController>
         var lostHealth = (maxHealth - currentHealth) / maxHealth;
 
         volume.weight = Mathf.Lerp(volume.weight, vignetteIntensity.Evaluate(lostHealth), .01f);
+        heartBeatAudioSource.volume = lostHealth * heartBeatVolume;
         
         if (canMove)
         {
@@ -594,7 +622,7 @@ public class PlayerController : Singleton<PlayerController>
 
             if (walkTimer <= 0)
             {
-                AudioManager.instance.PlaySound(3, isOnWood ? 0 : 4, gameObject, 0.1f, false);
+                AudioManager.instance.PlaySound(3, isOnWood > 0 ? 0 : 4, gameObject, 0.1f, false);
                 walkTimer = state == PlayerStates.Sprinting ? audioWalkSpeed / 2f : isControled ? audioWalkSpeed * 3f : audioWalkSpeed;
                 
                 switch (state)
@@ -887,11 +915,18 @@ public class PlayerController : Singleton<PlayerController>
     //THOMAS --> Permet de passer au son de bois
     private void OnTriggerEnter(Collider other)
     {
-        isOnWood = true;
+        if (other.CompareTag("InteriorArea"))
+        {
+            isOnWood++;
+        }
+        
     }
     private void OnTriggerExit(Collider other)
     {
-        isOnWood = false;
+        if (other.CompareTag("InteriorArea"))
+        {
+            isOnWood--;
+        }
     }
 
     #region Bobbing
@@ -1005,4 +1040,17 @@ public class PlayerController : Singleton<PlayerController>
     
     #endregion
     
+    #region Save
+    
+    public float GetInk()
+    {
+        return currentInk;
+    }
+
+    public int GetHealKits()
+    {
+        return currentHealPackAmount;
+    }
+    
+    #endregion
 }
