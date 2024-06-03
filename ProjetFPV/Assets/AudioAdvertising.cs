@@ -7,6 +7,7 @@ public class AudioAdvertising : MonoBehaviour
 
     [SerializeField] private float timeBetweenAds;
     [SerializeField] private AudioSubtitles subtitles;
+    private int r = 0;
 
     void Update()
     {
@@ -20,8 +21,6 @@ public class AudioAdvertising : MonoBehaviour
 
     void PlayAd()
     {
-        var r = 0;
-        
         while (r == previousAd)
         {
             r = Random.Range(0, 10);
