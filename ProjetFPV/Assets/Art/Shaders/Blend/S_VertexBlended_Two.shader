@@ -12,10 +12,10 @@ Shader "S_VertexBlended_Two"
 		_NormalA("Normal A", 2D) = "white" {}
 		_RMHA("RMH A", 2D) = "white" {}
 		[Header(Material B)]_AlbedoB("Albedo B", 2D) = "white" {}
-		[Header(Material B)]_AlbedoC("Albedo C", 2D) = "white" {}
 		_NormalB("Normal B", 2D) = "bump" {}
-		_NormalC("Normal C", 2D) = "bump" {}
 		_RMHB("RMH B", 2D) = "white" {}
+		[Header(Material B)]_AlbedoC("Albedo C", 2D) = "white" {}
+		_NormalC("Normal C", 2D) = "bump" {}
 		_RMHC("RMH C", 2D) = "white" {}
 		_Blend_TextureInfluence_A("Blend_TextureInfluence_A", Float) = 0
 		_Blend_TextureInfluence_B("Blend_TextureInfluence_B", Float) = 0
@@ -4024,9 +4024,9 @@ Node;AmplifyShaderEditor.CommentaryNode;111;350.2686,2364.147;Inherit;False;1522
 Node;AmplifyShaderEditor.CommentaryNode;122;343.1067,2836.816;Inherit;False;1522.855;452.2173;Blend;8;127;247;248;250;251;252;253;256;Blend;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;184;344.8163,1895.649;Inherit;False;1522.855;452.2173;Blend;11;66;32;43;31;27;30;65;29;25;232;234;Blend;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;290;808.6033,1105.632;Inherit;False;878.8217;662.7794;Metalness;7;297;296;295;294;293;292;291;Metalness;1,1,1,1;0;0
-Node;AmplifyShaderEditor.TexturePropertyNode;13;-1187.609,-414.4982;Inherit;True;Property;_NormalA;Normal A;4;0;Create;True;0;0;0;False;0;False;f0389ae1909910542975cfc5648bbe23;f0389ae1909910542975cfc5648bbe23;True;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
+Node;AmplifyShaderEditor.TexturePropertyNode;13;-1187.609,-414.4982;Inherit;True;Property;_NormalA;Normal A;4;0;Create;True;0;0;0;False;0;False;f0389ae1909910542975cfc5648bbe23;f0389ae1909910542975cfc5648bbe23;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
 Node;AmplifyShaderEditor.LerpOp;47;1063.067,-274.1298;Inherit;False;3;0;FLOAT4;0,0,0,0;False;1;FLOAT4;0,0,0,0;False;2;FLOAT;0;False;1;FLOAT4;0
-Node;AmplifyShaderEditor.TexturePropertyNode;19;-1214.199,650.0319;Inherit;True;Property;_NormalB;Normal B;8;0;Create;True;0;0;0;False;0;False;8770113e89c685d4aa1df8703cd7820b;8770113e89c685d4aa1df8703cd7820b;True;bump;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
+Node;AmplifyShaderEditor.TexturePropertyNode;19;-1214.199,650.0319;Inherit;True;Property;_NormalB;Normal B;7;0;Create;True;0;0;0;False;0;False;8770113e89c685d4aa1df8703cd7820b;8770113e89c685d4aa1df8703cd7820b;False;bump;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
 Node;AmplifyShaderEditor.RegisterLocalVarNode;38;-477.0983,850.8796;Inherit;False;roughness B;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;37;-499.0983,775.8796;Inherit;False;normal B;-1;True;1;0;FLOAT4;0,0,0,0;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;116;1558.446,2454.02;Inherit;False;blend B;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
@@ -4035,7 +4035,7 @@ Node;AmplifyShaderEditor.GetLocalVarNode;46;859.0668,-216.1297;Inherit;False;37;
 Node;AmplifyShaderEditor.RegisterLocalVarNode;127;1551.285,2926.689;Inherit;False;blend C;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.GetLocalVarNode;52;856.4402,569.0397;Inherit;False;43;blend A;1;0;OBJECT;;False;1;FLOAT;0
 Node;AmplifyShaderEditor.GetLocalVarNode;50;847.6827,471.6646;Inherit;False;38;roughness B;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TexturePropertyNode;72;-1177.901,1699.35;Inherit;True;Property;_NormalC;Normal C;9;0;Create;True;0;0;0;False;0;False;8770113e89c685d4aa1df8703cd7820b;9cb6d9eca1b2a1e408f85ea330bcc342;True;bump;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
+Node;AmplifyShaderEditor.TexturePropertyNode;72;-1177.901,1699.35;Inherit;True;Property;_NormalC;Normal C;10;0;Create;True;0;0;0;False;0;False;8770113e89c685d4aa1df8703cd7820b;9cb6d9eca1b2a1e408f85ea330bcc342;False;bump;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
 Node;AmplifyShaderEditor.GetLocalVarNode;45;860.0668,-291.1297;Inherit;False;35;normal A;1;0;OBJECT;;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;43;1565.096,1985.858;Inherit;False;blend A;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TexturePropertyNode;18;-1184.199,479.2901;Inherit;True;Property;_AlbedoB;Albedo B;6;1;[Header];Create;True;1;Material B;0;0;False;0;False;62c18b587438a3748b59088cc3690e33;62c18b587438a3748b59088cc3690e33;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
@@ -4114,10 +4114,10 @@ Node;AmplifyShaderEditor.RegisterLocalVarNode;39;-497.0983,1026.88;Inherit;False
 Node;AmplifyShaderEditor.RegisterLocalVarNode;287;-488.1216,928.4209;Inherit;False;Metalness B;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;26;-482.2097,43.58073;Inherit;False;Height A;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;288;-463.9976,-47.20679;Inherit;False;Metalness A;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TexturePropertyNode;21;-1204.199,838.0319;Inherit;True;Property;_RMHB;RMH B;10;0;Create;True;0;0;0;False;0;False;b91f75d74465e0441badc186e087e1e0;09f4f1b7db5913947897ac567b54104c;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
-Node;AmplifyShaderEditor.TexturePropertyNode;76;-1212.059,1504.329;Inherit;True;Property;_AlbedoC;Albedo C;7;1;[Header];Create;True;1;Material B;0;0;False;0;False;62c18b587438a3748b59088cc3690e33;287c915466c6db14ba6f7058567d360f;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
-Node;AmplifyShaderEditor.TexturePropertyNode;73;-1175.901,1925.35;Inherit;True;Property;_RMHC;RMH C;11;0;Create;True;0;0;0;False;0;False;b91f75d74465e0441badc186e087e1e0;0d132ea8d7d434e4db8c66044e199143;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
-Node;AmplifyShaderEditor.TexturePropertyNode;14;-1177.609,-225.4982;Inherit;True;Property;_RMHA;RMH A;5;0;Create;True;0;0;0;False;0;False;b91f75d74465e0441badc186e087e1e0;768c62dcfc511fe4d839727166a5d6da;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
+Node;AmplifyShaderEditor.TexturePropertyNode;21;-1204.199,838.0319;Inherit;True;Property;_RMHB;RMH B;8;0;Create;True;0;0;0;False;0;False;b91f75d74465e0441badc186e087e1e0;b91f75d74465e0441badc186e087e1e0;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
+Node;AmplifyShaderEditor.TexturePropertyNode;76;-1212.059,1504.329;Inherit;True;Property;_AlbedoC;Albedo C;9;1;[Header];Create;True;1;Material B;0;0;False;0;False;62c18b587438a3748b59088cc3690e33;287c915466c6db14ba6f7058567d360f;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
+Node;AmplifyShaderEditor.TexturePropertyNode;73;-1175.901,1925.35;Inherit;True;Property;_RMHC;RMH C;11;0;Create;True;0;0;0;False;0;False;b91f75d74465e0441badc186e087e1e0;b91f75d74465e0441badc186e087e1e0;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
+Node;AmplifyShaderEditor.TexturePropertyNode;14;-1177.609,-225.4982;Inherit;True;Property;_RMHA;RMH A;5;0;Create;True;0;0;0;False;0;False;b91f75d74465e0441badc186e087e1e0;b91f75d74465e0441badc186e087e1e0;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
 Node;AmplifyShaderEditor.RegisterLocalVarNode;33;-458.6537,-128.3169;Inherit;False;roughness A;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.OneMinusNode;298;1632.204,598.656;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.LerpOp;291;1072.605,1172.632;Inherit;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
@@ -4240,4 +4240,4 @@ WireConnection;1;1;258;0
 WireConnection;1;3;295;0
 WireConnection;1;4;298;0
 ASEEND*/
-//CHKSM=876153AA93DECBB5543E02EA8312C4A4ABAD1BC5
+//CHKSM=A0F7EA6B9D5AA93089CC6CFC2233AE82F24B66F5
