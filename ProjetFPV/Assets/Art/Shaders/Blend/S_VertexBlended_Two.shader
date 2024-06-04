@@ -29,7 +29,9 @@ Shader "S_VertexBlended_Two"
 		_Color_Gradient("Color_Gradient", Color) = (0,0,0,0)
 		_Brightness("Brightness", Float) = 0.1
 		_Brightness1("Brightness", Float) = 0.1
-		_Boost("Boost", Float) = 0
+		_Boost_B("Boost_B", Float) = 0
+		_Boost_C("Boost_C", Float) = 0
+		_Boost_A("Boost_A", Float) = 0
 		[Toggle(_GRADIENT_TEXTUREORCOLOUR_ON)] _Gradient_TextureOrColour("Gradient_TextureOrColour", Float) = 0
 		_Brightness2("Brightness", Float) = 0.1
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
@@ -352,16 +354,18 @@ Shader "S_VertexBlended_Two"
 			float2 _Tiling_A;
 			float2 _Tiling_B;
 			float2 _Tiling_C;
-			float _Brightness2;
-			float _Brightness;
-			float _Blend_ThresholdA;
-			float _Blend_Smoothness;
-			float _Blend_TextureInfluence_A;
-			float _Brightness1;
-			float _Blend_ThresholdA1;
-			float _Blend_Smoothness1;
+			float _Boost_A;
 			float _Blend_TextureInfluence_B;
-			float _Boost;
+			float _Blend_Smoothness1;
+			float _Blend_ThresholdA1;
+			float _Brightness1;
+			float _Blend_TextureInfluence_A;
+			float _Blend_Smoothness;
+			float _Blend_ThresholdA;
+			float _Brightness;
+			float _Brightness2;
+			float _Boost_B;
+			float _Boost_C;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
 			#endif
@@ -751,14 +755,14 @@ Shader "S_VertexBlended_Two"
 				#endif
 				
 				float4 triplanar17_g52 = TriplanarSampling17_g52( _NormalA, WorldPosition, WorldNormal, 1.0, _Tiling_A, 1.0, 0 );
-				float4 temp_cast_5 = (_Boost).xxxx;
+				float4 temp_cast_5 = (_Boost_A).xxxx;
 				float4 normal_A35 = pow( triplanar17_g52 , temp_cast_5 );
 				float4 triplanar17_g49 = TriplanarSampling17_g49( _NormalB, WorldPosition, WorldNormal, 1.0, _Tiling_B, 1.0, 0 );
-				float4 temp_cast_6 = (_Boost).xxxx;
+				float4 temp_cast_6 = (_Boost_B).xxxx;
 				float4 normal_B37 = pow( triplanar17_g49 , temp_cast_6 );
 				float4 lerpResult47 = lerp( normal_A35 , normal_B37 , blend_A43);
 				float4 triplanar17_g50 = TriplanarSampling17_g50( _NormalC, WorldPosition, WorldNormal, 1.0, _Tiling_C, 1.0, 0 );
-				float4 temp_cast_7 = (_Boost).xxxx;
+				float4 temp_cast_7 = (_Boost_C).xxxx;
 				float4 normal_C79 = pow( triplanar17_g50 , temp_cast_7 );
 				float4 lerpResult153 = lerp( lerpResult47 , normal_C79 , blend_B116);
 				
@@ -1119,16 +1123,18 @@ Shader "S_VertexBlended_Two"
 			float2 _Tiling_A;
 			float2 _Tiling_B;
 			float2 _Tiling_C;
-			float _Brightness2;
-			float _Brightness;
-			float _Blend_ThresholdA;
-			float _Blend_Smoothness;
-			float _Blend_TextureInfluence_A;
-			float _Brightness1;
-			float _Blend_ThresholdA1;
-			float _Blend_Smoothness1;
+			float _Boost_A;
 			float _Blend_TextureInfluence_B;
-			float _Boost;
+			float _Blend_Smoothness1;
+			float _Blend_ThresholdA1;
+			float _Brightness1;
+			float _Blend_TextureInfluence_A;
+			float _Blend_Smoothness;
+			float _Blend_ThresholdA;
+			float _Brightness;
+			float _Brightness2;
+			float _Boost_B;
+			float _Boost_C;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
 			#endif
@@ -1455,16 +1461,18 @@ Shader "S_VertexBlended_Two"
 			float2 _Tiling_A;
 			float2 _Tiling_B;
 			float2 _Tiling_C;
-			float _Brightness2;
-			float _Brightness;
-			float _Blend_ThresholdA;
-			float _Blend_Smoothness;
-			float _Blend_TextureInfluence_A;
-			float _Brightness1;
-			float _Blend_ThresholdA1;
-			float _Blend_Smoothness1;
+			float _Boost_A;
 			float _Blend_TextureInfluence_B;
-			float _Boost;
+			float _Blend_Smoothness1;
+			float _Blend_ThresholdA1;
+			float _Brightness1;
+			float _Blend_TextureInfluence_A;
+			float _Blend_Smoothness;
+			float _Blend_ThresholdA;
+			float _Brightness;
+			float _Brightness2;
+			float _Boost_B;
+			float _Boost_C;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
 			#endif
@@ -1755,16 +1763,18 @@ Shader "S_VertexBlended_Two"
 			float2 _Tiling_A;
 			float2 _Tiling_B;
 			float2 _Tiling_C;
-			float _Brightness2;
-			float _Brightness;
-			float _Blend_ThresholdA;
-			float _Blend_Smoothness;
-			float _Blend_TextureInfluence_A;
-			float _Brightness1;
-			float _Blend_ThresholdA1;
-			float _Blend_Smoothness1;
+			float _Boost_A;
 			float _Blend_TextureInfluence_B;
-			float _Boost;
+			float _Blend_Smoothness1;
+			float _Blend_ThresholdA1;
+			float _Brightness1;
+			float _Blend_TextureInfluence_A;
+			float _Blend_Smoothness;
+			float _Blend_ThresholdA;
+			float _Brightness;
+			float _Brightness2;
+			float _Boost_B;
+			float _Boost_C;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
 			#endif
@@ -2153,16 +2163,18 @@ Shader "S_VertexBlended_Two"
 			float2 _Tiling_A;
 			float2 _Tiling_B;
 			float2 _Tiling_C;
-			float _Brightness2;
-			float _Brightness;
-			float _Blend_ThresholdA;
-			float _Blend_Smoothness;
-			float _Blend_TextureInfluence_A;
-			float _Brightness1;
-			float _Blend_ThresholdA1;
-			float _Blend_Smoothness1;
+			float _Boost_A;
 			float _Blend_TextureInfluence_B;
-			float _Boost;
+			float _Blend_Smoothness1;
+			float _Blend_ThresholdA1;
+			float _Brightness1;
+			float _Blend_TextureInfluence_A;
+			float _Blend_Smoothness;
+			float _Blend_ThresholdA;
+			float _Brightness;
+			float _Brightness2;
+			float _Boost_B;
+			float _Boost_C;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
 			#endif
@@ -2556,16 +2568,18 @@ Shader "S_VertexBlended_Two"
 			float2 _Tiling_A;
 			float2 _Tiling_B;
 			float2 _Tiling_C;
-			float _Brightness2;
-			float _Brightness;
-			float _Blend_ThresholdA;
-			float _Blend_Smoothness;
-			float _Blend_TextureInfluence_A;
-			float _Brightness1;
-			float _Blend_ThresholdA1;
-			float _Blend_Smoothness1;
+			float _Boost_A;
 			float _Blend_TextureInfluence_B;
-			float _Boost;
+			float _Blend_Smoothness1;
+			float _Blend_ThresholdA1;
+			float _Brightness1;
+			float _Blend_TextureInfluence_A;
+			float _Blend_Smoothness;
+			float _Blend_ThresholdA;
+			float _Brightness;
+			float _Brightness2;
+			float _Boost_B;
+			float _Boost_C;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
 			#endif
@@ -2813,10 +2827,10 @@ Shader "S_VertexBlended_Two"
 				#endif
 
 				float4 triplanar17_g52 = TriplanarSampling17_g52( _NormalA, WorldPosition, WorldNormal, 1.0, _Tiling_A, 1.0, 0 );
-				float4 temp_cast_0 = (_Boost).xxxx;
+				float4 temp_cast_0 = (_Boost_A).xxxx;
 				float4 normal_A35 = pow( triplanar17_g52 , temp_cast_0 );
 				float4 triplanar17_g49 = TriplanarSampling17_g49( _NormalB, WorldPosition, WorldNormal, 1.0, _Tiling_B, 1.0, 0 );
-				float4 temp_cast_1 = (_Boost).xxxx;
+				float4 temp_cast_1 = (_Boost_B).xxxx;
 				float4 normal_B37 = pow( triplanar17_g49 , temp_cast_1 );
 				float4 triplanar18_g52 = TriplanarSampling18_g52( _RMHA, WorldPosition, WorldNormal, 1.0, _Tiling_A, 1.0, 0 );
 				float Height_A26 = triplanar18_g52.z;
@@ -2824,7 +2838,7 @@ Shader "S_VertexBlended_Two"
 				float blend_A43 = smoothstepResult30;
 				float4 lerpResult47 = lerp( normal_A35 , normal_B37 , blend_A43);
 				float4 triplanar17_g50 = TriplanarSampling17_g50( _NormalC, WorldPosition, WorldNormal, 1.0, _Tiling_C, 1.0, 0 );
-				float4 temp_cast_2 = (_Boost).xxxx;
+				float4 temp_cast_2 = (_Boost_C).xxxx;
 				float4 normal_C79 = pow( triplanar17_g50 , temp_cast_2 );
 				float smoothstepResult238 = smoothstep( _Blend_ThresholdA1 , ( _Blend_ThresholdA1 + _Blend_Smoothness1 ) , ( IN.ase_color.g * ( ( 1.0 - blend_A43 ) + _Blend_TextureInfluence_B ) ));
 				float blend_B116 = smoothstepResult238;
@@ -3036,16 +3050,18 @@ Shader "S_VertexBlended_Two"
 			float2 _Tiling_A;
 			float2 _Tiling_B;
 			float2 _Tiling_C;
-			float _Brightness2;
-			float _Brightness;
-			float _Blend_ThresholdA;
-			float _Blend_Smoothness;
-			float _Blend_TextureInfluence_A;
-			float _Brightness1;
-			float _Blend_ThresholdA1;
-			float _Blend_Smoothness1;
+			float _Boost_A;
 			float _Blend_TextureInfluence_B;
-			float _Boost;
+			float _Blend_Smoothness1;
+			float _Blend_ThresholdA1;
+			float _Brightness1;
+			float _Blend_TextureInfluence_A;
+			float _Blend_Smoothness;
+			float _Blend_ThresholdA;
+			float _Brightness;
+			float _Brightness2;
+			float _Boost_B;
+			float _Boost_C;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
 			#endif
@@ -3430,14 +3446,14 @@ Shader "S_VertexBlended_Two"
 				#endif
 				
 				float4 triplanar17_g52 = TriplanarSampling17_g52( _NormalA, WorldPosition, WorldNormal, 1.0, _Tiling_A, 1.0, 0 );
-				float4 temp_cast_5 = (_Boost).xxxx;
+				float4 temp_cast_5 = (_Boost_A).xxxx;
 				float4 normal_A35 = pow( triplanar17_g52 , temp_cast_5 );
 				float4 triplanar17_g49 = TriplanarSampling17_g49( _NormalB, WorldPosition, WorldNormal, 1.0, _Tiling_B, 1.0, 0 );
-				float4 temp_cast_6 = (_Boost).xxxx;
+				float4 temp_cast_6 = (_Boost_B).xxxx;
 				float4 normal_B37 = pow( triplanar17_g49 , temp_cast_6 );
 				float4 lerpResult47 = lerp( normal_A35 , normal_B37 , blend_A43);
 				float4 triplanar17_g50 = TriplanarSampling17_g50( _NormalC, WorldPosition, WorldNormal, 1.0, _Tiling_C, 1.0, 0 );
-				float4 temp_cast_7 = (_Boost).xxxx;
+				float4 temp_cast_7 = (_Boost_C).xxxx;
 				float4 normal_C79 = pow( triplanar17_g50 , temp_cast_7 );
 				float4 lerpResult153 = lerp( lerpResult47 , normal_C79 , blend_B116);
 				
@@ -3651,16 +3667,18 @@ Shader "S_VertexBlended_Two"
 			float2 _Tiling_A;
 			float2 _Tiling_B;
 			float2 _Tiling_C;
-			float _Brightness2;
-			float _Brightness;
-			float _Blend_ThresholdA;
-			float _Blend_Smoothness;
-			float _Blend_TextureInfluence_A;
-			float _Brightness1;
-			float _Blend_ThresholdA1;
-			float _Blend_Smoothness1;
+			float _Boost_A;
 			float _Blend_TextureInfluence_B;
-			float _Boost;
+			float _Blend_Smoothness1;
+			float _Blend_ThresholdA1;
+			float _Brightness1;
+			float _Blend_TextureInfluence_A;
+			float _Blend_Smoothness;
+			float _Blend_ThresholdA;
+			float _Brightness;
+			float _Brightness2;
+			float _Boost_B;
+			float _Boost_C;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
 			#endif
@@ -3923,16 +3941,18 @@ Shader "S_VertexBlended_Two"
 			float2 _Tiling_A;
 			float2 _Tiling_B;
 			float2 _Tiling_C;
-			float _Brightness2;
-			float _Brightness;
-			float _Blend_ThresholdA;
-			float _Blend_Smoothness;
-			float _Blend_TextureInfluence_A;
-			float _Brightness1;
-			float _Blend_ThresholdA1;
-			float _Blend_Smoothness1;
+			float _Boost_A;
 			float _Blend_TextureInfluence_B;
-			float _Boost;
+			float _Blend_Smoothness1;
+			float _Blend_ThresholdA1;
+			float _Brightness1;
+			float _Blend_TextureInfluence_A;
+			float _Blend_Smoothness;
+			float _Blend_ThresholdA;
+			float _Brightness;
+			float _Brightness2;
+			float _Boost_B;
+			float _Boost_C;
 			#ifdef ASE_TRANSMISSION
 				float _TransmissionShadow;
 			#endif
@@ -4127,7 +4147,7 @@ Version=19302
 Node;AmplifyShaderEditor.CommentaryNode;60;797.6826,351.6647;Inherit;False;860.9393;705.9805;Roughness;7;50;51;49;149;150;151;52;Roughness;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;59;799.0671,-341.1297;Inherit;False;844.0545;645.4121;Normal;7;46;48;47;45;153;155;257;Normal;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;58;791.5656,-1023.427;Inherit;False;809.089;610.6828;Albedo;7;41;42;40;44;157;158;159;Albedo;1,1,1,1;0;0
-Node;AmplifyShaderEditor.CommentaryNode;24;-1381.345,412.9559;Inherit;False;1214;886.0001;B;5;21;19;18;37;331;B;1,1,1,1;0;0
+Node;AmplifyShaderEditor.CommentaryNode;24;-1381.345,412.9559;Inherit;False;1214;886.0001;B;6;21;19;18;37;331;376;B;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;23;-1243.609,-638.4982;Inherit;False;1064.181;822.1584;A;7;33;26;14;13;12;35;288;A;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;71;-1380.659,1438.378;Inherit;False;1214;886.0001;C;9;72;73;74;78;79;76;286;363;375;C;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;111;350.2686,2364.147;Inherit;False;1522.855;452.2173;Blend;9;116;237;238;240;241;242;243;244;246;Blend;1,1,1,1;0;0
@@ -4231,13 +4251,13 @@ Node;AmplifyShaderEditor.RegisterLocalVarNode;80;547.9577,1770.352;Inherit;False
 Node;AmplifyShaderEditor.LerpOp;344;429.9472,-608.2697;Inherit;True;3;0;FLOAT4;0,0,0,0;False;1;FLOAT4;0,0,0,0;False;2;FLOAT;0;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;345;186.0452,-415.5132;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.WorldPosInputsNode;346;-44.28786,-524.6902;Inherit;False;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
-Node;AmplifyShaderEditor.RangedFloatNode;347;-13.73757,-363.2834;Inherit;False;Property;_Brightness2;Brightness;33;0;Create;True;0;0;0;False;0;False;0.1;0.1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;347;-13.73757,-363.2834;Inherit;False;Property;_Brightness2;Brightness;35;0;Create;True;0;0;0;False;0;False;0.1;0.1;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.ColorNode;348;-14.47457,-732.1019;Inherit;False;Property;_Color_Gradient2;Color_Gradient;28;0;Create;True;0;0;0;False;0;False;0,0,0,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.TexturePropertyNode;18;-1295.345,466.2142;Inherit;True;Property;_AlbedoB;Albedo B;9;1;[Header];Create;True;1;Material B;0;0;False;0;False;62c18b587438a3748b59088cc3690e33;62c18b587438a3748b59088cc3690e33;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
 Node;AmplifyShaderEditor.SamplerNode;349;65.77251,187.3957;Inherit;True;Property;_TextureSample0;Texture Sample 0;28;0;Create;True;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.TexturePropertyNode;350;-175.3997,166.0381;Inherit;True;Property;_GradientTexture;Gradient Texture;10;1;[Header];Create;True;1;Material B;0;0;False;0;False;62c18b587438a3748b59088cc3690e33;62c18b587438a3748b59088cc3690e33;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
 Node;AmplifyShaderEditor.StaticSwitch;236;2053.72,6.619568;Inherit;False;Property;_ShowVertexColor;ShowVertexColor;25;0;Create;True;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT4;0,0,0,0;False;0;FLOAT4;0,0,0,0;False;2;FLOAT4;0,0,0,0;False;3;FLOAT4;0,0,0,0;False;4;FLOAT4;0,0,0,0;False;5;FLOAT4;0,0,0,0;False;6;FLOAT4;0,0,0,0;False;7;FLOAT4;0,0,0,0;False;8;FLOAT4;0,0,0,0;False;1;FLOAT4;0
-Node;AmplifyShaderEditor.StaticSwitch;351;374.9258,284.74;Inherit;False;Property;_Gradient_TextureOrColour;Gradient_TextureOrColour;32;0;Create;True;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;COLOR;0,0,0,0;False;0;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;4;COLOR;0,0,0,0;False;5;COLOR;0,0,0,0;False;6;COLOR;0,0,0,0;False;7;COLOR;0,0,0,0;False;8;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.StaticSwitch;351;374.9258,284.74;Inherit;False;Property;_Gradient_TextureOrColour;Gradient_TextureOrColour;34;0;Create;True;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;COLOR;0,0,0,0;False;0;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;4;COLOR;0,0,0,0;False;5;COLOR;0,0,0,0;False;6;COLOR;0,0,0,0;False;7;COLOR;0,0,0,0;False;8;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.LerpOp;291;1072.605,1172.632;Inherit;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.GetLocalVarNode;292;829.277,1339.951;Inherit;False;43;blend A;1;0;OBJECT;;False;1;FLOAT;0
 Node;AmplifyShaderEditor.LerpOp;295;1432.41,1320.25;Inherit;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
@@ -4258,7 +4278,9 @@ Node;AmplifyShaderEditor.RegisterLocalVarNode;79;-202.7922,1859.959;Inherit;Fals
 Node;AmplifyShaderEditor.PowerNode;363;-486.1544,1829.683;Inherit;True;False;2;0;FLOAT4;0,0,0,0;False;1;FLOAT;2;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.PowerNode;373;-328.2026,959.1312;Inherit;True;False;2;0;FLOAT4;0,0,0,0;False;1;FLOAT;2;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.PowerNode;374;-136.4883,-127.2504;Inherit;True;False;2;0;FLOAT4;0,0,0,0;False;1;FLOAT;2;False;1;FLOAT4;0
-Node;AmplifyShaderEditor.RangedFloatNode;375;-547.5851,1644.984;Inherit;False;Property;_Boost;Boost;31;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;375;-661.5851,1662.984;Inherit;False;Property;_Boost_C;Boost_C;32;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;376;-560.1938,1169.511;Inherit;False;Property;_Boost_B;Boost_B;31;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;377;-270.4829,26.26636;Inherit;False;Property;_Boost_A;Boost_A;33;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;0;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;0;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;2;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;3;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;True;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=DepthOnly;False;False;0;;0;0;Standard;0;False;0
@@ -4383,13 +4405,13 @@ WireConnection;79;0;363;0
 WireConnection;363;0;332;6
 WireConnection;363;1;375;0
 WireConnection;373;0;331;6
-WireConnection;373;1;375;0
+WireConnection;373;1;376;0
 WireConnection;374;0;334;6
-WireConnection;374;1;375;0
+WireConnection;374;1;377;0
 WireConnection;1;0;236;0
 WireConnection;1;1;153;0
 WireConnection;1;3;295;0
 WireConnection;1;4;306;0
 WireConnection;1;5;355;0
 ASEEND*/
-//CHKSM=07FC6D0BBFDA5EBBE9E7938BEE663E44B5015DBD
+//CHKSM=7CAD1611BC1E0540938AEEB971F5E3D4DED28E41
