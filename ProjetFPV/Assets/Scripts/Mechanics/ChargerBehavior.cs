@@ -217,7 +217,7 @@ namespace Mechanics
                     if (!anim.isPlaying) anim.Play("TEMP_StunLoop");
                     break;
                 case States.Paralysed:
-                    if (PlayerController.instance.controlledProp == this) break;
+                    if (PlayerController.instance.tkManager.controlledProp == this) break;
                     timeràLaCon -= Time.deltaTime;
                     if (timeràLaCon > 0) break;
                     if (Physics.Raycast(transform.position,Vector3.down,1.7f,LayerMask.GetMask("Ground")))

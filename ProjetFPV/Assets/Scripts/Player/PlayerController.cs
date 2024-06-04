@@ -183,8 +183,6 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private float shootSpeedTimer;
 
-    [Foldout("Debug")] [Tooltip("")] [SerializeField]
-    public ControllableProp controlledProp;
 
 
 
@@ -447,7 +445,6 @@ public class PlayerController : Singleton<PlayerController>
         if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, interactDistance, ~LayerMask.GetMask("Player"))
             && playerCam.forward.y > -tkManager.holdObjectYTolerance)   
         {
-            // if (hit.transform.position.y < transform.position.y)return; //THOMAS - Cette ligne marchait pas
             if (hit.transform.TryGetComponent(out ICanInteract interactable))
             {
                 if (!GameManager.instance.interactText.enabled)
@@ -811,12 +808,11 @@ public class PlayerController : Singleton<PlayerController>
     private void Interact(InputAction.CallbackContext obj)
     {
         if (!canMove && !lockedCam) return; //THOMAS
-        Debug.DrawRay(playerCam.position,camera1.transform.forward * 4, Color.blue,3);
+        if (tkManager.controlledProp) return;
         if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, interactDistance, ~LayerMask.GetMask("Player")) && 
             playerCam.forward.y > -tkManager.holdObjectYTolerance)
         {
-            //if (hit.transform.position.y < transform.position.y)return; //THOMAS - Cette ligne marchait pas
-            if (hit.transform.TryGetComponent(out ICanInteract interactable))
+            if (hit.transform.TryGetComponent(out ICanInteract interactable) && hit.rigidbody.velocity.y == 0)
             {
                 interactable.Interact(-hit.normal);
             }

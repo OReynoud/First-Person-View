@@ -26,6 +26,7 @@ namespace Mechanics
 
         public void Interact(Vector3 dir)
         {
+            if (player.transform.position.y > transform.position.y +0.5f)return;
             player.ImmobilizePlayer();
 
             //SON
@@ -54,6 +55,12 @@ namespace Mechanics
 
         public void ShowContext()
         {
+            if (player.transform.position.y > transform.position.y + 0.5f)
+            {
+                GameManager.instance.interactText.enabled = false;
+                return;
+            }
+            
             GameManager.instance.interactText.text = "[E] Escalader";
         }
 
