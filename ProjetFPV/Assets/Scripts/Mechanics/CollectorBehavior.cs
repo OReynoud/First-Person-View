@@ -55,6 +55,9 @@ public class CollectorBehavior : Enemy
     
     [Foldout("Shoot State")] [SerializeField]
     private int numberOfBullets;
+    
+    [Foldout("Shoot State")] [SerializeField]
+    private float angleArcTolerance = 20;
 
     [Foldout("Shoot State")] [SerializeField]
     private float bulletSpeed;
@@ -91,6 +94,7 @@ public class CollectorBehavior : Enemy
     [Foldout("Debug")] [SerializeField] private bool seenPlayer;
     [Foldout("Debug")] [SerializeField] private bool facingPlayer;
     [Foldout("Debug")] [SerializeField] private float weaknessTimer;
+    [Foldout("Debug")] [SerializeField] private bool recentlyAttacked;
 
     [Foldout("Debug")] [SerializeField] public List<ChargerBehavior> children = new List<ChargerBehavior>();
     private Vector3 origin;
@@ -163,25 +167,26 @@ public class CollectorBehavior : Enemy
         {
             case States.Roam:
                 AnimateMasks(true);
+                
+                Debug.DrawRay(transform.position, dir.normalized * 5, Color.magenta);
+                if (Physics.Raycast(transform.position, dir.normalized, out hit, aggroRange,
+                        playerLayer) && !recentlyAttacked)
+                {
+                    if (hit.collider.gameObject.CompareTag("Player"))
+                    {
+                        seenPlayer = true;
+                        agent.enabled = false;
+                        currentState = States.Shoot;
+                        Debug.Log("Player Detected");
+                        return;
+                    }
+                }
                 if (agent.remainingDistance <= agent.stoppingDistance)
                 {
                     if (repositioning && (!agent.hasPath || agent.velocity.sqrMagnitude == 0f))
                     {
                         repositioning = false;
-                        Debug.DrawRay(transform.position, dir.normalized * 5, Color.magenta);
-                        if (Physics.Raycast(transform.position, dir.normalized, out hit, aggroRange,
-                                playerLayer))
-                        {
-                            if (hit.collider.gameObject.CompareTag("Player"))
-                            {
-                                seenPlayer = true;
-                                agent.enabled = false;
-                                currentState = States.Shoot;
-                                Debug.Log("Player Detected");
-                                return;
-                            }
-                        }
-
+                        recentlyAttacked = false;
                         currentState = States.Repositioning;
                         
                         //SON
@@ -253,7 +258,7 @@ public class CollectorBehavior : Enemy
         dir = new Vector3(dir.x, 0, dir.z);
         //var angle = Mathf.Atan2(dir.z, dir.x);
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), rotationSpeed);
-        if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir)) < 10)
+        if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir)) < angleArcTolerance)
         {
             facingPlayer = true;
         }
@@ -282,6 +287,7 @@ public class CollectorBehavior : Enemy
                 agent.SetDestination(origin + new Vector3(Random.Range(-1f, 1f) * flyAreaRange, 0,
                     Random.Range(-1f, 1f) * flyAreaRange));
 
+                recentlyAttacked = true;
                 TrySpawnChargers();
             }
 

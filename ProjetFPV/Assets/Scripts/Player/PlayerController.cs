@@ -43,7 +43,7 @@ public class PlayerController : Singleton<PlayerController>
     //[SerializeField] private float regenSpeed;
     [SerializeField] private float interactDistance;
 
-    [HideInInspector] public float sensitivity;
+    [HideInInspector] public float sensitivity = 1;
 
     #region Refs
 
@@ -283,6 +283,7 @@ public class PlayerController : Singleton<PlayerController>
         currentHealth = maxHealth;
         
         playerLayer = LayerMask.GetMask("Player") + socketManager.shootMask;
+        sensitivity = 1;
     }
     
     public void TakeDamage(float damage)
@@ -552,8 +553,6 @@ public class PlayerController : Singleton<PlayerController>
 
             case PlayerStates.Sprinting:
                 playerCam.position = Vector3.Lerp(playerCam.position, transform.position + Vector3.up * 0.5f, 0.2f);
-                //playerCam.position = transform.position;
-                //playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f, playerCam.position.z);
 
                 if (appliedForce)
                 {
@@ -563,8 +562,6 @@ public class PlayerController : Singleton<PlayerController>
 
             case PlayerStates.Standing:
                 playerCam.position = Vector3.Lerp(playerCam.position, transform.position + Vector3.up * 0.5f, 0.2f);
-                //playerCam.position = transform.position;
-                //playerCam.position = new Vector3(playerCam.position.x, transform.position.y + 0.5f,playerCam.position.z);
 
                 camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, normalFOV, lerpFOV);
                 break;
@@ -740,7 +737,7 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
-    private bool lockedCam;
+    private bool lockedCam = false;
 
     public void LockCam()
     {
@@ -759,7 +756,6 @@ public class PlayerController : Singleton<PlayerController>
 
         var camRotation = new Vector3(playerCam.localEulerAngles.x,0,
             playerCam.localEulerAngles.z);
-        //playerCam.localEulerAngles = Vector3.Lerp(playerCam.localEulerAngles, camRotation, 0.8f);
         playerCam.localEulerAngles = camRotation;
     }
 
