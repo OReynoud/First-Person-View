@@ -43,6 +43,9 @@ public class CollectorBehavior : Enemy
     private float aggroRange;
     [Foldout("Roam State")] [SerializeField]
     private float aggressiveAggroRange;
+    
+    [Foldout("Roam State")] [SerializeField]
+    private float minFlyRange = 4;
 
     [Foldout("Roam State")] [SerializeField]
     private float flySpeed;
@@ -190,13 +193,16 @@ public class CollectorBehavior : Enemy
                         currentState = States.Repositioning;
                         
                         //SON
+                        break;
                     }
                 }
 
                 if (repositioning) break;
                 repositioning = true;
-                agent.SetDestination(origin + new Vector3(Random.Range(-1f, 1f) * flyAreaRange, 0,
-                    Random.Range(-1f, 1f) * flyAreaRange));
+                Vector3 temp = origin + new Vector3(Random.Range(-1f, 1f) * flyAreaRange, 0,
+                    Random.Range(-1f, 1f) * flyAreaRange);
+                temp = temp + (transform.position + temp).normalized * minFlyRange;
+                agent.SetDestination(temp);
                 break;
             case States.Repositioning:
                 AnimateMasks(true);
@@ -208,7 +214,7 @@ public class CollectorBehavior : Enemy
                 }
                 repositioning = false;
                 if (Physics.Raycast(transform.position, dir.normalized, out hit, aggroRange,
-                        playerLayer))
+                        playerLayer) && !recentlyAttacked)
                 {
                     if (hit.collider.gameObject.CompareTag("Player"))
                     {

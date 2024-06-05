@@ -161,14 +161,15 @@ namespace Mechanics
 
         public virtual void TakeDamage(float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce,float damage, Collider maskCollider)
         {
-
-            InputAction.CallbackContext dummy = new InputAction.CallbackContext();
-            if (isGrabbed) PlayerController.instance.ReleaseProp(dummy);
-            ApplyStun();
+            if (isGrabbed)
+            {
+                InputAction.CallbackContext dummy = new InputAction.CallbackContext();
+                PlayerController.instance.ReleaseProp(dummy);
+            }
             
             for (int i = 0; i < allMasks.Length; i++)
             {
-                if (maskCollider != allMasks[i].maskCollider)continue;
+                if (allMasks[i].broken)continue;
                 
                 GameManager.instance.VFX_EnemyHitMethod(pointOfForce);
                 allMasks[i].maskHealth -= damage;
@@ -181,6 +182,7 @@ namespace Mechanics
                 break;
             }
 
+            ApplyStun();
             
             if (maskCount <= 0) Die();
         }
