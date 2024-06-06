@@ -89,12 +89,6 @@ public class TelekinesisModule : MonoBehaviour
         lineVFX.gameObject.SetActive(true);
         vfxHandz.SetActive(true);
         tempColl = tkObject;
-        
-
-        // startParticle.transform.position = tkSocket.position;
-        // startParticle.transform.LookAt(tkPoint);
-        // startParticle.Play();
-        
     }
 
     private void HideLineVFX()
