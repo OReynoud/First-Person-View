@@ -58,6 +58,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e6d73cd8d44425a47bc3931109cb0ae8,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 43ef6980783909f4fac749cdbe61a5b0, type: 2}
+    - target: {fileID: -7511558181221131132, guid: e6d73cd8d44425a47bc3931109cb0ae8,
+        type: 3}
+      propertyPath: m_SelectedEditorRenderState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -5754084199372789682, guid: e6d73cd8d44425a47bc3931109cb0ae8,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e6d73cd8d44425a47bc3931109cb0ae8,
         type: 3}
       propertyPath: m_Name
@@ -66,5 +81,66 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e6d73cd8d44425a47bc3931109cb0ae8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8541711928682653399}
   m_SourcePrefab: {fileID: 100100000, guid: e6d73cd8d44425a47bc3931109cb0ae8, type: 3}
+--- !u!1 &1632496894262143467 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e6d73cd8d44425a47bc3931109cb0ae8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1902386663164826810}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8541711928682653399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632496894262143467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bd5e5ddd242bd64581fb5ed9c0e0507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PolyMesh:
+    name: PolybrushMesh-1429376
+    vertices:
+    - {x: -0.02, y: 0, z: 0}
+    - {x: 0, y: 0, z: 0}
+    - {x: 0, y: 0, z: 0.01}
+    - {x: -0.02, y: 0, z: 0.01}
+    normals:
+    - {x: 0, y: -1, z: 0}
+    - {x: 0, y: -1, z: 0}
+    - {x: 0, y: -1, z: 0}
+    - {x: 0, y: -1, z: 0}
+    colors:
+    - {r: 0, g: 0, b: 0, a: 1}
+    - {r: 0, g: 0, b: 0, a: 1}
+    - {r: 0, g: 0, b: 0, a: 1}
+    - {r: 0, g: 0, b: 0, a: 1}
+    tangents:
+    - {x: 0, y: 0, z: -1, w: -1}
+    - {x: 0, y: 0, z: -1, w: -1}
+    - {x: 0, y: 0, z: -1, w: -1}
+    - {x: 0, y: 0, z: -1, w: -1}
+    uv0:
+    - {x: 0.29205447, y: 0.6025739, z: 0, w: 0}
+    - {x: 0.29205453, y: 0.2853969, z: 0, w: 0}
+    - {x: 0.13346606, y: 0.2853969, z: 0, w: 0}
+    - {x: 0.13346602, y: 0.6025739, z: 0, w: 0}
+    uv1: []
+    uv2: []
+    uv3: []
+    m_Triangles: 000000000100000002000000000000000200000003000000
+    m_SubMeshes:
+    - m_Indexes: 000000000100000002000000000000000200000003000000
+      m_Topology: 0
+    m_Mesh: {fileID: 0}
+  m_SkinMeshRef: {fileID: 0}
+  m_OriginalMeshObject: {fileID: -5495902117074765545, guid: e6d73cd8d44425a47bc3931109cb0ae8,
+    type: 3}
+  m_Mode: 0
