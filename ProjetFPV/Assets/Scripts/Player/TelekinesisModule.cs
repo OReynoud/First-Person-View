@@ -4,10 +4,11 @@ using Mechanics;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class TelekinesisModule : MonoBehaviour
 {
-    
+
     #region Variables
 
     [Foldout("Refs")] [SerializeField] private ParticleSystem[] VFX_TKStart;
@@ -16,11 +17,15 @@ public class TelekinesisModule : MonoBehaviour
     public ControllableProp controlledProp;
 
     private Transform offsetPosition;
-    
-    [Foldout("Telekinesis")] [Tooltip("How fast the targeted TelekinesisObject travels to the resting position")] [SerializeField]
+
+    [Foldout("Telekinesis")]
+    [Tooltip("How fast the targeted TelekinesisObject travels to the resting position")]
+    [SerializeField]
     private float regularTravelSpeed;
-    
-    [Foldout("Telekinesis")] [Tooltip("How fast the targeted HeavyObject travels to the resting position")] [SerializeField]
+
+    [Foldout("Telekinesis")]
+    [Tooltip("How fast the targeted HeavyObject travels to the resting position")]
+    [SerializeField]
     private float heavyTravelSpeed;
 
     [Foldout("Telekinesis")]
@@ -28,16 +33,15 @@ public class TelekinesisModule : MonoBehaviour
         "*KEEP THIS VARIABLE LOW* Minimum distance between the grabbed object and the resting position before the object is considered as 'grabbed'")]
     [SerializeField]
     private float grabDistanceBuffer;
-    
+
     [Foldout("Telekinesis")] [Tooltip("Cost per second of using telekinesis on an object")] [SerializeField]
     private float holdObjectCost;
 
     [Foldout("Telekinesis")] [Tooltip("Cost per second of using telekinesis on an enemy")] [SerializeField]
     private float holdEnemyCost;
-    
-    [Foldout("Telekinesis")]
-    [SerializeField]
-    [Range(0,1)]public float holdObjectYTolerance = 0.6f;
+
+    [Foldout("Telekinesis")] [SerializeField] [Range(0, 1)]
+    public float holdObjectYTolerance = 0.6f;
 
     [Foldout("Telekinesis")] [Tooltip("Cost of releasing an object from telekinesis")] [SerializeField]
     private float throwCost;
@@ -47,17 +51,23 @@ public class TelekinesisModule : MonoBehaviour
     [SerializeField]
     private float throwForce;
 
-    [Foldout("Telekinesis")]
-    [SerializeField]
+    [Foldout("Telekinesis")] [SerializeField]
     public float inkAbsorbSpeed;
 
     private bool isGrabbingAnObject;
     private GameObject holdTKAudio;
-    
+
+    // Tess Line VFX
+    [SerializeField] private LineRenderer lineVFX;
+    private float currentLineVFXValue;
+    [SerializeField] private float sliderFillSpeed = 1;
+    private Vector2 minMaxLineVFXSliderValue;
+    private static readonly int Slider = Shader.PropertyToID("Slider");
+
     #endregion
 
-    
-    
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -69,13 +79,50 @@ public class TelekinesisModule : MonoBehaviour
     void Update()
     {
         UpdateTKCylinder();
+        UpdateLineVFX();
     }
+
+    private void ShowLineVFX()
+    {
+        lineVFX.gameObject.SetActive(true);
+        
+        LineRenderer renderer = new LineRenderer();
+        ParticleSystem startParticle = new ParticleSystem();
+        
+        renderer.SetPosition(0,tkSocket.position);
+        renderer.SetPosition(1,tkPoint);
+        startParticle.transform.position = tkSocket.position;
+        startParticle.transform.LookAt(tkPoint);
+        startParticle.Play();
+        
+    }
+
+    private void HideLineVFX()
+    {
+        lineVFX.gameObject.SetActive(false);
+        currentLineVFXValue = minMaxLineVFXSliderValue.x;
+    }
+
+    private void UpdateLineVFX()
+    {
+        if (lineVFX.gameObject.activeSelf && currentLineVFXValue < minMaxLineVFXSliderValue.y)
+        {
+            currentLineVFXValue += Time.deltaTime * sliderFillSpeed;
+            lineVFX.material.SetFloat(Slider, currentLineVFXValue);
+        }
+        tkPoint = tempColl.ClosestPoint(tkSocket.position);
+        VFX_TKStart[1].transform.position = tkPoint;
+        lineVFX.transform.position = tkSocket.position;
+        lineVFX.transform.forward = tkPoint - tkSocket.position;
+    }
+
     public void FindControllableProp()
     {
-        if (Physics.Raycast(main.playerCam.position, main.playerCam.forward, out RaycastHit hit, main.socketManager.maxRange, main.socketManager.shootMask))
+        if (Physics.Raycast(main.playerCam.position, main.playerCam.forward, out RaycastHit hit,
+                main.socketManager.maxRange, main.socketManager.shootMask))
         {
             isGrabbingAnObject = true;
-            
+
             CameraShake.instance.ShakeOneShot(2);
             if (hit.collider.TryGetComponent(out TelekinesisObject TK))
             {
@@ -84,19 +131,20 @@ public class TelekinesisModule : MonoBehaviour
                 controlledProp = TK;
                 controlledProp.ApplyTelekinesis();
 
-                CreateCylinder(hit.collider); // THOMAS
+               
+                ShowLineVFX ();
                 return;
             }
-            
+
             if (hit.collider.TryGetComponent(out HeavyObject heavy))
             {
                 if (!heavy.canBeGrabbed) return;
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
-                if (heavy.transform.position.y < transform.position.y)return;
+                if (heavy.transform.position.y < transform.position.y) return;
                 controlledProp = heavy;
                 controlledProp.ApplyTelekinesis();
 
-                CreateCylinder(hit.collider); // THOMAS
+                ShowLineVFX(); // THOMAS
                 return;
             }
 
@@ -106,11 +154,11 @@ public class TelekinesisModule : MonoBehaviour
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 controlledProp = absorb;
                 controlledProp.ApplyTelekinesis();
-                
+
                 AudioManager.instance.PlaySound(3, 2, gameObject, 0.1f, false);
                 return;
             }
-             
+
             if (hit.collider.TryGetComponent(out UnstableObject unstable))
             {
                 if (!unstable.canBeGrabbed) return;
@@ -119,17 +167,17 @@ public class TelekinesisModule : MonoBehaviour
                 controlledProp.ApplyTelekinesis();
                 return;
             }
-                    
+
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
                 var enemy = hit.collider.GetComponentInParent<Enemy>();
                 if (!enemy.canBeGrabbed) return;
-                if (main.currentInk < 0.1f)return;
+                if (main.currentInk < 0.1f) return;
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 controlledProp = enemy;
                 controlledProp.ApplyTelekinesis();
-                        
-                CreateCylinder(hit.collider);
+
+               ShowLineVFX();
                 return;
             }
         }
@@ -152,7 +200,7 @@ public class TelekinesisModule : MonoBehaviour
             case Enemy enemy:
                 Hold_Enemy(enemy);
                 break;
-            
+
             case HeavyObject heavy:
                 Hold_HeavyObject(heavy);
                 return;
@@ -166,7 +214,7 @@ public class TelekinesisModule : MonoBehaviour
             controlledProp = null;
             main.recentlyDepletedStamina = true;
             main.animManager.LeftHand_Release();
-            ThrowTKObject();
+            HideLineVFX();
         }
     }
 
@@ -197,7 +245,7 @@ public class TelekinesisModule : MonoBehaviour
     {
         main.currentInk =
             GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, -holdEnemyCost * Time.deltaTime);
-                
+
         tempWorldToScreen = main.camera1.WorldToScreenPoint(controlledProp.transform.position);
         if (tempWorldToScreen.x < 0 || tempWorldToScreen.x > Screen.width ||
             tempWorldToScreen.y < 0 || tempWorldToScreen.y > Screen.height ||
@@ -237,11 +285,12 @@ public class TelekinesisModule : MonoBehaviour
             enemy.GrabbedBehavior(0, 0.1f, 30);
         }
     }
+
     void Hold_TelekinesisObject()
     {
         main.currentInk =
             GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, -holdObjectCost);
-                
+
         var dir = offsetPosition.position - controlledProp.transform.position;
         dir.Normalize();
         if (main.playerCam.forward.y < -holdObjectYTolerance)
@@ -251,12 +300,12 @@ public class TelekinesisModule : MonoBehaviour
             controlledProp.ApplyTelekinesis();
             controlledProp.isGrabbed = false;
             controlledProp = null;
-            ThrowTKObject();
+            HideLineVFX();
             main.animManager.LeftHand_Reset();
             return;
         }
 
-        
+
         if (!controlledProp.isGrabbed)
         {
             controlledProp.body.velocity = dir * regularTravelSpeed;
@@ -270,10 +319,10 @@ public class TelekinesisModule : MonoBehaviour
             if (isGrabbingAnObject)
             {
                 holdTKAudio = AudioManager.instance.PlaySound(3, 14, gameObject, 0.2f, true);
-                
+
                 isGrabbingAnObject = false;
             }
-            
+
             //SON
             return;
         }
@@ -286,26 +335,30 @@ public class TelekinesisModule : MonoBehaviour
 
 
     }
+
     void Hold_HeavyObject(HeavyObject heavy)
-    {                
-        var dir = transform.position + transform.forward * heavy.restingDistanceToPlayer - controlledProp.transform.position;
+    {
+        var dir = transform.position + transform.forward * heavy.restingDistanceToPlayer -
+                  controlledProp.transform.position;
         dir.Normalize();
 
         var magnitude = Mathf.Clamp(heavyTravelSpeed *
-                         (Vector3.Distance(controlledProp.transform.position,
-                             offsetPosition.position) / grabDistanceBuffer),heavyTravelSpeed * 0.3f,heavyTravelSpeed * 2f);
-        
+                                    (Vector3.Distance(controlledProp.transform.position,
+                                        offsetPosition.position) / grabDistanceBuffer), heavyTravelSpeed * 0.3f,
+            heavyTravelSpeed * 2f);
+
         controlledProp.body.velocity = dir * magnitude;
-        
+
 
         if (controlledProp.isGrabbed) return;
-        if (grabDistanceBuffer > Vector3.Distance(controlledProp.transform.position, transform.position + transform.forward * heavy.restingDistanceToPlayer))
+        if (grabDistanceBuffer > Vector3.Distance(controlledProp.transform.position,
+                transform.position + transform.forward * heavy.restingDistanceToPlayer))
         {
             controlledProp.isGrabbed = true;
             CameraShake.instance.StartInfiniteShake(0);
         }
     }
-    
+
     public void ReleaseProp()
     {
         main.recentlyDepletedStamina = false;
@@ -314,8 +367,8 @@ public class TelekinesisModule : MonoBehaviour
             CameraShake.instance.ResetCoroutine();
             return;
         }
-        
-        ThrowTKObject(); // THOMAS
+
+        HideLineVFX(); // THOMAS
         if (main.currentInk < 1)
         {
             CameraShake.instance.StopInfiniteShake();
@@ -328,7 +381,7 @@ public class TelekinesisModule : MonoBehaviour
             return;
         }
 
-        
+
         switch (controlledProp)
         {
             case TelekinesisObject tkObject:
@@ -337,7 +390,7 @@ public class TelekinesisModule : MonoBehaviour
             case Enemy:
                 Release_Enemy();
                 break;
-            
+
             case AbsorbInk absorbInk:
                 Release_AbsorbInk(absorbInk);
                 if (main.currentInk < 0) main.currentInk = 0;
@@ -353,15 +406,15 @@ public class TelekinesisModule : MonoBehaviour
                 Release_ObjectToFall(unstable);
                 break;
         }
-        
+
         if (main.currentInk < 0) main.currentInk = 0;
         StartCoroutine(controlledProp.BufferGrabbing());
         controlledProp = null;
         CameraShake.instance.StopInfiniteShake();
         main.animManager.LeftHand_Release();
-        
+
         AudioManager.instance.PlaySound(3, 15, gameObject, 0.2f, false);
-        
+
         isGrabbingAnObject = false;
         //SON
     }
@@ -382,24 +435,27 @@ public class TelekinesisModule : MonoBehaviour
             controlledProp.body.velocity = Vector3.zero;
 
             var dir = Vector3.zero;
-            if (Physics.Raycast(main.playerCam.position, main.playerCam.forward, out RaycastHit hit, main.socketManager.maxRange,
+            if (Physics.Raycast(main.playerCam.position, main.playerCam.forward, out RaycastHit hit,
+                    main.socketManager.maxRange,
                     ~LayerMask.GetMask("Telekinesis")))
             {
-                if (hit.collider.gameObject.layer == LayerMask.GetMask("Enemy")) telekinesisObject.AimAtEnemy(hit.transform);
+                if (hit.collider.gameObject.layer == LayerMask.GetMask("Enemy"))
+                    telekinesisObject.AimAtEnemy(hit.transform);
                 dir = (hit.point + hit.normal * 0.5f) - offsetPosition.position;
-                Debug.DrawRay(hit.point,hit.normal * 2, Color.magenta,2);
+                Debug.DrawRay(hit.point, hit.normal * 2, Color.magenta, 2);
             }
             else
             {
                 dir = main.playerCam.forward;
             }
-                    
+
             dir.Normalize();
             telekinesisObject.body.AddForce(dir * throwForce, ForceMode.Impulse);
         }
 
         controlledProp.ApplyTelekinesis();
     }
+
     public void Release_AbsorbInk(AbsorbInk absorbInk)
     {
         absorbInk.isGrabbed = false;
@@ -408,22 +464,24 @@ public class TelekinesisModule : MonoBehaviour
             Destroy(absorbInk.gameObject);
         }
     }
+
     public void Release_Enemy()
     {
         controlledProp.isGrabbed = false;
         controlledProp.ApplyTelekinesis();
     }
-    
+
     public void Release_HeavyObject()
     {
         controlledProp.isGrabbed = false;
         controlledProp.ApplyTelekinesis();
     }
+
     public void Release_ObjectToFall(UnstableObject unstable)
     {
         controlledProp.ApplyTelekinesis();
     }
-    
+
     [SerializeField] private Transform tkSocket; // THOMAS 
     [SerializeField] private GameObject cylinderPrefab; // THOMAS
     [Range(0f, 5f)] [SerializeField] private float tkCylinderSize;
@@ -434,26 +492,30 @@ public class TelekinesisModule : MonoBehaviour
 
 
     private float cylinderTimer;
+
     void CreateCylinder(Collider tkColl) // THOMAS (whole method)
     {
         if (tkCylinder != null)
         {
             Destroy(tkCylinder);
         }
+
         tempColl = tkColl;
         cylinderTimer = 0;
         tkPoint = tempColl.ClosestPoint(tkSocket.position);
 
         var cylinder = Instantiate(cylinderPrefab, tkSocket.position, Quaternion.identity);
-        
+
         cylinder.transform.forward = tkPoint - tkSocket.position;
-        cylinder.transform.localScale = new Vector3(tkCylinderSize, tkCylinderSize, Vector3.Distance(tkPoint, tkSocket.position) / 2f);
+        cylinder.transform.localScale = new Vector3(tkCylinderSize, tkCylinderSize,
+            Vector3.Distance(tkPoint, tkSocket.position) / 2f);
         tkCylinder = cylinder;
 
         VFX_TKStart[0].Play();
         VFX_TKStart[1].Play();
 
     }
+
     void UpdateTKCylinder() // THOMAS (whole method)
     {
         if (tkCylinder == null) return;
@@ -461,22 +523,26 @@ public class TelekinesisModule : MonoBehaviour
         {
             cylinderTimer += tkCylinderExpansionSpeed * Time.deltaTime;
         }
+
         tkPoint = tempColl.ClosestPoint(tkSocket.position);
         VFX_TKStart[1].transform.position = tkPoint;
         tkCylinder.transform.position = tkSocket.position;
         tkCylinder.transform.forward = tkPoint - tkSocket.position;
-        tkCylinder.transform.localScale = new Vector3(tkCylinderSize * cylinderTimer, tkCylinderSize * cylinderTimer, Vector3.Distance(tkPoint, tkSocket.position) / 2f);
+        tkCylinder.transform.localScale = new Vector3(tkCylinderSize * cylinderTimer, tkCylinderSize * cylinderTimer,
+            Vector3.Distance(tkPoint, tkSocket.position) / 2f);
     }
+
     public void ThrowTKObject() // THOMAS (whole method)
     {
         Destroy(holdTKAudio);
-        
+
         if (tkCylinder == null) return;
         foreach (var vfx in VFX_TKStart)
         {
             vfx.Stop();
             vfx.SetParticles(null, 0);
         }
+
         VFX_TKEnd.Play();
 
         Destroy(tkCylinder);

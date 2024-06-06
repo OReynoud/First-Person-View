@@ -7,14 +7,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_TentaclesTK
-  m_Shader: {fileID: -6465566751694194690, guid: 877b1e533f7a04d468e230247b161fef,
+  m_Name: MAT-Trail 3
+  m_Shader: {fileID: -6465566751694194690, guid: cbff131e0b9eb2144972fb9245e78341,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -24,20 +24,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _BaseTex:
-        m_Texture: {fileID: 2800000, guid: d8fe2e35a630aa145a8de26dc3eff8d5, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _GradientTex:
-        m_Texture: {fileID: 2800000, guid: 17298007aee8bc148a883ed9fdb1894a, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ScrollTex:
-        m_Texture: {fileID: 2800000, guid: 116c3b65d6dbcda4b9170654ec56c6cd, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ScrollTexSmall:
-        m_Texture: {fileID: 0}
+    - _trail_texture:
+        m_Texture: {fileID: 2800000, guid: 9b542ce010dddf144b8f34cfee21faab, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -54,17 +42,19 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Alpha: 5.81
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Slider: 0.2
-    - _Speed: -0.01
-    - _Speed2: -0.01
     m_Colors:
-    - _Tentacle_Color: {r: 0.1972677, g: 0.22796917, b: 0.2924528, a: 0}
-    - _Tentacle_Color_1: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 0}
-    - _Vector2: {r: 0.42, g: 0, b: 0, a: 0}
+    - _Color: {r: 0.060501307, g: 0, b: 0.23584908, a: 0}
+    - _Pink: {r: 0.65205944, g: 0, b: 0.59402275, a: 0}
+    - _Yellow: {r: 0.69886, g: 0.55616087, b: 0, a: 0}
+    - _tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _tiling_2: {r: 0.47, g: 1.05, b: 0, a: 0}
+    - _time: {r: 1, g: 0, b: 0, a: 0}
+    - _time2: {r: 1.5, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &206086492250566062
+--- !u!114 &3017916458508379245
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
