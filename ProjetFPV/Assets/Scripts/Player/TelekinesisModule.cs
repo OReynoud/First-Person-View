@@ -63,6 +63,7 @@ public class TelekinesisModule : MonoBehaviour
     [SerializeField] private float sliderFillSpeed = 1;
     private Vector2 minMaxLineVFXSliderValue;
     private static readonly int Slider = Shader.PropertyToID("Slider");
+    public GameObject vfxHandz;
 
     #endregion
 
@@ -73,6 +74,7 @@ public class TelekinesisModule : MonoBehaviour
     {
         main = GetComponent<PlayerController>();
         offsetPosition = main.offsetPosition;
+        currentLineVFXValue = 0;
     }
 
     // Update is called once per frame
@@ -82,38 +84,42 @@ public class TelekinesisModule : MonoBehaviour
         UpdateLineVFX();
     }
 
-    private void ShowLineVFX()
+    private void ShowLineVFX(Collider tkObject)
     {
         lineVFX.gameObject.SetActive(true);
+        vfxHandz.SetActive(true);
+        tempColl = tkObject;
         
-        LineRenderer renderer = new LineRenderer();
-        ParticleSystem startParticle = new ParticleSystem();
-        
-        renderer.SetPosition(0,tkSocket.position);
-        renderer.SetPosition(1,tkPoint);
-        startParticle.transform.position = tkSocket.position;
-        startParticle.transform.LookAt(tkPoint);
-        startParticle.Play();
+
+        // startParticle.transform.position = tkSocket.position;
+        // startParticle.transform.LookAt(tkPoint);
+        // startParticle.Play();
         
     }
 
     private void HideLineVFX()
     {
         lineVFX.gameObject.SetActive(false);
+        
+        vfxHandz.SetActive(false);
         currentLineVFXValue = minMaxLineVFXSliderValue.x;
     }
 
     private void UpdateLineVFX()
     {
-        if (lineVFX.gameObject.activeSelf && currentLineVFXValue < minMaxLineVFXSliderValue.y)
+        if (!lineVFX.gameObject.activeSelf)return;
+
+        if (currentLineVFXValue < minMaxLineVFXSliderValue.y)
         {
             currentLineVFXValue += Time.deltaTime * sliderFillSpeed;
             lineVFX.material.SetFloat(Slider, currentLineVFXValue);
         }
         tkPoint = tempColl.ClosestPoint(tkSocket.position);
+        Debug.Log(tkSocket.position);
+        
+        lineVFX.SetPosition(0,tkSocket.position);
+        lineVFX.SetPosition(1,tkPoint);
         VFX_TKStart[1].transform.position = tkPoint;
-        lineVFX.transform.position = tkSocket.position;
-        lineVFX.transform.forward = tkPoint - tkSocket.position;
     }
 
     public void FindControllableProp()
@@ -127,34 +133,34 @@ public class TelekinesisModule : MonoBehaviour
             if (hit.collider.TryGetComponent(out TelekinesisObject TK))
             {
                 if (!TK.canBeGrabbed) return;
-                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 controlledProp = TK;
                 controlledProp.ApplyTelekinesis();
 
                
-                ShowLineVFX ();
+                ShowLineVFX(hit.collider);
+                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 return;
             }
 
             if (hit.collider.TryGetComponent(out HeavyObject heavy))
             {
                 if (!heavy.canBeGrabbed) return;
-                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 if (heavy.transform.position.y < transform.position.y) return;
                 controlledProp = heavy;
                 controlledProp.ApplyTelekinesis();
 
-                ShowLineVFX(); // THOMAS
+                ShowLineVFX(hit.collider); // THOMAS
+                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 return;
             }
 
             if (hit.collider.TryGetComponent(out AbsorbInk absorb))
             {
                 if (!absorb.canBeGrabbed) return;
-                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 controlledProp = absorb;
                 controlledProp.ApplyTelekinesis();
 
+                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 AudioManager.instance.PlaySound(3, 2, gameObject, 0.1f, false);
                 return;
             }
@@ -162,9 +168,9 @@ public class TelekinesisModule : MonoBehaviour
             if (hit.collider.TryGetComponent(out UnstableObject unstable))
             {
                 if (!unstable.canBeGrabbed) return;
-                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 controlledProp = unstable;
                 controlledProp.ApplyTelekinesis();
+                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 return;
             }
 
@@ -173,11 +179,11 @@ public class TelekinesisModule : MonoBehaviour
                 var enemy = hit.collider.GetComponentInParent<Enemy>();
                 if (!enemy.canBeGrabbed) return;
                 if (main.currentInk < 0.1f) return;
-                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 controlledProp = enemy;
                 controlledProp.ApplyTelekinesis();
 
-               ShowLineVFX();
+               ShowLineVFX(hit.collider);
+                AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 return;
             }
         }

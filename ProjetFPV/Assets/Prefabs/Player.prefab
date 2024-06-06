@@ -669,7 +669,7 @@ Transform:
   m_GameObject: {fileID: 1239935718432516662}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -949,6 +949,7 @@ MonoBehaviour:
   inkAbsorbSpeed: 5
   lineVFX: {fileID: 1568267616147372360}
   sliderFillSpeed: 1
+  vfxHandz: {fileID: 3782174039953399115}
   tkSocket: {fileID: 300607404488667709}
   cylinderPrefab: {fileID: 3605899409314457073, guid: f8ef3f8c5ce9af644a583475d9d9b521,
     type: 3}
@@ -4908,12 +4909,13 @@ Transform:
   m_GameObject: {fileID: 6597579908083111336}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.42, y: 1.65, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6111613194696935164}
   - {fileID: 1641675738388639272}
+  - {fileID: 7687242888018529493}
   - {fileID: 6473887197865536909}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5782,7 +5784,6 @@ Transform:
   - {fileID: 6559684209207676989}
   - {fileID: 5863364272581244143}
   - {fileID: 1007708610843392388}
-  - {fileID: 7687242888018529493}
   m_Father: {fileID: 3633533882505148485}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7963865459006595146
@@ -9278,17 +9279,17 @@ PrefabInstance:
     - target: {fileID: 5585569410212250045, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 27.448
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5585569410212250045, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.503
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5585569410212250045, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.58
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5585569410212250045, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
         type: 3}
@@ -9308,7 +9309,7 @@ PrefabInstance:
     - target: {fileID: 5585569410212250045, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.000000029802319
       objectReference: {fileID: 0}
     - target: {fileID: 5585569410212250045, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
         type: 3}
@@ -9330,6 +9331,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TK_Handz
       objectReference: {fileID: 0}
+    - target: {fileID: 8359542017863263602, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9338,6 +9344,12 @@ PrefabInstance:
 --- !u!4 &1007708610843392388 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5585569410212250045, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
+    type: 3}
+  m_PrefabInstance: {fileID: 4647702087471298617}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3782174039953399115 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8359542017863263602, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
     type: 3}
   m_PrefabInstance: {fileID: 4647702087471298617}
   m_PrefabAsset: {fileID: 0}
@@ -10275,22 +10287,37 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 300607404488667709}
+    m_TransformParent: {fileID: 1171924708256431230}
     m_Modifications:
     - target: {fileID: 1242236362273711314, guid: 0fd3810a90fdf3c4ab730a7f2d340274,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1242236362273711314, guid: 0fd3810a90fdf3c4ab730a7f2d340274,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1242236362273711314, guid: 0fd3810a90fdf3c4ab730a7f2d340274,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1242236362273711314, guid: 0fd3810a90fdf3c4ab730a7f2d340274,
+        type: 3}
       propertyPath: m_LocalPosition.x
-      value: 35.081738
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1242236362273711314, guid: 0fd3810a90fdf3c4ab730a7f2d340274,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.236591
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1242236362273711314, guid: 0fd3810a90fdf3c4ab730a7f2d340274,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -29.567154
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1242236362273711314, guid: 0fd3810a90fdf3c4ab730a7f2d340274,
         type: 3}
@@ -10300,17 +10327,17 @@ PrefabInstance:
     - target: {fileID: 1242236362273711314, guid: 0fd3810a90fdf3c4ab730a7f2d340274,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1242236362273711314, guid: 0fd3810a90fdf3c4ab730a7f2d340274,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1242236362273711314, guid: 0fd3810a90fdf3c4ab730a7f2d340274,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1242236362273711314, guid: 0fd3810a90fdf3c4ab730a7f2d340274,
         type: 3}
@@ -10331,6 +10358,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Line_TK
+      objectReference: {fileID: 0}
+    - target: {fileID: 1582729576813533759, guid: 0fd3810a90fdf3c4ab730a7f2d340274,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
