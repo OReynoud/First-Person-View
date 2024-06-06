@@ -328,9 +328,9 @@ public class PlayerController : Singleton<PlayerController>
         }
         
         
-        heartBeatVolume = AudioManager.instance.GetVolume(3, 18);
         currentInk = GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, 0);
         CheckShootingHand();
+//        heartBeatVolume = AudioManager.instance.GetVolume(3, 18);
     }
 
     private Coroutine reloadCoroutine;
