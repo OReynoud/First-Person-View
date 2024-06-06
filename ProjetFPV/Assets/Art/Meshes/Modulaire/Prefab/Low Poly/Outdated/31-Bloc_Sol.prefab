@@ -62,18 +62,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f536f14f2664baa43b8955d636558ab9, type: 2}
-    - target: {fileID: -7511558181221131132, guid: 47e05fcbc2351c74c9e99a61ae25215b,
-        type: 3}
-      propertyPath: m_SelectedEditorRenderState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: -5754084199372789682, guid: 47e05fcbc2351c74c9e99a61ae25215b,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: -5495902117074765545, guid: 47e05fcbc2351c74c9e99a61ae25215b,
-        type: 3}
+      objectReference: {fileID: 2100000, guid: 9bb98f649bb45b546b905bb4793819fe, type: 2}
     - target: {fileID: 919132149155446097, guid: 47e05fcbc2351c74c9e99a61ae25215b,
         type: 3}
       propertyPath: m_Name
@@ -87,10 +76,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1518581950201987541}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 47e05fcbc2351c74c9e99a61ae25215b,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1353445843861989380}
   m_SourcePrefab: {fileID: 100100000, guid: 47e05fcbc2351c74c9e99a61ae25215b, type: 3}
 --- !u!1 &3710847744135766822 stripped
 GameObject:
@@ -119,131 +104,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.04, y: 0.04000001, z: 0.0050000013}
   m_Center: {x: -0.02, y: 0.020000005, z: 0.0025000006}
---- !u!114 &1353445843861989380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3710847744135766822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bd5e5ddd242bd64581fb5ed9c0e0507, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PolyMesh:
-    name: Cube
-    vertices:
-    - {x: 0, y: 0, z: 0}
-    - {x: 0, y: 0.04, z: 0}
-    - {x: 0, y: 0.04, z: 0.005}
-    - {x: 0, y: 0, z: 0.005}
-    - {x: 0, y: 0.04, z: 0}
-    - {x: -0.04, y: 0.04, z: 0}
-    - {x: -0.04, y: 0.04, z: 0.005}
-    - {x: 0, y: 0.04, z: 0.005}
-    - {x: -0.04, y: 0.04, z: 0}
-    - {x: -0.04, y: 0, z: 0}
-    - {x: -0.04, y: 0, z: 0.005}
-    - {x: -0.04, y: 0.04, z: 0.005}
-    - {x: -0.04, y: 0, z: 0}
-    - {x: 0, y: 0, z: 0}
-    - {x: 0, y: 0, z: 0.005}
-    - {x: -0.04, y: 0, z: 0.005}
-    - {x: 0, y: 0.04, z: 0}
-    - {x: 0, y: 0, z: 0}
-    - {x: -0.04, y: 0, z: 0}
-    - {x: -0.04, y: 0.04, z: 0}
-    - {x: -0.04, y: 0.04, z: 0.005}
-    - {x: -0.04, y: 0, z: 0.005}
-    - {x: 0, y: 0, z: 0.005}
-    - {x: 0, y: 0.04, z: 0.005}
-    normals:
-    - {x: 1, y: 0, z: 0}
-    - {x: 1, y: 0, z: 0}
-    - {x: 1, y: 0, z: 0}
-    - {x: 1, y: 0, z: 0}
-    - {x: 0, y: 1, z: 0}
-    - {x: 0, y: 1, z: 0}
-    - {x: 0, y: 1, z: 0}
-    - {x: 0, y: 1, z: 0}
-    - {x: -1, y: 0, z: 0}
-    - {x: -1, y: 0, z: 0}
-    - {x: -1, y: 0, z: 0}
-    - {x: -1, y: 0, z: 0}
-    - {x: 0, y: -1, z: 0}
-    - {x: 0, y: -1, z: 0}
-    - {x: 0, y: -1, z: 0}
-    - {x: 0, y: -1, z: 0}
-    - {x: 0, y: 0, z: -1}
-    - {x: 0, y: 0, z: -1}
-    - {x: 0, y: 0, z: -1}
-    - {x: 0, y: 0, z: -1}
-    - {x: 0, y: 0, z: 1}
-    - {x: 0, y: 0, z: 1}
-    - {x: 0, y: 0, z: 1}
-    - {x: 0, y: 0, z: 1}
-    colors: []
-    tangents:
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: 0, y: 0, z: 1, w: -1}
-    - {x: -1, y: 0, z: 0, w: -1}
-    - {x: -1, y: 0, z: 0, w: -1}
-    - {x: -1, y: 0, z: 0, w: -1}
-    - {x: -1, y: 0, z: 0, w: -1}
-    - {x: 1, y: 0, z: 0, w: -1}
-    - {x: 1, y: 0, z: 0, w: -1}
-    - {x: 1, y: 0, z: 0, w: -1}
-    - {x: 1, y: 0, z: 0, w: -1}
-    uv0:
-    - {x: 0.375, y: 0, z: 0, w: 0}
-    - {x: 0.375, y: 0.25, z: 0, w: 0}
-    - {x: 0.625, y: 0.25, z: 0, w: 0}
-    - {x: 0.625, y: 0, z: 0, w: 0}
-    - {x: 0.375, y: 0.25, z: 0, w: 0}
-    - {x: 0.375, y: 0.5, z: 0, w: 0}
-    - {x: 0.625, y: 0.5, z: 0, w: 0}
-    - {x: 0.625, y: 0.25, z: 0, w: 0}
-    - {x: 0.375, y: 0.5, z: 0, w: 0}
-    - {x: 0.375, y: 0.75, z: 0, w: 0}
-    - {x: 0.625, y: 0.75, z: 0, w: 0}
-    - {x: 0.625, y: 0.5, z: 0, w: 0}
-    - {x: 0.375, y: 0.75, z: 0, w: 0}
-    - {x: 0.375, y: 1, z: 0, w: 0}
-    - {x: 0.625, y: 1, z: 0, w: 0}
-    - {x: 0.625, y: 0.75, z: 0, w: 0}
-    - {x: 0.125, y: 0.5, z: 0, w: 0}
-    - {x: 0.125, y: 0.75, z: 0, w: 0}
-    - {x: 0.375, y: 0.75, z: 0, w: 0}
-    - {x: 0.375, y: 0.5, z: 0, w: 0}
-    - {x: 0.625, y: 0.5, z: 0, w: 0}
-    - {x: 0.625, y: 0.75, z: 0, w: 0}
-    - {x: 0.875, y: 0.75, z: 0, w: 0}
-    - {x: 0.875, y: 0.5, z: 0, w: 0}
-    uv1: []
-    uv2: []
-    uv3: []
-    m_Triangles: 00000000010000000200000000000000020000000300000004000000050000000600000004000000060000000700000008000000090000000a000000080000000a0000000b0000000c0000000d0000000e0000000c0000000e0000000f000000100000001100000012000000100000001200000013000000140000001500000016000000140000001600000017000000
-    m_SubMeshes:
-    - m_Indexes: 00000000010000000200000000000000020000000300000004000000050000000600000004000000060000000700000008000000090000000a000000080000000a0000000b0000000c0000000d0000000e0000000c0000000e0000000f000000100000001100000012000000100000001200000013000000140000001500000016000000140000001600000017000000
-      m_Topology: 0
-    m_Mesh: {fileID: -5495902117074765545, guid: 47e05fcbc2351c74c9e99a61ae25215b,
-      type: 3}
-  m_SkinMeshRef: {fileID: 0}
-  m_OriginalMeshObject: {fileID: -5495902117074765545, guid: 47e05fcbc2351c74c9e99a61ae25215b,
-    type: 3}
-  m_Mode: 0
