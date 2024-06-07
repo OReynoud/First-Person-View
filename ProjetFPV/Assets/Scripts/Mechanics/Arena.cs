@@ -96,7 +96,6 @@ namespace Mechanics
                     posToSpawn = tempList[rand].position;
 
                     var temp = Instantiate(collectorPrefab, posToSpawn, Quaternion.identity);
-                    Debug.Log(temp, temp);
                     temp.arenaSpawn = true;
                     temp.respawnOnDeath = false;
                     temp.arena = this;

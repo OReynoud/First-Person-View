@@ -204,6 +204,8 @@ public class TelekinesisModule : MonoBehaviour
             case HeavyObject heavy:
                 Hold_HeavyObject(heavy);
                 return;
+            case UnstableObject unstable:
+                return;
         }
 
         if (main.currentInk <= 0.1f)
