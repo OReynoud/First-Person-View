@@ -668,8 +668,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1239935718432516662}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalRotation: {x: -0, y: -0.8479059, z: -0, w: 0.53014684}
+  m_LocalPosition: {x: 25.4, y: 1, z: -113.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -679,7 +679,7 @@ Transform:
   - {fileID: 788861323696924387}
   - {fileID: 8918532052287260627}
   m_Father: {fileID: 1171924708256431230}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -115.969, z: 0}
 --- !u!114 &10083582493029471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -948,6 +948,7 @@ MonoBehaviour:
   throwForce: 300
   inkAbsorbSpeed: 5
   lineVFX: {fileID: 1568267616147372360}
+  currentLineVFXValue: 0
   sliderFillSpeed: 1
   vfxHandz: {fileID: 3782174039953399115}
   tkSocket: {fileID: 300607404488667709}
@@ -6469,6 +6470,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: VFX_TKStart
       objectReference: {fileID: 0}
+    - target: {fileID: 2170039576116834834, guid: 1663fac9172e80f41ba30d973fa74e4e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5073304234643964708, guid: 1663fac9172e80f41ba30d973fa74e4e,
         type: 3}
       propertyPath: playOnAwake
@@ -6787,6 +6793,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: VFX_TKEnd
+      objectReference: {fileID: 0}
+    - target: {fileID: 2029003999082812179, guid: 948c425118c505949966b5c220b3afc7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3214954149016855624, guid: 948c425118c505949966b5c220b3afc7,
         type: 3}
@@ -9276,6 +9287,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 300607404488667709}
     m_Modifications:
+    - target: {fileID: 982398660295076824, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5585569410212250045, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9326,10 +9342,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8028829019783132557, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
+        type: 3}
+      propertyPath: m_Flip.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8359542017863263602, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
         type: 3}
       propertyPath: m_Name
       value: TK_Handz
+      objectReference: {fileID: 0}
+    - target: {fileID: 8359542017863263602, guid: da4d061dcc897cc49b9ebd1c7c62dda4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
