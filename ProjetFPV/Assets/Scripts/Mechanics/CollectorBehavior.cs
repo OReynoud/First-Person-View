@@ -23,6 +23,10 @@ public class CollectorBehavior : Enemy
     [BoxGroup] public Animation transitionState;
     [BoxGroup] public float transitionTime;
     [BoxGroup] public ParticleSystem[] bullet_VFX;
+
+
+    [HideInInspector] public Arena arena;
+    [HideInInspector] public bool arenaSpawn = false;
     
 
 
@@ -149,7 +153,8 @@ public class CollectorBehavior : Enemy
         currentState = States.Roam;
         agent.enabled = true;
         agent.speed = flySpeed;
-        seenPlayer = false;
+
+        seenPlayer = arenaSpawn;
     }
 
     public LayerMask playerLayer;
@@ -519,7 +524,10 @@ public class CollectorBehavior : Enemy
     public override void Die()
     {
         //SON
-        
+        if (arenaSpawn)
+        {
+            arena.currentEnemies.Remove(this);
+        }
         base.Die();
     }
 }
