@@ -17,11 +17,6 @@ public class AnimHandsController : MonoBehaviour
     public bool reloading;
     
     
-    
-    //LEFT HAND ANIMS
-    //GRAB = 0.20 - 1.18
-    //RELEASE = 2.03 - 2.27
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +26,16 @@ public class AnimHandsController : MonoBehaviour
     void Update()
     {
         if (reloading) RightHand_ReloadLoop();
-        
+        if (!leftHand.isPlaying)
+        {
+            
+            leftHand.Play("A_IdleLeft");
+        }
+        if (!rightHand.isPlaying)
+        {
+            
+            rightHand.Play("A_IdleRight");
+        }
     }
 
     public void LeftHand_Grab()
