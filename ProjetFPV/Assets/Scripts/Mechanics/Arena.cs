@@ -9,14 +9,23 @@ namespace Mechanics
 {
     public class Arena : MonoBehaviour
     {
-        public int[] spawnCount;
+        [Serializable]
+        public struct WaveSpawns
+        {
+            public int bouffonCount;
+            public int collectorCount;
+        }
+        public WaveSpawns[] spawnCount;
         public Transform[] spawnPositions;
+        
+        public Transform[] collectorSpawnPositions;
 
         public float timeBetweenSpawns;
         public float timeBetweenWaves;
         public float playerProximityTolerance = 5;
 
         public ChargerBehavior bouffonPrefab;
+        public CollectorBehavior collectorPrefab;
 
         public List<Enemy> currentEnemies = new List<Enemy>();
 
@@ -49,13 +58,14 @@ namespace Mechanics
         {
             foreach (var spawns in spawnCount)
             {
-                tempList = FillValidList();
-                for (int i = 0; i < spawns; i++)
+                //Collector Spawn
+                tempList = FillValidList(spawnPositions);
+                for (int i = 0; i < spawns.bouffonCount; i++)
                 {
                     int rand = 0;
                     Vector3 posToSpawn;
                     if (tempList.Count == 0)
-                        tempList = FillValidList();
+                        tempList = FillValidList(spawnPositions);
                     
                     rand = Random.Range(0, tempList.Count);
                     posToSpawn = tempList[rand].position + Vector3.down * 5;
@@ -65,6 +75,32 @@ namespace Mechanics
                     temp.spawnPositions = spawnPositions;
                     temp.respawnOnDeath = false;
                     temp.arena = this;
+                    currentEnemies.Add(temp);
+                    tempList.Remove(tempList[rand]);
+                    yield return new WaitForSeconds(timeBetweenSpawns);
+                }
+                
+                
+                
+                //Collector Spawn
+                tempList.Clear();
+                tempList = FillValidList(collectorSpawnPositions);
+                for (int i = 0; i < spawns.collectorCount; i++)
+                {
+                    int rand = 0;
+                    Vector3 posToSpawn;
+                    if (tempList.Count == 0)
+                        tempList = FillValidList(collectorSpawnPositions);
+                    
+                    rand = Random.Range(0, tempList.Count);
+                    posToSpawn = tempList[rand].position;
+
+                    var temp = Instantiate(collectorPrefab, posToSpawn, Quaternion.identity);
+                    Debug.Log(temp, temp);
+                    temp.arenaSpawn = true;
+                    temp.respawnOnDeath = false;
+                    temp.arena = this;
+                    temp.spawnEnemyPos = spawnPositions;
                     currentEnemies.Add(temp);
                     tempList.Remove(tempList[rand]);
                     yield return new WaitForSeconds(timeBetweenSpawns);
@@ -101,20 +137,23 @@ namespace Mechanics
 
         private bool destroying;
 
+       
 
-        List<Transform> FillValidList()
+
+        List<Transform> FillValidList( Transform[] array)
         {
             List<Transform> temp = new List<Transform>();
-            foreach (var pos in spawnPositions)
+            foreach (var pos in array)
             {
                 if (Vector3.Distance(pos.position, PlayerController.instance.transform.position)
-                    < playerProximityTolerance)
-                    continue;
+                    > playerProximityTolerance)
+                {
+                    temp.Add(pos);
+                }
 
-                temp.Add(pos);
             }
 
-            if (tempList.Count == 0)
+            if (temp.Count == 0)
             {
                 Debug.LogError("Aucun spawn valide trouvé, le joueur est trop près de tous les spawns possibles");
                 return spawnPositions.ToList();
