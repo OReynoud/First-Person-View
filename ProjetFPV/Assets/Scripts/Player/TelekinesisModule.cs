@@ -59,7 +59,7 @@ public class TelekinesisModule : MonoBehaviour
 
     // Tess Line VFX
     [SerializeField] private LineRenderer lineVFX;
-    private float currentLineVFXValue;
+    [SerializeField] private float currentLineVFXValue;
     [SerializeField] private float sliderFillSpeed = 1;
     private Vector2 minMaxLineVFXSliderValue;
     private static readonly int Slider = Shader.PropertyToID("Slider");

@@ -812,9 +812,19 @@ public class PlayerController : Singleton<PlayerController>
         if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, interactDistance, ~LayerMask.GetMask("Player")) && 
             playerCam.forward.y > -tkManager.holdObjectYTolerance)
         {
-            if (hit.transform.TryGetComponent(out ICanInteract interactable) && hit.rigidbody.velocity.y == 0)
+            if (hit.rigidbody)
             {
-                interactable.Interact(-hit.normal);
+                if (hit.transform.TryGetComponent(out ICanInteract interactable) && hit.rigidbody.velocity.y == 0)
+                {
+                    interactable.Interact(-hit.normal);
+                }
+            }
+            else
+            {
+                if (hit.transform.TryGetComponent(out ICanInteract interactable))
+                {
+                    interactable.Interact(-hit.normal);
+                }
             }
         }
     }

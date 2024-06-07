@@ -55,7 +55,7 @@ public class Letter : MonoBehaviour, ICanInteract
         float angleX = (mousePosition.x - objectScreenPosition.x) / Screen.width * rotationSpeed;
 
         // Appliquer la rotation à l'objet autour de l'axe X uniquement
-        uiObject.transform.Rotate(uiObject.transform.right, -angleX * Time.deltaTime, Space.World);
+        uiObject.transform.Rotate(uiObject.transform.up, -angleX * Time.deltaTime, Space.World);
     }
 
     void OpenLetterInFullScreen()
