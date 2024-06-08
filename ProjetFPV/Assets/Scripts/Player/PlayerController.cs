@@ -468,13 +468,31 @@ public class PlayerController : Singleton<PlayerController>
     private const float ReloadHandMove = 2f;
     private Vector3 reloadBasePos;
 
+    private float reloadTimer;
     private IEnumerator Reload2()
     {
         
         reloadBasePos = shootingHand.localPosition;
-        //shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * ReloadHandMove, 0.4f);
         animManager.RightHand_ReloadStart();
-        yield return new WaitForSeconds(reloadSpeed);
+        int numberOfReloads =
+            Mathf.CeilToInt(Mathf.Clamp(currentInk / socketManager.reloadCostPerBullet, 0, socketManager.sockets.Count));
+        var time = reloadSpeed / numberOfReloads;
+        for (int i = socketManager.sockets.Count - 1; i >= 0; i--)
+        {
+            if (numberOfReloads == 0) break;
+            numberOfReloads--;
+            reloadTimer = 0;
+            while (reloadTimer < time)
+            {
+                reloadTimer += Time.deltaTime;
+                socketManager.sockets[i].socketMesh.material.SetFloat(socketManager.InkLevel,
+                    Mathf.Lerp(0,1,reloadTimer/time));
+
+                yield return null;
+
+            }
+            socketManager.sockets[i].socketMesh.material.SetFloat(socketManager.InkLevel,1);
+        }
         socketManager.ReloadSockets();
         
         animManager.RightHand_ReloadEnd();

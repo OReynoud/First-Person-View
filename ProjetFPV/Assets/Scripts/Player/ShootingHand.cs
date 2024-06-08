@@ -23,6 +23,7 @@ public class ShootingHand : MonoBehaviour
         SuperCharged
     }
 
+    public readonly int InkLevel = Shader.PropertyToID("_InkLevel");
     public List<AmmoSocket> sockets = new List<AmmoSocket>();
 
     [HideIf("useHitScan")] [Foldout("Shoot")] [SerializeField]
@@ -71,9 +72,12 @@ public class ShootingHand : MonoBehaviour
     {
         player = GetComponent<PlayerController>();
         currentSocket = sockets[0];
+        currentSocket.socketMesh.material.SetFloat(InkLevel, 0);
         foreach (var ammo in sockets)
         {
             //ammo.highlightMesh.enabled = false;
+            
+            ammo.socketMesh.material.SetFloat(InkLevel, 1);
             ammo.state = SocketStates.Loaded;
         }
 
@@ -104,8 +108,8 @@ public class ShootingHand : MonoBehaviour
     void UpdateCurrentSocket() //Pouce, majeur, annulaire, auriculaire. Haha je suis drole
     {
         //currentSocket.highlightMesh.enabled = false;
-        currentSocket.socketMesh.material = emptySocket;
         currentSocket.state = SocketStates.Empty;
+        currentSocket.socketMesh.material.SetFloat(InkLevel, 0);
         noBullets = true;
         for (int i = 0; i < sockets.Count; i++)
         {
@@ -137,7 +141,6 @@ public class ShootingHand : MonoBehaviour
             if (sockets[i].state != SocketStates.Empty) continue;
 
 
-                sockets[i].socketMesh.material = loadedSocket;
                 decrement = reloadCostPerBullet;
                 sockets[i].state = SocketStates.Loaded;
             

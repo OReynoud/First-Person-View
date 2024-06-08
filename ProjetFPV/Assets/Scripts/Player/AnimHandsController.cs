@@ -26,33 +26,33 @@ public class AnimHandsController : MonoBehaviour
     void Update()
     {
         if (reloading) RightHand_ReloadLoop();
-        if (!leftHand.isPlaying)
+        if (!leftHand.isPlaying && !holding)
         {
             
-            leftHand.Play("A_IdleLeft");
+            leftHand.Play("A_IdleLeftNew");
         }
-        if (!rightHand.isPlaying)
+        if (!rightHand.isPlaying && !reloading)
         {
             
-            rightHand.Play("A_IdleRight");
+            rightHand.Play("A_IdleRightNew");
         }
     }
 
     public void LeftHand_Grab()
     {
-        leftHand.Play("A_Grab");
+        leftHand.Play("A_GrabNew");
         holding = true;
         LeftHand_Hold();
 
     }
     public void LeftHand_Reset()
     {
-        leftHand.Play("A_Reset");
+        leftHand.Play("A_ResetNew");
         LeftHand_StopHold();
     }
     public void LeftHand_Release()
     {
-        leftHand.Play("A_ReleaseBis");
+        leftHand.Play("A_ReleaseNew");
         LeftHand_StopHold();
     }
 
@@ -87,7 +87,7 @@ public class AnimHandsController : MonoBehaviour
 
     public void RightHand_ReloadStart()
     {
-        rightHand.Play("A_ReloadStart");
+        rightHand.Play("A_ReloadStartNew");
         reloading = true;
     }
     
@@ -95,20 +95,20 @@ public class AnimHandsController : MonoBehaviour
     {
         if (rightHand.isPlaying) return;
         
-        rightHand.Play("A_ReloadLoop");
+        rightHand.Play("A_ReloadLoopNew");
     }
     
     public void RightHand_ReloadEnd()
     {
         reloading = false;
         rightHand.Stop();
-        rightHand.Play("A_ReloadEnd");
+        rightHand.Play("A_ReloadEndNew");
     }
     
     public void RightHand_Shoot()
     {
         rightHand.Stop();
-        rightHand.Play("A_Shoot");
+        rightHand.Play("A_ShootNew");
     }
 
     public async void ChainShootToReload()
