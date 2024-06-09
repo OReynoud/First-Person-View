@@ -427,9 +427,9 @@ namespace Mechanics
             transform.rotation = Quaternion.Euler(40,transform.eulerAngles.y,transform.eulerAngles.z);
             jumpRotationTween = transform.DORotate(new Vector3(0,transform.eulerAngles.y,transform.eulerAngles.z) , calcJumpTime);
             yield return new WaitForSeconds(calcJumpTime);
-            
-            
-            yield return new WaitForSeconds(waitAfterAttack);
+
+
+            yield return new WaitForSeconds(PlayerPrefs.GetInt("difficulty") == 1 ? waitAfterAttack : waitAfterAttack * 2f);
             hasDealtDamage = false;
             currentState = States.Repositioning;
         }

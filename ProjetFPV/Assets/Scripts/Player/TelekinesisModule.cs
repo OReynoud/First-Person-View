@@ -224,8 +224,8 @@ public class TelekinesisModule : MonoBehaviour
     void Hold_AbsorbInk(AbsorbInk absorbInk)
     {
         absorbInk.storedInk -= inkAbsorbSpeed * Time.deltaTime;
-        main.currentInk =
-            GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, inkAbsorbSpeed * Time.deltaTime);
+        main.currentInk = GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, 
+            (PlayerPrefs.GetInt("difficulty") == 1 ? inkAbsorbSpeed : inkAbsorbSpeed * 3f) * Time.deltaTime);
         var lerpValue = Mathf.Clamp(1 - absorbInk.storedInk / absorbInk.maxInk, 0, 0.8f);
         absorbInk.transform.localScale = Vector3.Lerp(absorbInk.baseScale, Vector3.zero, lerpValue);
 
