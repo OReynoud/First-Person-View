@@ -15,6 +15,7 @@ public class InGamePause : MonoBehaviour
     private PlayerInput inputs;
     private InputActionMap currentControls;
     [SerializeField] private Button continueGame;
+    [SerializeField] private CanvasGroup difficultyCanva;
 
     void Start()
     {
@@ -39,6 +40,10 @@ public class InGamePause : MonoBehaviour
         if (optionsScript.optionsCanva.gameObject.activeInHierarchy)
         {
             optionsScript.CloseOptions();
+        }
+        else if (difficultyCanva != null && difficultyCanva.alpha >= 1)
+        {
+            CloseDifficulty();
         }
         else if (pauseCanva == null)
         {
@@ -71,6 +76,17 @@ public class InGamePause : MonoBehaviour
         GameManager.instance.HideUI();
         PlayerController.instance.ImmobilizePlayer();
         PlayerController.instance.LockCam();
+    }
+
+    public void OpenDifficulty()
+    {
+        difficultyCanva.gameObject.SetActive(true);
+        difficultyCanva.DOFade(1f, 0.5f);
+    }
+    
+    public void CloseDifficulty()
+    {
+        difficultyCanva.DOFade(0f, 0.5f).OnComplete(() => difficultyCanva.gameObject.SetActive(false));
     }
 
     public void Resume()
@@ -136,9 +152,18 @@ public class InGamePause : MonoBehaviour
         AudioManager.instance.PlayUISound(0, 2, 0.05f);
     }
 
-    public void NewGame()
+    public void NewGameEasy()
     {
         PlayerPrefs.SetInt("isReloadingSave", 0);
+        PlayerPrefs.SetInt("difficulty", 0);
+
+        SceneManager.LoadScene("LevelDesign");
+    }
+
+    public void NewGameHard()
+    {
+        PlayerPrefs.SetInt("isReloadingSave", 0);
+        PlayerPrefs.SetInt("difficulty", 1);
 
         SceneManager.LoadScene("LevelDesign");
     }
