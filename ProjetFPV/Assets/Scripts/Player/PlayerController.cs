@@ -656,9 +656,13 @@ public class PlayerController : Singleton<PlayerController>
                 }
 
             }
+            animManager.walking = true;
+            animManager.CheckWalk();
         }
         else
         {
+            
+
             moveInputTimer -= Time.deltaTime;
             moveInputTimer = Mathf.Clamp(moveInputTimer, 0, dragCurve.keys[^1].time);
         }
@@ -666,6 +670,8 @@ public class PlayerController : Singleton<PlayerController>
 
         if (!appliedForce)
         {
+            animManager.walking = false;
+            animManager.CheckWalk();
             inputVelocity = rb.velocity.normalized * (dragCurve.Evaluate(moveInputTimer) *
                                                       new Vector2(rb.velocity.x, rb.velocity.z).magnitude);
             rb.velocity = new Vector3(inputVelocity.x, 0, inputVelocity.z);

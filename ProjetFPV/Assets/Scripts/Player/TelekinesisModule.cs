@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Mechanics;
 using NaughtyAttributes;
 using UnityEngine;
@@ -65,6 +66,8 @@ public class TelekinesisModule : MonoBehaviour
     private static readonly int Slider = Shader.PropertyToID("Slider");
     public GameObject vfxHandz;
 
+    private RaycastHit hitTelekinesis;
+
     #endregion
 
 
@@ -80,15 +83,19 @@ public class TelekinesisModule : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateTKCylinder();
+        //UpdateTKCylinder();
         UpdateLineVFX();
     }
 
     private void ShowLineVFX(Collider tkObject)
     {
-        lineVFX.gameObject.SetActive(true);
-        vfxHandz.SetActive(true);
         tempColl = tkObject;
+        
+        lineVFX.gameObject.SetActive(true);
+        
+        vfxHandz.SetActive(true);
+        vfxHandz.transform.localPosition = Vector3.zero;
+        vfxHandz.transform.DOMove(tempColl.transform.position, sliderFillSpeed);
     }
 
     private void HideLineVFX()
@@ -105,50 +112,52 @@ public class TelekinesisModule : MonoBehaviour
 
         if (currentLineVFXValue < minMaxLineVFXSliderValue.y)
         {
-            currentLineVFXValue += Time.deltaTime * sliderFillSpeed;
+            currentLineVFXValue += Time.deltaTime / sliderFillSpeed;
+            
             lineVFX.material.SetFloat(Slider, currentLineVFXValue);
         }
+
         tkPoint = tempColl.ClosestPoint(tkSocket.position);
-        Debug.Log(tkSocket.position);
         
         lineVFX.SetPosition(0,tkSocket.position);
-        lineVFX.SetPosition(1,tkPoint);
+        lineVFX.SetPosition(1,tempColl.transform.position);
+        
         VFX_TKStart[1].transform.position = tkPoint;
     }
 
     public void FindControllableProp()
     {
-        if (Physics.Raycast(main.playerCam.position, main.playerCam.forward, out RaycastHit hit,
+        if (Physics.Raycast(main.playerCam.position, main.playerCam.forward, out hitTelekinesis,
                 main.socketManager.maxRange, main.socketManager.shootMask))
         {
             isGrabbingAnObject = true;
 
             CameraShake.instance.ShakeOneShot(2);
-            if (hit.collider.TryGetComponent(out TelekinesisObject TK))
+            if (hitTelekinesis.collider.TryGetComponent(out TelekinesisObject TK))
             {
                 if (!TK.canBeGrabbed) return;
                 controlledProp = TK;
                 controlledProp.ApplyTelekinesis();
 
                
-                ShowLineVFX(hit.collider);
+                ShowLineVFX(hitTelekinesis.collider);
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 return;
             }
 
-            if (hit.collider.TryGetComponent(out HeavyObject heavy))
+            if (hitTelekinesis.collider.TryGetComponent(out HeavyObject heavy))
             {
                 if (!heavy.canBeGrabbed) return;
                 if (heavy.transform.position.y < transform.position.y) return;
                 controlledProp = heavy;
                 controlledProp.ApplyTelekinesis();
 
-                ShowLineVFX(hit.collider); // THOMAS
+                ShowLineVFX(hitTelekinesis.collider); // THOMAS
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 return;
             }
 
-            if (hit.collider.TryGetComponent(out AbsorbInk absorb))
+            if (hitTelekinesis.collider.TryGetComponent(out AbsorbInk absorb))
             {
                 if (!absorb.canBeGrabbed) return;
                 controlledProp = absorb;
@@ -159,7 +168,7 @@ public class TelekinesisModule : MonoBehaviour
                 return;
             }
 
-            if (hit.collider.TryGetComponent(out UnstableObject unstable))
+            if (hitTelekinesis.collider.TryGetComponent(out UnstableObject unstable))
             {
                 if (!unstable.canBeGrabbed) return;
                 controlledProp = unstable;
@@ -168,15 +177,15 @@ public class TelekinesisModule : MonoBehaviour
                 return;
             }
 
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            if (hitTelekinesis.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
-                var enemy = hit.collider.GetComponentInParent<Enemy>();
+                var enemy = hitTelekinesis.collider.GetComponentInParent<Enemy>();
                 if (!enemy.canBeGrabbed) return;
                 if (main.currentInk < 0.1f) return;
                 controlledProp = enemy;
                 controlledProp.ApplyTelekinesis();
 
-               ShowLineVFX(hit.collider);
+               ShowLineVFX(hitTelekinesis.collider);
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 return;
             }
