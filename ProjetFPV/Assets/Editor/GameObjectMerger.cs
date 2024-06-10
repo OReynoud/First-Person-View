@@ -70,7 +70,7 @@ public class GameObjectMerger : EditorWindow
         }
         
         // Crée un nouveau GameObject pour contenir le Mesh combiné
-        GameObject combinedObject = new GameObject("CombinedMesh");
+        GameObject combinedObject = new GameObject(fileName);
         combinedObject.transform.parent = parentGO.transform;
         combinedObject.transform.position = Vector3.zero;
         
