@@ -15,7 +15,8 @@ public class AnimHandsController : MonoBehaviour
 
     public bool holding;
     public bool reloading;
-    
+    public bool walking;
+    [SerializeField]private bool walkChecker;
     
     // Start is called before the first frame update
     void Start()
@@ -26,15 +27,73 @@ public class AnimHandsController : MonoBehaviour
     void Update()
     {
         if (reloading) RightHand_ReloadLoop();
+
         if (!leftHand.isPlaying && !holding)
         {
-            
-            leftHand.Play("A_IdleLeftNew");
+            if (walking)
+            {
+                leftHand.Play("A_WalkLeft");
+            }
+            else
+            {
+                
+                leftHand.Play("A_IdleLeftNew");
+            }
         }
         if (!rightHand.isPlaying && !reloading)
         {
+            if (walking)
+            {
+                rightHand.Play("A_WalkRightBis");
+            }
+            else
+            {
+                rightHand.Play("A_IdleRightNew");
+            }
+        }
+    }
+
+
+    public void CheckWalk()
+    {
+        if (walking != walkChecker)
+        {
+            if (walking)
+            {
+                StartWalk();
+            }
+            else
+            {
+                StopWalk();
+            }
+        }
+
+        walkChecker = walking;
+    }
+    public void StartWalk()
+    {
+        if (!holding)
+        {
+            leftHand.Play("A_WalkLeft");
+           
+        }
+        if (!reloading)
+        {
+            rightHand.Play("A_WalkRightBis");
             
-            rightHand.Play("A_IdleRightNew");
+        }
+    }
+
+    public void StopWalk()
+    {
+        if (leftHand.isPlaying && !holding)
+        {
+            leftHand.Stop();
+           
+        }
+        if (rightHand.isPlaying && !reloading)
+        {
+            rightHand.Stop();
         }
     }
 
