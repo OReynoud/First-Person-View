@@ -12,10 +12,8 @@ Shader "S_BricksDecal"
 		_Decal("Decal", 2D) = "white" {}
 		_THE_NORMAL("THE_NORMAL", 2D) = "bump" {}
 		_RMHA("RMH A", 2D) = "white" {}
-		_Color_Gradient("Color_Gradient", Color) = (0,0,0,0)
 		_Boost_N("Boost_N", Float) = 0
 		_Boost_R("Boost_R", Float) = 0
-		_Brightness2("Brightness", Float) = 0.1
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
 
@@ -329,11 +327,9 @@ Shader "S_BricksDecal"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color_Gradient;
 			float4 _THE_NORMAL_ST;
 			float4 _Decal_ST;
 			float2 _Tiling_A;
-			float _Brightness2;
 			float _Boost_N;
 			float _Boost_R;
 			#ifdef ASE_TRANSMISSION
@@ -617,14 +613,13 @@ Shader "S_BricksDecal"
 				WorldViewDirection = SafeNormalize( WorldViewDirection );
 
 				float4 triplanar16_g52 = TriplanarSampling16_g52( _AlbedoA, WorldPosition, WorldNormal, 1.0, _Tiling_A, 1.0, 0 );
-				float clampResult406 = clamp( ( WorldPosition.y * _Brightness2 ) , 0.0 , 1.0 );
-				float4 lerpResult344 = lerp( _Color_Gradient , triplanar16_g52 , clampResult406);
-				float4 albedo_A34 = lerpResult344;
+				float4 temp_output_334_0 = triplanar16_g52;
+				float4 albedo_A34 = temp_output_334_0;
 				
 				float2 uv_THE_NORMAL = IN.ase_texcoord8.xy * _THE_NORMAL_ST.xy + _THE_NORMAL_ST.zw;
 				float4 triplanar17_g52 = TriplanarSampling17_g52( _NormalA, WorldPosition, WorldNormal, 1.0, _Tiling_A, 1.0, 0 );
-				float4 temp_cast_2 = (_Boost_N).xxxx;
-				float4 normal_A35 = pow( triplanar17_g52 , temp_cast_2 );
+				float4 temp_cast_1 = (_Boost_N).xxxx;
+				float4 normal_A35 = pow( triplanar17_g52 , temp_cast_1 );
 				
 				float4 triplanar18_g52 = TriplanarSampling18_g52( _RMHA, WorldPosition, WorldNormal, 1.0, _Tiling_A, 1.0, 0 );
 				float Metalness_A288 = triplanar18_g52.y;
@@ -971,11 +966,9 @@ Shader "S_BricksDecal"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color_Gradient;
 			float4 _THE_NORMAL_ST;
 			float4 _Decal_ST;
 			float2 _Tiling_A;
-			float _Brightness2;
 			float _Boost_N;
 			float _Boost_R;
 			#ifdef ASE_TRANSMISSION
@@ -1308,11 +1301,9 @@ Shader "S_BricksDecal"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color_Gradient;
 			float4 _THE_NORMAL_ST;
 			float4 _Decal_ST;
 			float2 _Tiling_A;
-			float _Brightness2;
 			float _Boost_N;
 			float _Boost_R;
 			#ifdef ASE_TRANSMISSION
@@ -1605,11 +1596,9 @@ Shader "S_BricksDecal"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color_Gradient;
 			float4 _THE_NORMAL_ST;
 			float4 _Decal_ST;
 			float2 _Tiling_A;
-			float _Brightness2;
 			float _Boost_N;
 			float _Boost_R;
 			#ifdef ASE_TRANSMISSION
@@ -1826,9 +1815,8 @@ Shader "S_BricksDecal"
 
 				float3 ase_worldNormal = IN.ase_texcoord4.xyz;
 				float4 triplanar16_g52 = TriplanarSampling16_g52( _AlbedoA, WorldPosition, ase_worldNormal, 1.0, _Tiling_A, 1.0, 0 );
-				float clampResult406 = clamp( ( WorldPosition.y * _Brightness2 ) , 0.0 , 1.0 );
-				float4 lerpResult344 = lerp( _Color_Gradient , triplanar16_g52 , clampResult406);
-				float4 albedo_A34 = lerpResult344;
+				float4 temp_output_334_0 = triplanar16_g52;
+				float4 albedo_A34 = temp_output_334_0;
 				
 				float2 uv_Decal = IN.ase_texcoord5.xy * _Decal_ST.xy + _Decal_ST.zw;
 				float4 tex2DNode409 = tex2D( _Decal, uv_Decal );
@@ -1930,11 +1918,9 @@ Shader "S_BricksDecal"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color_Gradient;
 			float4 _THE_NORMAL_ST;
 			float4 _Decal_ST;
 			float2 _Tiling_A;
-			float _Brightness2;
 			float _Boost_N;
 			float _Boost_R;
 			#ifdef ASE_TRANSMISSION
@@ -2132,9 +2118,8 @@ Shader "S_BricksDecal"
 
 				float3 ase_worldNormal = IN.ase_texcoord2.xyz;
 				float4 triplanar16_g52 = TriplanarSampling16_g52( _AlbedoA, WorldPosition, ase_worldNormal, 1.0, _Tiling_A, 1.0, 0 );
-				float clampResult406 = clamp( ( WorldPosition.y * _Brightness2 ) , 0.0 , 1.0 );
-				float4 lerpResult344 = lerp( _Color_Gradient , triplanar16_g52 , clampResult406);
-				float4 albedo_A34 = lerpResult344;
+				float4 temp_output_334_0 = triplanar16_g52;
+				float4 albedo_A34 = temp_output_334_0;
 				
 				float2 uv_Decal = IN.ase_texcoord3.xy * _Decal_ST.xy + _Decal_ST.zw;
 				float4 tex2DNode409 = tex2D( _Decal, uv_Decal );
@@ -2262,11 +2247,9 @@ Shader "S_BricksDecal"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color_Gradient;
 			float4 _THE_NORMAL_ST;
 			float4 _Decal_ST;
 			float2 _Tiling_A;
-			float _Brightness2;
 			float _Boost_N;
 			float _Boost_R;
 			#ifdef ASE_TRANSMISSION
@@ -2688,11 +2671,9 @@ Shader "S_BricksDecal"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color_Gradient;
 			float4 _THE_NORMAL_ST;
 			float4 _Decal_ST;
 			float2 _Tiling_A;
-			float _Brightness2;
 			float _Boost_N;
 			float _Boost_R;
 			#ifdef ASE_TRANSMISSION
@@ -2971,14 +2952,13 @@ Shader "S_BricksDecal"
 				WorldViewDirection = SafeNormalize( WorldViewDirection );
 
 				float4 triplanar16_g52 = TriplanarSampling16_g52( _AlbedoA, WorldPosition, WorldNormal, 1.0, _Tiling_A, 1.0, 0 );
-				float clampResult406 = clamp( ( WorldPosition.y * _Brightness2 ) , 0.0 , 1.0 );
-				float4 lerpResult344 = lerp( _Color_Gradient , triplanar16_g52 , clampResult406);
-				float4 albedo_A34 = lerpResult344;
+				float4 temp_output_334_0 = triplanar16_g52;
+				float4 albedo_A34 = temp_output_334_0;
 				
 				float2 uv_THE_NORMAL = IN.ase_texcoord8.xy * _THE_NORMAL_ST.xy + _THE_NORMAL_ST.zw;
 				float4 triplanar17_g52 = TriplanarSampling17_g52( _NormalA, WorldPosition, WorldNormal, 1.0, _Tiling_A, 1.0, 0 );
-				float4 temp_cast_2 = (_Boost_N).xxxx;
-				float4 normal_A35 = pow( triplanar17_g52 , temp_cast_2 );
+				float4 temp_cast_1 = (_Boost_N).xxxx;
+				float4 normal_A35 = pow( triplanar17_g52 , temp_cast_1 );
 				
 				float4 triplanar18_g52 = TriplanarSampling18_g52( _RMHA, WorldPosition, WorldNormal, 1.0, _Tiling_A, 1.0, 0 );
 				float Metalness_A288 = triplanar18_g52.y;
@@ -3178,11 +3158,9 @@ Shader "S_BricksDecal"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color_Gradient;
 			float4 _THE_NORMAL_ST;
 			float4 _Decal_ST;
 			float2 _Tiling_A;
-			float _Brightness2;
 			float _Boost_N;
 			float _Boost_R;
 			#ifdef ASE_TRANSMISSION
@@ -3451,11 +3429,9 @@ Shader "S_BricksDecal"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Color_Gradient;
 			float4 _THE_NORMAL_ST;
 			float4 _Decal_ST;
 			float2 _Tiling_A;
-			float _Brightness2;
 			float _Boost_N;
 			float _Boost_R;
 			#ifdef ASE_TRANSMISSION
@@ -3698,7 +3674,7 @@ Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;6;0,0;Float;False;False;-1;
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;7;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;GBuffer;0;7;GBuffer;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;5;False;;10;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalGBuffer;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;8;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;SceneSelectionPass;0;8;SceneSelectionPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=SceneSelectionPass;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;9;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ScenePickingPass;0;9;ScenePickingPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Picking;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1;2752.855,80.92834;Float;False;True;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;S_BricksDecal;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;21;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;5;False;;10;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalForward;False;False;0;;0;0;Standard;39;Workflow;1;0;Surface;1;638536062490576598;  Refraction Model;0;0;  Blend;0;0;Two Sided;1;0;Fragment Normal Space,InvertActionOnDeselection;0;638503234281460773;Forward Only;0;0;Transmission;0;0;  Transmission Shadow;0.5,False,;0;Translucency;0;0;  Translucency Strength;1,False,;0;  Normal Distortion;0.5,False,;0;  Scattering;2,False,;0;  Direct;0.9,False,;0;  Ambient;0.1,False,;0;  Shadow;0.5,False,;0;Cast Shadows;1;638521532461334603;  Use Shadow Threshold;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;_FinalColorxAlpha;0;0;Meta Pass;1;0;Override Baked GI;0;0;Extra Pre Pass;0;0;Tessellation;0;638502529589182602;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position,InvertActionOnDeselection;1;638502586259440459;Debug Display;0;0;Clear Coat;0;0;0;10;False;True;True;True;True;True;True;True;True;True;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1;2752.855,80.92834;Float;False;True;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;S_BricksDecal;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;21;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;5;False;;10;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalForward;False;False;0;;0;0;Standard;39;Workflow;1;0;Surface;1;638536116408222960;  Refraction Model;0;0;  Blend;0;638536116057523078;Two Sided;1;638536116183583797;Fragment Normal Space,InvertActionOnDeselection;0;638503234281460773;Forward Only;0;0;Transmission;0;0;  Transmission Shadow;0.5,False,;0;Translucency;0;0;  Translucency Strength;1,False,;0;  Normal Distortion;0.5,False,;0;  Scattering;2,False,;0;  Direct;0.9,False,;0;  Ambient;0.1,False,;0;  Shadow;0.5,False,;0;Cast Shadows;1;638521532461334603;  Use Shadow Threshold;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;_FinalColorxAlpha;0;0;Meta Pass;1;0;Override Baked GI;0;0;Extra Pre Pass;0;0;Tessellation;0;638502529589182602;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position,InvertActionOnDeselection;1;638502586259440459;Debug Display;0;0;Clear Coat;0;0;0;10;False;True;True;True;True;True;True;True;True;True;False;;False;0
 WireConnection;345;0;346;2
 WireConnection;345;1;347;0
 WireConnection;374;0;334;6
@@ -3715,7 +3691,7 @@ WireConnection;288;0;334;25
 WireConnection;26;0;334;26
 WireConnection;404;0;402;0
 WireConnection;404;1;403;0
-WireConnection;34;0;344;0
+WireConnection;34;0;334;0
 WireConnection;344;0;415;0
 WireConnection;344;1;334;0
 WireConnection;344;2;406;0
@@ -3732,4 +3708,4 @@ WireConnection;1;5;397;0
 WireConnection;1;6;409;1
 WireConnection;1;7;409;1
 ASEEND*/
-//CHKSM=88F7BB429ADE6B06C3725801292D1D23E3C342A8
+//CHKSM=29C9E3D367FFEAF2ABA5EF69FDBD707C76AAABBE
