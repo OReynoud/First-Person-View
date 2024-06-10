@@ -232,27 +232,30 @@ public class PlantCreator : MonoBehaviour
             
                 // Set plane size
                 newPlane.transform.localScale = Vector3.one * plantCreator.size / 100f;
-
-                // Set plane orientation
-                Vector3[] vectors;
-                VectorCalculator(hit.normal, out vectors);
-
-                newPlane.transform.up = hit.normal;
                 
-                if (plantCreator.lockX)
-                {
-                    newPlane.transform.RotateAround(vectors[0], Random.Range(0f, plantCreator.rotationX));
-                }
-
-                if (plantCreator.lockY)
-                {
-                    newPlane.transform.RotateAround(vectors[1], Random.Range(0f, plantCreator.rotationY));
-                }
-
-                if (plantCreator.lockZ)
-                {
-                    newPlane.transform.RotateAround(vectors[2], Random.Range(0f, plantCreator.rotationZ));
-                }
+                // Set plane orientation
+                newPlane.transform.forward = hit.normal;
+                Vector3[] vectors = VectorCalculator(newPlane);
+                
+                // if (plantCreator.lockX)
+                // {
+                //     newPlane.transform.Rotate(vectors[0], Random.Range(0f, plantCreator.rotationX));
+                // }
+                //
+                // if (plantCreator.lockY)
+                // {
+                //     newPlane.transform.Rotate(vectors[1], Random.Range(0f, plantCreator.rotationY));
+                // }
+                //
+                // if (plantCreator.lockZ)
+                // {
+                //     newPlane.transform.Rotate(vectors[2], Random.Range(0f, plantCreator.rotationZ));
+                // }
+                
+                newPlane.transform.eulerAngles = new Vector3
+                    (plantCreator.lockX ? newPlane.transform.localEulerAngles.x + Random.Range(-plantCreator.rotationX, plantCreator.rotationX): newPlane.transform.localEulerAngles.x, 
+                    plantCreator.lockY ? newPlane.transform.localEulerAngles.y + Random.Range(-plantCreator.rotationY, plantCreator.rotationY): newPlane.transform.localEulerAngles.y, 
+                    plantCreator.lockZ ? newPlane.transform.localEulerAngles.z + Random.Range(-plantCreator.rotationZ, plantCreator.rotationZ): newPlane.transform.localEulerAngles.z);
 
                 // Set plane texture
                 newPlane.GetComponent<Renderer>().material = plantCreator.material;
@@ -275,15 +278,13 @@ public class PlantCreator : MonoBehaviour
             plantCreator.gameObject.layer = plantCreator.defaultLayer;
         }
 
-        private static void VectorCalculator(Vector3 normal, out Vector3[] vectors)
+        private static Vector3[] VectorCalculator(GameObject newPlane)
         {
-            vectors = new Vector3[3];
+            var x = newPlane.transform.right;
+            var y = newPlane.transform.up;
+            var z = newPlane.transform.forward;
 
-            Vector3 arbitraryVector = normal == Vector3.up ? Vector3.right : Vector3.up;
-
-            vectors[0] = Vector3.Cross(normal, arbitraryVector).normalized;
-            vectors[1] = Vector3.Cross(normal, vectors[0]).normalized;
-            vectors[2] = normal;
+            return new[] { x, y, z };
         }
         
         private static void DestroyPlant(PlantCreator plantCreator)
