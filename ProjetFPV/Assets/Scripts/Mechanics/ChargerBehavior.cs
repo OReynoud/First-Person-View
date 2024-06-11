@@ -429,7 +429,7 @@ namespace Mechanics
             yield return new WaitForSeconds(calcJumpTime);
 
 
-            yield return new WaitForSeconds(PlayerPrefs.GetInt("difficulty") == 1 ? waitAfterAttack : waitAfterAttack * 2f);
+            yield return new WaitForSeconds(PlayerPrefs.GetInt("difficulty") == 0 ? waitAfterAttack : waitAfterAttack * 2f);
             hasDealtDamage = false;
             currentState = States.Repositioning;
         }

@@ -155,7 +155,7 @@ public class InGamePause : MonoBehaviour
     public void NewGameEasy()
     {
         PlayerPrefs.SetInt("isReloadingSave", 0);
-        PlayerPrefs.SetInt("difficulty", 0);
+        PlayerPrefs.SetInt("difficulty", 1);
 
         SceneManager.LoadScene("LevelDesign");
     }
@@ -163,7 +163,7 @@ public class InGamePause : MonoBehaviour
     public void NewGameHard()
     {
         PlayerPrefs.SetInt("isReloadingSave", 0);
-        PlayerPrefs.SetInt("difficulty", 1);
+        PlayerPrefs.SetInt("difficulty", 0);
 
         SceneManager.LoadScene("LevelDesign");
     }

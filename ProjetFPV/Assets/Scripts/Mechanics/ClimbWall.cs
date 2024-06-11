@@ -61,7 +61,7 @@ namespace Mechanics
                 return;
             }
             
-            GameManager.instance.interactText.text = "[E] Escalader";
+            GameManager.instance.interactText.text = "[E] Climb";
         }
 
         IEnumerator Climb()

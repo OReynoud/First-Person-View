@@ -287,7 +287,7 @@ public class PlayerController : Singleton<PlayerController>
     public void TakeDamage(float damage)
     {
         CameraShake.instance.ShakeOneShot(3);
-        currentHealth -= PlayerPrefs.GetInt("difficulty") == 1 ? damage : damage/2f;
+        currentHealth -= PlayerPrefs.GetInt("difficulty") == 0 ? damage : damage/2f;
 
         //SON
         if (currentHealth <= 0)
