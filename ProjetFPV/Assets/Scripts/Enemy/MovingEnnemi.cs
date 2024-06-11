@@ -31,7 +31,7 @@ public class MovingEnnemi : MonoBehaviour
 
         if (actor.position == destination.position)
         {
-            Destroy(transform.parent.gameObject, 2f);
+            Destroy(transform.parent.gameObject, 0.2f);
         }
     }
 }
