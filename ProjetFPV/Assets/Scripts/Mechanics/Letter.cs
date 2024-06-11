@@ -37,7 +37,7 @@ public class Letter : MonoBehaviour, ICanInteract
 
     public void ShowContext()
     {
-        GameManager.instance.interactText.text = isDisplayed ? "" : "[E] Lire";
+        GameManager.instance.interactText.text = isDisplayed ? "" : "[E] Read";
     }
 
     public float rotationSpeed = 10.0f;
@@ -70,7 +70,7 @@ public class Letter : MonoBehaviour, ICanInteract
         AudioManager.instance.PlaySound(3, 11, gameObject, 0.1f, false);
         collectibleCamera.transform.position = transform.GetChild(2).position;
         collectibleCamera.transform.rotation = transform.GetChild(2).rotation;
-        translatedTextUI.text = translatedText + "\n\n\n\n [E] Fermer";
+        translatedTextUI.text = translatedText + "\n\n\n\n [E] Close";
         collectibleCanva.DOFade(1f, 0.5f);
         collectibleCamera.SetActive(true);
     }
@@ -84,7 +84,7 @@ public class Letter : MonoBehaviour, ICanInteract
         Cursor.lockState = CursorLockMode.Locked;
         
         AudioManager.instance.PlaySound(3, 11, gameObject, 0.1f, false);
-        collectibleCanva.DOFade(0f, 0.5f);
+        collectibleCanva.DOFade(0f, 0.2f);
         collectibleCamera.SetActive(false);
     }
 }
