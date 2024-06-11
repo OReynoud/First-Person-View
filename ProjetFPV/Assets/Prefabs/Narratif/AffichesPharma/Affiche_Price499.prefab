@@ -125,10 +125,23 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6905915906134974203, guid: 62afd827a75564240997077f14770c37,
+        type: 3}
+      propertyPath: m_TagString
+      value: Decal
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6905915906134974203, guid: 62afd827a75564240997077f14770c37,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2600449955135248422}
+    - targetCorrespondingSourceObject: {fileID: 6905915906134974203, guid: 62afd827a75564240997077f14770c37,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2891465472542331154}
   m_SourcePrefab: {fileID: 100100000, guid: 62afd827a75564240997077f14770c37, type: 3}
 --- !u!4 &72629185203382524 stripped
 Transform:
@@ -136,3 +149,44 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6169767224632077501}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &741360521574347334 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6905915906134974203, guid: 62afd827a75564240997077f14770c37,
+    type: 3}
+  m_PrefabInstance: {fileID: 6169767224632077501}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2600449955135248422
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741360521574347334}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.75996304, y: 1.3408575, z: 0.1410729}
+  m_Center: {x: 0, y: 0.70458984, z: 0.017662194}
+--- !u!114 &2891465472542331154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741360521574347334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 560c26944c9b62745a41e0fd5838fbc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: "Ink at all costs - 4.99\u20AC"
+  maxDistance: 10
