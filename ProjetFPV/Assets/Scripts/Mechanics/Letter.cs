@@ -28,6 +28,7 @@ public class Letter : MonoBehaviour, ICanInteract
         }
         else
         {
+            PlayerController.instance.animManager.RightHand_PickUp();
             OpenLetterInFullScreen();
         }
 

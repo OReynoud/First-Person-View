@@ -125,11 +125,65 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6905915906134974203, guid: 62afd827a75564240997077f14770c37,
+        type: 3}
+      propertyPath: m_TagString
+      value: Decal
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6905915906134974203, guid: 62afd827a75564240997077f14770c37,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1788897304243234833}
+    - targetCorrespondingSourceObject: {fileID: 6905915906134974203, guid: 62afd827a75564240997077f14770c37,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1916685623822810030}
   m_SourcePrefab: {fileID: 100100000, guid: 62afd827a75564240997077f14770c37, type: 3}
+--- !u!1 &8293113644797244742 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6905915906134974203, guid: 62afd827a75564240997077f14770c37,
+    type: 3}
+  m_PrefabInstance: {fileID: 3225055649242065853}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1788897304243234833
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8293113644797244742}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.75996304, y: 1.3408575, z: 0.1410729}
+  m_Center: {x: 0, y: 0.70458984, z: 0.017662194}
+--- !u!114 &1916685623822810030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8293113644797244742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 560c26944c9b62745a41e0fd5838fbc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: "Ink at all costs - 10.99\u20AC"
+  maxDistance: 10
 --- !u!4 &8673051380185165820 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6097149600418055233, guid: 62afd827a75564240997077f14770c37,

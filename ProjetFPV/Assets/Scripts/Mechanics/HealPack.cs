@@ -7,7 +7,7 @@ namespace Mechanics
         public void Interact(Vector3 dir)
         {
             if (PlayerController.instance.currentHealPackAmount >= PlayerController.instance.healPackCapacity)return;
-            
+            PlayerController.instance.animManager.RightHand_PickUp();
             PlayerController.instance.currentHealPackAmount++;
             GameManager.instance.UpdateHealPackUI();
             //SON
