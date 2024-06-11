@@ -96,6 +96,9 @@ public class TelekinesisModule : MonoBehaviour
         vfxHandz.SetActive(true);
         vfxHandz.transform.localPosition = Vector3.zero;
         vfxHandz.transform.DOMove(tempColl.transform.position, sliderFillSpeed);
+        
+        VFX_TKStart[0].Play();
+        VFX_TKStart[1].Play();
     }
 
     private void HideLineVFX()
@@ -104,6 +107,14 @@ public class TelekinesisModule : MonoBehaviour
         
         vfxHandz.SetActive(false);
         currentLineVFXValue = minMaxLineVFXSliderValue.x;
+        foreach (var vfx in VFX_TKStart)
+        {
+            vfx.Stop();
+            vfx.SetParticles(null, 0);
+        }
+
+        VFX_TKEnd.Play();
+
     }
 
     private void UpdateLineVFX()
@@ -117,10 +128,11 @@ public class TelekinesisModule : MonoBehaviour
             lineVFX.material.SetFloat(Slider, currentLineVFXValue);
         }
 
-        tkPoint = tempColl.ClosestPoint(tkSocket.position);
+        Physics.Linecast(tkSocket.position,tempColl.transform.position, out RaycastHit hit, LayerMask.GetMask(LayerMask.LayerToName(tempColl.gameObject.layer)));
+        tkPoint = hit.point;
         
         lineVFX.SetPosition(0,tkSocket.position);
-        lineVFX.SetPosition(1,tempColl.transform.position);
+        lineVFX.SetPosition(1,tkPoint);
         
         VFX_TKStart[1].transform.position = tkPoint;
     }
@@ -229,6 +241,10 @@ public class TelekinesisModule : MonoBehaviour
         }
     }
 
+
+    #region Hold
+
+    
 
     void Hold_AbsorbInk(AbsorbInk absorbInk)
     {
@@ -370,6 +386,7 @@ public class TelekinesisModule : MonoBehaviour
         }
     }
 
+    #endregion
     public void ReleaseProp()
     {
         main.recentlyDepletedStamina = false;
