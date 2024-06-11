@@ -55,7 +55,7 @@ public class Letter : MonoBehaviour, ICanInteract
         float angleX = (mousePosition.x - objectScreenPosition.x) / Screen.width * rotationSpeed;
 
         // Appliquer la rotation à l'objet autour de l'axe X uniquement
-        uiObject.transform.Rotate(uiObject.transform.right, -angleX * Time.deltaTime, Space.World);
+        uiObject.transform.Rotate(uiObject.transform.up, -angleX * Time.deltaTime, Space.World);
     }
 
     void OpenLetterInFullScreen()
@@ -69,7 +69,7 @@ public class Letter : MonoBehaviour, ICanInteract
         AudioManager.instance.PlaySound(3, 11, gameObject, 0.1f, false);
         collectibleCamera.transform.position = transform.GetChild(2).position;
         collectibleCamera.transform.rotation = transform.GetChild(2).rotation;
-        translatedTextUI.text = translatedText + "\n\n [E] Fermer";
+        translatedTextUI.text = translatedText + "\n\n\n\n [E] Fermer";
         collectibleCanva.DOFade(1f, 0.5f);
         collectibleCamera.SetActive(true);
     }

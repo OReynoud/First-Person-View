@@ -96,22 +96,26 @@ public class CameraShake : Singleton<CameraShake>
         }
         while (elapsed < duration)
         {
-            float mF = shakesPresets[index].moveForce / 100 * Math.Min(elapsed / fadeIn, 1f);
-            float rF = shakesPresets[index].rotationForce / 100 * Math.Min(elapsed / fadeIn, 1f);
+            if (Time.timeScale >= 0.1f)
+            {
+                float mF = shakesPresets[index].moveForce / 100 * Math.Min(elapsed / fadeIn, 1f);
+                float rF = shakesPresets[index].rotationForce / 100 * Math.Min(elapsed / fadeIn, 1f);
 
-            float x = Random.Range(-1f, 1f) * mF;
-            float y = Random.Range(-1f, 1f) * mF;
+                float x = Random.Range(-1f, 1f) * mF;
+                float y = Random.Range(-1f, 1f) * mF;
 
-            float rotX = Random.Range(-1f, 1f) * rF;
-            float rotY = Random.Range(-1f, 1f) * rF;
-            float rotZ = Random.Range(-1f, 1f) * rF;
+                float rotX = Random.Range(-1f, 1f) * rF;
+                float rotY = Random.Range(-1f, 1f) * rF;
+                float rotZ = Random.Range(-1f, 1f) * rF;
 
-            cam.transform.localPosition = new Vector3(x, y, originalPos.z);
-            cam.transform.RotateAround(cam.transform.position, Vector3.up, rotX);
-            cam.transform.RotateAround(cam.transform.position, Vector3.forward, rotY);
-            cam.transform.RotateAround(cam.transform.position, Vector3.right, rotZ);
+                cam.transform.localPosition = new Vector3(x, y, originalPos.z);
+                cam.transform.RotateAround(cam.transform.position, Vector3.up, rotX);
+                cam.transform.RotateAround(cam.transform.position, Vector3.forward, rotY);
+                cam.transform.RotateAround(cam.transform.position, Vector3.right, rotZ);
             
-            elapsed += Time.deltaTime;
+                elapsed += Time.deltaTime;
+            }
+
             yield return null;
         }
 
@@ -124,21 +128,26 @@ public class CameraShake : Singleton<CameraShake>
         
         while (elapsed < shakesPresets[index].fadeOut)
         {
-            float mF = shakesPresets[index].moveForce / 100 * ((shakesPresets[index].fadeOut - elapsed) / shakesPresets[index].fadeOut);
-            float rF = shakesPresets[index].rotationForce / 100 * ((shakesPresets[index].fadeOut - elapsed) / shakesPresets[index].fadeOut);
+            if (Time.timeScale >= 0.1f)
+            {
+                float mF = shakesPresets[index].moveForce / 100 *
+                           ((shakesPresets[index].fadeOut - elapsed) / shakesPresets[index].fadeOut);
+                float rF = shakesPresets[index].rotationForce / 100 *
+                           ((shakesPresets[index].fadeOut - elapsed) / shakesPresets[index].fadeOut);
 
-            float x = Random.Range(-1f, 1f) * mF;
-            float y = Random.Range(-1f, 1f) * mF;
+                float x = Random.Range(-1f, 1f) * mF;
+                float y = Random.Range(-1f, 1f) * mF;
 
-            float rotX = Random.Range(-1f, 1f) * rF;
-            float rotY = Random.Range(-1f, 1f) * rF;
-            float rotZ = Random.Range(-1f, 1f) * rF;
+                float rotX = Random.Range(-1f, 1f) * rF;
+                float rotY = Random.Range(-1f, 1f) * rF;
+                float rotZ = Random.Range(-1f, 1f) * rF;
 
-            cam.transform.localPosition = new Vector3(x, y, originalPos.z);
-            cam.transform.RotateAround(originalPos, Vector3.up, rotX);
-            cam.transform.RotateAround(originalPos, Vector3.forward, rotY);
-            cam.transform.RotateAround(originalPos, Vector3.right, rotZ);
-            
+                cam.transform.localPosition = new Vector3(x, y, originalPos.z);
+                cam.transform.RotateAround(originalPos, Vector3.up, rotX);
+                cam.transform.RotateAround(originalPos, Vector3.forward, rotY);
+                cam.transform.RotateAround(originalPos, Vector3.right, rotZ);
+            }
+
             elapsed += Time.deltaTime;
             yield return null;
         }

@@ -37,12 +37,16 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: c567a952b3a22784bb2fcf0ac049e493, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_4e7e9b78d5724451a03bc83a9dd24cc0_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 2402b4a508985e947a4d60fb0494ab2b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_a1fcec69a9054cc79efd61a14bec2ad3_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 2402b4a508985e947a4d60fb0494ab2b, type: 3}
+        m_Texture: {fileID: 2800000, guid: c567a952b3a22784bb2fcf0ac049e493, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -59,17 +63,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Highlight_Power: 3.2
+    - _Fresnel_Contrast: 1
+    - _Highlight_Power: 3.47
     - _InvertFresnel: 1
     - _Noise_2_Speed: -0.1
-    - _Noise_Scale: 5.17
-    - _Noise_Speed: 0.41
-    - _Normal2Tiling: 0.71
-    - _NormalTiling: 2.78
+    - _Noise_Scale: 4.94
+    - _Noise_Speed: -0.1
+    - _Normal2Tiling: 0.1
+    - _NormalTiling: 0.19
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
     - _Ink_Color: {r: 0, g: 0, b: 0, a: 0}
-    - _Ink_Highlight: {r: 0.050980378, g: 0.4639378, b: 0.8, a: 0}
-    - _Noise_Intensity: {r: -0.9, g: 0.24, b: 0, a: 0}
+    - _Ink_Highlight: {r: 0.044380996, g: 0.4038813, b: 0.69644046, a: 1}
+    - _Noise_Intensity: {r: 0.1, g: -0.04, b: 0, a: 0}
   m_BuildTextureStacks: []

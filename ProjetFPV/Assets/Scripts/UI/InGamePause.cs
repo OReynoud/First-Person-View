@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using Mechanics;
 using TMPro;
@@ -14,11 +15,12 @@ public class InGamePause : MonoBehaviour
     private PlayerInput inputs;
     private InputActionMap currentControls;
     [SerializeField] private Button continueGame;
+    [SerializeField] private CanvasGroup difficultyCanva;
 
     void Start()
     {
         if (continueGame == null) return;
-        
+
         if (!PlayerPrefs.HasKey("SavePosX"))
         {
             continueGame.interactable = false;
@@ -30,14 +32,18 @@ public class InGamePause : MonoBehaviour
             continueGame.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.white;
         }
     }
-    
+
     public void Escape(InputAction.CallbackContext obj)
     {
         if (!obj.started) return;
-        
+
         if (optionsScript.optionsCanva.gameObject.activeInHierarchy)
         {
             optionsScript.CloseOptions();
+        }
+        else if (difficultyCanva != null && difficultyCanva.alpha >= 1)
+        {
+            CloseDifficulty();
         }
         else if (pauseCanva == null)
         {
@@ -52,38 +58,73 @@ public class InGamePause : MonoBehaviour
             OpenPause();
         }
     }
-    
+
     public void OpenPause()
     {
         if (PlayerController.instance.isControled) return;
-        
+
         AudioManager.instance.MuffleSound();
 
         AudioManager.instance.PlayUISound(0, 0, 0f);
-        
+
         pauseCanva.gameObject.SetActive(true);
-        pauseCanva.DOFade(1f, 0.5f);
+        StartCoroutine(Fade(false, 1, pauseCanva));
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
-        
+        Time.timeScale = 0;
+
         GameManager.instance.HideUI();
         PlayerController.instance.ImmobilizePlayer();
         PlayerController.instance.LockCam();
     }
 
+    public void OpenDifficulty()
+    {
+        difficultyCanva.gameObject.SetActive(true);
+        difficultyCanva.DOFade(1f, 0.5f);
+    }
+    
+    public void CloseDifficulty()
+    {
+        difficultyCanva.DOFade(0f, 0.5f).OnComplete(() => difficultyCanva.gameObject.SetActive(false));
+    }
+
     public void Resume()
     {
         AudioManager.instance.UnMuffleSound();
-        
+        Time.timeScale = 1;
+
         AudioManager.instance.PlayUISound(0, 1, 0f);
-        
-        pauseCanva.DOFade(0f, 0.2f).OnComplete(()=>pauseCanva.gameObject.SetActive(false));
+
+        //pauseCanva.DOFade(0f, 0.2f).OnComplete(() => pauseCanva.gameObject.SetActive(false));
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        
+        StartCoroutine(Fade(true, 0.2f, pauseCanva));
+
         GameManager.instance.ShowUI();
         PlayerController.instance.ImmobilizePlayer();
         PlayerController.instance.LockCam();
+    }
+
+
+    public IEnumerator Fade(bool fadeOut, float timer, CanvasGroup target)
+    {
+        var time = 0f;
+        while (time < timer)
+        {
+            time += Time.unscaledDeltaTime;
+            if (fadeOut)
+            {
+                target.alpha = Mathf.Lerp(1, 0, time / timer);
+            }
+            else
+            {
+                target.alpha = Mathf.Lerp(0, 1, time  / timer);
+            }
+            yield return null;
+        }
+
+        pauseCanva.gameObject.SetActive(target.alpha > 0.9f);
     }
 
     public void OpenOptions()
@@ -111,17 +152,26 @@ public class InGamePause : MonoBehaviour
         AudioManager.instance.PlayUISound(0, 2, 0.05f);
     }
 
-    public void NewGame()
+    public void NewGameEasy()
     {
         PlayerPrefs.SetInt("isReloadingSave", 0);
-        
+        PlayerPrefs.SetInt("difficulty", 0);
+
+        SceneManager.LoadScene("LevelDesign");
+    }
+
+    public void NewGameHard()
+    {
+        PlayerPrefs.SetInt("isReloadingSave", 0);
+        PlayerPrefs.SetInt("difficulty", 1);
+
         SceneManager.LoadScene("LevelDesign");
     }
 
     public void ContinueGame()
     {
         PlayerPrefs.SetInt("isReloadingSave", 1);
-        
+
         SceneManager.LoadScene("LevelDesign");
     }
 }

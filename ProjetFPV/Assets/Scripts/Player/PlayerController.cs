@@ -287,7 +287,7 @@ public class PlayerController : Singleton<PlayerController>
     public void TakeDamage(float damage)
     {
         CameraShake.instance.ShakeOneShot(3);
-        currentHealth -= damage;
+        currentHealth -= PlayerPrefs.GetInt("difficulty") == 1 ? damage : damage/2f;
 
         //SON
         if (currentHealth <= 0)
@@ -468,13 +468,31 @@ public class PlayerController : Singleton<PlayerController>
     private const float ReloadHandMove = 2f;
     private Vector3 reloadBasePos;
 
+    private float reloadTimer;
     private IEnumerator Reload2()
     {
         
         reloadBasePos = shootingHand.localPosition;
-        //shootingHand.DOLocalMove(reloadBasePos - Vector3.forward * ReloadHandMove, 0.4f);
         animManager.RightHand_ReloadStart();
-        yield return new WaitForSeconds(reloadSpeed);
+        int numberOfReloads =
+            Mathf.CeilToInt(Mathf.Clamp(currentInk / socketManager.reloadCostPerBullet, 0, socketManager.sockets.Count));
+        var time = reloadSpeed / numberOfReloads;
+        for (int i = socketManager.sockets.Count - 1; i >= 0; i--)
+        {
+            if (numberOfReloads == 0) break;
+            numberOfReloads--;
+            reloadTimer = 0;
+            while (reloadTimer < time)
+            {
+                reloadTimer += Time.deltaTime;
+                socketManager.sockets[i].socketMesh.material.SetFloat(socketManager.InkLevel,
+                    Mathf.Lerp(0,1,reloadTimer/time));
+
+                yield return null;
+
+            }
+            socketManager.sockets[i].socketMesh.material.SetFloat(socketManager.InkLevel,1);
+        }
         socketManager.ReloadSockets();
         
         animManager.RightHand_ReloadEnd();
@@ -638,9 +656,13 @@ public class PlayerController : Singleton<PlayerController>
                 }
 
             }
+            animManager.walking = true;
+            animManager.CheckWalk();
         }
         else
         {
+            
+
             moveInputTimer -= Time.deltaTime;
             moveInputTimer = Mathf.Clamp(moveInputTimer, 0, dragCurve.keys[^1].time);
         }
@@ -648,6 +670,8 @@ public class PlayerController : Singleton<PlayerController>
 
         if (!appliedForce)
         {
+            animManager.walking = false;
+            animManager.CheckWalk();
             inputVelocity = rb.velocity.normalized * (dragCurve.Evaluate(moveInputTimer) *
                                                       new Vector2(rb.velocity.x, rb.velocity.z).magnitude);
             rb.velocity = new Vector3(inputVelocity.x, 0, inputVelocity.z);
@@ -812,9 +836,19 @@ public class PlayerController : Singleton<PlayerController>
         if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, interactDistance, ~LayerMask.GetMask("Player")) && 
             playerCam.forward.y > -tkManager.holdObjectYTolerance)
         {
-            if (hit.transform.TryGetComponent(out ICanInteract interactable) && hit.rigidbody.velocity.y == 0)
+            if (hit.rigidbody)
             {
-                interactable.Interact(-hit.normal);
+                if (hit.transform.TryGetComponent(out ICanInteract interactable) && hit.rigidbody.velocity.y == 0)
+                {
+                    interactable.Interact(-hit.normal);
+                }
+            }
+            else
+            {
+                if (hit.transform.TryGetComponent(out ICanInteract interactable))
+                {
+                    interactable.Interact(-hit.normal);
+                }
             }
         }
     }
