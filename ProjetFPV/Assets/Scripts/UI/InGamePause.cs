@@ -16,6 +16,8 @@ public class InGamePause : MonoBehaviour
     private InputActionMap currentControls;
     [SerializeField] private Button continueGame;
     [SerializeField] private CanvasGroup difficultyCanva;
+    [SerializeField] private GameObject collectibleCamera;
+    private Coroutine coroutine;
 
     void Start()
     {
@@ -36,6 +38,8 @@ public class InGamePause : MonoBehaviour
     public void Escape(InputAction.CallbackContext obj)
     {
         if (!obj.started) return;
+
+        if (collectibleCamera != null && !collectibleCamera.activeInHierarchy) return;
 
         if (optionsScript.optionsCanva.gameObject.activeInHierarchy)
         {
@@ -68,7 +72,12 @@ public class InGamePause : MonoBehaviour
         AudioManager.instance.PlayUISound(0, 0, 0f);
 
         pauseCanva.gameObject.SetActive(true);
-        StartCoroutine(Fade(false, 1, pauseCanva));
+
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+        coroutine = StartCoroutine(Fade(false, 1, pauseCanva));
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         Time.timeScale = 0;
@@ -99,7 +108,12 @@ public class InGamePause : MonoBehaviour
         //pauseCanva.DOFade(0f, 0.2f).OnComplete(() => pauseCanva.gameObject.SetActive(false));
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        StartCoroutine(Fade(true, 0.2f, pauseCanva));
+        
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+        coroutine = StartCoroutine(Fade(true, 0.2f, pauseCanva));
 
         GameManager.instance.ShowUI();
         PlayerController.instance.ImmobilizePlayer();
@@ -124,11 +138,12 @@ public class InGamePause : MonoBehaviour
             yield return null;
         }
 
-        pauseCanva.gameObject.SetActive(target.alpha > 0.9f);
+        target.gameObject.SetActive(target.alpha > 0.9f);
     }
 
     public void OpenOptions()
     {
+        Debug.Log("open options");
         optionsScript.OpenOptions();
     }
 
@@ -139,11 +154,13 @@ public class InGamePause : MonoBehaviour
 
     public void BackToMenu()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }
 
     public void Quit()
     {
+        Time.timeScale = 1f;
         Application.Quit();
     }
 

@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class Options : MonoBehaviour
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Slider subtitlesSlider;
     [SerializeField] private TextMeshProUGUI subtitles;
+    private Coroutine coroutine;
 
     void Start()
     {
@@ -54,7 +56,12 @@ public class Options : MonoBehaviour
     {
         AudioManager.instance.PlayUISound(0, 0, 0f);
         optionsCanva.gameObject.SetActive(true);
-        optionsCanva.DOFade(1f, 0.5f);
+        
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+        coroutine = StartCoroutine(Fade(false, 0.5f, optionsCanva));
     }
 
     public void CloseOptions()
@@ -66,7 +73,31 @@ public class Options : MonoBehaviour
         PlayerPrefs.SetInt("SFXVolume", (int)sfxSlider.value);
         PlayerPrefs.SetInt("SubtitlesSize", (int)subtitlesSlider.value);
         
-        optionsCanva.DOFade(0f, 0.2f).OnComplete(()=>optionsCanva.gameObject.SetActive(false));
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+        coroutine = StartCoroutine(Fade(true, 0.5f, optionsCanva));
+    }
+    
+    public IEnumerator Fade(bool fadeOut, float timer, CanvasGroup target)
+    {
+        var time = 0f;
+        while (time < timer)
+        {
+            time += Time.unscaledDeltaTime;
+            if (fadeOut)
+            {
+                target.alpha = Mathf.Lerp(1, 0, time / timer);
+            }
+            else
+            {
+                target.alpha = Mathf.Lerp(0, 1, time  / timer);
+            }
+            yield return null;
+        }
+
+        target.gameObject.SetActive(target.alpha > 0.9f);
     }
 
     public void ToggleFullScreen()
