@@ -147,7 +147,7 @@ public class AnimHandsController : MonoBehaviour
     }
 
     private Coroutine holdRoutine;
-    public IEnumerator LeftHand_StopHold(float duration)
+     IEnumerator LeftHand_StopHold(float duration)
     {
         shake.Kill(true);
         yield return new WaitForSeconds(duration);
