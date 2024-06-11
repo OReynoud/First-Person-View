@@ -16,7 +16,7 @@ namespace Mechanics
 
         public void ShowContext()
         {
-            GameManager.instance.interactText.text = "[E] Prendre le Pack de soins";
+            GameManager.instance.interactText.text = "[E] Take";
         }
     }
 }
