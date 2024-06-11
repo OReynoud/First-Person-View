@@ -28,6 +28,7 @@ namespace Mechanics
         [SerializeField] public GameObject gameOver;
         [SerializeField] public GameObject inkStainDecal;
         [SerializeField] public ParticleSystem[] VFX_EnemyHit;
+        private Coroutine coroutine;
         
 
         public AbsorbInk inkStainPrefab;
@@ -187,8 +188,7 @@ namespace Mechanics
        
             }
         }
-
-
+        
         public void PlayerDeath()
         {
             PlayerController.instance.enabled = false;
@@ -213,12 +213,40 @@ namespace Mechanics
 
         public void HideUI()
         {
-            playerUI.DOFade(0f, 1f);
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
+            coroutine = StartCoroutine(Fade(true, 1f, playerUI));
         }
 
         public void ShowUI()
         {
-            playerUI.DOFade(1f, 1f);
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
+            coroutine = StartCoroutine(Fade(false, 0.2f, playerUI));
+        }
+        
+        public IEnumerator Fade(bool fadeOut, float timer, CanvasGroup target)
+        {
+            var time = 0f;
+            while (time < timer)
+            {
+                time += Time.unscaledDeltaTime;
+                if (fadeOut)
+                {
+                    target.alpha = Mathf.Lerp(1, 0, time / timer);
+                }
+                else
+                {
+                    target.alpha = Mathf.Lerp(0, 1, time  / timer);
+                }
+                yield return null;
+            }
+
+            target.gameObject.SetActive(target.alpha > 0.9f);
         }
     }
 }
