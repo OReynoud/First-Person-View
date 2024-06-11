@@ -16,11 +16,16 @@ public class AnimHandsController : MonoBehaviour
     public bool holding;
     public bool reloading;
     public bool walking;
-    [SerializeField]private bool walkChecker;
+    public bool shooting;
+    public bool pickUp;
+    private float walkAnimDuration;
+    private float walkAnimClock;
     
     // Start is called before the first frame update
     void Start()
     {
+        
+        walkAnimDuration = leftHand.GetClip("A_WalkLeft").length;
     }
 
     // Update is called once per frame
@@ -28,25 +33,43 @@ public class AnimHandsController : MonoBehaviour
     {
         if (reloading) RightHand_ReloadLoop();
 
-        if (!leftHand.isPlaying && !holding)
+        if (walking)
+        {
+            walkAnimClock += Time.deltaTime;
+            if (walkAnimClock > walkAnimDuration)
+            {
+                walkAnimClock = 0;
+            }
+        }
+        else
+        {
+            if (walkAnimClock > 0)
+            {
+                walkAnimClock -= Time.deltaTime;
+            }
+        }
+
+        if (!holding)
         {
             if (walking)
             {
-                leftHand.Play("A_WalkLeft");
+                leftHand.Stop();
+                leftHand.GetClip("A_WalkLeft").SampleAnimation(leftHand.gameObject,walkAnimClock);
             }
-            else
+            else if (!leftHand.isPlaying)
             {
                 
                 leftHand.Play("A_IdleLeftNew");
             }
         }
-        if (!rightHand.isPlaying && !reloading)
+        if (!reloading && !shooting && !pickUp)
         {
             if (walking)
             {
-                rightHand.Play("A_WalkRightBis");
+                rightHand.Stop();
+                rightHand.GetClip("A_WalkRightBis").SampleAnimation(rightHand.gameObject,walkAnimClock);
             }
-            else
+            else if (!rightHand.isPlaying)
             {
                 rightHand.Play("A_IdleRightNew");
             }
@@ -56,63 +79,48 @@ public class AnimHandsController : MonoBehaviour
 
     public void CheckWalk()
     {
-        if (walking != walkChecker)
-        {
-            if (walking)
-            {
-                StartWalk();
-            }
-            else
-            {
-                StopWalk();
-            }
-        }
-
-        walkChecker = walking;
+        // if (walking != walkChecker)
+        // {
+        //     if (walking)
+        //     {
+        //         StartWalk();
+        //     }
+        //     else
+        //     {
+        //         StopWalk();
+        //     }
+        // }
+        //
+        // walkChecker = walking;
     }
-    public void StartWalk()
-    {
-        if (!holding)
-        {
-            leftHand.Play("A_WalkLeft");
-           
-        }
-        if (!reloading)
-        {
-            rightHand.Play("A_WalkRightBis");
-            
-        }
-    }
-
-    public void StopWalk()
-    {
-        if (leftHand.isPlaying && !holding)
-        {
-            leftHand.Stop();
-           
-        }
-        if (rightHand.isPlaying && !reloading)
-        {
-            rightHand.Stop();
-        }
-    }
+ 
 
     public void LeftHand_Grab()
     {
-        leftHand.Play("A_GrabNew");
         holding = true;
+        leftHand.Stop();
+        leftHand.Play("A_GrabLeft");
         LeftHand_Hold();
 
     }
     public void LeftHand_Reset()
     {
         leftHand.Play("A_ResetNew");
-        LeftHand_StopHold();
+        if (holdRoutine is not null)
+        {
+            StopCoroutine(holdRoutine);
+        }
+        holdRoutine = StartCoroutine(LeftHand_StopHold(leftHand.GetClip("A_ResetNew").length));
     }
     public void LeftHand_Release()
     {
         leftHand.Play("A_ReleaseNew");
-        LeftHand_StopHold();
+        
+        if (holdRoutine is not null)
+        {
+            StopCoroutine(holdRoutine);
+        }
+        holdRoutine = StartCoroutine(LeftHand_StopHold(leftHand.GetClip("A_ReleaseNew").length));
     }
 
     private Tween shake;
@@ -137,11 +145,13 @@ public class AnimHandsController : MonoBehaviour
             }
         });
     }
-    
-    public void LeftHand_StopHold()
+
+    private Coroutine holdRoutine;
+    public IEnumerator LeftHand_StopHold(float duration)
     {
-        holding = false;
         shake.Kill(true);
+        yield return new WaitForSeconds(duration);
+        holding = false;
     }
 
     public void RightHand_ReloadStart()
@@ -159,17 +169,63 @@ public class AnimHandsController : MonoBehaviour
     
     public void RightHand_ReloadEnd()
     {
-        reloading = false;
         rightHand.Stop();
         rightHand.Play("A_ReloadEndNew");
+        
+        if (reloadRoutine is not null)
+        {
+            StopCoroutine(reloadRoutine);
+        }
+
+        reloadRoutine = StartCoroutine(HandleReload());
     }
-    
+
+    private Coroutine reloadRoutine;
+
+    public IEnumerator HandleReload()
+    {
+        yield return new WaitForSeconds(rightHand.GetClip("A_ReloadEndNew").length);
+        reloading = false;
+    }
     public void RightHand_Shoot()
     {
         rightHand.Stop();
         rightHand.Play("A_ShootNew");
+        if (shootCoroutine is not null)
+        {
+            StopCoroutine(shootCoroutine);
+        }
+
+        shootCoroutine = StartCoroutine(HandleShooting());
     }
 
+
+    private Coroutine shootCoroutine;
+    IEnumerator HandleShooting()
+    {
+        shooting = true;
+        yield return new WaitForSeconds(rightHand.GetClip("A_ShootNew").length);
+        shooting = false;
+    }
+    public void RightHand_PickUp()
+    {
+        rightHand.Stop();
+        rightHand.Play("A_GrabNew");
+        if (pickUpCoroutine is not null)
+        {
+            StopCoroutine(pickUpCoroutine);
+        }
+
+        pickUpCoroutine = StartCoroutine(HandlePickUp());
+    }
+
+    private Coroutine pickUpCoroutine;
+    IEnumerator HandlePickUp()
+    {
+        pickUp = true;
+        yield return new WaitForSeconds(rightHand.GetClip("A_GrabNew").length);
+        pickUp = false;
+    }
     public async void ChainShootToReload()
     {
         while (rightHand.isPlaying)
