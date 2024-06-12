@@ -474,6 +474,7 @@ public class PlayerController : Singleton<PlayerController>
         
         reloadBasePos = shootingHand.localPosition;
         animManager.RightHand_ReloadStart();
+        yield return new WaitForSeconds(animManager.rightHand.GetClip("A_ReloadStartNew").length);
         int numberOfReloads =
             Mathf.CeilToInt(Mathf.Clamp(currentInk / socketManager.reloadCostPerBullet, 0, socketManager.sockets.Count));
         var time = reloadSpeed / numberOfReloads;
@@ -566,7 +567,6 @@ public class PlayerController : Singleton<PlayerController>
             case PlayerStates.Crouching:
                 playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.2f);
                 break;
-
             case PlayerStates.Sprinting:
                 playerCam.position = Vector3.Lerp(playerCam.position, transform.position + Vector3.up * 0.5f, 0.2f);
 
