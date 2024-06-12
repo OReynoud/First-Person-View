@@ -39,7 +39,7 @@ public class InGamePause : MonoBehaviour
     {
         if (!obj.started) return;
 
-        if (collectibleCamera != null && !collectibleCamera.activeInHierarchy) return;
+        if (collectibleCamera != null && collectibleCamera.activeInHierarchy) return;
 
         if (optionsScript.optionsCanva.gameObject.activeInHierarchy)
         {
