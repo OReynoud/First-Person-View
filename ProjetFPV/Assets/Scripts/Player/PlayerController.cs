@@ -190,7 +190,7 @@ public class PlayerController : Singleton<PlayerController>
 
     #region Misc
 
-    private float rotationX;
+    [HideInInspector] public float rotationX;
     private Vector3 playerDir;
     private float jumpTime;
     private Vector2 horizontalVelocity;
@@ -397,7 +397,7 @@ public class PlayerController : Singleton<PlayerController>
     private bool GroundCheck(out RaycastHit hit)
     {
         bool check = false;
-        if (Physics.SphereCast(transform.position, 0.3f, Vector3.down, out hit, 1.1f, groundLayer))
+        if (Physics.SphereCast(transform.position, 0.1f, Vector3.down, out hit, 1f, groundLayer))
         {
             if (!isJumping)
             {
@@ -768,7 +768,8 @@ public class PlayerController : Singleton<PlayerController>
     void Rotate()
     {
         if (lockedCam) return;
-        
+        // Debug.Log(Input.GetAxis("Mouse Y"));
+        // Debug.Log(Input.GetAxis("Mouse X"));
         rotationX += -Input.GetAxis("Mouse Y") * lookSpeed * sensitivity;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCam.localEulerAngles = new Vector3(rotationX, playerCam.localEulerAngles.y, playerCam.localEulerAngles.z);

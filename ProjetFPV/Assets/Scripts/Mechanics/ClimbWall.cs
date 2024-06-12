@@ -49,8 +49,15 @@ namespace Mechanics
                 new Vector3(wallPoint.x,player.transform.position.y,wallPoint.y),
                 (dist-1f) / dist),
                 0.2f);
+            player.rotationX = rotationValue.x;
             player.playerCam.DORotate(rotationValue, 0.2f);
-            player.transform.DORotate(rotationValue, 0.2f).OnComplete(() => { StartCoroutine(Climb()); });
+            player.transform.DORotate(rotationValue, 0.2f).OnComplete(() =>
+            {
+                StartCoroutine(Climb());
+                // player.transform.rotation = Quaternion.Euler(rotationValue);
+                //
+                // player.playerCam.rotation = Quaternion.Euler(rotationValue);
+            });
         }
 
         public void ShowContext()
@@ -81,9 +88,13 @@ namespace Mechanics
             }
 
             var posToJump = col.ClosestPoint(player.transform.position) + player.transform.forward +
-                            player.transform.up * 0.5f;
+                            Vector3.up * (player.standingCollider.height * 0.5f);
             player.transform.DOJump(posToJump, 1, 1, 0.5f).OnComplete(
-                () => { player.ImmobilizePlayer(); });
+                () =>
+                {
+                    player.ImmobilizePlayer(); 
+                    
+                });
         }
     }
 }
