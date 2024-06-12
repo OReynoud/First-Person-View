@@ -482,8 +482,7 @@ public class PlayerController : Singleton<PlayerController>
 
     void CheckInteractableTarget()
     {
-        if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, interactDistance, ~LayerMask.GetMask("Player"))
-            && playerCam.forward.y > -tkManager.holdObjectYTolerance)   
+        if (Physics.Raycast(playerCam.position,  playerCam.forward, out RaycastHit hit, interactDistance, ~LayerMask.GetMask("Player")))   
         {
             if (hit.transform.TryGetComponent(out ICanInteract interactable))
             {
@@ -876,8 +875,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (!canMove && !lockedCam) return; //THOMAS
         if (tkManager.controlledProp) return;
-        if (Physics.SphereCast(playerCam.position, 0.3f, playerCam.forward, out RaycastHit hit, interactDistance, ~LayerMask.GetMask("Player")) && 
-            playerCam.forward.y > -tkManager.holdObjectYTolerance)
+        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, interactDistance, ~LayerMask.GetMask("Player")))
         {
             if (hit.rigidbody)
             {
