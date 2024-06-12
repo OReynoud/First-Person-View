@@ -22,7 +22,14 @@ public class CollectorBehavior : Enemy
     [BoxGroup] public ChargerEgg spawnBulletPrefab;
     [BoxGroup] public Animation transitionState;
     [BoxGroup] public float transitionTime;
+
+    [BoxGroup] public Transform mesh;
     [BoxGroup] public ParticleSystem[] bullet_VFX;
+    
+    [BoxGroup] public ParticleSystem[] body_VFX;
+    [BoxGroup] public TrailRenderer[] body_Trail;
+
+    [BoxGroup] public float bodySize;
 
 
     [HideInInspector] public Arena arena;
@@ -106,6 +113,7 @@ public class CollectorBehavior : Enemy
     [Foldout("Debug")] [SerializeField] public List<ChargerBehavior> children = new List<ChargerBehavior>();
     private Vector3 origin;
 
+    private float baseMeshSize;
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
@@ -133,6 +141,7 @@ public class CollectorBehavior : Enemy
         transitionCurve.AddKey(0, 0);
         transitionCurve.AddKey(transitionTime, 1);
         origin = transform.position;
+        baseMeshSize = mesh.localScale.x;
         
         var main = new ParticleSystem().main;
         foreach (var vfx in bullet_VFX)
@@ -458,16 +467,36 @@ public class CollectorBehavior : Enemy
                 timer += Time.deltaTime;
             }
 
-            if (!allMasks[0].maskCollider.enabled && timer >= transitionTime * 0.5f)
+            if (!allMasks[0].maskCollider.enabled && timer >= transitionTime * 0.8f)
             {
                 foreach (var mask in allMasks)
                 {
                     mask.maskCollider.enabled = true;
                 }
+                if (body_VFX[0].isPlaying)
+                {
+                    foreach (var vfx in body_VFX)
+                    {
+                        vfx.Stop();
+                    }
+                }
             }
         }
         else
         {
+            foreach (var trail in body_Trail)
+            {
+                trail.enabled = true;
+            }
+
+            if (!body_VFX[0].isPlaying)
+            {
+                foreach (var vfx in body_VFX)
+                {
+                    vfx.Play();
+                }
+            }
+
             if (timer > 0)
             {
                 timer -= Time.deltaTime;
@@ -481,6 +510,9 @@ public class CollectorBehavior : Enemy
             }
         }
 
+        body_VFX[0].transform.localScale = Vector3.Lerp(Vector3.one * bodySize,Vector3.zero, timer/transitionTime);
+        
+        mesh.localScale = Vector3.Lerp(Vector3.one * 0.1f,Vector3.one * baseMeshSize, timer/transitionTime);
         transitionState.clip.SampleAnimation(gameObject, transitionCurve.Evaluate(timer));
         
         
