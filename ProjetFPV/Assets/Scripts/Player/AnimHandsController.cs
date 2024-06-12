@@ -77,22 +77,7 @@ public class AnimHandsController : MonoBehaviour
     }
 
 
-    public void CheckWalk()
-    {
-        // if (walking != walkChecker)
-        // {
-        //     if (walking)
-        //     {
-        //         StartWalk();
-        //     }
-        //     else
-        //     {
-        //         StopWalk();
-        //     }
-        // }
-        //
-        // walkChecker = walking;
-    }
+
  
 
     public void LeftHand_Grab()

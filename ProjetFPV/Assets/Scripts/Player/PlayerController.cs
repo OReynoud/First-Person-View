@@ -658,7 +658,6 @@ public class PlayerController : Singleton<PlayerController>
 
             }
             animManager.walking = true;
-            animManager.CheckWalk();
         }
         else
         {
@@ -672,7 +671,6 @@ public class PlayerController : Singleton<PlayerController>
         if (!appliedForce)
         {
             animManager.walking = false;
-            animManager.CheckWalk();
             inputVelocity = rb.velocity.normalized * (dragCurve.Evaluate(moveInputTimer) *
                                                       new Vector2(rb.velocity.x, rb.velocity.z).magnitude);
             rb.velocity = new Vector3(inputVelocity.x, 0, inputVelocity.z);
