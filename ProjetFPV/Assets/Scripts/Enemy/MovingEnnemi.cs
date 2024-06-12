@@ -18,7 +18,7 @@ public class MovingEnnemi : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            AudioManager.instance.PlaySound(5, 1, gameObject, 0f, false);
+            AudioManager.instance.PlaySound(5, 1, actor.gameObject, 0.5f, false);
             triggered = true;
         }
     }
