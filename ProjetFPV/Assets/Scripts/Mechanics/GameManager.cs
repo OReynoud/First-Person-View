@@ -68,10 +68,7 @@ namespace Mechanics
             UpdateHealPackUI();
         }
 
-        public void Update()
-        {
-            UsingTK();
-        }
+
 
 
 
@@ -96,7 +93,7 @@ namespace Mechanics
 
         public void UsingTK()
         {
-            crosshairTK.alpha = PlayerController.instance.tkManager.controlledProp ? 1 : 0;
+            //crosshairTK.alpha = PlayerController.instance.tkManager.controlledProp ? 1 : 0;
         }
 
         public Coroutine killMarker;
