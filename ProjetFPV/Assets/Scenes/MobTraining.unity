@@ -1689,7 +1689,7 @@ PrefabInstance:
     - target: {fileID: 531205356919008700, guid: b49c123b93aa4314291340604a9d5d48,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4246528624926509626, guid: b49c123b93aa4314291340604a9d5d48,
         type: 3}
@@ -1741,6 +1741,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5151343745484903222, guid: b49c123b93aa4314291340604a9d5d48,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151343745484903222, guid: b49c123b93aa4314291340604a9d5d48,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151343745484903222, guid: b49c123b93aa4314291340604a9d5d48,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151343745484903222, guid: b49c123b93aa4314291340604a9d5d48,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151343745484903222, guid: b49c123b93aa4314291340604a9d5d48,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151343745484903222, guid: b49c123b93aa4314291340604a9d5d48,
+        type: 3}
+      propertyPath: m_Center.y
+      value: -0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151343745484903222, guid: b49c123b93aa4314291340604a9d5d48,
+        type: 3}
+      propertyPath: m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8521479539179761231, guid: b49c123b93aa4314291340604a9d5d48,
+        type: 3}
+      propertyPath: bodyColl
+      value: 
+      objectReference: {fileID: 1678855612}
     - target: {fileID: 8521479539179761231, guid: b49c123b93aa4314291340604a9d5d48,
         type: 3}
       propertyPath: spawnPositions.Array.data[0]
@@ -4126,6 +4166,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1106269842}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1678855612 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 5151343745484903222, guid: b49c123b93aa4314291340604a9d5d48,
+    type: 3}
+  m_PrefabInstance: {fileID: 702484790}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1695126326
 PrefabInstance:
   m_ObjectHideFlags: 0

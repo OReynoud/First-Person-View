@@ -480,6 +480,7 @@ public class PlayerController : Singleton<PlayerController>
         for (int i = socketManager.sockets.Count - 1; i >= 0; i--)
         {
             if (numberOfReloads == 0) break;
+            if (socketManager.sockets[i].state == ShootingHand.SocketStates.Loaded)continue;
             numberOfReloads--;
             reloadTimer = 0;
             while (reloadTimer < time)
@@ -490,7 +491,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 yield return null;
 
-            }
+            }   
             socketManager.sockets[i].socketMesh.material.SetFloat(socketManager.InkLevel,1);
         }
         socketManager.ReloadSockets();
