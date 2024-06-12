@@ -45,6 +45,8 @@ public class PlayerController : Singleton<PlayerController>
 
     [HideInInspector] public float sensitivity = 1;
 
+    private GameObject reloadSoundStart;
+
     #region Refs
 
     [Dropdown("GetInputMaps")] [Foldout("Refs")]
@@ -471,13 +473,15 @@ public class PlayerController : Singleton<PlayerController>
     private float reloadTimer;
     private IEnumerator Reload2()
     {
-        
         reloadBasePos = shootingHand.localPosition;
         animManager.RightHand_ReloadStart();
         yield return new WaitForSeconds(animManager.rightHand.GetClip("A_ReloadStartNew").length);
+        
         int numberOfReloads =
             Mathf.CeilToInt(Mathf.Clamp(currentInk / socketManager.reloadCostPerBullet, 0, socketManager.sockets.Count));
         var time = reloadSpeed / numberOfReloads;
+        
+        reloadSoundStart = AudioManager.instance.PlaySound(3, 3, gameObject, 0.1f, false);
         for (int i = socketManager.sockets.Count - 1; i >= 0; i--)
         {
             if (numberOfReloads == 0) break;
@@ -496,6 +500,9 @@ public class PlayerController : Singleton<PlayerController>
             socketManager.sockets[i].socketMesh.material.SetFloat(socketManager.InkLevel,1);
         }
         socketManager.ReloadSockets();
+        
+        AudioManager.instance.PlaySound(3, 20, gameObject, 0.1f, false);
+        Destroy(reloadSoundStart);
         
         animManager.RightHand_ReloadEnd();
         shootingHand.DOLocalMove(reloadBasePos, 0.4f);
@@ -868,9 +875,6 @@ public class PlayerController : Singleton<PlayerController>
         
         // SON
         AudioManager.instance.PlaySound(3, 1, gameObject, 0.1f, false);
-        // audioSource.pitch = Random.Range(0.9f, 1.1f);
-        // audioSource.PlayOneShot(shootClip);
-        // SON
     }
     
     private bool reloading = false;
@@ -887,7 +891,7 @@ public class PlayerController : Singleton<PlayerController>
         if (!reloading)return;
         
         //SON
-        AudioManager.instance.PlaySound(3, 3, gameObject, 0.1f, false);
+       
         reloadCoroutine = StartCoroutine(Reload2());
     }
     private void UseHealPack(InputAction.CallbackContext obj)
