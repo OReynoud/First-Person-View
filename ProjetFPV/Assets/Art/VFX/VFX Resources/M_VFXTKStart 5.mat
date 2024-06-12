@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-156462813235964971
+--- !u!114 &-88261594182025594
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,14 +20,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_InkEnemySoul
-  m_Shader: {fileID: -6465566751694194690, guid: 16988a5d5fc2b7d49955985593bdecfa,
+  m_Name: M_VFXTKStart 5
+  m_Shader: {fileID: -6465566751694194690, guid: 74c0621db30ee20469e8b64cfb67c01e,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -37,20 +37,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Normal:
-        m_Texture: {fileID: 2800000, guid: 2402b4a508985e947a4d60fb0494ab2b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SBHBaseInk_fcc5fde49cc945cfba1937e1e39579b7_Normal_1639429615_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 2402b4a508985e947a4d60fb0494ab2b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_4e7e9b78d5724451a03bc83a9dd24cc0_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 2402b4a508985e947a4d60fb0494ab2b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_a1fcec69a9054cc79efd61a14bec2ad3_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 2402b4a508985e947a4d60fb0494ab2b, type: 3}
+    - _SampleTexture2D_fbcf20ea7ccc45ecbfb4a1cd1835ef69_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 7488f2d9b8bea60448a04e66091fed48, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -67,18 +55,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Fresnel_Contrast: 1.12
-    - _Highlight_Power: 0.09
-    - _InvertFresnel: 0
-    - _Noise_2_Speed: -0.1
-    - _Noise_Scale: 5.17
-    - _Noise_Speed: 0.41
-    - _Normal2Tiling: 0.71
-    - _NormalTiling: 2.78
+    - _Contrast: 1.66
+    - _NoiseScale: 17.2
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Speed: -0.1
     m_Colors:
-    - _Ink_Color: {r: 0, g: 0, b: 0, a: 0}
-    - _Ink_Highlight: {r: 0, g: 1.9254954, b: 3.2910223, a: 0}
-    - _Noise_Intensity: {r: -0.9, g: 0.24, b: 0, a: 0}
+    - _Color: {r: 0.05482378, g: 0.073053375, b: 0.1509434, a: 0}
+    - _Color_1: {r: 1, g: 0, b: 0, a: 0}
+    - _Remap: {r: 14.78, g: -9.57, b: 0, a: 0}
+    - _Remap_2: {r: 1.65, g: -0.23, b: 0, a: 0}
   m_BuildTextureStacks: []
