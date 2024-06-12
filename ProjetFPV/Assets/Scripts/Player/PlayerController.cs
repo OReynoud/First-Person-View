@@ -57,7 +57,7 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Refs")] [SerializeField] private Transform hands;
     [Foldout("Refs")] [SerializeField] private Transform leftHand;
     [Foldout("Refs")] [SerializeField] private Transform rightHand;
-    [Foldout("Refs")] [SerializeField] private RectTransform telekinesisPointer;
+    [Foldout("Refs")] [SerializeField] private CanvasGroup telekinesisPointer;
     [Foldout("Refs")] [SerializeField] public Transform offsetPosition;
     [Foldout("Refs")]
     [InfoBox(
@@ -425,21 +425,59 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    private float pointerTimer = 0;
+    private float pointerTime = 0.3f;
+    private float fadedScale = 3;
     private void CheckTelekinesisTarget()
     {
-        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange, socketManager.shootMask)
+        pointerTimer = Mathf.Clamp(pointerTimer, 0, pointerTime);
+        if (tkManager.controlledProp)
+        {
+            pointerTimer += Time.deltaTime;
+            telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
+            telekinesisPointer.transform.localScale =
+                Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
+            telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, 2f);
+            return;
+        }
+        
+        
+        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange)
             && hit.collider.TryGetComponent(out ControllableProp prop))
         {
-            if (!telekinesisPointer.gameObject.activeSelf)
-                telekinesisPointer.gameObject.SetActive(true);
+            if (!prop.canBeGrabbed)
+            {
+                pointerTimer -= Time.deltaTime;
+                telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
+                telekinesisPointer.transform.localScale =
+                    Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
+                telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -5);
+                return;
+            }
 
-            telekinesisPointer.position = camera1.WorldToScreenPoint(prop.transform.position);
-            telekinesisPointer.rotation *= Quaternion.Euler(0, 0, 2);
+            pointerTimer += Time.deltaTime;
+            //telekinesisPointer.position = camera1.WorldToScreenPoint(prop.transform.position);
+            telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
+            telekinesisPointer.transform.localScale =
+                Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
+            telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -0.8f);
             return;
         }
 
-        if (telekinesisPointer.gameObject.activeSelf)
-            telekinesisPointer.gameObject.SetActive(false);
+        pointerTimer -= Time.deltaTime;
+        
+        telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
+        if (animManager.holding)
+        {
+            telekinesisPointer.transform.localScale =
+                Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
+        }
+        else
+        {
+            telekinesisPointer.transform.localScale =
+                Vector3.Lerp(Vector3.one * 1.5f, Vector3.one, pointerTimer / pointerTime);
+        }
+        telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, animManager.holding ? -5f : -0.8f);
     }
 
     void CheckInteractableTarget()
@@ -590,13 +628,11 @@ public class PlayerController : Singleton<PlayerController>
                 break;
         }
 
+        CheckTelekinesisTarget();
         if (!tkManager.controlledProp)
         {
-            CheckTelekinesisTarget();
             CheckInteractableTarget();
         }
-        else if (telekinesisPointer.gameObject.activeSelf)
-            telekinesisPointer.gameObject.SetActive(false);
 
         
     }

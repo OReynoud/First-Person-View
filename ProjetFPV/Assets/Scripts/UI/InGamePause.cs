@@ -142,7 +142,6 @@ public class InGamePause : MonoBehaviour
 
     public void OpenOptions()
     {
-        Debug.Log("open options");
         optionsScript.OpenOptions();
     }
 
@@ -173,7 +172,7 @@ public class InGamePause : MonoBehaviour
         PlayerPrefs.SetInt("isReloadingSave", 0);
         PlayerPrefs.SetInt("difficulty", 1);
 
-        SceneManager.LoadScene("LevelDesign");
+        SceneManager.LoadScene("Habillage_02");
     }
 
     public void NewGameHard()
@@ -181,13 +180,13 @@ public class InGamePause : MonoBehaviour
         PlayerPrefs.SetInt("isReloadingSave", 0);
         PlayerPrefs.SetInt("difficulty", 0);
 
-        SceneManager.LoadScene("LevelDesign");
+        SceneManager.LoadScene("Habillage_02");
     }
 
     public void ContinueGame()
     {
         PlayerPrefs.SetInt("isReloadingSave", 1);
 
-        SceneManager.LoadScene("LevelDesign");
+        SceneManager.LoadScene("Habillage_02");
     }
 }
