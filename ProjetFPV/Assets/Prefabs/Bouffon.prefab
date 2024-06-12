@@ -4946,6 +4946,7 @@ MonoBehaviour:
   respawnPoint: {fileID: 0}
   knockedBack: 0
   pathUpdateFrequency: 0.5
+  bodyColl: {fileID: 5151343745484903222}
   disappearDuration: 0.5
   idleDuration: 0.2
   appearDuration: 0.5
@@ -4969,7 +4970,7 @@ MonoBehaviour:
   predictDistance: 3
   jumpDuration: {x: 0.6, y: 0.8}
   waitBeforeJump: 0.5
-  waitAfterAttack: 0
+  waitAfterAttack: 0.5
   currentState: 0
   playerLayer:
     serializedVersion: 2
@@ -20099,8 +20100,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.5021977, y: 9.492778, z: 3.9127376}
-  m_Center: {x: 0.06956965, y: 4.7085433, z: -0.8629094}
+  m_Size: {x: 0.2, y: 1, z: 0.2}
+  m_Center: {x: 0, y: -0.7, z: 0}
 --- !u!1 &1727505125386945403 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5c9bfd65936915f4194f29d19f43431d,

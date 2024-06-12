@@ -8,6 +8,7 @@ public class MovingEnnemi : MonoBehaviour
     public Transform actor;
 
     public Transform destination;
+    public GameObject meshParent;
 
     public float speed;
 
@@ -31,7 +32,15 @@ public class MovingEnnemi : MonoBehaviour
 
         if (actor.position == destination.position)
         {
-            Destroy(transform.parent.gameObject, 2f);
+            StartCoroutine(DisableAndDestroy());
         }
+    }
+
+    private IEnumerator DisableAndDestroy()
+    {
+        meshParent.SetActive(false);
+        Debug.Log("ZERAEZAEAZEAZEAZEAZEAZEAZEAZE");
+        yield return new WaitForSeconds(5f);
+        Destroy(transform.parent.gameObject);
     }
 }

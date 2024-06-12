@@ -20,6 +20,8 @@ namespace Mechanics
         [InfoBox("Cercle vert = Zone de patrouille;  Cercle rouge = Zone d'aggro;  Cercle violet = portée de l'attaque", EInfoBoxType.Warning)]
         [BoxGroup][SerializeField]
         private float pathUpdateFrequency;
+        [BoxGroup][SerializeField]
+        private Collider bodyColl;
 
 
 
@@ -364,6 +366,7 @@ namespace Mechanics
             }
 
             body.isKinematic = true;
+            bodyColl.enabled = false;
             transform.DOMove(transform.position + Vector3.down * 5, disappearDuration);
             AudioManager.instance.PlaySound(8, 6, gameObject, 0.1f, false);
             if (Random.Range(0f, 1f) <= 0.3f)
@@ -388,6 +391,7 @@ namespace Mechanics
                 }
 
                 body.isKinematic = false;
+                bodyColl.enabled = true;
                 agent.enabled = true;
             });
         }

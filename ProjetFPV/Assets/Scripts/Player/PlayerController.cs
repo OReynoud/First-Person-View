@@ -190,7 +190,7 @@ public class PlayerController : Singleton<PlayerController>
 
     #region Misc
 
-    private float rotationX;
+    [HideInInspector] public float rotationX;
     private Vector3 playerDir;
     private float jumpTime;
     private Vector2 horizontalVelocity;
@@ -397,7 +397,7 @@ public class PlayerController : Singleton<PlayerController>
     private bool GroundCheck(out RaycastHit hit)
     {
         bool check = false;
-        if (Physics.SphereCast(transform.position, 0.3f, Vector3.down, out hit, 1.1f, groundLayer))
+        if (Physics.SphereCast(transform.position, 0.1f, Vector3.down, out hit, 1f, groundLayer))
         {
             if (!isJumping)
             {
@@ -474,12 +474,14 @@ public class PlayerController : Singleton<PlayerController>
         
         reloadBasePos = shootingHand.localPosition;
         animManager.RightHand_ReloadStart();
+        yield return new WaitForSeconds(animManager.rightHand.GetClip("A_ReloadStartNew").length);
         int numberOfReloads =
             Mathf.CeilToInt(Mathf.Clamp(currentInk / socketManager.reloadCostPerBullet, 0, socketManager.sockets.Count));
         var time = reloadSpeed / numberOfReloads;
         for (int i = socketManager.sockets.Count - 1; i >= 0; i--)
         {
             if (numberOfReloads == 0) break;
+            if (socketManager.sockets[i].state == ShootingHand.SocketStates.Loaded)continue;
             numberOfReloads--;
             reloadTimer = 0;
             while (reloadTimer < time)
@@ -490,7 +492,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 yield return null;
 
-            }
+            }   
             socketManager.sockets[i].socketMesh.material.SetFloat(socketManager.InkLevel,1);
         }
         socketManager.ReloadSockets();
@@ -565,7 +567,6 @@ public class PlayerController : Singleton<PlayerController>
             case PlayerStates.Crouching:
                 playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.2f);
                 break;
-
             case PlayerStates.Sprinting:
                 playerCam.position = Vector3.Lerp(playerCam.position, transform.position + Vector3.up * 0.5f, 0.2f);
 
@@ -768,7 +769,8 @@ public class PlayerController : Singleton<PlayerController>
     void Rotate()
     {
         if (lockedCam) return;
-        
+        // Debug.Log(Input.GetAxis("Mouse Y"));
+        // Debug.Log(Input.GetAxis("Mouse X"));
         rotationX += -Input.GetAxis("Mouse Y") * lookSpeed * sensitivity;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCam.localEulerAngles = new Vector3(rotationX, playerCam.localEulerAngles.y, playerCam.localEulerAngles.z);

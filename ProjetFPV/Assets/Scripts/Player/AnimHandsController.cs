@@ -8,9 +8,9 @@ using UnityEngine.InputSystem;
 public class AnimHandsController : MonoBehaviour
 {
     // Grab, Release
-    [SerializeField] private Animation leftHand;
+    [SerializeField] public Animation leftHand;
     
-    [SerializeField] private Animation rightHand;
+    [SerializeField] public Animation rightHand;
 
 
     public bool holding;
