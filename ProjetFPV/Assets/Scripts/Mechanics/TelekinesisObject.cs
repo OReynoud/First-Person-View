@@ -14,6 +14,9 @@ public class TelekinesisObject : ControllableProp
     public float ignoreGravityTime = 3;
     [SerializeField]private Collider col;
     [SerializeField] private float maxAutoAimDistance; //THOMAS WAS HERE
+    public float maxRotationSpeed = 15;
+    public float minRotationSpeed = 2.5f;
+    
 
     public override void Awake()
     {

@@ -210,8 +210,8 @@ public class TelekinesisModule : MonoBehaviour
     {
         switch (controlledProp)
         {
-            case TelekinesisObject:
-                Hold_TelekinesisObject();
+            case TelekinesisObject tkObject:
+                Hold_TelekinesisObject(tkObject);
                 return;
 
             case AbsorbInk absorbInk:
@@ -313,7 +313,7 @@ public class TelekinesisModule : MonoBehaviour
         }
     }
 
-    void Hold_TelekinesisObject()
+    void Hold_TelekinesisObject(TelekinesisObject telekinesisObject)
     {
         main.currentInk =
             GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, -holdObjectCost);
@@ -339,6 +339,13 @@ public class TelekinesisModule : MonoBehaviour
         }
         else
         {
+
+            controlledProp.body.angularVelocity = (controlledProp.body.angularVelocity.normalized + controlledProp.transform.up * 0.01f) *
+                                                  Mathf.Clamp(controlledProp.body.angularVelocity.magnitude,
+                                                      telekinesisObject.minRotationSpeed,
+                                                      telekinesisObject.maxRotationSpeed);
+            
+            
             controlledProp.body.velocity = dir * (regularTravelSpeed *
                                                   (Vector3.Distance(controlledProp.transform.position,
                                                       offsetPosition.position) / grabDistanceBuffer));
