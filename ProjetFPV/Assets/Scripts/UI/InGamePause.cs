@@ -17,6 +17,7 @@ public class InGamePause : MonoBehaviour
     [SerializeField] private CanvasGroup difficultyCanva;
     [SerializeField] private GameObject collectibleCamera;
     private Coroutine coroutine;
+    private float t;
 
     void Start()
     {
@@ -34,11 +35,20 @@ public class InGamePause : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (t < 0) return;
+
+        t -= Time.unscaledDeltaTime;
+    }
+    
     public void Escape(InputAction.CallbackContext obj)
     {
-        if (!obj.started) return;
+        if (!obj.started || t > 0f) return;
 
         if (collectibleCamera != null && collectibleCamera.activeInHierarchy) return;
+
+        t = 0.2f;
 
         if (optionsScript.optionsCanva.gameObject.activeInHierarchy)
         {
