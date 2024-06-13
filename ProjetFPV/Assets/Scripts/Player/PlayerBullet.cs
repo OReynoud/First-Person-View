@@ -87,7 +87,7 @@ namespace Player
             //Coucou, Thomas est passé par là (jusqu'au prochain commentaire)
             var decal = Instantiate(GameManager.instance.inkStainDecal,
                 other.GetContact(0).point + other.GetContact(0).normal * 0.02f,
-                Quaternion.identity, other.transform);
+                Quaternion.identity);
             decal.transform.forward = -other.GetContact(0).normal;
             decal.transform.RotateAround(decal.transform.position, decal.transform.forward, Random.Range(-180f, 180f));
             //Je m'en vais !
