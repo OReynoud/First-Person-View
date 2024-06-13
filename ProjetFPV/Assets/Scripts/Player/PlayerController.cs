@@ -399,7 +399,7 @@ public class PlayerController : Singleton<PlayerController>
     private bool GroundCheck(out RaycastHit hit)
     {
         bool check = false;
-        if (Physics.SphereCast(transform.position, 0.1f, Vector3.down, out hit, 1f, groundLayer))
+        if (Physics.SphereCast(transform.position, 0.4f, Vector3.down, out hit, 0.7f, groundLayer))
         {
             if (!isJumping)
             {
@@ -437,7 +437,7 @@ public class PlayerController : Singleton<PlayerController>
             telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
             telekinesisPointer.transform.localScale =
                 Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
-            telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, 2f);
+            telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -2f);
             return;
         }
         
