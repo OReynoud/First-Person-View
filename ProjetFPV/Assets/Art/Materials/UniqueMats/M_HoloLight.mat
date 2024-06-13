@@ -7,12 +7,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Props04
-  m_Shader: {fileID: -6465566751694194690, guid: 34cd26a1ee2bbc54c9c06afa543cfe6b,
+  m_Name: M_HoloLight
+  m_Shader: {fileID: -6465566751694194690, guid: a07b68d10ac029c498ac22e662fd56c9,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _USE_BIG_SCALINE
+  - _USE_COLLISION_RIPPLES
+  - _USE_EDGE_GLOW
+  - _USE_HEXAGON_GLOW
+  - _USE_INTERSECTION
   m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
@@ -24,28 +29,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _AO:
-        m_Texture: {fileID: 2800000, guid: 2cfd0a11e37b1f34ab60fbc6a40c6544, type: 3}
+    - _Hexagon_Texture:
+        m_Texture: {fileID: 2800000, guid: 24af202e08e40094da16a6ade9416328, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Base_Color:
-        m_Texture: {fileID: 2800000, guid: 8d211aec60805914d9083440526780bc, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Emissive:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Metallic:
-        m_Texture: {fileID: 2800000, guid: 01b1a533d3d8fbb41b7c20100c8a11e2, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Normal:
-        m_Texture: {fileID: 2800000, guid: bac504d25044b93419e21c9607d80e6b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Roughness:
-        m_Texture: {fileID: 2800000, guid: 4a57e8f689cfcb84b989301ff8fce4f9, type: 3}
+    - _Scaline_Texture:
+        m_Texture: {fileID: 2800000, guid: bb9088a8d59fe014589f2917aa2c8dea, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -62,12 +51,39 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Aspect_Ratio: 0.5
+    - _Big_Scanline_Speed: 0.15
+    - _Big_Scanline_Strength: 0.25
+    - _Big_Scanline_Thickness: 0.025
+    - _Edge_Glow_Strength: 1
+    - _Glow_Noise_Scale: 1
+    - _Glow_Speed: 4
+    - _Heightmap_Strength: 0.005
+    - _Intersection_Strength: 1
+    - _Intersection_Thickness: 0.05
+    - _Metallic: 0
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Ripple_Speed: 2.5
+    - _Ripple_Thickness: 0.05
+    - _Ripple_Time: 2
+    - _Scanline_Strength: 0
+    - _Smoothness: 0.5
+    - _USE_BIG_SCALINE: 1
+    - _USE_COLLISION_RIPPLES: 1
+    - _USE_EDGE_GLOW: 1
+    - _USE_HEXAGON_GLOW: 1
+    - _USE_INTERSECTION: 1
+    - _USE_SCANLINE: 0
     m_Colors:
-    - _Remap_Roughness: {r: 0, g: 1, b: 0, a: 0}
+    - _Base_Color: {r: 0.23082057, g: 0.5417416, b: 0.8584906, a: 0}
+    - _Edge_Glow_Thickness: {r: 0.02, g: 0.04, b: 0, a: 0}
+    - _Emission_Color: {r: 0, g: 0.2058614, b: 0.38039216, a: 0}
+    - _Glow_Strength_MinMax: {r: 0, g: 0.25, b: 0, a: 0}
+    - _Ripple_Origin: {r: 0.25, g: 0.5, b: 0, a: 0}
+    - _Scroll_Velocity: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &8001872730648296458
+--- !u!114 &5454663109506494523
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
