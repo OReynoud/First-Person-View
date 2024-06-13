@@ -45,6 +45,8 @@ public class PlayerController : Singleton<PlayerController>
 
     [HideInInspector] public float sensitivity = 1;
 
+    [SerializeField] private Material fullScreenDamageMat;
+
     private GameObject reloadSoundStart;
 
     #region Refs
@@ -284,6 +286,8 @@ public class PlayerController : Singleton<PlayerController>
         
         playerLayer = LayerMask.GetMask("Player") + socketManager.shootMask;
         sensitivity = 1;
+
+        StartCoroutine(ResetDamageShader(true));
     }
     
     public void TakeDamage(float damage)
@@ -291,11 +295,74 @@ public class PlayerController : Singleton<PlayerController>
         CameraShake.instance.ShakeOneShot(3);
         currentHealth -= PlayerPrefs.GetInt("difficulty") == 0 ? damage : damage/2f;
 
+        StartCoroutine(TakeDamageShader());
+        
         //SON
         if (currentHealth <= 0)
         {
             Debug.Log("Je suis mort");
             GameManager.instance.PlayerDeath();
+        }
+    }
+
+    private float timer = 0.4f;
+    private float timer2 = 0.6f;
+
+    private IEnumerator ResetDamageShader(bool hardMode)
+    {
+        if (hardMode)
+        {
+            fullScreenDamageMat.SetFloat("_Step", 0);
+            fullScreenDamageMat.SetFloat("_Transparency", 5f);
+            yield break;
+        }
+
+        var time = 0f;
+        var tempTransparencyValue = fullScreenDamageMat.GetFloat("_Transparency");
+        var tempStepValue = fullScreenDamageMat.GetFloat("_Step");
+        
+        while (time < 3f)
+        {
+            time += Time.unscaledDeltaTime;
+            
+            fullScreenDamageMat.SetFloat("_Step", Mathf.Lerp(tempStepValue, 0, time / timer2));
+            fullScreenDamageMat.SetFloat("_Transparency", Mathf.Lerp(tempTransparencyValue, 5f, time / timer2));
+            
+            yield return null;
+        }
+    }
+    
+    private IEnumerator TakeDamageShader()
+    {
+        var missingHealth = (maxHealth - currentHealth) / maxHealth;
+        var time = 0f;
+        var tempTransparencyValue = fullScreenDamageMat.GetFloat("_Transparency");
+        var tempStepValue = fullScreenDamageMat.GetFloat("_Step");
+        
+        while (time < timer)
+        {
+            time += Time.unscaledDeltaTime;
+            
+            fullScreenDamageMat.SetFloat("_Step", Mathf.Lerp(tempStepValue, missingHealth + 0.12f, time / timer));
+            fullScreenDamageMat.SetFloat("_Transparency", Mathf.Lerp(tempTransparencyValue, 100f, time / timer));
+            
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.3f);
+
+        time = 0f;
+        tempStepValue = fullScreenDamageMat.GetFloat("_Step");
+        tempTransparencyValue = fullScreenDamageMat.GetFloat("_Transparency");
+        
+        while (time < timer2)
+        {
+            time += Time.unscaledDeltaTime;
+            
+            fullScreenDamageMat.SetFloat("_Step", Mathf.Lerp(tempStepValue, missingHealth, time / timer2));
+            fullScreenDamageMat.SetFloat("_Transparency", Mathf.Lerp(tempTransparencyValue, 5f, time / timer2));
+            
+            yield return null;
         }
     }
 
@@ -551,6 +618,12 @@ public class PlayerController : Singleton<PlayerController>
     // Update is called once per frame
     private void Update()
     { // THOMAS
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            TakeDamage(1);
+        }
+        
+        
         walkTimer -= Time.deltaTime;
 
         #region Cinématique bandes noires
@@ -939,6 +1012,8 @@ public class PlayerController : Singleton<PlayerController>
         {
             currentHealth = maxHealth;
         }
+
+        StartCoroutine(ResetDamageShader(false));
         
         //SON
         AudioManager.instance.PlaySound(3, 16, gameObject, 0.1f, false);
@@ -1053,7 +1128,7 @@ public class PlayerController : Singleton<PlayerController>
 
     #region Cinématique bandes noires
     
-    public bool isControled;
+    [HideInInspector] public bool isControled;
     private bool isRepositiong;
     private bool isEndingCinematic;
     private Vector3 cinematicStartPos;
