@@ -17,6 +17,7 @@ namespace Mechanics
         private bool isGettingAbsorbed;
         private BoxCollider boxCol;
         private Coroutine cor;
+        [SerializeField] private bool isADecal;
         
         
         // Start is called before the first frame update
@@ -24,9 +25,12 @@ namespace Mechanics
         {
             t = respawnTimer;
             maxInk = storedInk;
-            decal = transform.GetChild(0).GetComponent<DecalProjector>();
-            baseScale = decal.size;
-            boxCol = GetComponent<BoxCollider>();
+            if (isADecal)
+            {
+                decal = transform.GetChild(0).GetComponent<DecalProjector>();
+                baseScale = decal.size;
+                boxCol = GetComponent<BoxCollider>();
+            }
         }
 
         public void StartAbsorbInk()
