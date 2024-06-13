@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -15,11 +16,13 @@ namespace Mechanics
         private float t;
         private bool isGettingAbsorbed;
         private BoxCollider boxCol;
+        private Coroutine cor;
         
         
         // Start is called before the first frame update
         void Start()
         {
+            t = respawnTimer;
             maxInk = storedInk;
             decal = transform.GetChild(0).GetComponent<DecalProjector>();
             baseScale = decal.size;
@@ -28,6 +31,7 @@ namespace Mechanics
 
         public void StartAbsorbInk()
         {
+            StopCoroutine(cor);
             isGettingAbsorbed = true;
         }
 
@@ -52,18 +56,30 @@ namespace Mechanics
 
             if (t <= 0)
             {
-                Respawn();
+                cor = StartCoroutine(Respawn());
             }
         }
 
-        void Respawn()
+        private IEnumerator Respawn()
         {
-            decal.size = baseScale;
-            decal.fadeFactor = 1f;
-            storedInk = maxInk;
-            boxCol.enabled = true;
-            
             t = respawnTimer;
+
+            var x = 0f;
+            boxCol.enabled = true;
+            var currentSize = decal.size;
+            var currentFade = decal.fadeFactor;
+            var currentInk = storedInk;
+
+            while (x < 2f)
+            {
+                x += Time.deltaTime;
+
+                decal.size = Vector3.Lerp(currentSize, baseScale, x);
+                decal.fadeFactor = Mathf.Lerp(currentFade, 1f, x);
+                storedInk = Mathf.Lerp(currentInk, maxInk, x);
+
+                yield return null;
+            }
         }
     }
 }

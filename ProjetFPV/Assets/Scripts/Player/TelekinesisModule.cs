@@ -173,7 +173,7 @@ public class TelekinesisModule : MonoBehaviour
             {
                 if (!absorb.canBeGrabbed) return;
                 controlledProp = absorb;
-                absorb.StopAbsorbing();
+                absorb.StartAbsorbInk();
                 controlledProp.ApplyTelekinesis();
 
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
