@@ -399,7 +399,7 @@ public class PlayerController : Singleton<PlayerController>
     private bool GroundCheck(out RaycastHit hit)
     {
         bool check = false;
-        if (Physics.SphereCast(transform.position, 0.1f, Vector3.down, out hit, 1f, groundLayer))
+        if (Physics.SphereCast(transform.position, 0.4f, Vector3.down, out hit, 0.7f, groundLayer))
         {
             if (!isJumping)
             {
