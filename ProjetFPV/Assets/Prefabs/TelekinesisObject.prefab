@@ -107,8 +107,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1.1815996, z: 1}
-  m_Center: {x: 0, y: 0.039644957, z: 0}
+  m_Size: {x: 1.0187476, y: 1.0242596, z: 1}
+  m_Center: {x: 0.0031246245, y: 0.00030994415, z: 0}
 --- !u!54 &6621414165765468009
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -157,6 +157,8 @@ MonoBehaviour:
   ignoreGravityTime: 0.3
   col: {fileID: 0}
   maxAutoAimDistance: 5
+  maxRotationSpeed: 15
+  minRotationSpeed: 2.5
 --- !u!208 &1531601805170110294
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -189,7 +191,7 @@ PrefabInstance:
     - target: {fileID: 1600699465192907536, guid: df5534372034a0a41bd43a6eea6c43b9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.54370844
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1600699465192907536, guid: df5534372034a0a41bd43a6eea6c43b9,
         type: 3}
