@@ -1,14 +1,9 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
-using Unity.AI.Navigation;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Mechanics
@@ -25,7 +20,7 @@ namespace Mechanics
         [SerializeField] private Image[] segments;
         [SerializeField] private TextMeshProUGUI healPackText;
         [SerializeField] public TextMeshProUGUI interactText;
-        [SerializeField] public GameObject gameOver;
+        [SerializeField] public CanvasGroup gameOver;
         [SerializeField] public GameObject inkStainDecal;
         [SerializeField] public ParticleSystem[] VFX_EnemyHit;
         private Coroutine coroutine;
@@ -60,18 +55,15 @@ namespace Mechanics
             //
             //     }
             // }
-            
+
         }
 
         void Start()
         {
             UpdateHealPackUI();
+            gameOver.DOFade(0f, 2f);
         }
-
-
-
-
-
+        
         public void UpdateHealPackUI()
         {
             healPackText.text = "x " + PlayerController.instance.currentHealPackAmount;
@@ -188,15 +180,22 @@ namespace Mechanics
         
         public void PlayerDeath()
         {
+            Debug.Log(Time.timeScale);
+            PlayerController.instance.isControled = true;
             PlayerController.instance.enabled = false;
-            Debug.Log("Je suis mort");
-            gameOver.SetActive(true);
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
+            gameOver.DOFade(1f, 1f);
+            StartCoroutine(GameOverCoroutine());
+        }
+
+        private IEnumerator GameOverCoroutine()
+        {
+            yield return new WaitForSeconds(1.5f);
+            Reload();
         }
 
         public void Reload()
         {
+            PlayerController.instance.isControled = false;
             PlayerPrefs.SetInt("isReloadingSave", 1);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
