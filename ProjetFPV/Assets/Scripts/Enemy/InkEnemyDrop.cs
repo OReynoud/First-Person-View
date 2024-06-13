@@ -16,6 +16,6 @@ public class InkEnemyDrop : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        rb.angularVelocity = new Vector3(Mathf.Cos(Time.time),Mathf.Cos(Time.time),Mathf.Sin(Time.time) * rotationAmplitude);
+        rb.angularVelocity = new Vector3(0,rotationAmplitude,0);
     }
 }

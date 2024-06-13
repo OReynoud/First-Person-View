@@ -517,7 +517,7 @@ namespace Mechanics
             if (isGrabbed)PlayerController.instance.ReleaseProp(new InputAction.CallbackContext());
             grabbedTween.Complete();
             grabbedTween.Kill(true);
-            var oui = Instantiate(GameManager.instance.inkStainPrefab, transform.position, transform.rotation);
+            var oui = Instantiate(GameManager.instance.inkStainPrefab, transform.position, Quaternion.Euler(-90,0,0));
             oui.storedInk = inkIncrease;
             transform.DOMove(new Vector3(transform.position.x,0,transform.position.z), 0.4f).SetEase(Ease.InCubic);
             while (anim.isPlaying)
