@@ -952,6 +952,21 @@ PrefabInstance:
       propertyPath: fullScreenBlack
       value: 
       objectReference: {fileID: 309180572}
+    - target: {fileID: 3751768666221158291, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.07450981
+      objectReference: {fileID: 0}
+    - target: {fileID: 3751768666221158291, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.078431375
+      objectReference: {fileID: 0}
+    - target: {fileID: 3751768666221158291, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.08627451
+      objectReference: {fileID: 0}
     - target: {fileID: 5770478272940288656, guid: 25b553424ab0af54d9c26fb410130005,
         type: 3}
       propertyPath: tutorialText
@@ -962,6 +977,41 @@ PrefabInstance:
       propertyPath: tutorialCanva
       value: 
       objectReference: {fileID: 1499288116}
+    - target: {fileID: 6235162921132679176, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6235162921132679176, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6235162921132679176, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6235162921132679176, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6235162921132679176, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6235162921132679176, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6235162921132679176, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.000020245785
+      objectReference: {fileID: 0}
     - target: {fileID: 6625738270304295612, guid: 25b553424ab0af54d9c26fb410130005,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1099,10 +1149,22 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    - target: {fileID: 8445707260473414332, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2572079725237016958, guid: 25b553424ab0af54d9c26fb410130005, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 8457875673284717666, guid: 25b553424ab0af54d9c26fb410130005, type: 3}
+    - {fileID: 5166199888602102031, guid: 25b553424ab0af54d9c26fb410130005, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8445707260473414332, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1662913822}
   m_SourcePrefab: {fileID: 100100000, guid: 25b553424ab0af54d9c26fb410130005, type: 3}
 --- !u!1001 &606500121
 PrefabInstance:
@@ -2978,6 +3040,24 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e97fc7d8818753c48927912856692690, type: 3}
+--- !u!1 &1662913817 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8445707260473414332, guid: 25b553424ab0af54d9c26fb410130005,
+    type: 3}
+  m_PrefabInstance: {fileID: 564455195}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1662913822
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1662913817}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1726676790
 GameObject:
   m_ObjectHideFlags: 0
