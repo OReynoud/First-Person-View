@@ -10,8 +10,11 @@ namespace Mechanics
         [HideInInspector] public DecalProjector decal;
         
         public float storedInk;
-        [SerializeField] private bool respawn;
+        public bool respawn;
         [SerializeField] private float respawnTimer;
+        private float t;
+        private bool isGettingAbsorbed;
+        private BoxCollider boxCol;
         
         
         // Start is called before the first frame update
@@ -20,8 +23,47 @@ namespace Mechanics
             maxInk = storedInk;
             decal = transform.GetChild(0).GetComponent<DecalProjector>();
             baseScale = decal.size;
+            boxCol = GetComponent<BoxCollider>();
         }
 
-        // Update is called once per frame
+        public void StartAbsorbInk()
+        {
+            isGettingAbsorbed = true;
+        }
+
+        public void StopAbsorbing()
+        {
+            isGettingAbsorbed = false;
+            t = respawnTimer;
+
+            if (storedInk <= 0.5f)
+            {
+                boxCol.enabled = false;
+            }
+        }
+
+        void Update()
+        {
+            if (!respawn) return;
+            
+            if (isGettingAbsorbed) return;
+
+            t -= Time.deltaTime;
+
+            if (t <= 0)
+            {
+                Respawn();
+            }
+        }
+
+        void Respawn()
+        {
+            decal.size = baseScale;
+            decal.fadeFactor = 1f;
+            storedInk = maxInk;
+            boxCol.enabled = true;
+            
+            t = respawnTimer;
+        }
     }
 }

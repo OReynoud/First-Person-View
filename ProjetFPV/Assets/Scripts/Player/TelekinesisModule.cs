@@ -173,6 +173,7 @@ public class TelekinesisModule : MonoBehaviour
             {
                 if (!absorb.canBeGrabbed) return;
                 controlledProp = absorb;
+                absorb.StopAbsorbing();
                 controlledProp.ApplyTelekinesis();
 
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
@@ -255,7 +256,6 @@ public class TelekinesisModule : MonoBehaviour
 
         absorbInk.decal.size = Vector3.Lerp(absorbInk.baseScale, Vector3.zero, lerpValue);
         absorbInk.decal.fadeFactor = Mathf.Lerp(1f, 0f, lerpValue);
-        //absorbInk.transform.localScale = Vector3.Lerp(absorbInk.baseScale, Vector3.zero, lerpValue);
 
         if (!controlledProp.isGrabbed)
         {
@@ -496,10 +496,15 @@ public class TelekinesisModule : MonoBehaviour
 
     public void Release_AbsorbInk(AbsorbInk absorbInk)
     {
+        absorbInk.StopAbsorbing();
+        
         absorbInk.isGrabbed = false;
         if (absorbInk.storedInk < 0)
         {
-            Destroy(absorbInk.gameObject);
+            if (!absorbInk.respawn)
+            {
+                Destroy(absorbInk.gameObject);
+            }
         }
     }
 
