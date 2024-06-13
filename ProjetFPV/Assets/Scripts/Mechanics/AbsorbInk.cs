@@ -1,13 +1,15 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 namespace Mechanics
 {
     public class AbsorbInk : ControllableProp
     {
         [HideInInspector] public float maxInk;
-        [HideInInspector] public Vector3 baseScale;
+        [HideInInspector] public Vector3 baseDecalScale;
+        [HideInInspector] public Vector3 baseGOScale;
         [HideInInspector] public DecalProjector decal;
         
         public float storedInk;
@@ -17,6 +19,7 @@ namespace Mechanics
         private bool isGettingAbsorbed;
         private BoxCollider boxCol;
         private Coroutine cor;
+        public bool isADecal;
         
         
         // Start is called before the first frame update
@@ -24,19 +27,28 @@ namespace Mechanics
         {
             t = respawnTimer;
             maxInk = storedInk;
-            decal = transform.GetChild(0).GetComponent<DecalProjector>();
-            baseScale = decal.size;
-            boxCol = GetComponent<BoxCollider>();
+            if (isADecal)
+            {
+                decal = transform.GetChild(0).GetComponent<DecalProjector>();
+                baseDecalScale = decal.size;
+                boxCol = GetComponent<BoxCollider>();
+            }
+            else
+            {
+                baseGOScale = transform.localScale;
+            }
         }
 
         public void StartAbsorbInk()
         {
+            if (!isADecal) return;
             StopCoroutine(cor);
             isGettingAbsorbed = true;
         }
 
         public void StopAbsorbing()
         {
+            if (!isADecal) return;
             isGettingAbsorbed = false;
             t = respawnTimer;
 
@@ -48,6 +60,8 @@ namespace Mechanics
 
         void Update()
         {
+            if (!isADecal) return;
+            
             if (!respawn) return;
             
             if (isGettingAbsorbed) return;
@@ -74,7 +88,7 @@ namespace Mechanics
             {
                 x += Time.deltaTime;
 
-                decal.size = Vector3.Lerp(currentSize, baseScale, x);
+                decal.size = Vector3.Lerp(currentSize, baseDecalScale, x);
                 decal.fadeFactor = Mathf.Lerp(currentFade, 1f, x);
                 storedInk = Mathf.Lerp(currentInk, maxInk, x);
 

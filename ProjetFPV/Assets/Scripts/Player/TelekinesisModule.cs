@@ -254,8 +254,17 @@ public class TelekinesisModule : MonoBehaviour
             (PlayerPrefs.GetInt("difficulty") == 0 ? inkAbsorbSpeed : inkAbsorbSpeed * 3f) * Time.deltaTime);
         var lerpValue = Mathf.Clamp(1 - absorbInk.storedInk / absorbInk.maxInk, 0, 0.8f);
 
-        absorbInk.decal.size = Vector3.Lerp(absorbInk.baseScale, Vector3.zero, lerpValue);
-        absorbInk.decal.fadeFactor = Mathf.Lerp(1f, 0f, lerpValue);
+        if (absorbInk.isADecal)
+        {
+            absorbInk.decal.size = Vector3.Lerp(absorbInk.baseDecalScale, Vector3.zero, lerpValue);
+            absorbInk.decal.fadeFactor = Mathf.Lerp(1f, 0f, lerpValue);
+        }
+        else
+        {
+            absorbInk.transform.localScale = Vector3.Lerp(absorbInk.baseGOScale, Vector3.zero, lerpValue);
+        }
+        
+        
 
         if (!controlledProp.isGrabbed)
         {
