@@ -501,6 +501,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 10083582493029471, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: fullScreenDamageMat
+      value: 
+      objectReference: {fileID: 2100000, guid: 733770a7e6cb6164391e86f34e3e92b9, type: 2}
     - target: {fileID: 1171924708256431230, guid: dce82ebbf28195f43941531e37b8f0be,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1097,11 +1102,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1484673573471933685, guid: 25b553424ab0af54d9c26fb410130005,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 748614128}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25b553424ab0af54d9c26fb410130005, type: 3}
 --- !u!1001 &606500121
 PrefabInstance:
@@ -1266,26 +1267,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 373522947}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &748614123 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1484673573471933685, guid: 25b553424ab0af54d9c26fb410130005,
-    type: 3}
-  m_PrefabInstance: {fileID: 564455195}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &748614128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 748614123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ea3456a43ebc3047b54cddb0b076b57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tutorialCanva: {fileID: 1499288116}
-  tutorialText: {fileID: 197620112}
 --- !u!114 &823652906 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2688893237273830972, guid: dce82ebbf28195f43941531e37b8f0be,
