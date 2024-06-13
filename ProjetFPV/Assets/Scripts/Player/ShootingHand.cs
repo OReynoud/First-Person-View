@@ -206,10 +206,10 @@ public class ShootingHand : MonoBehaviour
             }
             else
             {
-                var bullet = Instantiate(bulletPrefab, origin.position - origin.right * 0.5f, Quaternion.identity);
+                var bullet = Instantiate(bulletPrefab, origin.position - origin.right * 0.5f, cam.rotation);
                 bullet.transform.LookAt(hit.point);
 
-                bullet.rb.velocity = bullet.transform.forward * bulletSpeed;
+                bullet.rb.velocity = cam.forward * bulletSpeed;
                 bullet.superShot = currentSocket.state == SocketStates.SuperCharged;
                 bullet.weakSpotDamage = weakSpotDamage;
                 bullet.bodyDamage = bodyDamage;

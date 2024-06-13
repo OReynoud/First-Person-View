@@ -128,6 +128,7 @@ namespace Mechanics
 
                 bodyHit = false;
                 GameManager.instance.VFX_EnemyHitMethod(partHit.transform.position);
+                GameManager.instance.VFX_HeadshotMethod(partHit.transform.position);
                 allMasks[i].maskHealth -= damage;
                 if ( allMasks[i].maskHealth <= 0)
                 {

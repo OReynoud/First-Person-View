@@ -23,6 +23,7 @@ namespace Mechanics
         [SerializeField] public CanvasGroup gameOver;
         [SerializeField] public GameObject inkStainDecal;
         [SerializeField] public ParticleSystem[] VFX_EnemyHit;
+        [SerializeField] private ParticleSystem VFX_HeadShot;
         private Coroutine coroutine;
         
 
@@ -120,6 +121,7 @@ namespace Mechanics
             timer = Time.time + hitMarkerFadeTime;
             if (headshot)
             {
+                
                 headHitMarker.alpha = 1;
                 while (Time.time < timer)
                 {
@@ -200,6 +202,12 @@ namespace Mechanics
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
+        public void VFX_HeadshotMethod(Vector3 position)
+        {
+            VFX_HeadShot.transform.position = position;
+            VFX_HeadShot.transform.LookAt(PlayerController.instance.transform.position);
+            VFX_HeadShot.Play();
+        }
         public void VFX_EnemyHitMethod(Vector3 position)
         {
             VFX_EnemyHit[0].transform.position = position;

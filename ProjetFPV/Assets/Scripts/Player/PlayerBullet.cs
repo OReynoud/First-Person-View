@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Mechanics;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -23,6 +24,26 @@ namespace Player
             weakSpotKnockBack = WeakSpotKnockBack;
         }
 
+        private void Start()
+        {
+            Deviate(0);
+        }
+
+        private int iterations = 50;
+        async void Deviate(int i)
+        {
+            await Task.Delay(50);
+            if (this)
+            {
+                i++;
+                transform.position += -transform.right * 0.5f + transform.up * 0.6f;
+                if (i < iterations)
+                {
+                    Deviate(i);
+                }
+            }
+
+        }
         public MeshRenderer meshRenderer;
         // Start is called before the first frame update
 
