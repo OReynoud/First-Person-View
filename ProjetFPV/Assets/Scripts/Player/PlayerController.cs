@@ -507,28 +507,43 @@ public class PlayerController : Singleton<PlayerController>
             telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -2f);
             return;
         }
+
+        ControllableProp prop;
         
-        
-        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange)
-            && hit.collider.TryGetComponent(out ControllableProp prop))
+        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange))
         {
-            if (!prop.canBeGrabbed)
+            if (!hit.collider.TryGetComponent(out prop))
             {
-                pointerTimer -= Time.deltaTime;
+                try
+                {
+                    prop = hit.collider.GetComponentInParent<Enemy>();
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+            }
+
+            if (prop != null)
+            {
+                if (!prop.canBeGrabbed)
+                {
+                    pointerTimer -= Time.deltaTime;
+                    telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
+                    telekinesisPointer.transform.localScale =
+                        Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
+                    telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -5);
+                    return;
+                }
+
+                pointerTimer += Time.deltaTime;
+                //telekinesisPointer.position = camera1.WorldToScreenPoint(prop.transform.position);
                 telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
                 telekinesisPointer.transform.localScale =
                     Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
-                telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -5);
+                telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -0.8f);
                 return;
             }
-
-            pointerTimer += Time.deltaTime;
-            //telekinesisPointer.position = camera1.WorldToScreenPoint(prop.transform.position);
-            telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
-            telekinesisPointer.transform.localScale =
-                Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
-            telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -0.8f);
-            return;
         }
 
         pointerTimer -= Time.deltaTime;
