@@ -39,8 +39,8 @@ namespace Mechanics
         public override void Awake()
         {
             base.Awake();
-            // bodyHitMarker.alpha = 0;
-            // headHitMarker.alpha = 0;
+            bodyHitMarker.alpha = 0;
+            headHitMarker.alpha = 0;
             Ex.DefaultMask = LayerMask.GetMask("Default");
 
             // var temp = FindObjectsOfType<GameObject>();
