@@ -213,13 +213,14 @@ public class AnimHandsController : MonoBehaviour
     }
     public async void ChainShootToReload()
     {
-        while (rightHand.isPlaying)
+        while (shooting)
         {
             await Task.Delay(10);
             if (!Application.isPlaying)return;
         }
 
         if (!Application.isPlaying)return;
+        Debug.Log("oui");
         PlayerController.instance.RequestReload(new InputAction.CallbackContext());
     }
 }
