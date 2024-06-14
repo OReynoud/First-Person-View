@@ -379,7 +379,7 @@ namespace Mechanics
             transform.position = GetRandomSpawnPoint() + Vector3.down * 5;
             transform.LookAt(new Vector3(PlayerController.instance.transform.position.x, transform.position.y,PlayerController.instance.transform.position.z));
             AudioManager.instance.PlaySound(8, 1, gameObject, 0.1f, false);
-            transform.DOMove(transform.position + Vector3.up * 5, appearDuration).OnComplete(() =>
+            transform.DOMove(transform.position + Vector3.up * 6.5f, appearDuration).OnComplete(() =>
             {
                 repositioning = false;
                 currentState = States.Rush;
