@@ -68,8 +68,8 @@ public class IntroCinematic : MonoBehaviour
             
             oldVolume.weight = Mathf.Lerp(1, 0, t / 50f);
             newVolume.weight = Mathf.Lerp(0, 1, t / 50f);
-            camera.transform.rotation = Quaternion.Lerp(startRot, target.transform.rotation, t / 40f);
-            camera.transform.DOMove(camera.transform.position + camera.transform.forward * (Time.deltaTime * 0.03f), Time.deltaTime);
+            camera.transform.rotation = Quaternion.Lerp(startRot, target.transform.rotation, t / 30f);
+            camera.transform.DOMove(camera.transform.position + camera.transform.forward * (Time.deltaTime * 0.035f), Time.deltaTime);
             
             yield return null;
         }
@@ -99,7 +99,7 @@ public class IntroCinematic : MonoBehaviour
             var currentLight = lights[0].intensity;
             var targetLight = 0f;
             
-            targetLight = currentLight >= 1f ? Random.Range(0.1f, 0.4f) : Random.Range(1f, 1.5f);
+            targetLight = currentLight >= 1f ? Random.Range(8f, 12f) : Random.Range(30f, 36f);
 
             var time = Random.Range(0.03f, 0.08f);
 
