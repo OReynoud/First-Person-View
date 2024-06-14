@@ -21,6 +21,8 @@ namespace Mechanics
         [BoxGroup("Masks")] [ReadOnly] public int maskCount;
         
         [BoxGroup("Stunned state")] public float stunDuration = 2f;
+        
+        [BoxGroup("Stunned state")] public float damageFromStun = 1;
     
         [BoxGroup("Stunned state")] public Material defaultMat;
     
@@ -89,7 +91,14 @@ namespace Mechanics
 
         public virtual void ApplyStun()
         {
-
+            for (int i = 0; i < allMasks.Length; i++)
+            {
+                if (allMasks[i].broken)continue;
+                
+                TakeDamage(allMasks[i].maskCollider, Vector3.zero, damageFromStun,0);
+                
+                break;
+            }
         }
 
         public void OnDrawGizmosSelected()
@@ -154,10 +163,13 @@ namespace Mechanics
                     }
                 }
             }
-
+            if (maskCount <= 0)
+            {
+                Die();
+                return;
+            }
             if (!knockedBack && !isGrabbed && !bodyHit) KnockBack(knockBackDir,knockBack);
             
-            if (maskCount <= 0) Die();
         }
 
         public virtual void TakeDamage(float knockBackValue, Vector3 knockBackDir, Vector3 pointOfForce,float damage, Collider maskCollider)
@@ -183,9 +195,14 @@ namespace Mechanics
                 break;
             }
 
+            if (maskCount <= 0)
+            {
+                Die();
+                return;
+            }
+
             ApplyStun();
             
-            if (maskCount <= 0) Die();
         }
 
         public virtual void Die()
