@@ -6,7 +6,6 @@
 #if true && (UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5 || UNITY_2017_1_OR_NEWER) // MODULE_MARKER
 
 using System;
-using Cinemachine;
 using UnityEngine;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -178,15 +177,6 @@ namespace DG.Tweening
             var targetMain = target.emission;
             TweenerCore<float, float, FloatOptions> t = DOTween.To(() => targetMain.rateOverTimeMultiplier, x => targetMain.rateOverTimeMultiplier= x, endValue, duration);
             t.SetTarget(targetMain);
-            return t;
-        }
-        #endregion
-        
-        #region Cinemachine
-        public static TweenerCore<float, float, FloatOptions> DOCinemachineOrthoSize(this CinemachineVirtualCamera target, float endValue, float duration)
-        {
-            TweenerCore<float, float, FloatOptions> t = DOTween.To(() => target.m_Lens.OrthographicSize, x => target.m_Lens.OrthographicSize = x, endValue, duration);
-            t.SetTarget(target);
             return t;
         }
         #endregion

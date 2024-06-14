@@ -1,15 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using DG.Tweening;
 using Mechanics;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using Quaternion = UnityEngine.Quaternion;
-using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -26,6 +25,8 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private AnimationCurve vignetteIntensity; //Intensité de la vignette
 
     [SerializeField] private Volume volume;
+    private ChromaticAberration chromaticAberration;
+    [SerializeField] private float chromaticAberrationValue;
 
     [Tooltip("Maximum Ink of the player")] [SerializeField]
     public float maxInk;
@@ -298,6 +299,17 @@ public class PlayerController : Singleton<PlayerController>
         StartCoroutine(TakeDamageShader());
         
         //SON
+        
+        // lensDistortion.DOLensDistortion(lensDistortionValue, 0.1f).OnComplete(() =>
+        // {
+        //     lensDistortion.DOLensDistortion(0f, 0.1f);
+        // });
+        
+        chromaticAberration.DOChromaticAberrationIntensity(chromaticAberrationValue, 0.1f).OnComplete(() =>
+        {
+            chromaticAberration.DOChromaticAberrationIntensity(0f, 0.1f);
+        });
+        
         if (currentHealth <= 0)
         {
             Debug.Log("Je suis mort");
@@ -395,8 +407,8 @@ public class PlayerController : Singleton<PlayerController>
             PlayerPrefs.SetFloat("SaveInkLevel", currentInk);
             PlayerPrefs.SetInt("SaveHealKits", currentHealPackAmount);
         }
-        
-        
+
+        chromaticAberration = volume.GetComponent<ChromaticAberration>();
         currentInk = GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, 0);
         CheckShootingHand();
         heartBeatVolume = AudioManager.instance.GetVolume(3, 18);
