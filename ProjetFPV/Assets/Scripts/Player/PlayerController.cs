@@ -399,7 +399,7 @@ public class PlayerController : Singleton<PlayerController>
         
         currentInk = GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, 0);
         CheckShootingHand();
-//        heartBeatVolume = AudioManager.instance.GetVolume(3, 18);
+        heartBeatVolume = AudioManager.instance.GetVolume(3, 18);
     }
 
     private Coroutine reloadCoroutine;
@@ -507,28 +507,43 @@ public class PlayerController : Singleton<PlayerController>
             telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -2f);
             return;
         }
+
+        ControllableProp prop;
         
-        
-        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange)
-            && hit.collider.TryGetComponent(out ControllableProp prop))
+        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange))
         {
-            if (!prop.canBeGrabbed)
+            if (!hit.collider.TryGetComponent(out prop))
             {
-                pointerTimer -= Time.deltaTime;
+                try
+                {
+                    prop = hit.collider.GetComponentInParent<Enemy>();
+                }
+                catch (Exception e)
+                {
+                    throw;
+                }
+            }
+
+            if (prop != null)
+            {
+                if (!prop.canBeGrabbed)
+                {
+                    pointerTimer -= Time.deltaTime;
+                    telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
+                    telekinesisPointer.transform.localScale =
+                        Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
+                    telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -5);
+                    return;
+                }
+
+                pointerTimer += Time.deltaTime;
+                //telekinesisPointer.position = camera1.WorldToScreenPoint(prop.transform.position);
                 telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
                 telekinesisPointer.transform.localScale =
                     Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
-                telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -5);
+                telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -0.8f);
                 return;
             }
-
-            pointerTimer += Time.deltaTime;
-            //telekinesisPointer.position = camera1.WorldToScreenPoint(prop.transform.position);
-            telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
-            telekinesisPointer.transform.localScale =
-                Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
-            telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -0.8f);
-            return;
         }
 
         pointerTimer -= Time.deltaTime;
@@ -665,6 +680,7 @@ public class PlayerController : Singleton<PlayerController>
 
         volume.weight = Mathf.Lerp(volume.weight, vignetteIntensity.Evaluate(lostHealth), .01f);
         heartBeatAudioSource.volume = lostHealth * heartBeatVolume;
+        heartBeatAudioSource.pitch = Mathf.Lerp(0.6f, 1.5f, lostHealth);
         
         if (canMove)
         {

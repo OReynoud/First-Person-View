@@ -206,10 +206,21 @@ public class ShootingHand : MonoBehaviour
             }
             else
             {
-                var bullet = Instantiate(bulletPrefab, origin.position - origin.right * 0.5f, Quaternion.identity);
+                var bullet = Instantiate(bulletPrefab, origin.position - origin.right * 0.5f, cam.rotation);
                 bullet.transform.LookAt(hit.point);
 
-                bullet.rb.velocity = bullet.transform.forward * bulletSpeed;
+                var dir = cam.position - bullet.transform.position;
+                dir += cam.forward;
+                
+                
+                
+                
+                Debug.DrawLine(cam.position, bullet.transform.position, Color.yellow,5f);
+                Debug.DrawLine(cam.position, bullet.transform.position + dir, Color.red,5f);
+                Debug.DrawLine(bullet.transform.position , bullet.transform.position + dir, Color.red,5f);
+
+                bullet.deviation = dir;
+                bullet.rb.velocity = cam.forward * bulletSpeed;
                 bullet.superShot = currentSocket.state == SocketStates.SuperCharged;
                 bullet.weakSpotDamage = weakSpotDamage;
                 bullet.bodyDamage = bodyDamage;
@@ -218,14 +229,9 @@ public class ShootingHand : MonoBehaviour
 
                 bullet.meshRenderer.material =
                     currentSocket.state == SocketStates.SuperCharged ? superChargedSocket : loadedSocket;
-                bulletParticle[0].transform.LookAt(hit.point);
-
-
-                var oui = bulletParticle[^1].main;
-                var ohCestRelou = bulletParticle[0].transform.eulerAngles;
-                oui.startRotationX = ohCestRelou.x;
-                oui.startRotationY = ohCestRelou.y;
-                oui.startRotationZ = ohCestRelou.z;
+                // bulletParticle[1].transform.position = bullet.transform.position + dir;
+                 bulletParticle[2].transform.position = bullet.transform.position + dir;
+                bulletParticle[2].transform.LookAt(hit.point);
             }
         }
         else
@@ -234,7 +240,10 @@ public class ShootingHand : MonoBehaviour
             Debug.Log("Hit some air");
         }
 
-        bulletParticle[0].Play();
+        foreach (var particle in bulletParticle)
+        {
+            particle.Play();
+        }
 
 
         UpdateCurrentSocket();

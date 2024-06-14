@@ -48,7 +48,8 @@ public class InGamePause : MonoBehaviour
 
         if (collectibleCamera != null && collectibleCamera.activeInHierarchy) return;
 
-        t = 0.2f;
+        Debug.Log("Escape");
+        t = 0.5f;
 
         if (optionsScript.optionsCanva.gameObject.activeInHierarchy)
         {
@@ -86,7 +87,7 @@ public class InGamePause : MonoBehaviour
         {
             StopCoroutine(coroutine);
         }
-        coroutine = StartCoroutine(Fade(false, 1, pauseCanva));
+        coroutine = StartCoroutine(Fade(false, 0.5f, pauseCanva));
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         Time.timeScale = 0;

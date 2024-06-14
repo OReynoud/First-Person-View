@@ -650,13 +650,14 @@ MonoBehaviour:
   healAmount: 10
   interactDistance: 4
   sensitivity: 0
+  fullScreenDamageMat: {fileID: 0}
   currentInputMap: ControlsLeftShoot
   inputs: {fileID: 739510780194846137}
   playerCam: {fileID: 7127425910194321269}
   hands: {fileID: 1278172728399317272}
   leftHand: {fileID: 2756310103760432023}
   rightHand: {fileID: 3153770898162028538}
-  telekinesisPointer: {fileID: 1055164273525986397}
+  telekinesisPointer: {fileID: 6633401982815965834}
   offsetPosition: {fileID: 8918532052287260627}
   restingPosOffset: {x: 1, y: 0.5, z: 2.5}
   standingCollider: {fileID: 7813115355682138035}
@@ -778,7 +779,7 @@ MonoBehaviour:
   normalFOV: 60
   runningFOV: 65
   lerpFOV: 0.08
-  reloadSpeed: 2
+  reloadSpeed: 1.5
   amplitude: 0.005
   crouchFrequency: 10
   walkFrequency: 10
@@ -826,13 +827,13 @@ MonoBehaviour:
   - {fileID: 3420604456925789989}
   VFX_TKEnd: {fileID: 2388143115255138818}
   controlledProp: {fileID: 0}
-  regularTravelSpeed: 35
+  regularTravelSpeed: 20
   heavyTravelSpeed: 10
   grabDistanceBuffer: 5
   holdObjectCost: 0
   holdEnemyCost: 1
   holdObjectYTolerance: 0.6
-  throwCost: 2
+  throwCost: 1
   throwForce: 300
   inkAbsorbSpeed: 5
   lineVFX: {fileID: 1568267616147372360}
@@ -1029,7 +1030,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: ebdf6e08261d41544a452d49ed13fde4, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
-  m_Pitch: 1
+  m_Pitch: 0.8
   Loop: 1
   Mute: 0
   Spatialize: 0
@@ -4004,7 +4005,6 @@ GameObject:
   - component: {fileID: 5747994813939177046}
   - component: {fileID: 5565993660230409513}
   - component: {fileID: 9203036196178575144}
-  - component: {fileID: 7617246677153205059}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4124,20 +4124,6 @@ MonoBehaviour:
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
 --- !u!114 &9203036196178575144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7963865459006595146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ac7240c9c6f7354bb5d1ae45a94d11c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  translationDistance: 100
-  descriptionText: {fileID: 0}
---- !u!114 &7617246677153205059
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

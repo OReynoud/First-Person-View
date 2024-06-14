@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Threading.Tasks;
 using Mechanics;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -23,6 +25,26 @@ namespace Player
             weakSpotKnockBack = WeakSpotKnockBack;
         }
 
+        private void Start()
+        {
+            StartCoroutine(Deviate(0));
+        }
+
+        private const  int iterations = 4;
+
+        [HideInInspector] public Vector3 deviation;
+
+        IEnumerator Deviate(int i)
+        {
+            yield return null;
+            i++;
+            transform.position += deviation / iterations;
+            if (i <= iterations)
+            {
+                StartCoroutine(Deviate(i));
+            }
+        }
+
         public MeshRenderer meshRenderer;
         // Start is called before the first frame update
 
@@ -31,9 +53,9 @@ namespace Player
         {
             if (hasCollided) return;
             hasCollided = true;
-            
-            Debug.LogFormat("<color=yellow>Collision :</color> {0}",other.gameObject.name);
-            
+
+            Debug.LogFormat("<color=yellow>Collision :</color> {0}", other.gameObject.name);
+
             if (other.collider.CompareTag(Ex.Tag_Head))
             {
                 var enemy = other.collider.GetComponentInParent<Enemy>();
@@ -43,7 +65,7 @@ namespace Player
                 Destroy(gameObject);
                 return;
             }
-            
+
             if (other.collider.CompareTag(Ex.Tag_Body))
             {
                 var enemy = other.collider.GetComponentInParent<Enemy>();
@@ -66,7 +88,7 @@ namespace Player
             //Coucou, Thomas est passé par là (jusqu'au prochain commentaire)
             var decal = Instantiate(GameManager.instance.inkStainDecal,
                 other.GetContact(0).point + other.GetContact(0).normal * 0.02f,
-                Quaternion.identity, other.transform);
+                Quaternion.identity);
             decal.transform.forward = -other.GetContact(0).normal;
             decal.transform.RotateAround(decal.transform.position, decal.transform.forward, Random.Range(-180f, 180f));
             //Je m'en vais !

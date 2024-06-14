@@ -173,6 +173,7 @@ public class TelekinesisModule : MonoBehaviour
             {
                 if (!absorb.canBeGrabbed) return;
                 controlledProp = absorb;
+                absorb.StartAbsorbInk();
                 controlledProp.ApplyTelekinesis();
 
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
@@ -252,7 +253,18 @@ public class TelekinesisModule : MonoBehaviour
         main.currentInk = GameManager.instance.UpdatePlayerStamina(main.currentInk, main.maxInk, 
             (PlayerPrefs.GetInt("difficulty") == 0 ? inkAbsorbSpeed : inkAbsorbSpeed * 3f) * Time.deltaTime);
         var lerpValue = Mathf.Clamp(1 - absorbInk.storedInk / absorbInk.maxInk, 0, 0.8f);
-        absorbInk.transform.localScale = Vector3.Lerp(absorbInk.baseScale, Vector3.zero, lerpValue);
+
+        if (absorbInk.isADecal)
+        {
+            absorbInk.decal.size = Vector3.Lerp(absorbInk.baseDecalScale, Vector3.zero, lerpValue);
+            absorbInk.decal.fadeFactor = Mathf.Lerp(1f, 0f, lerpValue);
+        }
+        else
+        {
+            absorbInk.transform.localScale = Vector3.Lerp(absorbInk.baseGOScale, Vector3.zero, lerpValue);
+        }
+        
+        
 
         if (!controlledProp.isGrabbed)
         {
@@ -493,10 +505,15 @@ public class TelekinesisModule : MonoBehaviour
 
     public void Release_AbsorbInk(AbsorbInk absorbInk)
     {
+        absorbInk.StopAbsorbing();
+        
         absorbInk.isGrabbed = false;
         if (absorbInk.storedInk < 0)
         {
-            Destroy(absorbInk.gameObject);
+            if (!absorbInk.respawn)
+            {
+                Destroy(absorbInk.gameObject);
+            }
         }
     }
 
