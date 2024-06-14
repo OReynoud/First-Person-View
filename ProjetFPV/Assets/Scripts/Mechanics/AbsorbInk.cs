@@ -42,7 +42,10 @@ namespace Mechanics
         public void StartAbsorbInk()
         {
             if (!isADecal) return;
-            StopCoroutine(cor);
+            if (cor is not null)
+            {
+                StopCoroutine(cor);
+            }
             isGettingAbsorbed = true;
         }
 

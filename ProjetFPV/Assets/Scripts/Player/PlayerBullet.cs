@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 using Mechanics;
 using UnityEngine;
@@ -26,24 +27,25 @@ namespace Player
 
         private void Start()
         {
-            Deviate(0);
+            StartCoroutine(Deviate(0));
         }
 
-        private int iterations = 50;
-        async void Deviate(int i)
+        private const  int iterations = 4;
+
+        [HideInInspector] public Vector3 deviation;
+
+        IEnumerator Deviate(int i)
         {
-            await Task.Delay(50);
-            if (this)
+            Debug.Log("deviate");
+            yield return null;
+            i++;
+            transform.position += deviation / iterations;
+            if (i <= iterations)
             {
-                i++;
-                transform.position += -transform.right * 0.5f + transform.up * 0.6f;
-                if (i < iterations)
-                {
-                    Deviate(i);
-                }
+                StartCoroutine(Deviate(i));
             }
-
         }
+
         public MeshRenderer meshRenderer;
         // Start is called before the first frame update
 
@@ -52,9 +54,9 @@ namespace Player
         {
             if (hasCollided) return;
             hasCollided = true;
-            
-            Debug.LogFormat("<color=yellow>Collision :</color> {0}",other.gameObject.name);
-            
+
+            Debug.LogFormat("<color=yellow>Collision :</color> {0}", other.gameObject.name);
+
             if (other.collider.CompareTag(Ex.Tag_Head))
             {
                 var enemy = other.collider.GetComponentInParent<Enemy>();
@@ -64,7 +66,7 @@ namespace Player
                 Destroy(gameObject);
                 return;
             }
-            
+
             if (other.collider.CompareTag(Ex.Tag_Body))
             {
                 var enemy = other.collider.GetComponentInParent<Enemy>();
