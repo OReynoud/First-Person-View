@@ -13,17 +13,15 @@ public class IntroCinematic : MonoBehaviour
     [SerializeField] private GameObject radio;
     [SerializeField] private Volume oldVolume;
     [SerializeField] private Volume newVolume;
-    private GameObject camera;
+    [SerializeField] private GameObject camera;
     [SerializeField] private Light[] lights;
-
-    void Start()
-    {
-        camera = Camera.main.gameObject;
-    }
+    [SerializeField] private CameraShake camShake;
+    [SerializeField] private ParticleSystem rain;
+    [SerializeField] private AudioSource rainSound;
 
     public void FadeToBlack()
     {
-        blackScreen.DOFade(1f, 5f).OnComplete(()=>SceneManager.LoadScene("Habillage_02"));
+        blackScreen.DOFade(1f, 4f).OnComplete(()=>SceneManager.LoadScene("Habillage_02"));
     }
 
     public void StartIntroEasy()
@@ -86,98 +84,58 @@ public class IntroCinematic : MonoBehaviour
 
     private IEnumerator LightsOut()
     {
-        yield return new WaitForSeconds(35f);
+        yield return new WaitForSeconds(34.5f);
+        
+        camShake.ShakeOneShot(0);
+        
+        yield return new WaitForSeconds(0.5f);
+
+        StartCoroutine(Rain());
+        
+        for (int i = 0; i < 12; i++)
+        {
+            var t = 0f;
+
+            var currentLight = lights[0].intensity;
+            var targetLight = 0f;
+            
+            targetLight = currentLight >= 1f ? Random.Range(0.1f, 0.4f) : Random.Range(1f, 1.5f);
+
+            var time = Random.Range(0.03f, 0.08f);
+
+            while (t<time)
+            {
+                t += Time.deltaTime;
+
+                foreach (var light in lights)
+                {
+                   light.intensity = Mathf.Lerp(currentLight, targetLight, t / time);
+                }
+            
+                yield return null;
+            }
+            
+            yield return new WaitForSeconds(Random.Range(0.02f, 0.08f));
+        }
+    }
+
+    private IEnumerator Rain()
+    {
+        rainSound.enabled = true;
+        var rainEmission = rain.emission;
+        var x = 0f;
+        
+        yield return new WaitForSeconds(3f);
 
         var t = 0f;
-        
-        while (t < 0.05f)
+
+        while (t < 10f)
         {
             t += Time.deltaTime;
 
-            foreach (var light in lights)
-            {
-                light.intensity = Mathf.Lerp(1.5f, 0.4f, t / 0.05f);
-            }
-            
-            yield return null;
-        }
-
-        t = 0f;
-
-        yield return new WaitForSeconds(0.1f);
-        
-        while (t < 0.08f)
-        {
-            t += Time.deltaTime;
-
-            foreach (var light in lights)
-            {
-                light.intensity = Mathf.Lerp(0.4f, 1.8f, t / 0.08f);
-            }
-            
-            yield return null;
-        }
-
-        t = 0f;
-
-        yield return new WaitForSeconds(0.05f);
-        
-        while (t < 0.05f)
-        {
-            t += Time.deltaTime;
-
-            foreach (var light in lights)
-            {
-                light.intensity = Mathf.Lerp(1.8f, 0.2f, t / 0.05f);
-            }
-            
-            yield return null;
-        }
-
-        t = 0f;
-
-        yield return new WaitForSeconds(0.1f);
-        
-        while (t < 0.02f)
-        {
-            t += Time.deltaTime;
-
-            foreach (var light in lights)
-            {
-                light.intensity = Mathf.Lerp(0.2f, 1.2f, t / 0.02f);
-            }
-            
-            yield return null;
-        }
-        
-        t = 0f;
-
-        yield return new WaitForSeconds(0.05f);
-        
-        while (t < 0.02f)
-        {
-            t += Time.deltaTime;
-
-            foreach (var light in lights)
-            {
-                light.intensity = Mathf.Lerp(1.2f, 0.4f, t / 0.02f);
-            }
-            
-            yield return null;
-        }
-        
-        t = 0f;
-
-        yield return new WaitForSeconds(0.04f);
-        
-        while (t < 0.04f)
-        {
-            t += Time.deltaTime;
-
-            foreach (var light in lights)
-            {
-                light.intensity = Mathf.Lerp(0.4f, 1f, t / 0.04f);
-            }
+            x = Mathf.Lerp(0, 1000, t / 10f);
+            rainSound.volume = Mathf.Lerp(0f, 0.15f, t / 10f);
+            rainEmission.rateOverTime = x;
             
             yield return null;
         }

@@ -36,7 +36,6 @@ namespace Player
 
         IEnumerator Deviate(int i)
         {
-            Debug.Log("deviate");
             yield return null;
             i++;
             transform.position += deviation / iterations;
