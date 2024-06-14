@@ -60,7 +60,7 @@ public class IntroCinematic : MonoBehaviour
         
         yield return new WaitForSeconds(0.2f);
 
-        AudioManager.instance.PlaySound(4, 0, camera, 0f, false);
+        AudioManager.instance.PlaySound(4, 0, radio, 0f, false);
 
         while (t < 60f)
         {
