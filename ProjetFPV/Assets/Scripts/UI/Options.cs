@@ -54,6 +54,8 @@ public class Options : MonoBehaviour
         {
             subtitles.fontSize = PlayerPrefs.GetInt("SubtitlesSize");
         }
+
+
     }
     
     public void OpenOptions()
