@@ -229,14 +229,9 @@ public class ShootingHand : MonoBehaviour
 
                 bullet.meshRenderer.material =
                     currentSocket.state == SocketStates.SuperCharged ? superChargedSocket : loadedSocket;
-                bulletParticle[0].transform.LookAt(hit.point);
-
-
-                var oui = bulletParticle[^1].main;
-                var ohCestRelou = bulletParticle[0].transform.eulerAngles;
-                oui.startRotationX = ohCestRelou.x;
-                oui.startRotationY = ohCestRelou.y;
-                oui.startRotationZ = ohCestRelou.z;
+                // bulletParticle[1].transform.position = bullet.transform.position + dir;
+                 bulletParticle[2].transform.position = bullet.transform.position + dir;
+                bulletParticle[2].transform.LookAt(hit.point);
             }
         }
         else
@@ -245,7 +240,10 @@ public class ShootingHand : MonoBehaviour
             Debug.Log("Hit some air");
         }
 
-        bulletParticle[0].Play();
+        foreach (var particle in bulletParticle)
+        {
+            particle.Play();
+        }
 
 
         UpdateCurrentSocket();
