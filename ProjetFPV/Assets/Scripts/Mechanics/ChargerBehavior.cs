@@ -264,6 +264,7 @@ namespace Mechanics
                 currentState = States.Stunned;
                 StartCoroutine(Stun());
             }
+            base.ApplyStun();
         }
 
         IEnumerator Stun()
