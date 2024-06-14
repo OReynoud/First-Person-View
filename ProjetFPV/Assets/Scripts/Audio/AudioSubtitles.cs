@@ -10,7 +10,7 @@ public class AudioSubtitles : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI subtitlesUI;
     
-    public float timer;
+    private float timer;
     private int currentIndex;
     private int currentList;
     [SerializeField] private List<SubtitlesList> subtitles;
