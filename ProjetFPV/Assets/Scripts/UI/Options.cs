@@ -74,6 +74,8 @@ public class Options : MonoBehaviour
         {
             subtitles.fontSize = PlayerPrefs.GetInt("SubtitlesSize");
         }
+
+
     }
 
     string GiveNumber(Slider slider)
