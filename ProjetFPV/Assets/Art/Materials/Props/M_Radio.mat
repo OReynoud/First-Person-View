@@ -7,13 +7,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Ground_Paving
-  m_Shader: {fileID: 4800000, guid: 2555af8fb50ad53419c62471ef501043, type: 3}
+  m_Name: M_Radio
+  m_Shader: {fileID: -6465566751694194690, guid: 34cd26a1ee2bbc54c9c06afa543cfe6b,
+    type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -23,24 +24,28 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _AlbedoA:
-        m_Texture: {fileID: 2800000, guid: 287c915466c6db14ba6f7058567d360f, type: 3}
+    - _AO:
+        m_Texture: {fileID: 2800000, guid: 5f39f20db7a79e742abb6541deefc970, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _NormalA:
-        m_Texture: {fileID: 2800000, guid: 9cb6d9eca1b2a1e408f85ea330bcc342, type: 3}
+    - _Base_Color:
+        m_Texture: {fileID: 2800000, guid: 7a4117a331e2f8b419cef366c4228fed, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _RMHA:
-        m_Texture: {fileID: 2800000, guid: 57b072b3b10c9c1468f49375a041dd64, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _THE_NORMAL:
+    - _Emissive:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _texcoord:
-        m_Texture: {fileID: 0}
+    - _Metallic:
+        m_Texture: {fileID: 2800000, guid: f19b824428f10c841a859dc3e82a9a74, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: 58e0d7a7c82420b4e9a02f6ab0200689, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Roughness:
+        m_Texture: {fileID: 2800000, guid: 24e2f60cd448597419139f2d9ab5af4d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -57,15 +62,21 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlphaCutoff: 0.5
-    - _Boost_N: 1.73
-    - _Boost_R: 0.37
-    - _EnvironmentReflections: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ReceiveShadows: 1
-    - _SpecularHighlights: 1
     m_Colors:
-    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Tiling_A: {r: 0.25, g: 0.25, b: 0, a: 0}
+    - _Remap_Roughness: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
+--- !u!114 &8001872730648296458
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
