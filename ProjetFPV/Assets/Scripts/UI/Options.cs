@@ -16,9 +16,13 @@ public class Options : MonoBehaviour
     [SerializeField] private Slider subtitlesSlider;
     [SerializeField] private TextMeshProUGUI subtitles;
     private Coroutine coroutine;
+    public RectTransform rect;
+    private Vector2 baseAnchorPos;
 
     void Start()
     {
+        baseAnchorPos = rect.anchoredPosition;
+        
         if (!PlayerPrefs.HasKey("Sensitivity"))
         {
             PlayerPrefs.SetInt("Sensitivity", 50);
@@ -54,14 +58,16 @@ public class Options : MonoBehaviour
     
     public void OpenOptions()
     {
+        rect.DOAnchorPosX(baseAnchorPos.x + 400, 1f);
+        
         AudioManager.instance.PlayUISound(0, 0, 0f);
         optionsCanva.gameObject.SetActive(true);
         
-        if (coroutine != null)
-        {
-            StopCoroutine(coroutine);
-        }
-        coroutine = StartCoroutine(Fade(false, 0.5f, optionsCanva));
+        // if (coroutine != null)
+        // {
+        //     StopCoroutine(coroutine);
+        // }
+        // coroutine = StartCoroutine(Fade(false, 0.5f, optionsCanva));
     }
 
     public void CloseOptions()
