@@ -410,6 +410,7 @@ public class CollectorBehavior : Enemy
             currentState = States.Stunned;
             StartCoroutine(Stun());
         }
+        base.ApplyStun();
     }
 
     IEnumerator Stun()

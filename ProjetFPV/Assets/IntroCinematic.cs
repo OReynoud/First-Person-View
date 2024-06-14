@@ -53,7 +53,7 @@ public class IntroCinematic : MonoBehaviour
         var startRot = camera.transform.rotation;
         
         menu.SetActive(false);
-        menuCanva.DOFade(0f, 3f);
+        menuCanva.DOFade(0f, 2f);
 
         StartCoroutine(Fade());
         StartCoroutine(LightsOut());
