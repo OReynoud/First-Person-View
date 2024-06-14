@@ -464,7 +464,7 @@ namespace Mechanics
             currentState = States.Rush;
             agent.enabled = false;
             body.isKinematic = true;
-            transform.DOMove(transform.position + Vector3.up, appearDuration).OnComplete(() =>
+            transform.DOMove(transform.position + Vector3.up * 1.5f, appearDuration).OnComplete(() =>
             {
                 body.isKinematic = false;
                 agent.enabled = true;
