@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3244573916659765233}
   - component: {fileID: 5810804188992543427}
   - component: {fileID: 6745174141794101164}
+  - component: {fileID: 6390872506289746171}
   m_Layer: 0
   m_Name: Megaphone_low
   m_TagString: Untagged
@@ -97,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ffbed4dd2a30c44983ba75bab8d7e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBetweenAds: 60
+  timeBetweenAds: 5
   subtitles: {fileID: 0}
 --- !u!114 &6745174141794101164
 MonoBehaviour:
@@ -334,3 +335,24 @@ MonoBehaviour:
       sub: cease the opportunity right now !
     - timeCode: 18
       sub: 
+--- !u!65 &6390872506289746171
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358655534504425611}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0042719813, y: 0.0046084025, z: 0.054192822}
+  m_Center: {x: -0.00005222186, y: 0.00003612146, z: -0.028741227}
