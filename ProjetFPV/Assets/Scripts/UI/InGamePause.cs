@@ -47,13 +47,12 @@ public class InGamePause : MonoBehaviour
         if (!obj.started || t > 0f) return;
 
         if (collectibleCamera != null && collectibleCamera.activeInHierarchy) return;
-
-        Debug.Log("Escape");
+        
         t = 0.5f;
 
         if (optionsScript.optionsCanva.gameObject.activeInHierarchy)
         {
-            optionsScript.CloseOptions();
+            // optionsScript.CloseOptions();
         }
         else if (difficultyCanva != null && difficultyCanva.alpha >= 1)
         {
@@ -151,15 +150,15 @@ public class InGamePause : MonoBehaviour
         target.gameObject.SetActive(target.alpha > 0.9f);
     }
 
-    public void OpenOptions()
-    {
-        optionsScript.OpenOptions();
-    }
-
-    public void CloseOptions()
-    {
-        optionsScript.CloseOptions();
-    }
+    // public void OpenOptions()
+    // {
+    //     optionsScript.OpenOptions();
+    // }
+    //
+    // public void CloseOptions()
+    // {
+    //     optionsScript.CloseOptions();
+    // }
 
     public void BackToMenu()
     {

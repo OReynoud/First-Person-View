@@ -27,6 +27,8 @@ public class MainMenu : MonoBehaviour
 
     [SerializeField] private IntroCinematic introScript;
 
+    private bool cinematicStarted;
+
     void Start()
     {
         baseAnchorPos = blackArea.anchoredPosition;
@@ -54,7 +56,7 @@ public class MainMenu : MonoBehaviour
     
     public void Escape(InputAction.CallbackContext obj)
     {
-        if (!obj.started || t > 0f) return;
+        if (!obj.started || t > 0f || cinematicStarted) return;
         
         t = 0.5f;
 
@@ -79,14 +81,14 @@ public class MainMenu : MonoBehaviour
         LookAtNewGame();
         
         difficultyCanva.gameObject.SetActive(true);
-        difficultyCanva.DOFade(1f, 0.5f);
+        difficultyCanva.DOFade(1f, 0.8f);
     }
     
     public void CloseDifficulty()
     {
         ReduceBlackArea();
         
-        difficultyCanva.DOFade(0f, 0.5f).OnComplete(() => difficultyCanva.gameObject.SetActive(false));
+        difficultyCanva.DOFade(0f, 0.1f).OnComplete(() => difficultyCanva.gameObject.SetActive(false));
     }
 
     public void OpenOptions()
@@ -96,14 +98,14 @@ public class MainMenu : MonoBehaviour
         ExtendBlackArea();
 
         optionsCanva.gameObject.SetActive(true);
-        optionsCanva.DOFade(1f, 0.5f);
+        optionsCanva.DOFade(1f, 0.8f);
     }
 
     public void CloseOptions()
     {
         ReduceBlackArea();
         
-        optionsCanva.DOFade(0f, 0.5f).OnComplete(() => optionsCanva.gameObject.SetActive(false));
+        optionsCanva.DOFade(0f, 0.1f).OnComplete(() => optionsCanva.gameObject.SetActive(false));
     }
 
     public void Credits()
@@ -113,19 +115,19 @@ public class MainMenu : MonoBehaviour
         ExtendBlackArea();
         
         creditsCanva.gameObject.SetActive(true);
-        creditsCanva.DOFade(1f, 0.5f);
+        creditsCanva.DOFade(1f, 0.8f);
     }
 
     public void CloseCredits()
     {
         ReduceBlackArea();
         
-        creditsCanva.DOFade(0f, 0.5f).OnComplete(() => creditsCanva.gameObject.SetActive(false));
+        creditsCanva.DOFade(0f, 0.1f).OnComplete(() => creditsCanva.gameObject.SetActive(false));
     }
 
     void ExtendBlackArea()
     {
-        pauseCanva.DOFade(0f, 0.5f);
+        pauseCanva.DOFade(0f, 0.1f);
         
         blackArea.DOAnchorPosX(baseAnchorPos.x + 800, 0.8f);
     }
@@ -183,12 +185,14 @@ public class MainMenu : MonoBehaviour
 
     public void StartGameEasy()
     {
+        cinematicStarted = true;
         LookAtBase();
         introScript.StartIntroEasy();
     }
 
     public void StartGameHard()
     {
+        cinematicStarted = true;
         LookAtBase();
         introScript.StartIntroHard();
     }
