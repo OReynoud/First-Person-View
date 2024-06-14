@@ -42,6 +42,8 @@ public class IntroCinematic : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
+
+        yield return new WaitForSeconds(0.6f);
         
         var target = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         target.transform.position = camera.transform.position;

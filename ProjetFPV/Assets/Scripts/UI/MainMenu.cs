@@ -1,6 +1,4 @@
-using System.Collections;
 using DG.Tweening;
-using Mechanics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,6 +18,14 @@ public class MainMenu : MonoBehaviour
     
     [SerializeField] private RectTransform blackArea;
     private Vector2 baseAnchorPos;
+
+    [SerializeField] private GameObject camera;
+    [SerializeField] private GameObject baseTarget;
+    [SerializeField] private GameObject newGameTarget;
+    [SerializeField] private GameObject optionsTarget;
+    [SerializeField] private GameObject creditsTarget;
+
+    [SerializeField] private IntroCinematic introScript;
 
     void Start()
     {
@@ -69,6 +75,8 @@ public class MainMenu : MonoBehaviour
     public void OpenDifficulty()
     {
         ExtendBlackArea();
+
+        LookAtNewGame();
         
         difficultyCanva.gameObject.SetActive(true);
         difficultyCanva.DOFade(1f, 0.5f);
@@ -83,6 +91,8 @@ public class MainMenu : MonoBehaviour
 
     public void OpenOptions()
     {
+        LookAtOptions();
+        
         ExtendBlackArea();
 
         optionsCanva.gameObject.SetActive(true);
@@ -98,6 +108,8 @@ public class MainMenu : MonoBehaviour
 
     public void Credits()
     {
+        LookAtCredits();
+        
         ExtendBlackArea();
         
         creditsCanva.gameObject.SetActive(true);
@@ -115,14 +127,16 @@ public class MainMenu : MonoBehaviour
     {
         pauseCanva.DOFade(0f, 0.5f);
         
-        blackArea.DOAnchorPosX(baseAnchorPos.x + 500, 1f);
+        blackArea.DOAnchorPosX(baseAnchorPos.x + 800, 0.8f);
     }
 
     void ReduceBlackArea()
     {
+        LookAtBase();
+        
         pauseCanva.DOFade(1f, 0.5f);
         
-        blackArea.DOAnchorPosX(baseAnchorPos.x, 1f);
+        blackArea.DOAnchorPosX(baseAnchorPos.x, 0.8f);
     }
     
     public void Quit()
@@ -141,5 +155,41 @@ public class MainMenu : MonoBehaviour
         PlayerPrefs.SetInt("isReloadingSave", 1);
 
         SceneManager.LoadScene("Habillage_02");
+    }
+    
+    void LookAtNewGame()
+    {
+        camera.transform.DOMove(newGameTarget.transform.position, 0.8f).SetEase(Ease.OutCubic);
+        camera.transform.DORotate(newGameTarget.transform.eulerAngles, 0.8f).SetEase(Ease.OutCubic);
+    }
+
+    void LookAtOptions()
+    {
+        camera.transform.DOMove(optionsTarget.transform.position, 0.8f).SetEase(Ease.OutCubic);
+        camera.transform.DORotate(optionsTarget.transform.eulerAngles, 0.8f).SetEase(Ease.OutCubic);
+    }
+
+    void LookAtCredits()
+    {
+        camera.transform.DOMove(creditsTarget.transform.position, 0.8f).SetEase(Ease.OutCubic);
+        camera.transform.DORotate(creditsTarget.transform.eulerAngles, 0.8f).SetEase(Ease.OutCubic);
+    }
+
+    void LookAtBase()
+    {
+        camera.transform.DOMove(baseTarget.transform.position, 0.8f).SetEase(Ease.OutCubic);
+        camera.transform.DORotate(baseTarget.transform.eulerAngles, 0.8f).SetEase(Ease.OutCubic);
+    }
+
+    public void StartGameEasy()
+    {
+        LookAtBase();
+        introScript.StartIntroEasy();
+    }
+
+    public void StartGameHard()
+    {
+        LookAtBase();
+        introScript.StartIntroHard();
     }
 }
