@@ -721,9 +721,7 @@ public class PlayerController : Singleton<PlayerController>
                 break;
 
             case PlayerStates.Standing:
-                playerCam.localPosition = cameraStartLocalPos;
-
-
+                playerCam.localPosition =  Vector3.Lerp(playerCam.localPosition, cameraStartLocalPos, 0.2f);
                 camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, normalFOV, lerpFOV);
                 break;
         }
