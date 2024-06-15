@@ -25,7 +25,7 @@ public class Options : MonoBehaviour
     [SerializeField] private TextMeshProUGUI sfxText;
     [SerializeField] private TextMeshProUGUI subtitlesText;
 
-    [SerializeField] private GameObject inGameSubtitles;
+    [SerializeField] private TextMeshProUGUI inGameSubtitles;
 
     void Start()
     {
@@ -47,7 +47,7 @@ public class Options : MonoBehaviour
         }
         if (!PlayerPrefs.HasKey("SubtitlesSize"))
         {
-            PlayerPrefs.SetInt("SubtitlesSize", 80);
+            PlayerPrefs.SetInt("SubtitlesSize", 60);
         }
         if (!PlayerPrefs.HasKey("SubtitlesOff"))
         {
@@ -76,7 +76,7 @@ public class Options : MonoBehaviour
         
         demoSubtitles.gameObject.SetActive(PlayerPrefs.GetInt("SubtitlesOff") == 0);
         
-        inGameSubtitles.SetActive(PlayerPrefs.GetInt("SubtitlesOff") == 0);
+        inGameSubtitles.gameObject.SetActive(PlayerPrefs.GetInt("SubtitlesOff") == 0);
     }
 
     string GiveNumber(Slider slider)
@@ -140,6 +140,7 @@ public class Options : MonoBehaviour
     public void ChangeSubtitlesSize()
     {
         demoSubtitles.fontSize = subtitlesSlider.value;
+        inGameSubtitles.fontSize = subtitlesSlider.value;
         subtitlesText.text = GiveNumber(subtitlesSlider);
     }
 
@@ -149,7 +150,7 @@ public class Options : MonoBehaviour
         demoSubtitles.gameObject.SetActive(!demoSubtitles.gameObject.activeInHierarchy);
 
         if (inGameSubtitles == null) return;
-        inGameSubtitles.SetActive(!inGameSubtitles.gameObject.activeInHierarchy);
+        inGameSubtitles.gameObject.SetActive(!inGameSubtitles.gameObject.activeInHierarchy);
     }
 
     private void OnDisable()

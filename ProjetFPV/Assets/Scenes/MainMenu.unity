@@ -3222,7 +3222,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 82}
+  m_AnchoredPosition: {x: 0, y: 130}
   m_SizeDelta: {x: 1619.1458, y: 108.81351}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &477256953
@@ -3273,8 +3273,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4111,6 +4111,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 356.927
+      objectReference: {fileID: 0}
+    - target: {fileID: 992240176048778998, guid: a9f7c74fe994b6e4e975974570bf018b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -30.365
+      objectReference: {fileID: 0}
+    - target: {fileID: 992240176048778998, guid: a9f7c74fe994b6e4e975974570bf018b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 992240176048778998, guid: a9f7c74fe994b6e4e975974570bf018b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 357.353
       objectReference: {fileID: 0}
     - target: {fileID: 4812364814458111090, guid: a9f7c74fe994b6e4e975974570bf018b,
         type: 3}
@@ -12005,7 +12020,7 @@ MonoBehaviour:
   musicText: {fileID: 401940411}
   sfxText: {fileID: 1676024125}
   subtitlesText: {fileID: 1905208707}
-  inGameSubtitles: {fileID: 477256951}
+  inGameSubtitles: {fileID: 477256953}
 --- !u!114 &999750620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16847,8 +16862,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 1336470764}
   m_HandleRect: {fileID: 1253012048}
   m_Direction: 0
-  m_MinValue: 60
-  m_MaxValue: 160
+  m_MinValue: 40
+  m_MaxValue: 100
   m_WholeNumbers: 1
   m_Value: 60
   m_OnValueChanged:
