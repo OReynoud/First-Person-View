@@ -604,7 +604,7 @@ public class PlayerController : Singleton<PlayerController>
     private Vector3 reloadBasePos;
 
     private float reloadTimer;
-    private List<AmmoSocket> socketsToReload;
+    private List<AmmoSocket> socketsToReload = new List<AmmoSocket>();
     private IEnumerator Reload2()
     {
         socketsToReload.Clear();
