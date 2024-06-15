@@ -18,6 +18,7 @@ public class IntroCinematic : MonoBehaviour
     [SerializeField] private CameraShake camShake;
     [SerializeField] private ParticleSystem rain;
     [SerializeField] private AudioSource rainSound;
+    [SerializeField] private AudioSubtitles subtitlesScript;
 
     public void FadeToBlack()
     {
@@ -61,8 +62,9 @@ public class IntroCinematic : MonoBehaviour
         StartCoroutine(LightsOut());
         
         yield return new WaitForSeconds(0.2f);
-
+        
         AudioManager.instance.PlaySound(4, 0, radio, 0f, false);
+        subtitlesScript.StartTimer(0);
 
         while (t < 60f)
         {
