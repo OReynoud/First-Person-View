@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Mechanics;
 using NaughtyAttributes;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -14,6 +15,9 @@ public class TelekinesisModule : MonoBehaviour
 
     [Foldout("Refs")] [SerializeField] private ParticleSystem[] VFX_TKStart;
     [Foldout("Refs")] [SerializeField] private ParticleSystem VFX_TKEnd;
+    
+    [Foldout("Refs")] [SerializeField] public SkinnedMeshRenderer leftHandModule;
+    [Foldout("Refs")] [SerializeField] public TextMeshProUGUI moduleText;
     private PlayerController main;
     public ControllableProp controlledProp;
 
@@ -71,6 +75,8 @@ public class TelekinesisModule : MonoBehaviour
     #endregion
 
 
+    public const float zeroInkFill = 0.32f;
+    public const float fullInkFill = 0.65f;
 
     // Start is called before the first frame update
     void Start()

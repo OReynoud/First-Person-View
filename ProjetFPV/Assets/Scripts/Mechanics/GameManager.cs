@@ -13,16 +13,13 @@ namespace Mechanics
         [SerializeField] private CanvasGroup playerUI;
         [SerializeField] private CanvasGroup bodyHitMarker;
         [SerializeField] private CanvasGroup headHitMarker;
-        [SerializeField] private CanvasGroup crosshairTK;
         [SerializeField] private Image crosshairBase;
-        [SerializeField] private Image baseInkBar;
-        [SerializeField] private Image surplusInkBar;
-        [SerializeField] private Image[] segments;
         [SerializeField] private TextMeshProUGUI healPackText;
         [SerializeField] public TextMeshProUGUI interactText;
         [SerializeField] public CanvasGroup gameOver;
         [SerializeField] public GameObject inkStainDecal;
         [SerializeField] public ParticleSystem[] VFX_EnemyHit;
+        
         [SerializeField] private ParticleSystem VFX_HeadShot;
         private Coroutine coroutine;
         
@@ -61,6 +58,7 @@ namespace Mechanics
 
         void Start()
         {
+
             UpdateHealPackUI();
             gameOver.DOFade(0f, 2f);
         }
@@ -96,6 +94,7 @@ namespace Mechanics
             killMarker = StartCoroutine(OnKillHitMark());
         }
 
+        private float percent;
         public float UpdatePlayerStamina(float current, float max, float increment)
         {
             current += increment;
@@ -105,12 +104,12 @@ namespace Mechanics
             {
                 current = max;
             }
-            else
-            {
-                segments[0].color = Color.black;
-            }
-            
-            baseInkBar.fillAmount = current / max;
+
+            PlayerController.instance.tkManager.leftHandModule.materials[2].SetFloat(
+                PlayerController.instance.socketManager.InkLevel,
+                Mathf.Lerp(TelekinesisModule.zeroInkFill, TelekinesisModule.fullInkFill, current / max));
+            percent = Mathf.Round((current / max) * 100);
+            PlayerController.instance.tkManager.moduleText.text = percent + "%";
             return current;
         }
 

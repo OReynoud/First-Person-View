@@ -127,7 +127,7 @@ public class PlayerController : Singleton<PlayerController>
 
     #region Shoot variables
 
-    [Foldout("Shoot")] [Tooltip("Time needed to reload")] [SerializeField]
+    [Foldout("Shoot")] [Tooltip("Time needed to reload per bullet")] [SerializeField]
     private float reloadSpeed;
     
 
@@ -412,8 +412,11 @@ public class PlayerController : Singleton<PlayerController>
         currentInk = GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, 0);
         CheckShootingHand();
         heartBeatVolume = AudioManager.instance.GetVolume(3, 18);
+        cameraStartLocalPos = playerCam.localPosition;
         chromaticAberration = volume.GetComponent<ChromaticAberration>();
     }
+
+    private Vector3 cameraStartLocalPos;
 
     private Coroutine reloadCoroutine;
     
@@ -607,30 +610,28 @@ public class PlayerController : Singleton<PlayerController>
     {
         reloadBasePos = shootingHand.localPosition;
         animManager.RightHand_ReloadStart();
-        yield return new WaitForSeconds(animManager.rightHand.GetClip("A_ReloadStartNew").length);
+        reloadSoundStart = AudioManager.instance.PlaySound(3, 3, gameObject, 0.1f, false);
+        yield return new WaitForSeconds(animManager.rightHand.GetClip("A_ReloadStart").length);
         
         int numberOfReloads =
             Mathf.CeilToInt(Mathf.Clamp(currentInk / socketManager.reloadCostPerBullet, 0, socketManager.sockets.Count));
-        var time = reloadSpeed / numberOfReloads;
-        
-        reloadSoundStart = AudioManager.instance.PlaySound(3, 3, gameObject, 0.1f, false);
-        for (int i = socketManager.sockets.Count - 1; i >= 0; i--)
+        var time = reloadSpeed * numberOfReloads;
+        reloadTimer = 0;
+        while (reloadTimer < time)
         {
-            if (numberOfReloads == 0) break;
-            if (socketManager.sockets[i].state == ShootingHand.SocketStates.Loaded)continue;
-            numberOfReloads--;
-            reloadTimer = 0;
-            while (reloadTimer < time)
+            reloadTimer += Time.deltaTime;
+            for (int i = socketManager.sockets.Count - 1; i >= 0; i--)
             {
-                reloadTimer += Time.deltaTime;
+                if (socketManager.sockets[i].state == ShootingHand.SocketStates.Loaded)continue;
+                
                 socketManager.sockets[i].socketMesh.material.SetFloat(socketManager.InkLevel,
-                    Mathf.Lerp(0,1,reloadTimer/time));
+                    Mathf.Lerp(0, 1, reloadTimer / time));
+            }
 
-                yield return null;
-
-            }   
-            socketManager.sockets[i].socketMesh.material.SetFloat(socketManager.InkLevel,1);
-        }
+            yield return null;
+        }   
+        
+        
         socketManager.ReloadSockets();
         
         AudioManager.instance.PlaySound(3, 20, gameObject, 0.1f, false);
@@ -714,7 +715,7 @@ public class PlayerController : Singleton<PlayerController>
                 playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.2f);
                 break;
             case PlayerStates.Sprinting:
-                playerCam.position = Vector3.Lerp(playerCam.position, transform.position + Vector3.up * 0.5f, 0.2f);
+                playerCam.localPosition = cameraStartLocalPos;
 
                 if (appliedForce)
                 {
@@ -723,7 +724,8 @@ public class PlayerController : Singleton<PlayerController>
                 break;
 
             case PlayerStates.Standing:
-                playerCam.position = Vector3.Lerp(playerCam.position, transform.position + Vector3.up * 0.5f, 0.2f);
+                playerCam.localPosition = cameraStartLocalPos;
+
 
                 camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, normalFOV, lerpFOV);
                 break;
