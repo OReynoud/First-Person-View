@@ -140,7 +140,7 @@ public class TelekinesisModule : MonoBehaviour
             vfx.Stop();
             vfx.SetParticles(null, 0);
         }
-
+        Destroy(holdTKAudio);
         VFX_TKEnd.Play();
 
     }
@@ -156,7 +156,7 @@ public class TelekinesisModule : MonoBehaviour
             lineVFX.material.SetFloat(Slider, currentLineVFXValue);
         }
 
-        Physics.Linecast(tkSocket.position,tempColl.transform.position, out RaycastHit hit, LayerMask.GetMask(LayerMask.LayerToName(tempColl.gameObject.layer)));
+        Physics.Linecast(tkSocket.position,tempColl.transform.position + tempColl.transform.up *0.1f, out RaycastHit hit, LayerMask.GetMask(LayerMask.LayerToName(tempColl.gameObject.layer)));
         tkPoint = hit.point;
         
         lineVFX.SetPosition(0,tkSocket.position);
@@ -456,6 +456,7 @@ public class TelekinesisModule : MonoBehaviour
             return;
         }
 
+        AudioManager.instance.PlaySound(3, 15, gameObject, 0.2f, false);
 
         switch (controlledProp)
         {
@@ -488,7 +489,6 @@ public class TelekinesisModule : MonoBehaviour
         CameraShake.instance.StopInfiniteShake();
         main.animManager.LeftHand_Release();
 
-        AudioManager.instance.PlaySound(3, 15, gameObject, 0.2f, false);
 
         isGrabbingAnObject = false;
         //SON

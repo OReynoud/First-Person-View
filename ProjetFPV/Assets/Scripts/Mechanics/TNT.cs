@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using Mechanics;
 using UnityEngine;
@@ -49,6 +50,7 @@ public class TNT : MonoBehaviour, IDestructible
         }
     }
 
+    private List<Enemy> enemiesHit = new List<Enemy>();
     public void OnDestroyEvent()
     {
         GetComponent<Collider>().enabled = false;
@@ -69,7 +71,21 @@ public class TNT : MonoBehaviour, IDestructible
             if (col.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
                 var enemy = col.GetComponentInParent<Enemy>();
-                enemy.TakeDamage(explosionForce,dir.normalized, col.ClosestPointOnBounds(transform.position),damageToEnemy * damageFallOff, col);
+                bool alreadyHit = false;
+                Debug.Log("Damage to ennemy");
+                for (int i = 0; i < enemiesHit.Count; i++)
+                {
+                    if (enemy == enemiesHit[i])
+                    {
+                        alreadyHit = true;
+                    }
+                }
+
+                if (!alreadyHit)
+                {
+                    enemy.TakeDamage(explosionForce,dir.normalized, col.ClosestPointOnBounds(transform.position),damageToEnemy * damageFallOff, col);
+                    enemiesHit.Add(enemy);
+                }
             }
 
             if (col.transform.TryGetComponent(out TNT tnt))
