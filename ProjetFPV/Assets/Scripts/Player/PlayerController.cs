@@ -411,6 +411,8 @@ public class PlayerController : Singleton<PlayerController>
         CheckShootingHand();
         heartBeatVolume = AudioManager.instance.GetVolume(3, 18);
         cameraStartLocalPos = playerCam.localPosition;
+        
+        tkManager.UpdateHealPackVisual();
         volume.TryGet(out chromaticAberration);
     }
 
@@ -1047,7 +1049,8 @@ public class PlayerController : Singleton<PlayerController>
         if (!canMove) return;
         if (currentHealPackAmount <= 0 || currentHealth >= maxHealth) return;
         currentHealPackAmount--;
-        GameManager.instance.UpdateHealPackUI();
+        tkManager.UpdateHealPackVisual();
+        
         currentHealth += healAmount;
         if (currentHealth > maxHealth)
         {

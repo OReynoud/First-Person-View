@@ -14,7 +14,6 @@ namespace Mechanics
         [SerializeField] private CanvasGroup bodyHitMarker;
         [SerializeField] private CanvasGroup headHitMarker;
         [SerializeField] private Image crosshairBase;
-        [SerializeField] private TextMeshProUGUI healPackText;
         [SerializeField] public TextMeshProUGUI interactText;
         [SerializeField] public CanvasGroup gameOver;
         [SerializeField] public GameObject inkStainDecal;
@@ -41,32 +40,16 @@ namespace Mechanics
             headHitMarker.alpha = 0;
             Ex.DefaultMask = LayerMask.GetMask("Default");
 
-            // var temp = FindObjectsOfType<GameObject>();
-            // foreach (var oui in temp)
-            // {
-            //     if (oui.activeInHierarchy)
-            //     {
-            //         if (oui.TryGetComponent(out NavMeshSurface blabla))
-            //         {
-            //             Debug.Log("Found Navmesh at " + oui, oui);
-            //         }
-            //
-            //     }
-            // }
+
 
         }
 
         void Start()
         {
-
-            UpdateHealPackUI();
             gameOver.DOFade(0f, 2f);
         }
         
-        public void UpdateHealPackUI()
-        {
-            healPackText.text = "x " + PlayerController.instance.currentHealPackAmount;
-        }
+
 
         public void HitMark(bool headshot)
         {
@@ -84,7 +67,6 @@ namespace Mechanics
 
         public void UsingTK()
         {
-            //crosshairTK.alpha = PlayerController.instance.tkManager.controlledProp ? 1 : 0;
         }
 
         public Coroutine killMarker;
