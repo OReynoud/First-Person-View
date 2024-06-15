@@ -8,6 +8,7 @@ namespace Mechanics
     {
         private Animator anim;
         public GameObject healingCapsule;
+        public GameObject light;
 
         public float activationDistance = 3f;
         private bool used;
