@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioSubtitles : MonoBehaviour
 {
@@ -18,9 +19,16 @@ public class AudioSubtitles : MonoBehaviour
 
     private Transform player;
     private bool temp;
+    private bool mainMenu;
 
     void Start()
     {
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            mainMenu = true;
+            return;
+        }
+        
         player = PlayerController.instance.transform;
     }
     
@@ -47,6 +55,8 @@ public class AudioSubtitles : MonoBehaviour
             currentIndex++;
         }
 
+        if (mainMenu) return;
+        
         temp = hasToDisplay;
         hasToDisplay = Vector3.Distance(transform.position, player.position) <= subtitlesMaxDistance;
         if (temp != hasToDisplay && temp)
@@ -73,7 +83,14 @@ public class AudioSubtitles : MonoBehaviour
     {
         hasToCount = true;
 
-        if (Vector3.Distance(transform.position, player.position) <= subtitlesMaxDistance)
+        if (!mainMenu)
+        {
+            if (Vector3.Distance(transform.position, player.position) <= subtitlesMaxDistance)
+            {
+                hasToDisplay = true;
+            }
+        }
+        else
         {
             hasToDisplay = true;
         }

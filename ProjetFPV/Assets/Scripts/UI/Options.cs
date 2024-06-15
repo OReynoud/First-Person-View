@@ -76,7 +76,6 @@ public class Options : MonoBehaviour
         
         demoSubtitles.gameObject.SetActive(PlayerPrefs.GetInt("SubtitlesOff") == 0);
         
-        if (inGameSubtitles == null) return;
         inGameSubtitles.SetActive(PlayerPrefs.GetInt("SubtitlesOff") == 0);
     }
 
