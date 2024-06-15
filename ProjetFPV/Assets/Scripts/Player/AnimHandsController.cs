@@ -25,7 +25,7 @@ public class AnimHandsController : MonoBehaviour
     void Start()
     {
         
-        walkAnimDuration = leftHand.GetClip("A_WalkLeft").length;
+        //walkAnimDuration = leftHand.GetClip("A_WalkLeft").length;
     }
 
     // Update is called once per frame
@@ -33,47 +33,47 @@ public class AnimHandsController : MonoBehaviour
     {
         if (reloading) RightHand_ReloadLoop();
 
-        if (walking)
-        {
-            walkAnimClock += Time.deltaTime;
-            if (walkAnimClock > walkAnimDuration)
-            {
-                walkAnimClock = 0;
-            }
-        }
-        else
-        {
-            if (walkAnimClock > 0)
-            {
-                walkAnimClock -= Time.deltaTime;
-            }
-        }
-
-        if (!holding)
-        {
-            if (walking)
-            {
-                leftHand.Stop();
-                leftHand.GetClip("A_WalkLeft").SampleAnimation(leftHand.gameObject,walkAnimClock);
-            }
-            else if (!leftHand.isPlaying)
-            {
-                
-                leftHand.Play("A_IdleLeftNew");
-            }
-        }
-        if (!reloading && !shooting && !pickUp)
-        {
-            if (walking)
-            {
-                rightHand.Stop();
-                rightHand.GetClip("A_WalkRightBis").SampleAnimation(rightHand.gameObject,walkAnimClock);
-            }
-            else if (!rightHand.isPlaying)
-            {
-                rightHand.Play("A_IdleRightNew");
-            }
-        }
+        // if (walking)
+        // {
+        //     walkAnimClock += Time.deltaTime;
+        //     if (walkAnimClock > walkAnimDuration)
+        //     {
+        //         walkAnimClock = 0;
+        //     }
+        // }
+        // else
+        // {
+        //     if (walkAnimClock > 0)
+        //     {
+        //         walkAnimClock -= Time.deltaTime;
+        //     }
+        // }
+        //
+        // if (!holding)
+        // {
+        //     if (walking)
+        //     {
+        //         leftHand.Stop();
+        //         leftHand.GetClip("A_WalkLeft").SampleAnimation(leftHand.gameObject,walkAnimClock);
+        //     }
+        //     else if (!leftHand.isPlaying)
+        //     {
+        //         
+        //         leftHand.Play("A_IdleLeftNew");
+        //     }
+        // }
+        // if (!reloading && !shooting && !pickUp)
+        // {
+        //     if (walking)
+        //     {
+        //         rightHand.Stop();
+        //         rightHand.GetClip("A_WalkRightBis").SampleAnimation(rightHand.gameObject,walkAnimClock);
+        //     }
+        //     else if (!rightHand.isPlaying)
+        //     {
+        //         rightHand.Play("A_IdleRightNew");
+        //     }
+        // }
     }
 
 
@@ -141,7 +141,7 @@ public class AnimHandsController : MonoBehaviour
 
     public void RightHand_ReloadStart()
     {
-        rightHand.Play("A_ReloadStartNew");
+        rightHand.Play("A_ReloadStart");
         reloading = true;
     }
     
@@ -149,13 +149,13 @@ public class AnimHandsController : MonoBehaviour
     {
         if (rightHand.isPlaying) return;
         
-        rightHand.Play("A_ReloadLoopNew");
+        rightHand.Play("A_ReloadLoop");
     }
     
     public void RightHand_ReloadEnd()
     {
         rightHand.Stop();
-        rightHand.Play("A_ReloadEndNew");
+        rightHand.Play("A_ReloadEnd");
         
         if (reloadRoutine is not null)
         {
@@ -169,13 +169,13 @@ public class AnimHandsController : MonoBehaviour
 
     public IEnumerator HandleReload()
     {
-        yield return new WaitForSeconds(rightHand.GetClip("A_ReloadEndNew").length);
+        yield return new WaitForSeconds(rightHand.GetClip("A_ReloadEnd").length);
         reloading = false;
     }
     public void RightHand_Shoot()
     {
         rightHand.Stop();
-        rightHand.Play("A_ShootNew");
+        rightHand.Play("A_ShootRight");
         if (shootCoroutine is not null)
         {
             StopCoroutine(shootCoroutine);
@@ -189,13 +189,13 @@ public class AnimHandsController : MonoBehaviour
     IEnumerator HandleShooting()
     {
         shooting = true;
-        yield return new WaitForSeconds(rightHand.GetClip("A_ShootNew").length);
+        yield return new WaitForSeconds(rightHand.GetClip("A_ShootRight").length);
         shooting = false;
     }
     public void RightHand_PickUp()
     {
         rightHand.Stop();
-        rightHand.Play("A_GrabNew");
+        rightHand.Play("A_Grab");
         if (pickUpCoroutine is not null)
         {
             StopCoroutine(pickUpCoroutine);

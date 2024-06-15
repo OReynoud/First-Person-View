@@ -408,10 +408,10 @@ public class PlayerController : Singleton<PlayerController>
             PlayerPrefs.SetInt("SaveHealKits", currentHealPackAmount);
         }
 
-        chromaticAberration = volume.GetComponent<ChromaticAberration>();
         currentInk = GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, 0);
         CheckShootingHand();
         heartBeatVolume = AudioManager.instance.GetVolume(3, 18);
+        chromaticAberration = volume.GetComponent<ChromaticAberration>();
     }
 
     private Coroutine reloadCoroutine;
