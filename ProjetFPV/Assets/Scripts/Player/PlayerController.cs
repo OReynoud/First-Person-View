@@ -319,26 +319,27 @@ public class PlayerController : Singleton<PlayerController>
 
     private float timer = 0.4f;
     private float timer2 = 0.6f;
+    private float healTimer = 2f;
 
     private IEnumerator ResetDamageShader(bool hardMode)
     {
         if (hardMode)
         {
-            fullScreenDamageMat.SetFloat("_Step", 0);
-            fullScreenDamageMat.SetFloat("_Transparency", 5f);
+            fullScreenDamageMat.SetFloat("_CircleSize", 0f);
+            fullScreenDamageMat.SetFloat("_Alpha", 0f);
             yield break;
         }
 
         var time = 0f;
-        var tempTransparencyValue = fullScreenDamageMat.GetFloat("_Transparency");
-        var tempStepValue = fullScreenDamageMat.GetFloat("_Step");
+        var tempTransparencyValue = fullScreenDamageMat.GetFloat("_Alpha");
+        var tempStepValue = fullScreenDamageMat.GetFloat("_CircleSize");
         
-        while (time < 3f)
+        while (time < healTimer)
         {
             time += Time.unscaledDeltaTime;
             
-            fullScreenDamageMat.SetFloat("_Step", Mathf.Lerp(tempStepValue, 0, time / timer2));
-            fullScreenDamageMat.SetFloat("_Transparency", Mathf.Lerp(tempTransparencyValue, 5f, time / timer2));
+            fullScreenDamageMat.SetFloat("_CircleSize", Mathf.Lerp(tempStepValue, 0f, time / healTimer));
+            fullScreenDamageMat.SetFloat("_Alpha", Mathf.Lerp(tempTransparencyValue, 0f, time / healTimer));
             
             yield return null;
         }
@@ -348,15 +349,15 @@ public class PlayerController : Singleton<PlayerController>
     {
         var missingHealth = (maxHealth - currentHealth) / maxHealth;
         var time = 0f;
-        var tempTransparencyValue = fullScreenDamageMat.GetFloat("_Transparency");
-        var tempStepValue = fullScreenDamageMat.GetFloat("_Step");
+        var tempTransparencyValue = fullScreenDamageMat.GetFloat("_Alpha");
+        var tempStepValue = fullScreenDamageMat.GetFloat("_CircleSize");
         
         while (time < timer)
         {
             time += Time.unscaledDeltaTime;
             
-            fullScreenDamageMat.SetFloat("_Step", Mathf.Lerp(tempStepValue, missingHealth + 0.12f, time / timer));
-            fullScreenDamageMat.SetFloat("_Transparency", Mathf.Lerp(tempTransparencyValue, 100f, time / timer));
+            fullScreenDamageMat.SetFloat("_CircleSize", Mathf.Lerp(tempStepValue, Mathf.Lerp(0.3f, 0.9f, missingHealth), time / timer));
+            fullScreenDamageMat.SetFloat("_Alpha", Mathf.Lerp(tempTransparencyValue, 0.9f, time / timer));
             
             yield return null;
         }
@@ -364,15 +365,15 @@ public class PlayerController : Singleton<PlayerController>
         yield return new WaitForSeconds(0.3f);
 
         time = 0f;
-        tempStepValue = fullScreenDamageMat.GetFloat("_Step");
-        tempTransparencyValue = fullScreenDamageMat.GetFloat("_Transparency");
+        tempStepValue = fullScreenDamageMat.GetFloat("_CircleSize");
+        tempTransparencyValue = fullScreenDamageMat.GetFloat("_Alpha");
         
         while (time < timer2)
         {
             time += Time.unscaledDeltaTime;
             
-            fullScreenDamageMat.SetFloat("_Step", Mathf.Lerp(tempStepValue, missingHealth, time / timer2));
-            fullScreenDamageMat.SetFloat("_Transparency", Mathf.Lerp(tempTransparencyValue, 5f, time / timer2));
+            //fullScreenDamageMat.SetFloat("_CircleSize", Mathf.Lerp(tempStepValue, missingHealth - 0.08f, time / timer2));
+            fullScreenDamageMat.SetFloat("_Alpha", Mathf.Lerp(tempTransparencyValue, Mathf.Lerp(0.4f, 0.6f, missingHealth), time / timer2));
             
             yield return null;
         }
