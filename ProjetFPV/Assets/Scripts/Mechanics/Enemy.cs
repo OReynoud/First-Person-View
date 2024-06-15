@@ -80,7 +80,6 @@ namespace Mechanics
                 mask.maskCollider.gameObject.SetActive(true);
                 mask.maskHealth = mask.baseHealth;
                 mask.broken = false;
-                mask.meshRenderer.material = defaultMat;
 
             }
             
