@@ -30,6 +30,7 @@ public class CollectorBehavior : Enemy
     [BoxGroup] public TrailRenderer[] body_Trail;
 
     [BoxGroup] public float bodySize;
+    [BoxGroup] public GameObject inkCrown;
 
 
     [HideInInspector] public Arena arena;
@@ -400,26 +401,12 @@ public class CollectorBehavior : Enemy
 
     IEnumerator Stun()
     {
-        foreach (var part in allMasks)
-        {
-            if (!part.broken)
-            {
-                part.meshRenderer.material = stunnedMat;
-            }
-        }
 
         agent.enabled = false;
         transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
         yield return new WaitForSeconds(stunDuration);
 
         agent.enabled = true;
-        foreach (var part in allMasks)
-        {
-            if (!part.broken)
-            {
-                part.meshRenderer.material = defaultMat;
-            }
-        }
 
         agent.SetDestination(PlayerController.instance.transform.position);
         currentState = States.Repositioning;
@@ -459,6 +446,11 @@ public class CollectorBehavior : Enemy
                 {
                     mask.maskCollider.enabled = true;
                 }
+
+                if (!inkCrown.activeInHierarchy)
+                {
+                    inkCrown.SetActive(true);
+                }
                 if (body_VFX[0].isPlaying)
                 {
                     foreach (var vfx in body_VFX)
@@ -475,6 +467,10 @@ public class CollectorBehavior : Enemy
                 trail.enabled = true;
             }
 
+            if (inkCrown.activeInHierarchy)
+            {
+                inkCrown.SetActive(false);
+            }
             if (!body_VFX[0].isPlaying)
             {
                 foreach (var vfx in body_VFX)
