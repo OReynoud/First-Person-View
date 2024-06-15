@@ -159,6 +159,8 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Habillage_02");
     }
     
+    #region LookAt
+    
     void LookAtNewGame()
     {
         camera.transform.DOMove(newGameTarget.transform.position, 0.8f).SetEase(Ease.OutCubic);
@@ -182,6 +184,10 @@ public class MainMenu : MonoBehaviour
         camera.transform.DOMove(baseTarget.transform.position, 0.8f).SetEase(Ease.OutCubic);
         camera.transform.DORotate(baseTarget.transform.eulerAngles, 0.8f).SetEase(Ease.OutCubic);
     }
+    
+    #endregion
+    
+    #region Difficulties
 
     public void StartGameEasy()
     {
@@ -196,4 +202,6 @@ public class MainMenu : MonoBehaviour
         LookAtBase();
         introScript.StartIntroHard();
     }
+    
+    #endregion
 }

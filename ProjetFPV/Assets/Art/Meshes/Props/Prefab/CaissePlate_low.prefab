@@ -95,6 +95,8 @@ GameObject:
   - component: {fileID: 671706934698666211}
   - component: {fileID: 6606458395449653036}
   - component: {fileID: 4862863619753281692}
+  - component: {fileID: 1302677196475419852}
+  - component: {fileID: 1169586286948067918}
   m_Layer: 0
   m_Name: CaissePlate_low
   m_TagString: Untagged
@@ -189,3 +191,53 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0052190293, y: 0.01064687, z: 0.010646871}
   m_Center: {x: -0.006910946, y: 0.004430763, z: -6.984921e-10}
+--- !u!54 &1302677196475419852
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6004211921396840957}
+  serializedVersion: 4
+  m_Mass: 8
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &1169586286948067918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6004211921396840957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18e8ff6c8ea6ff040a5133571cd45b9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGrabbed: 0
+  body: {fileID: 0}
+  spamBuffer: 0.6
+  canBeGrabbed: 1
+  velocityLimit: 10
+  thrown: 0
+  ignoreGravityTime: 3
+  col: {fileID: 0}
+  maxAutoAimDistance: 0
+  maxRotationSpeed: 15
+  minRotationSpeed: 2.5

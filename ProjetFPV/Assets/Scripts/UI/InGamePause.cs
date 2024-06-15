@@ -1,7 +1,5 @@
-using System.Collections;
 using DG.Tweening;
 using Mechanics;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -9,30 +7,19 @@ using UnityEngine.UI;
 
 public class InGamePause : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup pauseCanva;
-    [SerializeField] private Options optionsScript;
-    private PlayerInput inputs;
-    private InputActionMap currentControls;
-    [SerializeField] private Button continueGame;
-    [SerializeField] private CanvasGroup difficultyCanva;
     [SerializeField] private GameObject collectibleCamera;
-    private Coroutine coroutine;
+    [SerializeField] private RectTransform blackArea;
+    [SerializeField] private Image blackScreen;
+    private Vector2 baseAnchorPos;
+    [SerializeField] private CanvasGroup pauseCanva;
+    [SerializeField] private CanvasGroup optionsCanva;
     private float t;
 
     void Start()
     {
-        if (continueGame == null) return;
-
-        if (!PlayerPrefs.HasKey("SavePosX"))
-        {
-            continueGame.interactable = false;
-            continueGame.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.grey;
-        }
-        else
-        {
-            continueGame.interactable = true;
-            continueGame.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.white;
-        }
+        DOTween.Init();
+        DOTween.defaultTimeScaleIndependent = true;
+        baseAnchorPos = blackArea.anchoredPosition;
     }
 
     void Update()
@@ -50,19 +37,11 @@ public class InGamePause : MonoBehaviour
         
         t = 0.5f;
 
-        if (optionsScript.optionsCanva.gameObject.activeInHierarchy)
+        if (optionsCanva.alpha >= 1)
         {
-            // optionsScript.CloseOptions();
+            CloseOptions();
         }
-        else if (difficultyCanva != null && difficultyCanva.alpha >= 1)
-        {
-            CloseDifficulty();
-        }
-        else if (pauseCanva == null)
-        {
-            return;
-        }
-        else if (pauseCanva.gameObject.activeInHierarchy)
+        else if (pauseCanva.alpha >= 1)
         {
             Resume();
         }
@@ -72,21 +51,19 @@ public class InGamePause : MonoBehaviour
         }
     }
 
-    public void OpenPause()
+    void OpenPause()
     {
         if (PlayerController.instance.isControled) return;
 
+        ExtendBlackArea(1400);
+        
         AudioManager.instance.MuffleSound();
 
         AudioManager.instance.PlayUISound(0, 0, 0f);
 
         pauseCanva.gameObject.SetActive(true);
-
-        if (coroutine != null)
-        {
-            StopCoroutine(coroutine);
-        }
-        coroutine = StartCoroutine(Fade(false, 0.5f, pauseCanva));
+        pauseCanva.DOFade(1f, 0.8f);
+        
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         Time.timeScale = 0;
@@ -96,69 +73,59 @@ public class InGamePause : MonoBehaviour
         PlayerController.instance.LockCam();
     }
 
-    public void OpenDifficulty()
-    {
-        difficultyCanva.gameObject.SetActive(true);
-        difficultyCanva.DOFade(1f, 0.5f);
-    }
-    
-    public void CloseDifficulty()
-    {
-        difficultyCanva.DOFade(0f, 0.5f).OnComplete(() => difficultyCanva.gameObject.SetActive(false));
-    }
-
     public void Resume()
     {
         AudioManager.instance.UnMuffleSound();
-        Time.timeScale = 1;
+        
+        ReduceBlackArea();
 
+        pauseCanva.DOFade(0f, 0.1f).OnComplete(() => pauseCanva.gameObject.SetActive(false));
+        
         AudioManager.instance.PlayUISound(0, 1, 0f);
-
-        //pauseCanva.DOFade(0f, 0.2f).OnComplete(() => pauseCanva.gameObject.SetActive(false));
+        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        
-        if (coroutine != null)
-        {
-            StopCoroutine(coroutine);
-        }
-        coroutine = StartCoroutine(Fade(true, 0.2f, pauseCanva));
 
         GameManager.instance.ShowUI();
         PlayerController.instance.ImmobilizePlayer();
         PlayerController.instance.LockCam();
     }
-
-
-    public IEnumerator Fade(bool fadeOut, float timer, CanvasGroup target)
+    
+    void ExtendBlackArea(int value)
     {
-        var time = 0f;
-        while (time < timer)
-        {
-            time += Time.unscaledDeltaTime;
-            if (fadeOut)
-            {
-                target.alpha = Mathf.Lerp(1, 0, time / timer);
-            }
-            else
-            {
-                target.alpha = Mathf.Lerp(0, 1, time  / timer);
-            }
-            yield return null;
-        }
-
-        target.gameObject.SetActive(target.alpha > 0.9f);
+        blackScreen.DOFade(0.8f, 0.5f);
+        blackArea.DOAnchorPosX(baseAnchorPos.x + value, 0.8f);
     }
+    
+    void SmallReduceBlackArea()
+    {
+        blackArea.DOAnchorPosX(baseAnchorPos.x + 1400, 0.8f);
 
-    // public void OpenOptions()
-    // {
-    //     optionsScript.OpenOptions();
-    // }
-    //
-    // public void CloseOptions()
-    // {
-    //     optionsScript.CloseOptions();
-    // }
+        pauseCanva.gameObject.SetActive(true);
+        pauseCanva.DOFade(1f, 0.8f);
+    }
+    
+    void ReduceBlackArea()
+    {
+        blackScreen.DOFade(0f, 0.5f);
+        blackArea.DOAnchorPosX(baseAnchorPos.x, 0.8f).OnComplete(() => Time.timeScale = 1f);
+    }
+    
+    public void OpenOptions()
+    {
+        ExtendBlackArea(2200);
+
+        pauseCanva.DOFade(0f, 0.1f);
+        optionsCanva.gameObject.SetActive(true);
+        optionsCanva.DOFade(1f, 0.8f);
+    }
+    
+    void CloseOptions()
+    {
+        SmallReduceBlackArea();
+        
+        optionsCanva.DOFade(0f, 0.1f).OnComplete(() => optionsCanva.gameObject.SetActive(false));
+    }
 
     public void BackToMenu()
     {
@@ -175,28 +142,5 @@ public class InGamePause : MonoBehaviour
     public void ClickSound()
     {
         AudioManager.instance.PlayUISound(0, 2, 0.05f);
-    }
-
-    public void NewGameEasy()
-    {
-        PlayerPrefs.SetInt("isReloadingSave", 0);
-        PlayerPrefs.SetInt("difficulty", 1);
-
-        SceneManager.LoadScene("Habillage_02");
-    }
-
-    public void NewGameHard()
-    {
-        PlayerPrefs.SetInt("isReloadingSave", 0);
-        PlayerPrefs.SetInt("difficulty", 0);
-
-        SceneManager.LoadScene("Habillage_02");
-    }
-
-    public void ContinueGame()
-    {
-        PlayerPrefs.SetInt("isReloadingSave", 1);
-
-        SceneManager.LoadScene("Habillage_02");
     }
 }
