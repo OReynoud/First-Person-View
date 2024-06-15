@@ -64,7 +64,7 @@ public class IntroCinematic : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         
         AudioManager.instance.PlaySound(4, 0, radio, 0f, false);
-        subtitlesScript.StartTimer(0);
+        StartCoroutine(Sub());
 
         while (t < 60f)
         {
@@ -77,6 +77,13 @@ public class IntroCinematic : MonoBehaviour
             
             yield return null;
         }
+    }
+
+    private IEnumerator Sub()
+    {
+        yield return new WaitForSeconds(0.2f);
+        
+        subtitlesScript.StartTimer(0);
     }
 
     private IEnumerator Fade()
