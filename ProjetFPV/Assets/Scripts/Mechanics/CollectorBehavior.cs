@@ -362,26 +362,11 @@ public class CollectorBehavior : Enemy
 
         if (childrenInRange) return;
 
-        foreach (var spawnPos in spawnEnemyPos)
-        {
-            var dir = spawnPos.position - transform.position;
-            dir.Normalize();
-            if (Physics.Raycast(transform.position, dir, out RaycastHit hit, 100, LayerMask.GetMask("Default")))
-            {
-                if (spawnEnemyPos.Contains(hit.transform))
-                {
-                    validSpawns.Add(hit.transform);
-                }
-            }
-        }
-
-        if (validSpawns.Count == 0) return;
-        //
 
         Debug.Log("Valid spawns Found");
 
         // Spawn
-        foreach (var spawn in validSpawns)
+        foreach (var spawn in spawnEnemyPos)
         {
             var egg = Instantiate(spawnBulletPrefab, transform.position, Quaternion.identity);
             egg.parent = this;
