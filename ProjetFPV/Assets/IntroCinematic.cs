@@ -110,9 +110,11 @@ public class IntroCinematic : MonoBehaviour
             var currentLight = lights[0].intensity;
             var targetLight = 0f;
             var radioLight = 0f;
+            var wallLight = 0f;
             
             targetLight = currentLight >= 1f ? Random.Range(8f, 12f) : Random.Range(30f, 36f);
             radioLight = currentLight >= 1f ? Random.Range(0.2f, 0.6f) : Random.Range(1f, 1f);
+            wallLight = currentLight >= 1f ? Random.Range(0.4f, 1.8f) : Random.Range(2f, 2.5f);
 
             var time = Random.Range(0.03f, 0.08f);
 
@@ -124,6 +126,7 @@ public class IntroCinematic : MonoBehaviour
                 {
                    light.intensity = Mathf.Lerp(currentLight, targetLight, t / time);
                    light.intensity = Mathf.Lerp(currentLight, radioLight, t / time);
+                   light.intensity = Mathf.Lerp(currentLight, wallLight, t / time);
                 }
             
                 yield return null;
