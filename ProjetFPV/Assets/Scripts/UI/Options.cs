@@ -47,7 +47,7 @@ public class Options : MonoBehaviour
         }
         if (!PlayerPrefs.HasKey("SubtitlesSize"))
         {
-            PlayerPrefs.SetInt("SubtitlesSize", 50);
+            PlayerPrefs.SetInt("SubtitlesSize", 80);
         }
         if (!PlayerPrefs.HasKey("SubtitlesOff"))
         {
@@ -73,6 +73,8 @@ public class Options : MonoBehaviour
         subtitlesText.text = GiveNumber(subtitlesSlider);
         
         demoSubtitles.fontSize = PlayerPrefs.GetInt("SubtitlesSize");
+        
+        demoSubtitles.gameObject.SetActive(PlayerPrefs.GetInt("SubtitlesOff") == 0);
         
         if (inGameSubtitles == null) return;
         inGameSubtitles.SetActive(PlayerPrefs.GetInt("SubtitlesOff") == 0);

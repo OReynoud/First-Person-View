@@ -9,42 +9,62 @@ public class AudioSubtitles : MonoBehaviour
     [HideInInspector] public bool hasToDisplay; // Call this from Audio is sound is too low, call it again when it's high enough
 
     [SerializeField] private TextMeshProUGUI subtitlesUI;
+    [SerializeField] private float subtitlesMaxDistance;
     
     private float timer;
     private int currentIndex;
     private int currentList;
     [SerializeField] private List<SubtitlesList> subtitles;
+
+    private Transform player;
+    private bool temp;
+
+    void Start()
+    {
+        player = PlayerController.instance.transform;
+    }
     
     void Update()
     {
         if (!hasToCount) return;
         
-        subtitlesUI.gameObject.SetActive(hasToDisplay);
-        
-        timer += Time.deltaTime;
+        timer += Time.unscaledDeltaTime;
 
         if (currentIndex >= subtitles[currentList].subtitlesList.Count)
         {
-            HideSubtitles();
-            return;
+            hasToCount = false;
+            
+            if (hasToDisplay)
+            {
+                HideSubtitles(false);
+            }
         }
         
-        if (timer >= subtitles[currentList].subtitlesList[currentIndex].timeCode)
+        else if (timer >= subtitles[currentList].subtitlesList[currentIndex].timeCode)
         {
             DisplaySubtitles(subtitles[currentList].subtitlesList[currentIndex].sub);
             
             currentIndex++;
         }
+
+        temp = hasToDisplay;
+        hasToDisplay = Vector3.Distance(transform.position, player.position) <= subtitlesMaxDistance;
+        if (temp != hasToDisplay && temp)
+        {
+            HideSubtitles(true);
+        }
     }
 
     void DisplaySubtitles(string sub)
     {
+        if (!hasToDisplay) return;
         subtitlesUI.text = sub;
     }
 
-    void HideSubtitles()
+    void HideSubtitles(bool continueToCount)
     {
-        hasToCount = false;
+        hasToCount = continueToCount;
+        
         subtitlesUI.text = "";
     }
 
@@ -52,11 +72,21 @@ public class AudioSubtitles : MonoBehaviour
     public void StartTimer(int list)
     {
         hasToCount = true;
-        hasToDisplay = true;
+
+        if (Vector3.Distance(transform.position, player.position) <= subtitlesMaxDistance)
+        {
+            hasToDisplay = true;
+        }
         
         currentList = list;
         currentIndex = 0;
         timer = 0;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(1, 0, 0, 0.3f);
+        Gizmos.DrawSphere(transform.position, subtitlesMaxDistance);
     }
 
     [Serializable]
