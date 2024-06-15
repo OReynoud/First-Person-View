@@ -286,7 +286,7 @@ namespace Mechanics
         public string maskName;
         [HideInInspector] public Vector3 origin;
         [HideInInspector] public float baseHealth;
-        [Range(1,10)]public float maskHealth = 1;
+        [Range(1,100)]public float maskHealth = 1;
         public Collider maskCollider;
         [HideInInspector] public Transform tr;
         [HideInInspector] public MeshRenderer meshRenderer;
