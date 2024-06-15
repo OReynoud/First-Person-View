@@ -604,8 +604,10 @@ public class PlayerController : Singleton<PlayerController>
     private Vector3 reloadBasePos;
 
     private float reloadTimer;
+    private List<AmmoSocket> socketsToReload = new List<AmmoSocket>();
     private IEnumerator Reload2()
     {
+        socketsToReload.Clear();
         reloadBasePos = shootingHand.localPosition;
         animManager.RightHand_ReloadStart();
         reloadSoundStart = AudioManager.instance.PlaySound(3, 3, gameObject, 0.1f, false);
@@ -613,23 +615,29 @@ public class PlayerController : Singleton<PlayerController>
         
         int numberOfReloads =
             Mathf.CeilToInt(Mathf.Clamp(currentInk / socketManager.reloadCostPerBullet, 0, socketManager.sockets.Count));
-        foreach (var socket in socketManager.sockets)
+
+        for (int i = socketManager.sockets.Count - 1; i >= 0; i--)
         {
-            if (socket.state == ShootingHand.SocketStates.Loaded)
+            if (socketManager.sockets[i].state == ShootingHand.SocketStates.Empty)
             {
-                numberOfReloads--;
+                socketsToReload.Add(socketManager.sockets[i]);
             }
+        }
+
+        while (numberOfReloads < socketsToReload.Count)
+        {
+            socketsToReload.RemoveAt(socketsToReload.Count - 1);
         }
         var time = reloadSpeed * numberOfReloads;
         reloadTimer = 0;
         while (reloadTimer < time)
         {
             reloadTimer += Time.deltaTime;
-            for (int i = socketManager.sockets.Count - 1; i >= 0; i--)
+            for (int i = socketsToReload.Count - 1; i >= 0; i--)
             {
-                if (socketManager.sockets[i].state == ShootingHand.SocketStates.Loaded)continue;
+                if (socketsToReload[i].state == ShootingHand.SocketStates.Loaded)continue;
                 
-                socketManager.sockets[i].socketMesh.material.SetFloat(socketManager.InkLevel,
+                socketsToReload[i].socketMesh.material.SetFloat(socketManager.InkLevel,
                     Mathf.Lerp(0, 1, reloadTimer / time));
             }
 
