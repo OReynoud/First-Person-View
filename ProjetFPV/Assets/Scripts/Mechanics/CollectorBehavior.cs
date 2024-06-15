@@ -518,7 +518,9 @@ public class CollectorBehavior : Enemy
         else
         {
             
-            currentState = States.Shoot;
+            currentState = States.Roam;
+            TrySpawnChargers();
+            recentlyAttacked = true;
             repositioning = false;
             agent.enabled = true;
         }
