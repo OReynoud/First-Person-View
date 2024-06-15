@@ -613,6 +613,13 @@ public class PlayerController : Singleton<PlayerController>
         
         int numberOfReloads =
             Mathf.CeilToInt(Mathf.Clamp(currentInk / socketManager.reloadCostPerBullet, 0, socketManager.sockets.Count));
+        foreach (var socket in socketManager.sockets)
+        {
+            if (socket.state == ShootingHand.SocketStates.Loaded)
+            {
+                numberOfReloads--;
+            }
+        }
         var time = reloadSpeed * numberOfReloads;
         reloadTimer = 0;
         while (reloadTimer < time)
