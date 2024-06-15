@@ -18,6 +18,11 @@ public class TelekinesisModule : MonoBehaviour
     
     [Foldout("Refs")] [SerializeField] public SkinnedMeshRenderer leftHandModule;
     [Foldout("Refs")] [SerializeField] public TextMeshProUGUI moduleText;
+    
+    [Foldout("Refs")] [SerializeField] public Material activeHeal;
+    [Foldout("Refs")] [SerializeField] public Material emptyHeal;
+    [Foldout("Refs")] [SerializeField] public MeshRenderer[] healSlots;
+    
     private PlayerController main;
     public ControllableProp controlledProp;
 
@@ -107,6 +112,23 @@ public class TelekinesisModule : MonoBehaviour
         VFX_TKStart[1].Play();
     }
 
+
+    public void UpdateHealPackVisual()
+    {
+        for (int i = 0; i < healSlots.Length; i++)
+        {
+            if (i + 1 <= main.currentHealPackAmount)
+            {
+                healSlots[i].material = activeHeal;
+            }
+            else
+            {
+                healSlots[i].material = emptyHeal;
+            }
+
+            
+        }
+    }
     private void HideLineVFX()
     {
         lineVFX.gameObject.SetActive(false);

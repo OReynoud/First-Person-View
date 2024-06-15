@@ -25,25 +25,7 @@ namespace Player
             weakSpotKnockBack = WeakSpotKnockBack;
         }
 
-        private void Start()
-        {
-            StartCoroutine(Deviate(0));
-        }
 
-        private const  int iterations = 4;
-
-        [HideInInspector] public Vector3 deviation;
-
-        IEnumerator Deviate(int i)
-        {
-            yield return null;
-            i++;
-            transform.position += deviation / iterations;
-            if (i <= iterations)
-            {
-                StartCoroutine(Deviate(i));
-            }
-        }
 
         public MeshRenderer meshRenderer;
         // Start is called before the first frame update

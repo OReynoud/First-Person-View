@@ -9,7 +9,7 @@ namespace Mechanics
             if (PlayerController.instance.currentHealPackAmount >= PlayerController.instance.healPackCapacity)return;
             PlayerController.instance.animManager.RightHand_PickUp();
             PlayerController.instance.currentHealPackAmount++;
-            GameManager.instance.UpdateHealPackUI();
+            PlayerController.instance.tkManager.UpdateHealPackVisual();
             //SON
             Destroy(gameObject);
         }
