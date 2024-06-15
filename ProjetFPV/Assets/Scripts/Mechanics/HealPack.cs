@@ -39,6 +39,7 @@ namespace Mechanics
             //SON
             used = true;
             healingCapsule.SetActive(false);
+            light.SetActive(false);
         }
 
         public void ShowContext()
