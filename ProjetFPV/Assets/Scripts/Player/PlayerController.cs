@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Mechanics;
 using NaughtyAttributes;
+using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
@@ -24,7 +26,7 @@ public class PlayerController : Singleton<PlayerController>
     [Tooltip("Intensité de la vignette selon les PV perdus")] 
     [SerializeField] private AnimationCurve vignetteIntensity; //Intensité de la vignette
 
-    [SerializeField] private Volume volume;
+    [SerializeField] private VolumeProfile volume;
     private ChromaticAberration chromaticAberration;
     [SerializeField] private float chromaticAberrationValue;
 
@@ -299,16 +301,8 @@ public class PlayerController : Singleton<PlayerController>
         StartCoroutine(TakeDamageShader());
         
         //SON
-        
-        // lensDistortion.DOLensDistortion(lensDistortionValue, 0.1f).OnComplete(() =>
-        // {
-        //     lensDistortion.DOLensDistortion(0f, 0.1f);
-        // });
-        
-        chromaticAberration.DOChromaticAberrationIntensity(chromaticAberrationValue, 0.1f).OnComplete(() =>
-        {
-            chromaticAberration.DOChromaticAberrationIntensity(0f, 0.1f);
-        });
+
+        chromaticAberration.DOChromaticAberrationIntensity(1f, 0.15f).OnComplete(()=>chromaticAberration.DOChromaticAberrationIntensity(0f, 0.3f));
         
         if (currentHealth <= 0)
         {
@@ -317,8 +311,8 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
-    private float timer = 0.4f;
-    private float timer2 = 0.6f;
+    private float timer = 0.1f;
+    private float timer2 = 0.3f;
     private float healTimer = 2f;
 
     private IEnumerator ResetDamageShader(bool hardMode)
@@ -327,6 +321,7 @@ public class PlayerController : Singleton<PlayerController>
         {
             fullScreenDamageMat.SetFloat("_CircleSize", 0f);
             fullScreenDamageMat.SetFloat("_Alpha", 0f);
+            chromaticAberration.intensity.Override(0f);
             yield break;
         }
 
@@ -340,6 +335,7 @@ public class PlayerController : Singleton<PlayerController>
             
             fullScreenDamageMat.SetFloat("_CircleSize", Mathf.Lerp(tempStepValue, 0f, time / healTimer));
             fullScreenDamageMat.SetFloat("_Alpha", Mathf.Lerp(tempTransparencyValue, 0f, time / healTimer));
+            chromaticAberration.intensity.Override(0f);
             
             yield return null;
         }
@@ -356,13 +352,14 @@ public class PlayerController : Singleton<PlayerController>
         {
             time += Time.unscaledDeltaTime;
             
-            fullScreenDamageMat.SetFloat("_CircleSize", Mathf.Lerp(tempStepValue, Mathf.Lerp(0.3f, 0.9f, missingHealth), time / timer));
+            fullScreenDamageMat.SetFloat("_CircleSize", Mathf.Lerp(tempStepValue, Mathf.Lerp(0.3f, 0.8f, missingHealth), time / timer));
             fullScreenDamageMat.SetFloat("_Alpha", Mathf.Lerp(tempTransparencyValue, 0.9f, time / timer));
+            // chromaticAberration.intensity.Override(Mathf.Lerp(0f, 1f, time / timer));
             
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.05f);
 
         time = 0f;
         tempStepValue = fullScreenDamageMat.GetFloat("_CircleSize");
@@ -373,7 +370,8 @@ public class PlayerController : Singleton<PlayerController>
             time += Time.unscaledDeltaTime;
             
             //fullScreenDamageMat.SetFloat("_CircleSize", Mathf.Lerp(tempStepValue, missingHealth - 0.08f, time / timer2));
-            fullScreenDamageMat.SetFloat("_Alpha", Mathf.Lerp(tempTransparencyValue, Mathf.Lerp(0.4f, 0.6f, missingHealth), time / timer2));
+            fullScreenDamageMat.SetFloat("_Alpha", Mathf.Lerp(tempTransparencyValue, Mathf.Lerp(0.4f, 0.8f, missingHealth), time / timer2));
+            // chromaticAberration.intensity.Override(Mathf.Lerp(1f, 0f, time / timer2));
             
             yield return null;
         }
@@ -413,7 +411,7 @@ public class PlayerController : Singleton<PlayerController>
         CheckShootingHand();
         heartBeatVolume = AudioManager.instance.GetVolume(3, 18);
         cameraStartLocalPos = playerCam.localPosition;
-        chromaticAberration = volume.GetComponent<ChromaticAberration>();
+        volume.TryGet(out chromaticAberration);
     }
 
     private Vector3 cameraStartLocalPos;
@@ -691,8 +689,7 @@ public class PlayerController : Singleton<PlayerController>
         
 
         var lostHealth = (maxHealth - currentHealth) / maxHealth;
-
-        volume.weight = Mathf.Lerp(volume.weight, vignetteIntensity.Evaluate(lostHealth), .01f);
+        
         heartBeatAudioSource.volume = lostHealth * heartBeatVolume;
         heartBeatAudioSource.pitch = Mathf.Lerp(0.6f, 1.5f, lostHealth);
         
