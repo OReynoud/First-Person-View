@@ -65,7 +65,7 @@ public class IntroCinematic : MonoBehaviour
         
         AudioManager.instance.PlaySound(4, 0, radio, 0f, false);
         StartCoroutine(Sub());
-
+        
         while (t < 60f)
         {
             t += Time.deltaTime;
@@ -88,8 +88,9 @@ public class IntroCinematic : MonoBehaviour
 
     private IEnumerator Fade()
     {
-        yield return new WaitForSeconds(53f);
-        
+        yield return new WaitForSeconds(50f);
+        lights[2].intensity = 0;
+        yield return new WaitForSeconds(3f);
         FadeToBlack();
     }
 
@@ -98,9 +99,8 @@ public class IntroCinematic : MonoBehaviour
         yield return new WaitForSeconds(34.5f);
         
         camShake.ShakeOneShot(0);
-        
         yield return new WaitForSeconds(0.5f);
-
+        
         StartCoroutine(Rain());
         
         for (int i = 0; i < 12; i++)
@@ -109,8 +109,10 @@ public class IntroCinematic : MonoBehaviour
 
             var currentLight = lights[0].intensity;
             var targetLight = 0f;
+            var radioLight = 0f;
             
             targetLight = currentLight >= 1f ? Random.Range(8f, 12f) : Random.Range(30f, 36f);
+            radioLight = currentLight >= 1f ? Random.Range(0.2f, 0.6f) : Random.Range(1f, 1f);
 
             var time = Random.Range(0.03f, 0.08f);
 
@@ -121,6 +123,7 @@ public class IntroCinematic : MonoBehaviour
                 foreach (var light in lights)
                 {
                    light.intensity = Mathf.Lerp(currentLight, targetLight, t / time);
+                   light.intensity = Mathf.Lerp(currentLight, radioLight, t / time);
                 }
             
                 yield return null;
