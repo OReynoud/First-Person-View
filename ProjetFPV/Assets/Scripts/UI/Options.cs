@@ -4,18 +4,18 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Options : MonoBehaviour
 {
-    public CanvasGroup optionsCanva;
     [SerializeField] private AudioMixer mixer;
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private Slider masterSlider;
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Slider subtitlesSlider;
-    [SerializeField] private TextMeshProUGUI subtitles;
+    [SerializeField] private TextMeshProUGUI demoSubtitles;
     [SerializeField] private Toggle subtitlesOff;
     [SerializeField] private Toggle fullScreenToggle;
 
@@ -24,6 +24,8 @@ public class Options : MonoBehaviour
     [SerializeField] private TextMeshProUGUI musicText;
     [SerializeField] private TextMeshProUGUI sfxText;
     [SerializeField] private TextMeshProUGUI subtitlesText;
+
+    [SerializeField] private GameObject inGameSubtitles;
 
     void Start()
     {
@@ -69,13 +71,11 @@ public class Options : MonoBehaviour
         musicText.text = GiveNumber(musicSlider);
         sfxText.text = GiveNumber(sfxSlider);
         subtitlesText.text = GiveNumber(subtitlesSlider);
-
-        if (subtitles != null)
-        {
-            subtitles.fontSize = PlayerPrefs.GetInt("SubtitlesSize");
-        }
-
-
+        
+        demoSubtitles.fontSize = PlayerPrefs.GetInt("SubtitlesSize");
+        
+        if (inGameSubtitles == null) return;
+        inGameSubtitles.SetActive(PlayerPrefs.GetInt("SubtitlesOff") == 0);
     }
 
     string GiveNumber(Slider slider)
@@ -138,14 +138,17 @@ public class Options : MonoBehaviour
 
     public void ChangeSubtitlesSize()
     {
-        subtitles.fontSize = subtitlesSlider.value;
+        demoSubtitles.fontSize = subtitlesSlider.value;
         subtitlesText.text = GiveNumber(subtitlesSlider);
     }
 
     public void DisableSubtitles()
     {
         AudioManager.instance.PlayUISound(0, 2, 0.05f);
-        subtitles.gameObject.SetActive(!subtitles.gameObject.activeInHierarchy);
+        demoSubtitles.gameObject.SetActive(!demoSubtitles.gameObject.activeInHierarchy);
+
+        if (inGameSubtitles == null) return;
+        inGameSubtitles.SetActive(!inGameSubtitles.gameObject.activeInHierarchy);
     }
 
     private void OnDisable()
