@@ -35,7 +35,7 @@ public class InGamePause : MonoBehaviour
 
         if (collectibleCamera != null && collectibleCamera.activeInHierarchy) return;
         
-        t = 0.5f;
+        t = 1f;
 
         if (optionsCanva.alpha >= 1)
         {
@@ -54,7 +54,7 @@ public class InGamePause : MonoBehaviour
     void OpenPause()
     {
         if (PlayerController.instance.isControled) return;
-
+        
         ExtendBlackArea(1400);
         
         AudioManager.instance.MuffleSound();
@@ -93,13 +93,17 @@ public class InGamePause : MonoBehaviour
     
     void ExtendBlackArea(int value)
     {
+        t = 1f;
+        
         blackScreen.DOFade(0.8f, 0.5f);
         blackArea.DOAnchorPosX(baseAnchorPos.x + value, 0.8f);
     }
     
     void SmallReduceBlackArea()
     {
-        blackArea.DOAnchorPosX(baseAnchorPos.x + 1400, 0.8f);
+        t = 1f;
+        
+        blackArea.DOAnchorPosX(baseAnchorPos.x + 1400, 0.8f).OnComplete(() => pauseCanva.interactable = true);
 
         pauseCanva.gameObject.SetActive(true);
         pauseCanva.DOFade(1f, 0.8f);
@@ -107,12 +111,16 @@ public class InGamePause : MonoBehaviour
     
     void ReduceBlackArea()
     {
+        t = 1f;
+        
         blackScreen.DOFade(0f, 0.5f);
         blackArea.DOAnchorPosX(baseAnchorPos.x, 0.8f).OnComplete(() => Time.timeScale = 1f);
     }
     
     public void OpenOptions()
     {
+        pauseCanva.interactable = false;
+        
         ExtendBlackArea(2200);
 
         pauseCanva.DOFade(0f, 0.1f);
