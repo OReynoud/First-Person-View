@@ -12,12 +12,16 @@ public class Letter : MonoBehaviour, ICanInteract
     private bool isDisplayed;
     private GameObject uiObject;
     private Camera cam;
+    private bool isRead;
+    private Quaternion baseRot;
 
     private void Start()
     {
         cam = Camera.main;
         collectibleCamera.GetComponent<Camera>().clearFlags = CameraClearFlags.SolidColor;
         uiObject = transform.GetChild(1).gameObject;
+        uiObject.SetActive(false);
+        baseRot = uiObject.transform.rotation;
     }
 
     public void Interact(Vector3 dir)
@@ -44,11 +48,11 @@ public class Letter : MonoBehaviour, ICanInteract
 
     void Update()
     {
-        if (!collectibleCamera.activeInHierarchy) return;
+        if (!isRead) return;
         
         // Obtenir la position de la souris
         Vector3 mousePosition = Input.mousePosition;
-
+        
         // Convertir la position de la souris en coordonnées du monde
         Vector3 objectScreenPosition = cam.WorldToScreenPoint(uiObject.transform.position);
 
@@ -61,6 +65,8 @@ public class Letter : MonoBehaviour, ICanInteract
 
     void OpenLetterInFullScreen()
     {
+        isRead = true;
+        uiObject.SetActive(true);
         GameManager.instance.HideUI();
         PlayerController.instance.ImmobilizePlayer();
         PlayerController.instance.LockCam();
@@ -71,12 +77,17 @@ public class Letter : MonoBehaviour, ICanInteract
         collectibleCamera.transform.position = transform.GetChild(2).position;
         collectibleCamera.transform.rotation = transform.GetChild(2).rotation;
         translatedTextUI.text = translatedText + "\n\n\n\n [E] Close";
+
+        uiObject.transform.rotation = baseRot;
+        
         collectibleCanva.DOFade(1f, 0.5f);
         collectibleCamera.SetActive(true);
     }
 
     void CloseLetterInFullScreen()
     {
+        isRead = false;
+        uiObject.SetActive(false);
         GameManager.instance.ShowUI();
         PlayerController.instance.ImmobilizePlayer();
         PlayerController.instance.LockCam();

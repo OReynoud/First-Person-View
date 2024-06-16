@@ -11063,6 +11063,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.04, y: 0.03999999, z: 0.004999999}
   m_Center: {x: -0.02, y: 0.019999996, z: 0.0024999995}
+--- !u!114 &439303572 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 669167822804762492, guid: cec2dbe1ce6d26e4c9be66413c3ab277,
+    type: 3}
+  m_PrefabInstance: {fileID: 1097083594}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &439778042
 GameObject:
   m_ObjectHideFlags: 0
@@ -29531,16 +29543,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 434576625810489389, guid: a9f7c74fe994b6e4e975974570bf018b,
+        type: 3}
+      propertyPath: collectibleCanva
+      value: 
+      objectReference: {fileID: 1097083596}
+    - target: {fileID: 434576625810489389, guid: a9f7c74fe994b6e4e975974570bf018b,
+        type: 3}
+      propertyPath: translatedTextUI
+      value: 
+      objectReference: {fileID: 1097083595}
+    - target: {fileID: 434576625810489389, guid: a9f7c74fe994b6e4e975974570bf018b,
+        type: 3}
+      propertyPath: collectibleCamera
+      value: 
+      objectReference: {fileID: 1780343673}
     - target: {fileID: 1560028465932852866, guid: a9f7c74fe994b6e4e975974570bf018b,
         type: 3}
       propertyPath: subtitlesUI
       value: 
       objectReference: {fileID: 2073140129}
-    - target: {fileID: 1560028465932852866, guid: a9f7c74fe994b6e4e975974570bf018b,
-        type: 3}
-      propertyPath: subtitlesMaxDistance
-      value: 22
-      objectReference: {fileID: 0}
     - target: {fileID: 1841328944104475477, guid: a9f7c74fe994b6e4e975974570bf018b,
         type: 3}
       propertyPath: collectibleCanva
@@ -29552,21 +29574,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1097083595}
     - target: {fileID: 1841328944104475477, guid: a9f7c74fe994b6e4e975974570bf018b,
-        type: 3}
-      propertyPath: collectibleCamera
-      value: 
-      objectReference: {fileID: 1780343673}
-    - target: {fileID: 2308108097009954419, guid: a9f7c74fe994b6e4e975974570bf018b,
-        type: 3}
-      propertyPath: collectibleCanva
-      value: 
-      objectReference: {fileID: 1097083596}
-    - target: {fileID: 2308108097009954419, guid: a9f7c74fe994b6e4e975974570bf018b,
-        type: 3}
-      propertyPath: translatedTextUI
-      value: 
-      objectReference: {fileID: 1097083595}
-    - target: {fileID: 2308108097009954419, guid: a9f7c74fe994b6e4e975974570bf018b,
         type: 3}
       propertyPath: collectibleCamera
       value: 
@@ -41844,6 +41851,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9203036196178575144, guid: dce82ebbf28195f43941531e37b8f0be,
+        type: 3}
+      propertyPath: descriptionText
+      value: 
+      objectReference: {fileID: 439303572}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
