@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DG.Tweening;
 using Mechanics;
 using NaughtyAttributes;
@@ -11,6 +13,44 @@ using UnityEngine.Serialization;
 public class TelekinesisModule : MonoBehaviour
 {
 
+    [Serializable]
+    public class HealSlot
+    {
+        public MeshRenderer mesh;
+
+        public bool full;
+        public float fillTime;
+        public float timer;
+        public async void UpdateVisual()
+        {
+            while (Application.isPlaying)
+            {
+                await Task.Delay(10);
+                if (full)
+                {
+                    if (timer < fillTime)
+                    {
+                        timer += Time.deltaTime;
+                    }
+                }
+                else
+                {
+                    if (timer > 0)
+                    {
+                        timer -= Time.deltaTime;
+                    }
+                }
+
+                if (Application.isPlaying)
+                {
+                    mesh.material.SetFloat(
+                        "_Range",
+                        Mathf.Lerp(0, 1, timer/fillTime));
+                }
+            }
+            
+        }
+    }
     #region Variables
 
     [Foldout("Refs")] [SerializeField] private ParticleSystem[] VFX_TKStart;
@@ -21,7 +61,7 @@ public class TelekinesisModule : MonoBehaviour
     
     [Foldout("Refs")] [SerializeField] public Material activeHeal;
     [Foldout("Refs")] [SerializeField] public Material emptyHeal;
-    [Foldout("Refs")] [SerializeField] public MeshRenderer[] healSlots;
+    [Foldout("Refs")] [SerializeField] public HealSlot[] healSlots;
     
     private PlayerController main;
     public ControllableProp controlledProp;
@@ -89,6 +129,10 @@ public class TelekinesisModule : MonoBehaviour
         main = GetComponent<PlayerController>();
         offsetPosition = main.offsetPosition;
         currentLineVFXValue = 0;
+        foreach (var slot in healSlots)
+        {
+            slot.UpdateVisual();
+        }
     }
 
     // Update is called once per frame
@@ -124,11 +168,11 @@ public class TelekinesisModule : MonoBehaviour
         {
             if (i + 1 <= main.currentHealPackAmount)
             {
-                healSlots[i].material = activeHeal;
+                healSlots[i].full = true;
             }
             else
             {
-                healSlots[i].material = emptyHeal;
+                healSlots[i].full = false;
             }
 
             
