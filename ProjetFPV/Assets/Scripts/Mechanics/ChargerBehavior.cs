@@ -259,22 +259,19 @@ namespace Mechanics
 
         public override void ApplyStun()
         {
+            base.ApplyStun();
             if (currentState != States.Stunned)
             {
                 currentState = States.Stunned;
                 StartCoroutine(Stun());
             }
-            base.ApplyStun();
         }
 
         IEnumerator Stun()
         {
             foreach (var part in allMasks)
             {
-                if (!part.broken)
-                {
-                    part.meshRenderer.material = stunnedMat;
-                }
+
             }
             body.constraints = RigidbodyConstraints.FreezeRotation;
             InterruptAttack();
@@ -362,8 +359,7 @@ namespace Mechanics
             foreach (var part in allMasks)
             {
                 part.maskCollider.enabled = false;
-                part.tr.DOLocalMove(part.tr.localPosition + Vector3.down * 0.5f, disappearDuration);
-                part.tr.DOScale(temp * 0.8f, disappearDuration * 0.5f);
+                part.tr.DOLocalRotate(new Vector3(0,0,180), disappearDuration);
             }
 
             body.isKinematic = true;
@@ -387,8 +383,6 @@ namespace Mechanics
                 foreach (var part in allMasks)
                 {
                     part.maskCollider.enabled = true;
-                    part.tr.DOLocalMove(part.origin, appearDuration * 2);
-                    part.tr.DOScale(temp, appearDuration);
                 }
 
                 body.isKinematic = false;
@@ -413,6 +407,10 @@ namespace Mechanics
             agent.enabled = false;
             Debug.Log("j'attaque le joueur");
             var t = Time.time + waitBeforeJump;
+            foreach (var part in allMasks)
+            {
+                part.tr.DOLocalRotate(Vector3.zero, disappearDuration);
+            }
             while (Time.time < t)
             {
                 playerPos = PlayerController.instance.transform.position;
