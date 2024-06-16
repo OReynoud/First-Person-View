@@ -217,7 +217,6 @@ public class TelekinesisModule : MonoBehaviour
         {
             isGrabbingAnObject = true;
 
-            ShowLineVFX(hitTelekinesis.collider);
             CameraShake.instance.ShakeOneShot(2);
             if (hitTelekinesis.collider.TryGetComponent(out TelekinesisObject TK))
             {
@@ -226,6 +225,7 @@ public class TelekinesisModule : MonoBehaviour
                 controlledProp.ApplyTelekinesis();
 
                
+                ShowLineVFX(hitTelekinesis.collider);
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 return;
             }
@@ -237,6 +237,7 @@ public class TelekinesisModule : MonoBehaviour
                 controlledProp = heavy;
                 controlledProp.ApplyTelekinesis();
 
+                ShowLineVFX(hitTelekinesis.collider);
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 return;
             }
@@ -248,6 +249,7 @@ public class TelekinesisModule : MonoBehaviour
                 absorb.StartAbsorbInk();
                 controlledProp.ApplyTelekinesis();
 
+                ShowLineVFX(hitTelekinesis.collider);
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 AudioManager.instance.PlaySound(3, 2, gameObject, 0.1f, false);
                 if (hitTelekinesis.collider.TryGetComponent(out Tornado tornado))
@@ -262,6 +264,8 @@ public class TelekinesisModule : MonoBehaviour
                 if (!unstable.canBeGrabbed) return;
                 controlledProp = unstable;
                 controlledProp.ApplyTelekinesis();
+                
+                ShowLineVFX(hitTelekinesis.collider);
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 return;
             }
@@ -272,6 +276,7 @@ public class TelekinesisModule : MonoBehaviour
                 if (!enemy.canBeGrabbed) return;
                 if (main.currentInk < 0.1f) return;
                 controlledProp = enemy;
+                ShowLineVFX(hitTelekinesis.collider);
                 controlledProp.ApplyTelekinesis();
 
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
