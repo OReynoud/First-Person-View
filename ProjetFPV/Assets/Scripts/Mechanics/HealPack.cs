@@ -13,6 +13,9 @@ namespace Mechanics
         public float activationDistance = 3f;
         private bool used;
 
+        private bool previousState;
+        private bool currentState;
+
         private void Start()
         {
             anim = GetComponent<Animator>();
@@ -20,13 +23,22 @@ namespace Mechanics
 
         private void Update()
         {
+            previousState = currentState;
+            
             if (!used && Vector3.Distance(PlayerController.instance.transform.position, transform.position) < activationDistance)
             {
+                currentState = true;
                 anim.SetBool("Open",true);
             }
             else
             {
+                currentState = false;
                 anim.SetBool("Open",false);
+            }
+
+            if (previousState != currentState)
+            {
+                AudioManager.instance.PlaySound(3, currentState ? 21 : 22, gameObject, 0.1f, false);
             }
         }
 
