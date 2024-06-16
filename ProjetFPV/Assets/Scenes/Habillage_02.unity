@@ -11542,6 +11542,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: fe1fff5818d611643a7ba966d642165d, type: 2}
+    - target: {fileID: 3342739697178942109, guid: 1cc2d3631dfa9a94287f133cf12017aa,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: dec1621b21b48144fa20683fa1f45576, type: 2}
     - target: {fileID: 3626085020652268191, guid: 1cc2d3631dfa9a94287f133cf12017aa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -68589,6 +68594,10 @@ PrefabInstance:
       insertIndex: 2
       addedObject: {fileID: 2113439330}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8461569178853626657, guid: b3c1b641a3d8603479ce9474f551ba2f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3274226916804181625}
     - targetCorrespondingSourceObject: {fileID: 7603519145988945813, guid: b3c1b641a3d8603479ce9474f551ba2f,
         type: 3}
       insertIndex: -1
@@ -68706,6 +68715,34 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1298887487}
   m_SourcePrefab: {fileID: 100100000, guid: b3c1b641a3d8603479ce9474f551ba2f, type: 3}
+--- !u!1 &3274226916804181624 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8461569178853626657, guid: b3c1b641a3d8603479ce9474f551ba2f,
+    type: 3}
+  m_PrefabInstance: {fileID: 3274226916804181623}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &3274226916804181625
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3274226916804181624}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 52cacb2afde49e74db2f59cf9c74b9b5, type: 2}
 --- !u!1001 &3292295489201692795
 PrefabInstance:
   m_ObjectHideFlags: 0
