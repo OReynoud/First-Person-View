@@ -295,8 +295,8 @@ public class PlayerController : Singleton<PlayerController>
         playerLayer = LayerMask.GetMask("Player") + socketManager.shootMask;
         sensitivity = 1;
 
-        // volume.TryGet(out chromaticAberration);
-        // StartCoroutine(ResetDamageShader(true));
+        volume.TryGet(out chromaticAberration);
+        StartCoroutine(ResetDamageShader(true));
     }
 
     public void TakeDamage(float damage)

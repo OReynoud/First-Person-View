@@ -9,6 +9,9 @@ public class AudioAdvertising : MonoBehaviour
     [SerializeField] private AudioSubtitles subtitles;
     private int r = 0;
 
+    [SerializeField] private int minAd;
+    [SerializeField] private int maxAd;
+
     void Update()
     {
         t -= Time.deltaTime;
@@ -23,12 +26,12 @@ public class AudioAdvertising : MonoBehaviour
     {
         while (r == previousAd)
         {
-            r = Random.Range(0, 10);
+            r = Random.Range(minAd, maxAd);
         }
 
         previousAd = r;
         var audioObject = AudioManager.instance.PlaySound(9, r, gameObject, 0f, false);
         t = timeBetweenAds + audioObject.GetComponent<AudioSource>().clip.length;
-        subtitles.StartTimer(r);
+        subtitles.StartTimer(r - minAd);
     }
 }
