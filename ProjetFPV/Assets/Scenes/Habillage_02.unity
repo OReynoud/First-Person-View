@@ -3917,7 +3917,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &151550332
 Transform:
   m_ObjectHideFlags: 0
@@ -12663,8 +12663,6 @@ MonoBehaviour:
   spawnCount:
   - bouffonCount: 3
     collectorCount: 0
-  - bouffonCount: 3
-    collectorCount: 0
   - bouffonCount: 0
     collectorCount: 1
   spawnPositions:
@@ -12685,6 +12683,8 @@ MonoBehaviour:
   gates:
   - {fileID: 90790318}
   - {fileID: 151550331}
+  lastBattle: 0
+  tornadoColl: {fileID: 0}
 --- !u!4 &470028817
 Transform:
   m_ObjectHideFlags: 0
@@ -22710,7 +22710,7 @@ MonoBehaviour:
   spawnCount:
   - bouffonCount: 2
     collectorCount: 0
-  - bouffonCount: 3
+  - bouffonCount: 2
     collectorCount: 0
   spawnPositions:
   - {fileID: 799967965}
@@ -22730,6 +22730,8 @@ MonoBehaviour:
   gates:
   - {fileID: 2062197704}
   - {fileID: 1950650286}
+  lastBattle: 0
+  tornadoColl: {fileID: 0}
 --- !u!4 &869978426
 Transform:
   m_ObjectHideFlags: 0
@@ -31429,7 +31431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnCount:
-  - bouffonCount: 2
+  - bouffonCount: 1
     collectorCount: 0
   - bouffonCount: 1
     collectorCount: 0
@@ -31452,6 +31454,8 @@ MonoBehaviour:
   gates:
   - {fileID: 437245425}
   - {fileID: 1756685476}
+  lastBattle: 0
+  tornadoColl: {fileID: 0}
 --- !u!4 &1207184963
 Transform:
   m_ObjectHideFlags: 0
