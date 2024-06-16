@@ -96,6 +96,11 @@ public class TelekinesisModule : MonoBehaviour
     {
         //UpdateTKCylinder();
         UpdateLineVFX();
+
+        if (GameManager.instance.ending)
+        {
+            TelekinesisPhysics();
+        }
     }
 
     private void ShowLineVFX(Collider tkObject)
@@ -206,6 +211,11 @@ public class TelekinesisModule : MonoBehaviour
 
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 AudioManager.instance.PlaySound(3, 2, gameObject, 0.1f, false);
+                if (hitTelekinesis.collider.TryGetComponent(out Tornado tornado))
+                {
+                    ShowLineVFX(hitTelekinesis.collider);
+                    controlledProp.ApplyTelekinesis();
+                }
                 return;
             }
 
@@ -291,7 +301,11 @@ public class TelekinesisModule : MonoBehaviour
         {
             absorbInk.transform.localScale = Vector3.Lerp(absorbInk.baseGOScale, Vector3.zero, lerpValue);
         }
-        
+
+        if (absorbInk.TryGetComponent(out Tornado tornado) && GameManager.instance.canStartEndingCinematic && !GameManager.instance.ending)
+        {
+            StartCoroutine(GameManager.instance.StartEndingCinematic());
+        }
         
 
         if (!controlledProp.isGrabbed)

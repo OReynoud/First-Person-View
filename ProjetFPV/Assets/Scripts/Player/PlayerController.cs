@@ -290,7 +290,7 @@ public class PlayerController : Singleton<PlayerController>
         playerLayer = LayerMask.GetMask("Player") + socketManager.shootMask;
         sensitivity = 1;
 
-        volume.TryGet(out chromaticAberration);
+        //volume.TryGet(out chromaticAberration);
         StartCoroutine(ResetDamageShader(true));
     }
     
@@ -299,11 +299,11 @@ public class PlayerController : Singleton<PlayerController>
         CameraShake.instance.ShakeOneShot(3);
         currentHealth -= PlayerPrefs.GetInt("difficulty") == 0 ? damage : damage/2f;
 
-        StartCoroutine(TakeDamageShader());
+        //StartCoroutine(TakeDamageShader());
         
         //SON
 
-        chromaticAberration.DOChromaticAberrationIntensity(1f, 0.15f).OnComplete(()=>chromaticAberration.DOChromaticAberrationIntensity(0f, 0.3f));
+        //chromaticAberration.DOChromaticAberrationIntensity(1f, 0.15f).OnComplete(()=>chromaticAberration.DOChromaticAberrationIntensity(0f, 0.3f));
         
         if (currentHealth <= 0)
         {
@@ -864,6 +864,7 @@ public class PlayerController : Singleton<PlayerController>
     [HideInInspector]public LayerMask playerLayer;
     public void ReleaseProp(InputAction.CallbackContext obj)
     {
+        if (GameManager.instance.ending)return;
         tkManager.ReleaseProp();
     }
 

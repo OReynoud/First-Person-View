@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NaughtyAttributes;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -32,6 +33,9 @@ namespace Mechanics
         public GameObject[] gates;
 
         private bool finishedSpawning;
+
+        public bool lastBattle;
+        [ShowIf("lastBattle")] public Collider tornadoColl;
 
         private void Awake()
         {
@@ -126,12 +130,22 @@ namespace Mechanics
 
         void DestroyMethod()
         {
-            foreach (var go in gates)
+            if (!lastBattle)
             {
-                go.SetActive(false);
-            }
+                foreach (var go in gates)
+                {
+                    go.SetActive(false);
+                }
 
-            Destroy(gameObject, 10);
+                Destroy(gameObject, 10);
+                return;
+            }
+            else
+            {
+                //trucs à setup à la fin du combat de l'arène
+                GameManager.instance.canStartEndingCinematic = true;
+                tornadoColl.enabled = true;
+            }
         }
 
         private bool destroying;
