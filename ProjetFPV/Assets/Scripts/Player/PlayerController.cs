@@ -7,6 +7,7 @@ using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -51,6 +52,9 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private Material fullScreenDamageMat;
 
     private GameObject reloadSoundStart;
+
+    [SerializeField] private AudioMixerSnapshot defaultSnapshot;
+    [SerializeField] private AudioMixerSnapshot damageSnapshot;
 
     #region Refs
 
@@ -290,20 +294,19 @@ public class PlayerController : Singleton<PlayerController>
         playerLayer = LayerMask.GetMask("Player") + socketManager.shootMask;
         sensitivity = 1;
 
-        //volume.TryGet(out chromaticAberration);
+        volume.TryGet(out chromaticAberration);
         StartCoroutine(ResetDamageShader(true));
     }
     
     public void TakeDamage(float damage)
     {
+        damageSnapshot.TransitionTo(0.1f);
+        
         CameraShake.instance.ShakeOneShot(3);
         currentHealth -= PlayerPrefs.GetInt("difficulty") == 0 ? damage : damage/2f;
 
-        //StartCoroutine(TakeDamageShader());
-        
-        //SON
-
-        //chromaticAberration.DOChromaticAberrationIntensity(1f, 0.15f).OnComplete(()=>chromaticAberration.DOChromaticAberrationIntensity(0f, 0.3f));
+        StartCoroutine(TakeDamageShader());
+        chromaticAberration.DOChromaticAberrationIntensity(1f, 0.15f).OnComplete(()=>chromaticAberration.DOChromaticAberrationIntensity(0f, 0.3f));
         
         if (currentHealth <= 0)
         {
@@ -355,7 +358,6 @@ public class PlayerController : Singleton<PlayerController>
             
             fullScreenDamageMat.SetFloat("_CircleSize", Mathf.Lerp(tempStepValue, Mathf.Lerp(0.3f, 0.8f, missingHealth), time / timer));
             fullScreenDamageMat.SetFloat("_Alpha", Mathf.Lerp(tempTransparencyValue, 0.9f, time / timer));
-            // chromaticAberration.intensity.Override(Mathf.Lerp(0f, 1f, time / timer));
             
             yield return null;
         }
@@ -370,12 +372,12 @@ public class PlayerController : Singleton<PlayerController>
         {
             time += Time.unscaledDeltaTime;
             
-            //fullScreenDamageMat.SetFloat("_CircleSize", Mathf.Lerp(tempStepValue, missingHealth - 0.08f, time / timer2));
             fullScreenDamageMat.SetFloat("_Alpha", Mathf.Lerp(tempTransparencyValue, Mathf.Lerp(0.4f, 0.8f, missingHealth), time / timer2));
-            // chromaticAberration.intensity.Override(Mathf.Lerp(1f, 0f, time / timer2));
             
             yield return null;
         }
+        
+        defaultSnapshot.TransitionTo(0.75f);
     }
 
     private void OnDisable()
@@ -526,7 +528,7 @@ public class PlayerController : Singleton<PlayerController>
 
         ControllableProp prop;
         
-        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange))
+        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange,socketManager.shootMask, QueryTriggerInteraction.Ignore))
         {
             if (!hit.collider.TryGetComponent(out prop))
             {
@@ -640,7 +642,7 @@ public class PlayerController : Singleton<PlayerController>
                 if (socketsToReload[i].state == ShootingHand.SocketStates.Loaded)continue;
                 
                 socketsToReload[i].socketMesh.material.SetFloat(socketManager.InkLevel,
-                    Mathf.Lerp(0, 1, reloadTimer / time));
+                    Mathf.Lerp(0.25f, 1, reloadTimer / time));
             }
 
             yield return null;

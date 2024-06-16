@@ -101,8 +101,8 @@ namespace Mechanics
                 }
             }
 
-            PlayerController.instance.tkManager.leftHandModule.materials[2].SetFloat(
-                PlayerController.instance.socketManager.InkLevel,
+            PlayerController.instance.tkManager.leftHandModule.materials[1].SetFloat(
+                "_InkLevel",
                 Mathf.Lerp(TelekinesisModule.zeroInkFill, TelekinesisModule.fullInkFill, current / max));
             percent = Mathf.Round((current / max) * 100);
             PlayerController.instance.tkManager.moduleText.text = percent.ToString();
@@ -268,6 +268,8 @@ namespace Mechanics
         [Foldout("Ending Cinematic")] [SerializeField]
         private float damageAmount;
         [Foldout("Ending Cinematic")] [SerializeField]
+        private float absorbSpeed = 25;
+        [Foldout("Ending Cinematic")] [SerializeField]
         private float inkOverFlowLimit;
         
         
@@ -277,6 +279,7 @@ namespace Mechanics
             PlayerController.instance.ImmobilizePlayer();
             ending = true;
             PlayerController.instance.rotationX = 0;
+            PlayerController.instance.tkManager.inkAbsorbSpeed = absorbSpeed;
             StartCoroutine(TakeDamageOverTime());
             
             
