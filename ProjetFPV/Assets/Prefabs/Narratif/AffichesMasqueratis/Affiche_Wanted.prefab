@@ -142,6 +142,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4747132101529930711}
+    - targetCorrespondingSourceObject: {fileID: 6375011591576752317, guid: 62afd827a75564240997077f14770c37,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4792218461031672973}
+    - targetCorrespondingSourceObject: {fileID: 6375011591576752317, guid: 62afd827a75564240997077f14770c37,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8613597111011360415}
   m_SourcePrefab: {fileID: 100100000, guid: 62afd827a75564240997077f14770c37, type: 3}
 --- !u!1 &8293113644797244742 stripped
 GameObject:
@@ -184,6 +192,90 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Wanted - Mascheratis
   maxDistance: 10
+--- !u!1 &8410793647311600384 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6375011591576752317, guid: 62afd827a75564240997077f14770c37,
+    type: 3}
+  m_PrefabInstance: {fileID: 3225055649242065853}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4792218461031672973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8410793647311600384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94ffbed4dd2a30c44983ba75bab8d7e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeBetweenAds: 15
+  subtitles: {fileID: 8613597111011360415}
+  minAd: 11
+  maxAd: 15
+--- !u!114 &8613597111011360415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8410793647311600384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4440b5f4843297945a5dc09af798cc6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasToDisplay: 0
+  subtitlesUI: {fileID: 0}
+  subtitlesMaxDistance: 20
+  subtitles:
+  - name: Alice_Police1
+    subtitlesList:
+    - timeCode: 0.2
+      sub: If you have any information
+    - timeCode: 1.5
+      sub: about the Mascheratis,
+    - timeCode: 3
+      sub: please contact the authorities now.
+    - timeCode: 6
+      sub: please contact the authorities now.
+  - name: Alice_Police2
+    subtitlesList:
+    - timeCode: 0
+      sub: Have you seen these men ?
+    - timeCode: 1.6
+      sub: If yes, contact the police right now.
+    - timeCode: 5
+      sub: 
+  - name: Thomas_Police1
+    subtitlesList:
+    - timeCode: 0
+      sub: Have you seen these men ?
+    - timeCode: 1.6
+      sub: If yes, contact the police right now.
+    - timeCode: 5
+      sub: If yes, contact the police right now.
+  - name: Thomas_Police2
+    subtitlesList:
+    - timeCode: 0
+      sub: If you have any information about
+    - timeCode: 2
+      sub: the Mascheratis, please contact
+    - timeCode: 4
+      sub: the authorities.
+    - timeCode: 5
+      sub: 
+  - name: Thomas_Police3
+    subtitlesList:
+    - timeCode: 0
+      sub: 'Any information regarding '
+    - timeCode: 1.6
+      sub: these men should be transfered
+    - timeCode: 3.5
+      sub: immediately to the police.
+    - timeCode: 6
+      sub: immediately to the police.
 --- !u!4 &8673051380185165820 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6097149600418055233, guid: 62afd827a75564240997077f14770c37,
