@@ -32,7 +32,7 @@ public class AudioSubtitles : MonoBehaviour
         player = PlayerController.instance.transform;
     }
     
-    void Update()
+    void FixedUpdate()
     {
         if (!hasToCount) return;
         
