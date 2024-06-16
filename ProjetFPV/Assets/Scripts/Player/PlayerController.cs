@@ -295,8 +295,8 @@ public class PlayerController : Singleton<PlayerController>
         playerLayer = LayerMask.GetMask("Player") + socketManager.shootMask;
         sensitivity = 1;
 
-        // volume.TryGet(out chromaticAberration);
-        // StartCoroutine(ResetDamageShader(true));
+        volume.TryGet(out chromaticAberration);
+        StartCoroutine(ResetDamageShader(true));
     }
 
     public void TakeDamage(float damage)
@@ -624,8 +624,11 @@ public class PlayerController : Singleton<PlayerController>
         socketsToReload.Clear();
         reloadBasePos = shootingHand.localPosition;
         animManager.RightHand_ReloadStart();
+        yield return new WaitForSeconds(animManager.rightHand.GetClip("A_ReloadStart").length / 2f);
+        
         reloadSoundStart = AudioManager.instance.PlaySound(3, 3, gameObject, 0.1f, false);
-        yield return new WaitForSeconds(animManager.rightHand.GetClip("A_ReloadStart").length);
+        
+        yield return new WaitForSeconds(animManager.rightHand.GetClip("A_ReloadStart").length / 2f);
 
         int numberOfReloads =
             Mathf.CeilToInt(Mathf.Clamp(currentInk / socketManager.reloadCostPerBullet, 0,
@@ -675,11 +678,16 @@ public class PlayerController : Singleton<PlayerController>
 
         AudioManager.instance.PlaySound(3, 20, gameObject, 0.1f, false);
         Destroy(reloadSoundStart);
-
+        
         animManager.RightHand_ReloadEnd();
         shootingHand.DOLocalMove(reloadBasePos, 0.4f);
 
         reloading = false;
+
+        yield return new WaitForSeconds(0.3f);
+        
+       
+        
     }
 
 
