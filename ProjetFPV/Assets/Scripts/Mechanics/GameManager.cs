@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using DG.Tweening;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -31,6 +32,9 @@ namespace Mechanics
 
         private Coroutine bodyHit;
         private Coroutine headHit;
+
+        public bool canStartEndingCinematic;
+        public bool ending;
     
         // Start is called before the first frame update
         public override void Awake()
@@ -82,16 +86,26 @@ namespace Mechanics
             current += increment;
         
             if (current < 0) current = 0;
-            if (current >= max)
+            if (!ending)
             {
-                current = max;
+                if (current >= max)
+                {
+                    current = max;
+                }
+            }
+            else
+            {
+                if (current >= inkOverFlowLimit)
+                {
+                    current = inkOverFlowLimit;
+                }
             }
 
             PlayerController.instance.tkManager.leftHandModule.materials[2].SetFloat(
                 PlayerController.instance.socketManager.InkLevel,
                 Mathf.Lerp(TelekinesisModule.zeroInkFill, TelekinesisModule.fullInkFill, current / max));
             percent = Mathf.Round((current / max) * 100);
-            PlayerController.instance.tkManager.moduleText.text = percent + "%";
+            PlayerController.instance.tkManager.moduleText.text = percent.ToString();
             return current;
         }
 
@@ -167,7 +181,15 @@ namespace Mechanics
             PlayerController.instance.isControled = true;
             PlayerController.instance.enabled = false;
             gameOver.DOFade(1f, 1f);
-            StartCoroutine(GameOverCoroutine());
+
+            if (canStartEndingCinematic)
+            {
+                //Roll credits
+            }
+            else
+            {
+                StartCoroutine(GameOverCoroutine());
+            }
         }
 
         private IEnumerator GameOverCoroutine()
@@ -232,6 +254,42 @@ namespace Mechanics
             }
 
             target.gameObject.SetActive(target.alpha > 0.9f);
+        }
+
+
+
+        
+        //Outro Variables
+        [Foldout("Ending Cinematic")] [SerializeField]
+        private float timeToDealDamage;
+        [Foldout("Ending Cinematic")] [SerializeField]
+        private float timeTickDecrease;
+        
+        [Foldout("Ending Cinematic")] [SerializeField]
+        private float damageAmount;
+        [Foldout("Ending Cinematic")] [SerializeField]
+        private float inkOverFlowLimit;
+        
+        
+        //Start the Outro
+        public IEnumerator StartEndingCinematic()
+        {
+            PlayerController.instance.ImmobilizePlayer();
+            ending = true;
+            PlayerController.instance.rotationX = 0;
+            StartCoroutine(TakeDamageOverTime());
+            
+            
+            yield return null;
+        }
+
+        IEnumerator TakeDamageOverTime()
+        {
+            yield return new WaitForSeconds(timeToDealDamage);
+            timeToDealDamage -= timeTickDecrease;
+            PlayerController.instance.TakeDamage(damageAmount);
+            StartCoroutine(TakeDamageOverTime());
+
         }
     }
 }
