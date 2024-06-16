@@ -278,6 +278,8 @@ namespace Mechanics
         {
             PlayerController.instance.ImmobilizePlayer();
             ending = true;
+            StartCoroutine(PlayerController.instance.ResetDamageShader(false));
+            PlayerController.instance.playerCam.LookAt(PlayerController.instance.tkManager.controlledProp.transform);
             PlayerController.instance.rotationX = 0;
             PlayerController.instance.tkManager.inkAbsorbSpeed = absorbSpeed;
             StartCoroutine(TakeDamageOverTime());
@@ -290,6 +292,7 @@ namespace Mechanics
         {
             yield return new WaitForSeconds(timeToDealDamage);
             timeToDealDamage -= timeTickDecrease;
+            gameOver.alpha = 1 - (PlayerController.instance.currentHealth / PlayerController.instance.maxHealth);
             PlayerController.instance.TakeDamage(damageAmount);
             StartCoroutine(TakeDamageOverTime());
 
