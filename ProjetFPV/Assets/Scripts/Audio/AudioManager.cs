@@ -48,6 +48,20 @@ public class AudioManager : Singleton<AudioManager>
         return newAudioSourceObject;
     }
     
+    public GameObject PlaySound(int category, int sound, GameObject go, float randomPitchIntensity, float intensityModifier)
+    {
+        var newAudioSourceObject = Instantiate(prefabAudioSource, go.transform.position, Quaternion.identity, go.transform);
+        var newAudioSource = newAudioSourceObject.GetComponent<AudioSource>();
+        newAudioSource.clip = categories[category].sounds[sound].sounds[Random.Range(0, categories[category].sounds[sound].sounds.Count)];
+        newAudioSource.volume = GetVolume(category, sound) * intensityModifier;
+        newAudioSource.pitch = 1 - Random.Range(-randomPitchIntensity, randomPitchIntensity);
+        newAudioSourceObject.SetActive(true);
+        
+        Destroy(newAudioSourceObject, categories[category].sounds[sound].sounds[Random.Range(0, categories[category].sounds[sound].sounds.Count)].length + 0.3f);
+        
+        return newAudioSourceObject;
+    }
+    
     public GameObject PlayUISound(int category, int sound, float randomPitchIntensity)
     {
         var newAudioSourceObject = Instantiate(prefabAudioSource, Vector3.zero, Quaternion.identity);

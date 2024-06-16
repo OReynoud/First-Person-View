@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using Mechanics;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TelekinesisObject : ControllableProp
@@ -16,7 +13,9 @@ public class TelekinesisObject : ControllableProp
     [SerializeField] private float maxAutoAimDistance; //THOMAS WAS HERE
     public float maxRotationSpeed = 15;
     public float minRotationSpeed = 2.5f;
-
+    private float iM;
+    private float minTimeBetweenSounds = 0.1f;
+    private float timeBetweenSounds;
 
     public override void Awake()
     {
@@ -31,6 +30,8 @@ public class TelekinesisObject : ControllableProp
     public override void ApplyTelekinesis()
     {
         body.useGravity = !body.useGravity;
+        
+        iM = 1;
 
         if (gameObject.layer == LayerMask.NameToLayer("Default"))
         {
@@ -54,6 +55,8 @@ public class TelekinesisObject : ControllableProp
 
     private void FixedUpdate()
     {
+        timeBetweenSounds -= Time.deltaTime;
+        
         if (thrown)
         {
             timer += Time.deltaTime;
@@ -75,6 +78,13 @@ public class TelekinesisObject : ControllableProp
 
     private void OnCollisionEnter(Collision other)
     {
+        if (timeBetweenSounds <= 0)
+        {
+            AudioManager.instance.PlaySound(1, 2, gameObject, 0.2f, iM);
+            iM *= 0.4f;
+            timeBetweenSounds = minTimeBetweenSounds;
+        }
+        
         if (!thrown) return;
 
         if (body.velocity.magnitude < velocityLimit)
@@ -95,8 +105,6 @@ public class TelekinesisObject : ControllableProp
         }
 
         //SON
-
-        AudioManager.instance.PlaySound(1, 2, gameObject, 0.2f, false);
     }
 
     IEnumerator NotThrown()
