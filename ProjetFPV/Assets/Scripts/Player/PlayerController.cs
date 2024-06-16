@@ -321,7 +321,7 @@ public class PlayerController : Singleton<PlayerController>
     private float timer2 = 0.3f;
     private float healTimer = 2f;
 
-    private IEnumerator ResetDamageShader(bool hardMode)
+    public IEnumerator ResetDamageShader(bool hardMode)
     {
         if (hardMode)
         {
