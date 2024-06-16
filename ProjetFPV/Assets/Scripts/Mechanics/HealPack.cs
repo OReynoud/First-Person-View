@@ -36,7 +36,7 @@ namespace Mechanics
             PlayerController.instance.animManager.RightHand_PickUp();
             PlayerController.instance.currentHealPackAmount++;
             PlayerController.instance.tkManager.UpdateHealPackVisual();
-            //SON
+            AudioManager.instance.PlaySound(3, 8, gameObject, 0.1f, false);
             used = true;
             healingCapsule.SetActive(false);
             light.SetActive(false);
