@@ -528,7 +528,7 @@ public class PlayerController : Singleton<PlayerController>
 
         ControllableProp prop;
         
-        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange))
+        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange,socketManager.shootMask, QueryTriggerInteraction.Ignore))
         {
             if (!hit.collider.TryGetComponent(out prop))
             {

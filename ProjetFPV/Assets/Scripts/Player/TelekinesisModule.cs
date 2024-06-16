@@ -218,7 +218,7 @@ public class TelekinesisModule : MonoBehaviour
     public void FindControllableProp()
     {
         if (Physics.Raycast(main.playerCam.position, main.playerCam.forward, out hitTelekinesis,
-                main.socketManager.maxRange, main.socketManager.shootMask))
+                main.socketManager.maxRange, main.socketManager.shootMask, QueryTriggerInteraction.Ignore))
         {
             isGrabbingAnObject = true;
 
