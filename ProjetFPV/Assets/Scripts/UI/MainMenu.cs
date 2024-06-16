@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
@@ -28,6 +29,11 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private IntroCinematic introScript;
 
     private bool cinematicStarted;
+    [SerializeField] private float cinematicCutTimer;
+    [SerializeField] private Image skipCircle;
+    private float cT;
+    private bool countingCutCinematic;
+    private int selectedDifficulty;
 
     void Start()
     {
@@ -49,14 +55,57 @@ public class MainMenu : MonoBehaviour
 
     void Update()
     {
+        if (countingCutCinematic)
+        {
+            skipCircle.fillAmount = cT / cinematicCutTimer;
+            
+            cT += Time.deltaTime;
+            if (cT >= cinematicCutTimer)
+            {
+                SkipIntro();
+            }
+        }
+        
         if (t < 0) return;
 
         t -= Time.unscaledDeltaTime;
     }
+
+    void SkipIntro()
+    {
+        switch (selectedDifficulty)
+        {
+            case 0:
+                PlayerPrefs.SetInt("isReloadingSave", 0);
+                PlayerPrefs.SetInt("difficulty", 0);
+                break;
+            case 1:
+                PlayerPrefs.SetInt("isReloadingSave", 0);
+                PlayerPrefs.SetInt("difficulty", 1);
+                break;
+        }
+        
+        introScript.FadeToBlack(1f);
+    }
     
     public void Escape(InputAction.CallbackContext obj)
     {
-        if (!obj.started || t > 0f || cinematicStarted) return;
+        if (cinematicStarted)
+        {
+            if (obj.started)
+            {
+                countingCutCinematic = true;
+            }
+            else if (obj.canceled)
+            {
+                countingCutCinematic = false;
+                cT = 0f;
+            }
+            return;
+            
+        }
+        
+        if (!obj.started || t > 0f) return;
         
         t = 0.5f;
 
@@ -191,6 +240,7 @@ public class MainMenu : MonoBehaviour
 
     public void StartGameEasy()
     {
+        selectedDifficulty = 1;
         cinematicStarted = true;
         LookAtBase();
         introScript.StartIntroEasy();
@@ -198,6 +248,7 @@ public class MainMenu : MonoBehaviour
 
     public void StartGameHard()
     {
+        selectedDifficulty = 0;
         cinematicStarted = true;
         LookAtBase();
         introScript.StartIntroHard();
