@@ -36,9 +36,13 @@ namespace Mechanics
 
         public bool lastBattle;
         [ShowIf("lastBattle")] public GameObject gateToDisable;
+        
+        private Material gateMat;
 
         private void Awake()
         {
+            gateMat = gates[0].GetComponent<Renderer>().sharedMaterial;
+            
             foreach (var go in gates)
             {
                 go.SetActive(false);
@@ -47,10 +51,7 @@ namespace Mechanics
 
         public void TriggerArenaEvent()
         {
-            foreach (var go in gates)
-            {
-                go.SetActive(true);
-            }
+            StartCoroutine(ActiveShaderGate());
 
             StartCoroutine(ArenaEvent());
             AudioManager.instance.PlayUISound(5, 2, 0f);
@@ -132,25 +133,20 @@ namespace Mechanics
         {
             if (!lastBattle)
             {
-                foreach (var go in gates)
-                {
-                    go.SetActive(false);
-                }
-
+                StartCoroutine(DisableShaderGate());
+                
                 Destroy(gameObject, 10);
                 return;
             }
 
+            StartCoroutine(DisableShaderGateLastBattle());
+            
             //trucs à setup à la fin du combat de l'arène
-            gateToDisable.SetActive(false);
             GameManager.instance.canStartEndingCinematic = true;
         }
 
         private bool destroying;
-
-       
-
-
+        
         List<Transform> FillValidList( Transform[] array)
         {
             List<Transform> temp = new List<Transform>();
@@ -171,6 +167,74 @@ namespace Mechanics
             }
 
             return temp;
+        }
+
+        private float timer = 1.5f;
+        private float t;
+        
+        private IEnumerator ActiveShaderGate()
+        {
+            t = 0f;
+            
+            foreach (var go in gates)
+            {
+                go.SetActive(true);
+            }
+            
+            while (t <= timer)
+            {
+                t += Time.deltaTime;
+                gateMat.SetFloat("_Dissolve_Noise_Intensity", Mathf.Lerp(1.5f, 0.05f, t/timer));
+                gateMat.SetFloat("_DissolveProgression", Mathf.Lerp(-2.5f, 0.15f, t / timer));
+                
+                yield return null;
+            }
+            
+            // _Dissolve_Noise_Intensity 1.5 -> 0.05
+            // _DissolveProgression -2.5 -> 0.15
+        }
+        
+        private IEnumerator DisableShaderGate()
+        {
+            t = 0f;
+            
+            while (t <= timer)
+            {
+                t += Time.deltaTime;
+                gateMat.SetFloat("_Dissolve_Noise_Intensity", Mathf.Lerp(0.05f, 1.5f, t/timer));
+                gateMat.SetFloat("_DissolveProgression", Mathf.Lerp(0.15f, -2.5f, t / timer));
+                
+                yield return null;
+            }
+            
+            foreach (var go in gates)
+            {
+                go.SetActive(false);
+            }
+            
+            // _Dissolve_Noise_Intensity 0.05 -> 1.5
+            // _DissolveProgression 0.15 -> -2.5
+        }
+        
+        private IEnumerator DisableShaderGateLastBattle()
+        {
+            t = 0f;
+            
+            while (t <= timer)
+            {
+                var gateMatLast = gateToDisable.GetComponent<Renderer>().material;
+                
+                t += Time.deltaTime;
+                gateMatLast.SetFloat("_Dissolve_Noise_Intensity", Mathf.Lerp(0.05f, 1.5f, t/timer));
+                gateMatLast.SetFloat("_DissolveProgression", Mathf.Lerp(0.15f, -2.5f, t / timer));
+                
+                yield return null;
+            }
+            
+            gateToDisable.SetActive(false);
+            
+            // _Dissolve_Noise_Intensity 0.05 -> 1.5
+            // _DissolveProgression 0.15 -> -2.5
         }
     }
 }
