@@ -642,7 +642,7 @@ public class PlayerController : Singleton<PlayerController>
                 if (socketsToReload[i].state == ShootingHand.SocketStates.Loaded)continue;
                 
                 socketsToReload[i].socketMesh.material.SetFloat(socketManager.InkLevel,
-                    Mathf.Lerp(0, 1, reloadTimer / time));
+                    Mathf.Lerp(0.25f, 1, reloadTimer / time));
             }
 
             yield return null;
