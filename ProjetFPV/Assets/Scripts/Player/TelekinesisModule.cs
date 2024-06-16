@@ -80,8 +80,8 @@ public class TelekinesisModule : MonoBehaviour
     #endregion
 
 
-    public const float zeroInkFill = 0.32f;
-    public const float fullInkFill = 0.65f;
+    public const float zeroInkFill = 0f;
+    public const float fullInkFill = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -134,6 +134,7 @@ public class TelekinesisModule : MonoBehaviour
             
         }
     }
+    
     private void HideLineVFX()
     {
         lineVFX.gameObject.SetActive(false);
