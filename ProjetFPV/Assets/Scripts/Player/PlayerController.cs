@@ -24,8 +24,9 @@ public class PlayerController : Singleton<PlayerController>
 
     [SerializeField] private AudioSource heartBeatAudioSource;
     private float heartBeatVolume;
-    [Tooltip("Intensité de la vignette selon les PV perdus")] 
-    [SerializeField] private AnimationCurve vignetteIntensity; //Intensité de la vignette
+
+    [Tooltip("Intensité de la vignette selon les PV perdus")] [SerializeField]
+    private AnimationCurve vignetteIntensity; //Intensité de la vignette
 
     [SerializeField] private VolumeProfile volume;
     private ChromaticAberration chromaticAberration;
@@ -33,16 +34,19 @@ public class PlayerController : Singleton<PlayerController>
 
     [Tooltip("Maximum Ink of the player")] [SerializeField]
     public float maxInk;
-    
-    [Tooltip("How much stamina the player currently has")]
-    [SerializeField] //[ProgressBar("maxInk", EColor.Green)]
+
+    [Tooltip("How much stamina the player currently has")] [SerializeField] //[ProgressBar("maxInk", EColor.Green)]
     public float currentInk;
-    
-    [SerializeField] public int maxHealth = 10; 
+
+    [SerializeField] public int maxHealth = 10;
+
     [SerializeField] [ProgressBar("maxHealth", EColor.Red)]
     public float currentHealth;
+
     [SerializeField] public int healPackCapacity;
+
     [SerializeField] private float healAmount;
+
     //[SerializeField] private float timeToRegenerateHealth;
     //[SerializeField] private float regenSpeed;
     [SerializeField] private float interactDistance;
@@ -68,17 +72,18 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Refs")] [SerializeField] private Transform rightHand;
     [Foldout("Refs")] [SerializeField] private CanvasGroup telekinesisPointer;
     [Foldout("Refs")] [SerializeField] public Transform offsetPosition;
+
     [Foldout("Refs")]
     [InfoBox(
         "Blue ball indicates the resting Position (Must be updated manually in editor via the button 'Update Resting Pos' at the bottom, otherwise updates automatically in play mode)")]
     [Label("RestingPos")]
     [SerializeField]
     private Vector3 restingPosOffset;
-    
+
 
     [Foldout("Refs")] [SerializeField] public CapsuleCollider standingCollider;
     [Foldout("Refs")] [SerializeField] private CapsuleCollider crouchedCollider;
-    
+
     [Foldout("Refs")] [SerializeField] private ParticleSystem[] VFX_TKStart;
     [Foldout("Refs")] [SerializeField] private ParticleSystem VFX_TKEnd;
 
@@ -135,23 +140,22 @@ public class PlayerController : Singleton<PlayerController>
 
     [Foldout("Shoot")] [Tooltip("Time needed to reload per bullet")] [SerializeField]
     private float reloadSpeed;
-    
 
     #endregion
-    
+
     #region Bobbing Variables
 
-    [Foldout("Bobbing")] [Tooltip("How big the arm bobbing is")] [SerializeField]
-    [Range(0,0.1f)] private float amplitude = 0.003f;
+    [Foldout("Bobbing")] [Tooltip("How big the arm bobbing is")] [SerializeField] [Range(0, 0.1f)]
+    private float amplitude = 0.003f;
 
-    [Foldout("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField]
-    [Range(1,50)] private float crouchFrequency = 5;
-    
-    [Foldout("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField]
-    [Range(1,50)] private float walkFrequency = 10;
-    
-    [Foldout("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField]
-    [Range(1,50)] private float sprintFrequency = 20;
+    [Foldout("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField] [Range(1, 50)]
+    private float crouchFrequency = 5;
+
+    [Foldout("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField] [Range(1, 50)]
+    private float walkFrequency = 10;
+
+    [Foldout("Bobbing")] [Tooltip("Speed of the arm bobbing")] [SerializeField] [Range(1, 50)]
+    private float sprintFrequency = 20;
 
     [Foldout("Bobbing")]
     [Tooltip("(NOT USED YET) Camera tilting (in degrees) when player is moving left or right")]
@@ -163,7 +167,7 @@ public class PlayerController : Singleton<PlayerController>
     #region Debug
 
     [Foldout("Debug")] [SerializeField] private Transform shootingHand;
-    
+
     [Foldout("Debug")] [SerializeField] public int currentHealPackAmount;
 
     [Foldout("Debug")] [SerializeField] private Vector3 inputVelocity;
@@ -194,9 +198,6 @@ public class PlayerController : Singleton<PlayerController>
     [Foldout("Debug")] [Tooltip("")] [SerializeField]
     private float shootSpeedTimer;
 
-
-
-
     #endregion
 
     #region Misc
@@ -213,13 +214,13 @@ public class PlayerController : Singleton<PlayerController>
     [HideInInspector] public AnimHandsController animManager;
 
     #endregion
-    
+
     #region Audio Variables
 
     private float walkTimer;
     [SerializeField] private float audioWalkSpeed;
     [HideInInspector] public int isOnWood;
-    
+
     #endregion
 
 
@@ -277,7 +278,7 @@ public class PlayerController : Singleton<PlayerController>
         socketManager = GetComponent<ShootingHand>();
         tkManager = GetComponent<TelekinesisModule>();
         animManager = GetComponent<AnimHandsController>();
-        
+
         inputs.actions.Enable();
         currentControls = inputs.actions.FindActionMap(currentInputMap);
 
@@ -290,24 +291,25 @@ public class PlayerController : Singleton<PlayerController>
 
         startPos = camera1.transform.localPosition;
         currentHealth = maxHealth;
-        
+
         playerLayer = LayerMask.GetMask("Player") + socketManager.shootMask;
         sensitivity = 1;
 
         volume.TryGet(out chromaticAberration);
         StartCoroutine(ResetDamageShader(true));
     }
-    
+
     public void TakeDamage(float damage)
     {
         damageSnapshot.TransitionTo(0.1f);
-        
+
         CameraShake.instance.ShakeOneShot(3);
-        currentHealth -= PlayerPrefs.GetInt("difficulty") == 0 ? damage : damage/2f;
+        currentHealth -= PlayerPrefs.GetInt("difficulty") == 0 ? damage : damage / 2f;
 
         StartCoroutine(TakeDamageShader());
-        chromaticAberration.DOChromaticAberrationIntensity(1f, 0.15f).OnComplete(()=>chromaticAberration.DOChromaticAberrationIntensity(0f, 0.3f));
-        
+        chromaticAberration.DOChromaticAberrationIntensity(1f, 0.15f)
+            .OnComplete(() => chromaticAberration.DOChromaticAberrationIntensity(0f, 0.3f));
+
         if (currentHealth <= 0)
         {
             Debug.Log("Je suis mort");
@@ -332,33 +334,34 @@ public class PlayerController : Singleton<PlayerController>
         var time = 0f;
         var tempTransparencyValue = fullScreenDamageMat.GetFloat("_Alpha");
         var tempStepValue = fullScreenDamageMat.GetFloat("_CircleSize");
-        
+
         while (time < healTimer)
         {
             time += Time.unscaledDeltaTime;
-            
+
             fullScreenDamageMat.SetFloat("_CircleSize", Mathf.Lerp(tempStepValue, 0f, time / healTimer));
             fullScreenDamageMat.SetFloat("_Alpha", Mathf.Lerp(tempTransparencyValue, 0f, time / healTimer));
             chromaticAberration.intensity.Override(0f);
-            
+
             yield return null;
         }
     }
-    
+
     private IEnumerator TakeDamageShader()
     {
         var missingHealth = (maxHealth - currentHealth) / maxHealth;
         var time = 0f;
         var tempTransparencyValue = fullScreenDamageMat.GetFloat("_Alpha");
         var tempStepValue = fullScreenDamageMat.GetFloat("_CircleSize");
-        
+
         while (time < timer)
         {
             time += Time.unscaledDeltaTime;
-            
-            fullScreenDamageMat.SetFloat("_CircleSize", Mathf.Lerp(tempStepValue, Mathf.Lerp(0.3f, 0.8f, missingHealth), time / timer));
+
+            fullScreenDamageMat.SetFloat("_CircleSize",
+                Mathf.Lerp(tempStepValue, Mathf.Lerp(0.3f, 0.8f, missingHealth), time / timer));
             fullScreenDamageMat.SetFloat("_Alpha", Mathf.Lerp(tempTransparencyValue, 0.9f, time / timer));
-            
+
             yield return null;
         }
 
@@ -367,16 +370,17 @@ public class PlayerController : Singleton<PlayerController>
         time = 0f;
         tempStepValue = fullScreenDamageMat.GetFloat("_CircleSize");
         tempTransparencyValue = fullScreenDamageMat.GetFloat("_Alpha");
-        
+
         while (time < timer2)
         {
             time += Time.unscaledDeltaTime;
-            
-            fullScreenDamageMat.SetFloat("_Alpha", Mathf.Lerp(tempTransparencyValue, Mathf.Lerp(0.4f, 0.8f, missingHealth), time / timer2));
-            
+
+            fullScreenDamageMat.SetFloat("_Alpha",
+                Mathf.Lerp(tempTransparencyValue, Mathf.Lerp(0.4f, 0.8f, missingHealth), time / timer2));
+
             yield return null;
         }
-        
+
         defaultSnapshot.TransitionTo(0.75f);
     }
 
@@ -391,14 +395,14 @@ public class PlayerController : Singleton<PlayerController>
         {
             PlayerPrefs.SetInt("isReloadingSave", 0);
         }
-        
+
         if (PlayerPrefs.GetInt("isReloadingSave") == 1)
         {
             transform.position = new Vector3(PlayerPrefs.GetFloat("SavePosX"), PlayerPrefs.GetFloat("SavePosY"),
                 PlayerPrefs.GetFloat("SavePosZ"));
             currentInk = PlayerPrefs.GetFloat("SaveInkLevel");
             currentHealPackAmount = PlayerPrefs.GetInt("SaveHealKits");
-            
+
             PlayerPrefs.SetInt("isReloadingSave", 0);
         }
         else
@@ -414,16 +418,17 @@ public class PlayerController : Singleton<PlayerController>
         CheckShootingHand();
         heartBeatVolume = AudioManager.instance.GetVolume(3, 18);
         cameraStartLocalPos = playerCam.localPosition;
-        
+
         tkManager.UpdateHealPackVisual();
     }
 
     private Vector3 cameraStartLocalPos;
 
     private Coroutine reloadCoroutine;
-    
+
 
     #region LogicChecks
+
     private void RegisterInputs()
     {
         currentControls.Enable();
@@ -441,13 +446,12 @@ public class PlayerController : Singleton<PlayerController>
         currentControls.FindAction("Reload", true).performed += RequestReload;
 
         currentControls.FindAction("Interact", true).performed += Interact;
-        
+
         currentControls.FindAction("UseHealPack", true).performed += UseHealPack;
     }
 
     void UnRegisterInputs()
     {
-
         currentControls.FindAction("ToggleCrouch", true).performed -= ToggleCrouch;
         currentControls.FindAction("ToggleCrouch", true).canceled -= ToggleCrouch;
 
@@ -461,9 +465,10 @@ public class PlayerController : Singleton<PlayerController>
         currentControls.FindAction("Reload", true).performed -= RequestReload;
 
         currentControls.FindAction("Interact", true).performed -= Interact;
-        
+
         currentControls.Disable();
     }
+
     void CheckShootingHand()
     {
         if (currentControls.FindAction("Shoot", true).bindings[0].path == "<Mouse>/leftButton")
@@ -513,13 +518,14 @@ public class PlayerController : Singleton<PlayerController>
     private float pointerTimer = 0;
     private float pointerTime = 0.3f;
     private float fadedScale = 3;
+
     private void CheckTelekinesisTarget()
     {
         pointerTimer = Mathf.Clamp(pointerTimer, 0, pointerTime);
         if (tkManager.controlledProp)
         {
             pointerTimer += Time.deltaTime;
-            telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
+            telekinesisPointer.alpha = Mathf.Lerp(0, 1, pointerTimer / pointerTime);
             telekinesisPointer.transform.localScale =
                 Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
             telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -2f);
@@ -527,8 +533,9 @@ public class PlayerController : Singleton<PlayerController>
         }
 
         ControllableProp prop;
-        
-        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange,socketManager.shootMask, QueryTriggerInteraction.Ignore))
+
+        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange,
+                socketManager.shootMask, QueryTriggerInteraction.Ignore))
         {
             if (!hit.collider.TryGetComponent(out prop))
             {
@@ -547,7 +554,7 @@ public class PlayerController : Singleton<PlayerController>
                 if (!prop.canBeGrabbed)
                 {
                     pointerTimer -= Time.deltaTime;
-                    telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
+                    telekinesisPointer.alpha = Mathf.Lerp(0, 1, pointerTimer / pointerTime);
                     telekinesisPointer.transform.localScale =
                         Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
                     telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -5);
@@ -556,7 +563,7 @@ public class PlayerController : Singleton<PlayerController>
 
                 pointerTimer += Time.deltaTime;
                 //telekinesisPointer.position = camera1.WorldToScreenPoint(prop.transform.position);
-                telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
+                telekinesisPointer.alpha = Mathf.Lerp(0, 1, pointerTimer / pointerTime);
                 telekinesisPointer.transform.localScale =
                     Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
                 telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, -0.8f);
@@ -565,8 +572,8 @@ public class PlayerController : Singleton<PlayerController>
         }
 
         pointerTimer -= Time.deltaTime;
-        
-        telekinesisPointer.alpha = Mathf.Lerp(0,1,pointerTimer/pointerTime);
+
+        telekinesisPointer.alpha = Mathf.Lerp(0, 1, pointerTimer / pointerTime);
         if (animManager.holding)
         {
             telekinesisPointer.transform.localScale =
@@ -577,12 +584,14 @@ public class PlayerController : Singleton<PlayerController>
             telekinesisPointer.transform.localScale =
                 Vector3.Lerp(Vector3.one * 1.5f, Vector3.one, pointerTimer / pointerTime);
         }
+
         telekinesisPointer.transform.rotation *= Quaternion.Euler(0, 0, animManager.holding ? -5f : -0.8f);
     }
 
     void CheckInteractableTarget()
     {
-        if (Physics.Raycast(playerCam.position,  playerCam.forward, out RaycastHit hit, interactDistance, ~LayerMask.GetMask("Player")))   
+        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, interactDistance,
+                ~LayerMask.GetMask("Player")))
         {
             if (hit.transform.TryGetComponent(out ICanInteract interactable))
             {
@@ -594,8 +603,8 @@ public class PlayerController : Singleton<PlayerController>
                 interactable.ShowContext();
                 return;
             }
-
         }
+
         if (GameManager.instance.interactText.enabled)
         {
             GameManager.instance.interactText.enabled = false;
@@ -609,16 +618,21 @@ public class PlayerController : Singleton<PlayerController>
 
     private float reloadTimer;
     private List<AmmoSocket> socketsToReload = new List<AmmoSocket>();
+
     private IEnumerator Reload2()
     {
         socketsToReload.Clear();
         reloadBasePos = shootingHand.localPosition;
         animManager.RightHand_ReloadStart();
-        reloadSoundStart = AudioManager.instance.PlaySound(3, 3, gameObject, 0.1f, false);
-        yield return new WaitForSeconds(animManager.rightHand.GetClip("A_ReloadStart").length);
+        yield return new WaitForSeconds(animManager.rightHand.GetClip("A_ReloadStart").length / 2f);
         
+        reloadSoundStart = AudioManager.instance.PlaySound(3, 3, gameObject, 0.1f, false);
+        
+        yield return new WaitForSeconds(animManager.rightHand.GetClip("A_ReloadStart").length / 2f);
+
         int numberOfReloads =
-            Mathf.CeilToInt(Mathf.Clamp(currentInk / socketManager.reloadCostPerBullet, 0, socketManager.sockets.Count));
+            Mathf.CeilToInt(Mathf.Clamp(currentInk / socketManager.reloadCostPerBullet, 0,
+                socketManager.sockets.Count));
 
         for (int i = socketManager.sockets.Count - 1; i >= 0; i--)
         {
@@ -632,25 +646,36 @@ public class PlayerController : Singleton<PlayerController>
         {
             socketsToReload.RemoveAt(socketsToReload.Count - 1);
         }
+
         var time = reloadSpeed * numberOfReloads;
+        var cost = numberOfReloads * socketManager.reloadCostPerBullet;
+        Debug.Log("Cost: " + cost);
         reloadTimer = 0;
+
         while (reloadTimer < time)
         {
-            reloadTimer += Time.deltaTime;
             for (int i = socketsToReload.Count - 1; i >= 0; i--)
             {
-                if (socketsToReload[i].state == ShootingHand.SocketStates.Loaded)continue;
-                
+                if (socketsToReload[i].state == ShootingHand.SocketStates.Loaded) continue;
+
                 socketsToReload[i].socketMesh.material.SetFloat(socketManager.InkLevel,
                     Mathf.Lerp(0.25f, 1, reloadTimer / time));
             }
 
+            reloadTimer += Time.deltaTime;
+            currentInk =
+                GameManager.instance.UpdatePlayerStamina(currentInk, maxInk, -(cost/time) * Time.deltaTime);
             yield return null;
-        }   
-        
-        
+        }
+
+        foreach (var socket in socketsToReload)
+        {
+            
+            socket.state = ShootingHand.SocketStates.Loaded;
+        }
+
         socketManager.ReloadSockets();
-        
+
         AudioManager.instance.PlaySound(3, 20, gameObject, 0.1f, false);
         Destroy(reloadSoundStart);
         
@@ -658,60 +683,71 @@ public class PlayerController : Singleton<PlayerController>
         shootingHand.DOLocalMove(reloadBasePos, 0.4f);
 
         reloading = false;
+
+        yield return new WaitForSeconds(0.3f);
+        
+       
+        
     }
 
 
     // Update is called once per frame
     private void Update()
-    { // THOMAS
+    {
+        // THOMAS
         if (Input.GetKeyDown(KeyCode.B))
         {
             TakeDamage(1);
         }
-        
-        
+
+
         walkTimer -= Time.deltaTime;
 
         #region Cinématique bandes noires
-        
+
         if (!canMove && isEndingCinematic)
         {
-            camera1.transform.parent.transform.localRotation = Quaternion.Lerp(camera1.transform.parent.transform.localRotation, Quaternion.Euler(2,0,0), Time.deltaTime * 1.2f);
+            camera1.transform.parent.transform.localRotation = Quaternion.Lerp(
+                camera1.transform.parent.transform.localRotation, Quaternion.Euler(2, 0, 0), Time.deltaTime * 1.2f);
             return;
         }
-        
+
         if (!canMove && isRepositiong)
         {
-            playerDir += new Vector3(cinematicStartPos.x, transform.position.y, cinematicStartPos.z) - transform.position;
+            playerDir += new Vector3(cinematicStartPos.x, transform.position.y, cinematicStartPos.z) -
+                         transform.position;
             appliedForce = true;
             HorizontalMovement();
-            
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(0,0,0), Time.deltaTime * 0.8f);
-            camera1.transform.parent.transform.localRotation = Quaternion.Lerp(camera1.transform.parent.transform.localRotation, Quaternion.Euler(-40,0,0), Time.deltaTime * 0.1f);
+
+            transform.localRotation =
+                Quaternion.Lerp(transform.localRotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * 0.8f);
+            camera1.transform.parent.transform.localRotation = Quaternion.Lerp(
+                camera1.transform.parent.transform.localRotation, Quaternion.Euler(-40, 0, 0), Time.deltaTime * 0.1f);
             return;
         }
-        
+
         if (!canMove && isControled)
         {
             playerDir += transform.forward;
             appliedForce = true;
             HorizontalMovement();
 
-            camera1.transform.parent.transform.localRotation = Quaternion.Lerp(camera1.transform.parent.transform.localRotation, Quaternion.Euler(-40,0,0), Time.deltaTime * 0.1f);
+            camera1.transform.parent.transform.localRotation = Quaternion.Lerp(
+                camera1.transform.parent.transform.localRotation, Quaternion.Euler(-40, 0, 0), Time.deltaTime * 0.1f);
             return;
         }
-        
+
         #endregion
-        
+
         UpdateRestingPos();
         playerDir = Vector3.zero;
-        
+
 
         var lostHealth = (maxHealth - currentHealth) / maxHealth;
-        
+
         heartBeatAudioSource.volume = lostHealth * heartBeatVolume;
         heartBeatAudioSource.pitch = Mathf.Lerp(0.6f, 1.5f, lostHealth);
-        
+
         if (canMove)
         {
             Rotate();
@@ -728,7 +764,8 @@ public class PlayerController : Singleton<PlayerController>
         switch (state)
         {
             case PlayerStates.Crouching:
-                playerCam.position = Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.2f);
+                playerCam.position =
+                    Vector3.Lerp(playerCam.position, transform.position + crouchedCollider.center, 0.2f);
                 break;
             case PlayerStates.Sprinting:
                 playerCam.localPosition = cameraStartLocalPos;
@@ -737,10 +774,11 @@ public class PlayerController : Singleton<PlayerController>
                 {
                     camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, runningFOV, lerpFOV);
                 }
+
                 break;
 
             case PlayerStates.Standing:
-                playerCam.localPosition =  Vector3.Lerp(playerCam.localPosition, cameraStartLocalPos, 0.2f);
+                playerCam.localPosition = Vector3.Lerp(playerCam.localPosition, cameraStartLocalPos, 0.2f);
                 camera1.fieldOfView = Mathf.Lerp(camera1.fieldOfView, normalFOV, lerpFOV);
                 break;
         }
@@ -750,21 +788,16 @@ public class PlayerController : Singleton<PlayerController>
         {
             CheckInteractableTarget();
         }
-
-        
     }
 
     private void FixedUpdate()
     {
-        
         ArmBobbing();
     }
 
     private void LateUpdate()
     {
         HorizontalMovement();
-        
-
     }
 
 
@@ -790,14 +823,15 @@ public class PlayerController : Singleton<PlayerController>
         if (appliedForce)
         {
             moveInputTimer += Time.deltaTime;
-            
+
             //SON DE MARCHE, LA FONCTION EST EN UPDATE
 
             if (walkTimer <= 0)
             {
                 AudioManager.instance.PlaySound(3, isOnWood > 0 ? 0 : 4, gameObject, 0.1f, false);
-                walkTimer = state == PlayerStates.Sprinting ? audioWalkSpeed / 2f : isControled ? audioWalkSpeed * 3f : audioWalkSpeed;
-                
+                walkTimer = state == PlayerStates.Sprinting ? audioWalkSpeed / 2f :
+                    isControled ? audioWalkSpeed * 3f : audioWalkSpeed;
+
                 switch (state)
                 {
                     case PlayerStates.Standing:
@@ -815,14 +849,12 @@ public class PlayerController : Singleton<PlayerController>
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-
             }
+
             animManager.walking = true;
         }
         else
         {
-            
-
             moveInputTimer -= Time.deltaTime;
             moveInputTimer = Mathf.Clamp(moveInputTimer, 0, dragCurve.keys[^1].time);
         }
@@ -840,7 +872,8 @@ public class PlayerController : Singleton<PlayerController>
         switch (state)
         {
             case PlayerStates.Standing:
-                inputVelocity = playerDir * (runCurve.Evaluate(moveInputTimer) * runVelocity) / ((isControled || isRepositiong) ? 6f : 1f);
+                inputVelocity = playerDir * (runCurve.Evaluate(moveInputTimer) * runVelocity) /
+                                ((isControled || isRepositiong) ? 6f : 1f);
                 Mathf.Clamp(moveInputTimer, 0, runCurve.keys[^1].time);
                 break;
 
@@ -863,10 +896,11 @@ public class PlayerController : Singleton<PlayerController>
         rb.velocity = new Vector3(inputVelocity.x, rb.velocity.y, inputVelocity.z);
     }
 
-    [HideInInspector]public LayerMask playerLayer;
+    [HideInInspector] public LayerMask playerLayer;
+
     public void ReleaseProp(InputAction.CallbackContext obj)
     {
-        if (GameManager.instance.ending)return;
+        if (GameManager.instance.ending) return;
         tkManager.ReleaseProp();
     }
 
@@ -936,7 +970,7 @@ public class PlayerController : Singleton<PlayerController>
 
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed * sensitivity, 0);
 
-        var camRotation = new Vector3(playerCam.localEulerAngles.x,0,
+        var camRotation = new Vector3(playerCam.localEulerAngles.x, 0,
             playerCam.localEulerAngles.z);
         playerCam.localEulerAngles = camRotation;
     }
@@ -989,12 +1023,13 @@ public class PlayerController : Singleton<PlayerController>
 
 
     [HideInInspector] public Camera camera1;
-    
+
     private void Interact(InputAction.CallbackContext obj)
     {
         if (!canMove && !lockedCam) return; //THOMAS
         if (tkManager.controlledProp) return;
-        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, interactDistance, ~LayerMask.GetMask("Player")))
+        if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, interactDistance,
+                ~LayerMask.GetMask("Player")))
         {
             if (hit.rigidbody)
             {
@@ -1014,46 +1049,50 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     private bool superShot;
+
     private void Shoot(InputAction.CallbackContext obj)
     {
         if (!canMove) return;
         if (reloading) return;
-        if (socketManager.noBullets || socketManager.overheated)return;
+        if (socketManager.noBullets || socketManager.overheated) return;
         if (shootSpeedTimer > 0) return;
         if (stagger != null) StopCoroutine(stagger);
         stagger = StartCoroutine(StaggerSprint(state == PlayerStates.Sprinting));
 
         socketManager.ShootWithSocket(playerCam, shootingHand);
 
-        
+
         // SON
         AudioManager.instance.PlaySound(3, 1, gameObject, 0.1f, false);
     }
-    
+
     private bool reloading = false;
+
     public void RequestReload(InputAction.CallbackContext obj)
     {
         if (!canMove) return;
-        if (reloading)return;
+        if (reloading) return;
         if (currentInk < socketManager.reloadCostPerBullet) return;
         foreach (var socket in socketManager.sockets)
         {
-            if (socket.state != ShootingHand.SocketStates.Empty)continue;
+            if (socket.state != ShootingHand.SocketStates.Empty) continue;
             reloading = true;
         }
-        if (!reloading)return;
-        
+
+        if (!reloading) return;
+
         //SON
-       
+
         reloadCoroutine = StartCoroutine(Reload2());
     }
+
     private void UseHealPack(InputAction.CallbackContext obj)
     {
         if (!canMove) return;
         if (currentHealPackAmount <= 0 || currentHealth >= maxHealth) return;
         currentHealPackAmount--;
         tkManager.UpdateHealPackVisual();
-        
+
         currentHealth += healAmount;
         if (currentHealth > maxHealth)
         {
@@ -1061,7 +1100,7 @@ public class PlayerController : Singleton<PlayerController>
         }
 
         StartCoroutine(ResetDamageShader(false));
-        
+
         //SON
         AudioManager.instance.PlaySound(3, 16, gameObject, 0.1f, false);
     }
@@ -1085,9 +1124,8 @@ public class PlayerController : Singleton<PlayerController>
         {
             if (!tkManager.controlledProp)
             {
-                
                 tkManager.FindControllableProp();
-                if(tkManager.controlledProp)animManager.LeftHand_Grab();
+                if (tkManager.controlledProp) animManager.LeftHand_Grab();
                 return;
             }
 
@@ -1097,7 +1135,7 @@ public class PlayerController : Singleton<PlayerController>
 
     #endregion
 
-    
+
     //THOMAS --> Permet de passer au son de bois
     private void OnTriggerEnter(Collider other)
     {
@@ -1105,8 +1143,8 @@ public class PlayerController : Singleton<PlayerController>
         {
             isOnWood++;
         }
-        
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("InteriorArea"))
@@ -1118,6 +1156,7 @@ public class PlayerController : Singleton<PlayerController>
     #region Bobbing
 
     private float usingFrequency;
+
     Vector3 FootStepMotion()
     {
         Vector3 pos = Vector3.zero;
@@ -1133,9 +1172,10 @@ public class PlayerController : Singleton<PlayerController>
                 usingFrequency = crouchFrequency;
                 break;
         }
+
         pos.y += Mathf.Sin(Time.time * usingFrequency) * amplitude;
         pos.x += Mathf.Cos(Time.time * usingFrequency / 2) * amplitude * 0.5f;
-        
+
 
         return pos;
     }
@@ -1174,31 +1214,31 @@ public class PlayerController : Singleton<PlayerController>
     #endregion
 
     #region Cinématique bandes noires
-    
+
     [HideInInspector] public bool isControled;
     private bool isRepositiong;
     private bool isEndingCinematic;
     private Vector3 cinematicStartPos;
     private Vector3 cinematicStartDir;
-    
+
     public void TakeControlIntroTornado(Vector3 startPos, Vector3 startDir)
     {
         cinematicStartPos = startPos;
         cinematicStartDir = startDir;
-        canMove = false; 
+        canMove = false;
         StartCoroutine(TakeControlCoroutine());
     }
 
     private IEnumerator TakeControlCoroutine()
     {
         isControled = true;
-        
+
         yield return new WaitForSeconds(0.5f);
 
         state = PlayerStates.Standing;
 
         isRepositiong = true;
-        
+
         yield return new WaitForSeconds(Vector3.Distance(cinematicStartPos, transform.position) * 1.5f);
 
         isRepositiong = false;
@@ -1214,7 +1254,7 @@ public class PlayerController : Singleton<PlayerController>
         isRepositiong = false;
 
         yield return new WaitForSeconds(2f);
-        
+
         canMove = true;
         isControled = false;
         isEndingCinematic = false;
@@ -1223,11 +1263,11 @@ public class PlayerController : Singleton<PlayerController>
         appliedForce = false;
         HorizontalMovement();
     }
-    
+
     #endregion
-    
+
     #region Save
-    
+
     public float GetInk()
     {
         return currentInk;
@@ -1237,6 +1277,6 @@ public class PlayerController : Singleton<PlayerController>
     {
         return currentHealPackAmount;
     }
-    
+
     #endregion
 }

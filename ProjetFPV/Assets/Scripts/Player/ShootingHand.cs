@@ -45,21 +45,13 @@ public class ShootingHand : MonoBehaviour
     [Foldout("Shoot")] [SerializeField] private float bodyDamage;
     [Foldout("Shoot")] [SerializeField] private float bodyKnockBack;
 
-    // [Foldout("Surplus")] [SerializeField] private float surplusShotDamage;
-    // [Foldout("Surplus")] [SerializeField] private float surplusKnockBack;
-    // [Foldout("Surplus")] [HideInInspector] public Vector3 hitConeSize;
-    // [Foldout("Surplus")] [SerializeField] private float overheatTime;
-    // [Foldout("Surplus")] [SerializeField][Range(1,100)] private float percentInkCost = 50;
 
 
 
-    [Foldout("Refs")] public Material emptySocket;
     [Foldout("Refs")] public Material loadedSocket;
     [Foldout("Refs")] public Material superChargedSocket;
-    [Foldout("Refs")] public GameObject overHeatFeedback;
 
     [Foldout("Refs")] [SerializeField] private PlayerBullet bulletPrefab;
-    [Foldout("Refs")] [SerializeField] private PlayerSuperShot superShot;
     [Foldout("Refs")] [SerializeField] private LineRenderer normalTrail;
     [Foldout("Refs")] [SerializeField] private LineRenderer superTrail;
     private LineRenderer currentTrail;
@@ -98,13 +90,7 @@ public class ShootingHand : MonoBehaviour
     [HideInInspector] public bool noBullets;
 
     [HideInInspector] public bool overheated;
-
-
-    public void Update()
-    {
-        
-    }
-
+    
     void UpdateCurrentSocket() //Pouce, majeur, annulaire, auriculaire. Haha je suis drole
     {
         //currentSocket.highlightMesh.enabled = false;
@@ -134,23 +120,8 @@ public class ShootingHand : MonoBehaviour
 
     public void ReloadSockets()
     {
-        for (int i = sockets.Count - 1; i >= 0; i--)
-        {
-            if (reloadCostPerBullet > player.currentInk) break;
-
-            if (sockets[i].state != SocketStates.Empty) continue;
-
-
-                decrement = reloadCostPerBullet;
-                sockets[i].state = SocketStates.Loaded;
-            
-
-            player.currentInk =
-                GameManager.instance.UpdatePlayerStamina(player.currentInk, player.maxInk, -decrement);
-        }
 
         noBullets = false;
-        //currentSocket.highlightMesh.enabled = false;
         foreach (var ammo in sockets)
         {
             if (ammo.state == SocketStates.Empty) continue;

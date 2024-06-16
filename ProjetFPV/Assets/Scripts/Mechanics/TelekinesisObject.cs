@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using Mechanics;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TelekinesisObject : ControllableProp
@@ -12,11 +9,13 @@ public class TelekinesisObject : ControllableProp
     private bool aim;
     private Transform target;
     public float ignoreGravityTime = 0.2f;
-    [SerializeField]private Collider col;
+    [SerializeField] private Collider col;
     [SerializeField] private float maxAutoAimDistance; //THOMAS WAS HERE
     public float maxRotationSpeed = 15;
     public float minRotationSpeed = 2.5f;
-    
+    private float iM;
+    private float minTimeBetweenSounds = 0.1f;
+    private float timeBetweenSounds;
 
     public override void Awake()
     {
@@ -28,9 +27,11 @@ public class TelekinesisObject : ControllableProp
     private float timer;
 
     // Update is called once per frame
-    public override void ApplyTelekinesis() 
+    public override void ApplyTelekinesis()
     {
         body.useGravity = !body.useGravity;
+        
+        iM = 1;
 
         if (gameObject.layer == LayerMask.NameToLayer("Default"))
         {
@@ -46,13 +47,16 @@ public class TelekinesisObject : ControllableProp
                 thrown = false;
                 return;
             }
-            thrown = PlayerController.instance.playerCam.forward.y > -PlayerController.instance.tkManager.holdObjectYTolerance;
-            
+
+            thrown = PlayerController.instance.playerCam.forward.y >
+                     -PlayerController.instance.tkManager.holdObjectYTolerance;
         }
     }
 
     private void FixedUpdate()
     {
+        timeBetweenSounds -= Time.deltaTime;
+        
         if (thrown)
         {
             timer += Time.deltaTime;
@@ -74,26 +78,33 @@ public class TelekinesisObject : ControllableProp
 
     private void OnCollisionEnter(Collision other)
     {
-        if (!thrown)return;
+        if (timeBetweenSounds <= 0)
+        {
+            AudioManager.instance.PlaySound(1, 2, gameObject, 0.2f, iM);
+            iM *= 0.4f;
+            timeBetweenSounds = minTimeBetweenSounds;
+        }
         
+        if (!thrown) return;
+
         if (body.velocity.magnitude < velocityLimit)
         {
             StartCoroutine(NotThrown());
             return;
         }
+
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             var enemy = other.collider.GetComponentInParent<Enemy>();
-                Debug.Log("Stunned an enemy");
-                enemy.ApplyStun();
-                
-                StartCoroutine(NotThrown());
-            
-        }
-        
-        //SON
 
-        AudioManager.instance.PlaySound(1, 2, gameObject, 0.2f, false);
+
+            Debug.Log("Stunned an enemy");
+            enemy.ApplyStun();
+
+            StartCoroutine(NotThrown());
+        }
+
+        //SON
     }
 
     IEnumerator NotThrown()

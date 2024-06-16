@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
 using Mechanics;
@@ -8,7 +6,6 @@ using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class TelekinesisModule : MonoBehaviour
 {
@@ -59,8 +56,6 @@ public class TelekinesisModule : MonoBehaviour
     [Foldout("Refs")] [SerializeField] public SkinnedMeshRenderer leftHandModule;
     [Foldout("Refs")] [SerializeField] public TextMeshProUGUI moduleText;
     
-    [Foldout("Refs")] [SerializeField] public Material activeHeal;
-    [Foldout("Refs")] [SerializeField] public Material emptyHeal;
     [Foldout("Refs")] [SerializeField] public HealSlot[] healSlots;
     
     private PlayerController main;
@@ -242,7 +237,7 @@ public class TelekinesisModule : MonoBehaviour
                 controlledProp = heavy;
                 controlledProp.ApplyTelekinesis();
 
-                ShowLineVFX(hitTelekinesis.collider); // THOMAS
+                ShowLineVFX(hitTelekinesis.collider);
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 return;
             }
@@ -254,11 +249,11 @@ public class TelekinesisModule : MonoBehaviour
                 absorb.StartAbsorbInk();
                 controlledProp.ApplyTelekinesis();
 
+                ShowLineVFX(hitTelekinesis.collider);
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 AudioManager.instance.PlaySound(3, 2, gameObject, 0.1f, false);
                 if (hitTelekinesis.collider.TryGetComponent(out Tornado tornado))
                 {
-                    ShowLineVFX(hitTelekinesis.collider);
                     controlledProp.ApplyTelekinesis();
                 }
                 return;
@@ -269,6 +264,8 @@ public class TelekinesisModule : MonoBehaviour
                 if (!unstable.canBeGrabbed) return;
                 controlledProp = unstable;
                 controlledProp.ApplyTelekinesis();
+                
+                ShowLineVFX(hitTelekinesis.collider);
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 return;
             }
@@ -279,9 +276,9 @@ public class TelekinesisModule : MonoBehaviour
                 if (!enemy.canBeGrabbed) return;
                 if (main.currentInk < 0.1f) return;
                 controlledProp = enemy;
+                ShowLineVFX(hitTelekinesis.collider);
                 controlledProp.ApplyTelekinesis();
 
-               ShowLineVFX(hitTelekinesis.collider);
                 AudioManager.instance.PlaySound(3, 13, gameObject, 0.1f, false);
                 return;
             }
@@ -347,12 +344,16 @@ public class TelekinesisModule : MonoBehaviour
             absorbInk.transform.localScale = Vector3.Lerp(absorbInk.baseGOScale, Vector3.zero, lerpValue);
         }
 
-        if (absorbInk.TryGetComponent(out Tornado tornado) && GameManager.instance.canStartEndingCinematic && !GameManager.instance.ending)
+        if (absorbInk.TryGetComponent(out Tornado tornado))
         {
-            StartCoroutine(GameManager.instance.StartEndingCinematic());
+            if (GameManager.instance.canStartEndingCinematic && !GameManager.instance.ending)
+            {
+                StartCoroutine(GameManager.instance.StartEndingCinematic());
+                
+            } 
+            absorbInk.storedInk += inkAbsorbSpeed * Time.deltaTime;
         }
         
-
         if (!controlledProp.isGrabbed)
         {
             controlledProp.isGrabbed = true;
