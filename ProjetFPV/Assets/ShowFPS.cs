@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+#if (UNITY_EDITOR)
 public class ShowFPS : MonoBehaviour
 {
     private TextMeshProUGUI text;
@@ -30,3 +29,4 @@ public class ShowFPS : MonoBehaviour
         text.text = Mathf.Ceil(fps).ToString();
     }
 }
+#endif
