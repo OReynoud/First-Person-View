@@ -31,7 +31,7 @@ Material:
     m_TexEnvs:
     - _Hexagon_Texture:
         m_Texture: {fileID: 2800000, guid: 24af202e08e40094da16a6ade9416328, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0, y: 0}
         m_Offset: {x: 0, y: 0}
     - _Scaline_Texture:
         m_Texture: {fileID: 2800000, guid: bb9088a8d59fe014589f2917aa2c8dea, type: 3}
@@ -52,13 +52,14 @@ Material:
     m_Ints: []
     m_Floats:
     - _Aspect_Ratio: 0.5
-    - _Big_Scanline_Speed: 0.15
-    - _Big_Scanline_Strength: 0.25
-    - _Big_Scanline_Thickness: 0.025
+    - _Big_Scanline_Speed: 0.25
+    - _Big_Scanline_Strength: 0.4
+    - _Big_Scanline_Thickness: 0.08
     - _Edge_Glow_Strength: 1
     - _Glow_Noise_Scale: 1
     - _Glow_Speed: 4
     - _Heightmap_Strength: 0.005
+    - _InkLevel: 1
     - _Intersection_Strength: 1
     - _Intersection_Thickness: 0.05
     - _Metallic: 0
@@ -68,7 +69,7 @@ Material:
     - _Ripple_Thickness: 0.05
     - _Ripple_Time: 2
     - _Scanline_Strength: 0
-    - _Smoothness: 0.609
+    - _Smoothness: 0.469
     - _USE_BIG_SCALINE: 1
     - _USE_COLLISION_RIPPLES: 1
     - _USE_EDGE_GLOW: 1
@@ -76,9 +77,10 @@ Material:
     - _USE_INTERSECTION: 1
     - _USE_SCANLINE: 0
     m_Colors:
-    - _Base_Color: {r: 0.9245283, g: 0.6127266, b: 0, a: 0}
+    - _Base_Color: {r: 1, g: 0.76862746, b: 0.40784314, a: 1}
     - _Edge_Glow_Thickness: {r: 0.11, g: 0.04, b: 0, a: 0}
-    - _Emission_Color: {r: 0.5754717, g: 0.28022972, b: 0, a: 0}
+    - _Emission_Color: {r: 1, g: 0.5966981, b: 0.2216981, a: 1}
+    - _Empty_Color: {r: 0.22479168, g: 0.21933961, b: 0.2924528, a: 0.24313726}
     - _Glow_Strength_MinMax: {r: 0, g: 0.25, b: 0, a: 0}
     - _Ripple_Origin: {r: 0.25, g: 0.5, b: 0, a: 0}
     - _Scroll_Velocity: {r: 0, g: 0, b: 0, a: 0}

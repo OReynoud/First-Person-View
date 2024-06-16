@@ -55,6 +55,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _GradientTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _HeightA:
         m_Texture: {fileID: 2800000, guid: 311f288990ebb524498b97a874d6b715, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -77,6 +81,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _NormalC:
         m_Texture: {fileID: 2800000, guid: 9cb6d9eca1b2a1e408f85ea330bcc342, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RMHA:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RMHB:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RMHC:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessA:
@@ -119,22 +135,38 @@ Material:
     m_Floats:
     - _AlphaCutoff: 0.5
     - _Blend_Smoothness: 0.64
+    - _Blend_Smoothness1: 0.1
     - _Blend_SmoothnessB: -1.13
     - _Blend_SmoothnessC: 0.85
     - _Blend_TextureInfluence: 1.09
     - _Blend_TextureInfluenceB: 26.4
     - _Blend_TextureInfluenceC: 0.5
+    - _Blend_TextureInfluence_A: 0
+    - _Blend_TextureInfluence_B: 0
     - _Blend_ThresholdA: 0
+    - _Blend_ThresholdA1: 0
     - _Blend_ThresholdB: -1.35
     - _Blend_ThresholdC: 0.37
+    - _Boost_A: 0
+    - _Boost_B: 0
+    - _Boost_C: 0
+    - _Brightness: 0.1
+    - _Brightness1: 0.1
+    - _Brightness2: 0.1
     - _EnvironmentReflections: 1
     - _Falloff: 1
     - _Float0: 0
+    - _Gradient_TextureOrColour: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _ShowVertexColor: 0
     - _SpecularHighlights: 1
     - _Tiling: 0.14
     m_Colors:
+    - _Color_Gradient: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Tiling_A: {r: 0, g: 0, b: 0, a: 0}
+    - _Tiling_B: {r: 0, g: 0, b: 0, a: 0}
+    - _Tiling_C: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
