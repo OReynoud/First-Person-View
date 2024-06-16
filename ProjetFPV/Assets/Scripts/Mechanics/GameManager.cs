@@ -101,8 +101,8 @@ namespace Mechanics
                 }
             }
 
-            PlayerController.instance.tkManager.leftHandModule.materials[2].SetFloat(
-                PlayerController.instance.socketManager.InkLevel,
+            PlayerController.instance.tkManager.leftHandModule.materials[1].SetFloat(
+                "_InkLevel",
                 Mathf.Lerp(TelekinesisModule.zeroInkFill, TelekinesisModule.fullInkFill, current / max));
             percent = Mathf.Round((current / max) * 100);
             PlayerController.instance.tkManager.moduleText.text = percent.ToString();

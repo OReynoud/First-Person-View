@@ -1,6 +1,7 @@
 using DG.Tweening;
 using Mechanics;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;

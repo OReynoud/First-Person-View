@@ -13,6 +13,9 @@ namespace Mechanics
         public float activationDistance = 3f;
         private bool used;
 
+        private bool previousState;
+        private bool currentState;
+
         private void Start()
         {
             anim = GetComponent<Animator>();
@@ -20,13 +23,22 @@ namespace Mechanics
 
         private void Update()
         {
+            previousState = currentState;
+            
             if (!used && Vector3.Distance(PlayerController.instance.transform.position, transform.position) < activationDistance)
             {
+                currentState = true;
                 anim.SetBool("Open",true);
             }
             else
             {
+                currentState = false;
                 anim.SetBool("Open",false);
+            }
+
+            if (previousState != currentState)
+            {
+                AudioManager.instance.PlaySound(3, currentState ? 21 : 22, gameObject, 0.1f, false);
             }
         }
 
@@ -36,7 +48,7 @@ namespace Mechanics
             PlayerController.instance.animManager.RightHand_PickUp();
             PlayerController.instance.currentHealPackAmount++;
             PlayerController.instance.tkManager.UpdateHealPackVisual();
-            //SON
+            AudioManager.instance.PlaySound(3, 8, gameObject, 0.1f, false);
             used = true;
             healingCapsule.SetActive(false);
             light.SetActive(false);
