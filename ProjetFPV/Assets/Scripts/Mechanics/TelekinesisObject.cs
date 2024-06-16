@@ -12,11 +12,11 @@ public class TelekinesisObject : ControllableProp
     private bool aim;
     private Transform target;
     public float ignoreGravityTime = 0.2f;
-    [SerializeField]private Collider col;
+    [SerializeField] private Collider col;
     [SerializeField] private float maxAutoAimDistance; //THOMAS WAS HERE
     public float maxRotationSpeed = 15;
     public float minRotationSpeed = 2.5f;
-    
+
 
     public override void Awake()
     {
@@ -28,7 +28,7 @@ public class TelekinesisObject : ControllableProp
     private float timer;
 
     // Update is called once per frame
-    public override void ApplyTelekinesis() 
+    public override void ApplyTelekinesis()
     {
         body.useGravity = !body.useGravity;
 
@@ -46,8 +46,9 @@ public class TelekinesisObject : ControllableProp
                 thrown = false;
                 return;
             }
-            thrown = PlayerController.instance.playerCam.forward.y > -PlayerController.instance.tkManager.holdObjectYTolerance;
-            
+
+            thrown = PlayerController.instance.playerCam.forward.y >
+                     -PlayerController.instance.tkManager.holdObjectYTolerance;
         }
     }
 
@@ -74,23 +75,25 @@ public class TelekinesisObject : ControllableProp
 
     private void OnCollisionEnter(Collision other)
     {
-        if (!thrown)return;
-        
+        if (!thrown) return;
+
         if (body.velocity.magnitude < velocityLimit)
         {
             StartCoroutine(NotThrown());
             return;
         }
+
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             var enemy = other.collider.GetComponentInParent<Enemy>();
-                Debug.Log("Stunned an enemy");
-                enemy.ApplyStun();
-                
-                StartCoroutine(NotThrown());
-            
+
+
+            Debug.Log("Stunned an enemy");
+            enemy.ApplyStun();
+
+            StartCoroutine(NotThrown());
         }
-        
+
         //SON
 
         AudioManager.instance.PlaySound(1, 2, gameObject, 0.2f, false);

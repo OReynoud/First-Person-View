@@ -36,6 +36,7 @@ namespace Mechanics
 
         public bool lastBattle;
         [ShowIf("lastBattle")] public Collider tornadoColl;
+        [ShowIf("lastBattle")] public GameObject gateToDisable;
 
         private void Awake()
         {
@@ -140,12 +141,11 @@ namespace Mechanics
                 Destroy(gameObject, 10);
                 return;
             }
-            else
-            {
-                //trucs à setup à la fin du combat de l'arène
-                GameManager.instance.canStartEndingCinematic = true;
-                tornadoColl.enabled = true;
-            }
+
+            //trucs à setup à la fin du combat de l'arène
+            gateToDisable.SetActive(false);
+            GameManager.instance.canStartEndingCinematic = true;
+            tornadoColl.enabled = true;
         }
 
         private bool destroying;
