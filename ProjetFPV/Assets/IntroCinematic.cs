@@ -19,10 +19,31 @@ public class IntroCinematic : MonoBehaviour
     [SerializeField] private ParticleSystem rain;
     [SerializeField] private AudioSource rainSound;
     [SerializeField] private AudioSubtitles subtitlesScript;
+    private bool canLoadTheScene;
 
-    public void FadeToBlack()
+    void Start()
     {
-        blackScreen.DOFade(1f, 4f).OnComplete(()=>SceneManager.LoadScene("Habillage_02"));
+        StartCoroutine(LoadAsyncScene());
+    }
+    
+    IEnumerator LoadAsyncScene()
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Habillage_02");
+        asyncLoad.allowSceneActivation = false;
+
+        while (!asyncLoad.isDone)
+        {
+            if (asyncLoad.progress >= 0.9f && canLoadTheScene)
+            {
+                asyncLoad.allowSceneActivation = true;
+            }
+            yield return null;
+        }
+    }
+    
+    public void FadeToBlack(float time)
+    {
+        blackScreen.DOFade(1f, time).OnComplete(() => canLoadTheScene = true);
     }
 
     public void StartIntroEasy()
@@ -91,7 +112,7 @@ public class IntroCinematic : MonoBehaviour
         yield return new WaitForSeconds(50f);
         lights[2].intensity = 0;
         yield return new WaitForSeconds(3f);
-        FadeToBlack();
+        FadeToBlack(4f);
     }
 
     private IEnumerator LightsOut()
