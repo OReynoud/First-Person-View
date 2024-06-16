@@ -268,6 +268,8 @@ namespace Mechanics
         [Foldout("Ending Cinematic")] [SerializeField]
         private float damageAmount;
         [Foldout("Ending Cinematic")] [SerializeField]
+        private float absorbSpeed = 25;
+        [Foldout("Ending Cinematic")] [SerializeField]
         private float inkOverFlowLimit;
         
         
@@ -277,6 +279,7 @@ namespace Mechanics
             PlayerController.instance.ImmobilizePlayer();
             ending = true;
             PlayerController.instance.rotationX = 0;
+            PlayerController.instance.tkManager.inkAbsorbSpeed = absorbSpeed;
             StartCoroutine(TakeDamageOverTime());
             
             
