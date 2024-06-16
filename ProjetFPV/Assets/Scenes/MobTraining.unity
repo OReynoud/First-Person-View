@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1689,14 +1689,34 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4715834371992746560, guid: b68441133ee3f5e40a298dbee83e6f56,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4715834371992746560, guid: b68441133ee3f5e40a298dbee83e6f56,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 4715834371992746560, guid: b68441133ee3f5e40a298dbee83e6f56,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8666173703537814563, guid: b68441133ee3f5e40a298dbee83e6f56, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4490582729927578694, guid: b68441133ee3f5e40a298dbee83e6f56,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1025409120}
+      addedObject: {fileID: 1025409125}
+    - targetCorrespondingSourceObject: {fileID: 4490582729927578694, guid: b68441133ee3f5e40a298dbee83e6f56,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1025409132}
   m_SourcePrefab: {fileID: 100100000, guid: b68441133ee3f5e40a298dbee83e6f56, type: 3}
 --- !u!1001 &702484790
 PrefabInstance:
@@ -1714,7 +1734,7 @@ PrefabInstance:
     - target: {fileID: 531205356919008700, guid: b49c123b93aa4314291340604a9d5d48,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4246528624926509626, guid: b49c123b93aa4314291340604a9d5d48,
         type: 3}
@@ -2889,7 +2909,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 599105191}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1025409120
+--- !u!114 &1025409125
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2898,19 +2918,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 1025409119}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebb035cae21a90e44ad732c1a16a4174, type: 3}
+  m_Script: {fileID: 11500000, guid: e8154c901415b4249ab09dc5820d303d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  col: {fileID: 1025409124}
-  timeToClimb: 2
-  amplitude: 0.01
-  frequency: 7
---- !u!65 &1025409124 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 6899638417920011192, guid: b68441133ee3f5e40a298dbee83e6f56,
-    type: 3}
-  m_PrefabInstance: {fileID: 599105191}
+--- !u!114 &1025409132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025409119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07c7468c7b542b4bb12e70929299a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGrabbed: 0
+  body: {fileID: 0}
+  spamBuffer: 0.6
+  canBeGrabbed: 1
+  maxInk: 0
+  baseDecalScale: {x: 0, y: 0, z: 0}
+  baseGOScale: {x: 0, y: 0, z: 0}
+  decal: {fileID: 0}
+  storedInk: 600
+  respawn: 0
+  respawnTimer: 0
+  isADecal: 0
 --- !u!114 &1027007124 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4783871717139003520, guid: dce82ebbf28195f43941531e37b8f0be,
@@ -4154,6 +4188,16 @@ PrefabInstance:
       propertyPath: m_Alpha
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2836033459617754538, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5770478272940288656, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6625738270304295612, guid: 25b553424ab0af54d9c26fb410130005,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4221,6 +4265,11 @@ PrefabInstance:
       objectReference: {fileID: 2129700204}
     - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
         type: 3}
+      propertyPath: damageAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
       propertyPath: healPackText
       value: 
       objectReference: {fileID: 0}
@@ -4241,6 +4290,21 @@ PrefabInstance:
       objectReference: {fileID: 1179137112}
     - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
         type: 3}
+      propertyPath: inkOverFlowLimit
+      value: 999
+      objectReference: {fileID: 0}
+    - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: timeTickDecrease
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: timeToDealDamage
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
       propertyPath: segments.Array.data[0]
       value: 
       objectReference: {fileID: 0}
@@ -4248,6 +4312,11 @@ PrefabInstance:
         type: 3}
       propertyPath: segments.Array.data[1]
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7502388276848145513, guid: 25b553424ab0af54d9c26fb410130005,
+        type: 3}
+      propertyPath: canStartEndingCinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
