@@ -301,7 +301,10 @@ public class PlayerController : Singleton<PlayerController>
 
     public void TakeDamage(float damage)
     {
-        damageSnapshot.TransitionTo(0.1f);
+        if (!GameManager.instance.ending)
+        {
+            damageSnapshot.TransitionTo(0.1f);
+        }
 
         CameraShake.instance.ShakeOneShot(3);
         currentHealth -= PlayerPrefs.GetInt("difficulty") == 0 ? damage : damage / 2f;
@@ -381,7 +384,10 @@ public class PlayerController : Singleton<PlayerController>
             yield return null;
         }
 
-        defaultSnapshot.TransitionTo(0.75f);
+        if (!GameManager.instance.ending)
+        {
+            defaultSnapshot.TransitionTo(0.75f);
+        }
     }
 
     private void OnDisable()
@@ -695,12 +701,7 @@ public class PlayerController : Singleton<PlayerController>
     private void Update()
     {
         // THOMAS
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            TakeDamage(1);
-        }
-
-
+        
         walkTimer -= Time.deltaTime;
 
         #region Cinématique bandes noires
