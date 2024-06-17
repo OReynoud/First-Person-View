@@ -373,6 +373,7 @@ public class CollectorBehavior : Enemy
             egg.parent = this;
             egg.speed = spawnBulletSpeed;
             egg.destination = spawn;
+            egg.arena = true;
             egg.LayEgg();
 
             spawnedEnemies++;
