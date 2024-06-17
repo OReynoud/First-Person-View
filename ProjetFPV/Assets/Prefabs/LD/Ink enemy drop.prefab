@@ -110,7 +110,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 14
   m_CollisionDetection: 0
@@ -131,8 +131,13 @@ MonoBehaviour:
   spamBuffer: 0.6
   canBeGrabbed: 1
   maxInk: 100
+  baseDecalScale: {x: 0, y: 0, z: 0}
+  baseGOScale: {x: 0, y: 0, z: 0}
+  decal: {fileID: 0}
   storedInk: 3
-  baseScale: {x: 0, y: 0, z: 0}
+  respawn: 0
+  respawnTimer: 0
+  isADecal: 0
 --- !u!114 &2843255732614191863
 MonoBehaviour:
   m_ObjectHideFlags: 0

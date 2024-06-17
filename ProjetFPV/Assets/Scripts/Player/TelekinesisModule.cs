@@ -118,6 +118,8 @@ public class TelekinesisModule : MonoBehaviour
     public const float zeroInkFill = 0f;
     public const float fullInkFill = 1f;
 
+    [Foldout("Telekinesis")] [SerializeField]
+    public LayerMask shootMask;
     // Start is called before the first frame update
     void Start()
     {
@@ -128,6 +130,8 @@ public class TelekinesisModule : MonoBehaviour
         {
             slot.UpdateVisual();
         }
+
+        shootMask = main.socketManager.shootMask | LayerMask.GetMask("Water");
     }
 
     // Update is called once per frame
@@ -213,7 +217,7 @@ public class TelekinesisModule : MonoBehaviour
     public void FindControllableProp()
     {
         if (Physics.Raycast(main.playerCam.position, main.playerCam.forward, out hitTelekinesis,
-                main.socketManager.maxRange, main.socketManager.shootMask, QueryTriggerInteraction.Ignore))
+                main.socketManager.maxRange, shootMask, QueryTriggerInteraction.Ignore))
         {
             isGrabbingAnObject = true;
 

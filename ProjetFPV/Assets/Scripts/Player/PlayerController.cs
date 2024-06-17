@@ -535,7 +535,7 @@ public class PlayerController : Singleton<PlayerController>
         ControllableProp prop;
 
         if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, socketManager.maxRange,
-                socketManager.shootMask, QueryTriggerInteraction.Ignore))
+                tkManager.shootMask, QueryTriggerInteraction.Ignore))
         {
             if (!hit.collider.TryGetComponent(out prop))
             {
@@ -562,7 +562,7 @@ public class PlayerController : Singleton<PlayerController>
                 }
 
                 pointerTimer += Time.deltaTime;
-                //telekinesisPointer.position = camera1.WorldToScreenPoint(prop.transform.position);
+                
                 telekinesisPointer.alpha = Mathf.Lerp(0, 1, pointerTimer / pointerTime);
                 telekinesisPointer.transform.localScale =
                     Vector3.Lerp(Vector3.one * fadedScale, Vector3.one, pointerTimer / pointerTime);
