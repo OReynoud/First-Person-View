@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 3751941358300470459}
   - component: {fileID: 6311203551798680369}
   - component: {fileID: 728316941026306266}
+  - component: {fileID: 6513380542253992058}
+  - component: {fileID: 7967943778044351708}
   m_Layer: 0
   m_Name: Wanted
   m_TagString: Untagged
@@ -106,3 +108,80 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &6513380542253992058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6230886692091052578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94ffbed4dd2a30c44983ba75bab8d7e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeBetweenAds: 15
+  subtitles: {fileID: 7967943778044351708}
+  minAd: 11
+  maxAd: 15
+--- !u!114 &7967943778044351708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6230886692091052578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4440b5f4843297945a5dc09af798cc6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  subtitlesUI: {fileID: 0}
+  subtitlesMaxDistance: 0.05
+  subtitles:
+  - name: Alice_Police1
+    subtitlesList:
+    - timeCode: 0.2
+      sub: If you have any information
+    - timeCode: 1.5
+      sub: about the Mascheratis,
+    - timeCode: 3
+      sub: please contact the authorities now.
+    - timeCode: 6
+      sub: please contact the authorities now.
+  - name: Alice_Police2
+    subtitlesList:
+    - timeCode: 0
+      sub: Have you seen these men ?
+    - timeCode: 1.6
+      sub: If yes, contact the police right now.
+    - timeCode: 5
+      sub: 
+  - name: Thomas_Police1
+    subtitlesList:
+    - timeCode: 0
+      sub: Have you seen these men ?
+    - timeCode: 1.6
+      sub: If yes, contact the police right now.
+    - timeCode: 5
+      sub: If yes, contact the police right now.
+  - name: Thomas_Police2
+    subtitlesList:
+    - timeCode: 0
+      sub: If you have any information about
+    - timeCode: 2
+      sub: the Mascheratis, please contact
+    - timeCode: 4
+      sub: the authorities.
+    - timeCode: 5
+      sub: 
+  - name: Thomas_Police3
+    subtitlesList:
+    - timeCode: 0
+      sub: 'Any information regarding '
+    - timeCode: 1.6
+      sub: these men should be transfered
+    - timeCode: 3.5
+      sub: immediately to the police.
+    - timeCode: 6
+      sub: immediately to the police.

@@ -35,7 +35,7 @@ public class Door : MonoBehaviour, ICanInteract
 
     public void ShowContext()
     {
-        GameManager.instance.interactText.text = lockBroken ? "[E] Ouvrir" : "";
+        GameManager.instance.interactText.text = lockBroken ? "[E] Open" : "";
     }
     
     private void OnValidate()
