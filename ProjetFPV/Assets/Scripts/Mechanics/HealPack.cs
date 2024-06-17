@@ -56,7 +56,7 @@ namespace Mechanics
 
         public void ShowContext()
         {
-            GameManager.instance.interactText.text = used ? "" : "[E] Pick up";
+            GameManager.instance.interactText.text = used ? "" : "[E] Take medicine";
         }
     }
 }
