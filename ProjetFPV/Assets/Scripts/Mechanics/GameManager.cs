@@ -360,6 +360,8 @@ namespace Mechanics
         IEnumerator SoundOutro()
         {
             yield return new WaitForSeconds(0.5f);
+
+            AudioManager.instance.PlayUISound(5, 3, 0f);
         }
     }
 }
