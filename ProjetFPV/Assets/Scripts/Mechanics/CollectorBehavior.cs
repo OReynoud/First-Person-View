@@ -546,6 +546,10 @@ public class CollectorBehavior : Enemy
         {
             arena.currentEnemies.Remove(this);
         }
-        base.Die();
+
+        transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InOutBounce).OnComplete(() =>
+        {
+            base.Die();
+        });
     }
 }
