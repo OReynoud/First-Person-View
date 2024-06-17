@@ -1026,7 +1026,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Interact(InputAction.CallbackContext obj)
     {
-        if (!canMove || lockedCam) return; //THOMAS
+        if (!canMove && !lockedCam) return; //THOMAS
         if (tkManager.controlledProp) return;
         if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit hit, interactDistance,
                 ~LayerMask.GetMask("Player")))
