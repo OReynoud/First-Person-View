@@ -30,7 +30,7 @@ public class MovingEnnemi : MonoBehaviour
             actor.position = Vector3.MoveTowards(actor.position, destination.position, speed);
         }
 
-        if (actor.position == destination.position)
+        if (Vector3.Distance(actor.position, destination.position) <= 0.3f)
         {
             StartCoroutine(DisableAndDestroy());
         }
