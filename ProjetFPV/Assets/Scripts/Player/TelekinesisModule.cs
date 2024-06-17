@@ -205,8 +205,17 @@ public class TelekinesisModule : MonoBehaviour
             lineVFX.material.SetFloat(Slider, currentLineVFXValue);
         }
 
-        Physics.Linecast(tkSocket.position,tempColl.transform.position + tempColl.transform.up *0.1f, out RaycastHit hit, LayerMask.GetMask(LayerMask.LayerToName(tempColl.gameObject.layer)));
-        tkPoint = hit.point;
+        if (Physics.Linecast(tkSocket.position,tempColl.transform.position + tempColl.transform.up *0.1f, 
+                out RaycastHit hit, LayerMask.GetMask(LayerMask.LayerToName(tempColl.gameObject.layer))))
+        {
+            tkPoint = hit.point;
+        }
+        else
+        {
+            tkPoint = tempColl.ClosestPoint(tkSocket.position);
+        }
+
+        
         
         lineVFX.SetPosition(0,tkSocket.position);
         lineVFX.SetPosition(1,tkPoint);

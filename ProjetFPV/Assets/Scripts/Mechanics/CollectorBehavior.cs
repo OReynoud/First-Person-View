@@ -373,6 +373,7 @@ public class CollectorBehavior : Enemy
             egg.parent = this;
             egg.speed = spawnBulletSpeed;
             egg.destination = spawn;
+            egg.arena = true;
             egg.LayEgg();
 
             spawnedEnemies++;
@@ -402,15 +403,17 @@ public class CollectorBehavior : Enemy
     IEnumerator Stun()
     {
 
+        transitionState.Play("A_CollectorStunStart");
         agent.enabled = false;
         transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
+        
         yield return new WaitForSeconds(stunDuration);
 
         agent.enabled = true;
 
         agent.SetDestination(PlayerController.instance.transform.position);
         currentState = States.Repositioning;
-        
+        transitionState.Play("A_CollectorStunEnd");
         //SON
     }
 
@@ -544,6 +547,10 @@ public class CollectorBehavior : Enemy
         {
             arena.currentEnemies.Remove(this);
         }
-        base.Die();
+
+        transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InOutBounce).OnComplete(() =>
+        {
+            base.Die();
+        });
     }
 }

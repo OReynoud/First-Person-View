@@ -269,10 +269,6 @@ namespace Mechanics
 
         IEnumerator Stun()
         {
-            foreach (var part in allMasks)
-            {
-
-            }
             body.constraints = RigidbodyConstraints.FreezeRotation;
             InterruptAttack();
             transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
@@ -423,11 +419,16 @@ namespace Mechanics
             actualDestination = playerPos + PlayerController.instance.rb.velocity.normalized * predictDistance;
             transform.LookAt(actualDestination);
             transform.rotation = Quaternion.Euler(0,transform.eulerAngles.y,transform.eulerAngles.z);
+            
             var calcJumpTime = (Vector3.Distance(transform.position, playerPos) * jumpDuration.y)/atkRange;
+            
             if (calcJumpTime < jumpDuration.x) calcJumpTime = jumpDuration.x;
+            
+            
+            
             jumpTween = transform.DOJump(actualDestination + transform.forward * jumpOverShoot, jumpHeight, 1, calcJumpTime);
             AudioManager.instance.PlaySound(8, 0, gameObject, 0.1f, false);
-            transform.rotation = Quaternion.Euler(40,transform.eulerAngles.y,transform.eulerAngles.z);
+            transform.rotation = Quaternion.Euler(60,transform.eulerAngles.y,transform.eulerAngles.z);
             jumpRotationTween = transform.DORotate(new Vector3(0,transform.eulerAngles.y,transform.eulerAngles.z) , calcJumpTime);
             yield return new WaitForSeconds(calcJumpTime);
 
@@ -510,6 +511,7 @@ namespace Mechanics
 
         public override async void Die()
         {
+            InterruptAttack();
             anim.Play("A_BouffonDeath");
             GameManager.instance.OnKillEnemy();
             

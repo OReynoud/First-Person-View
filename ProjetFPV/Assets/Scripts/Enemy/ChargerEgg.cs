@@ -8,6 +8,7 @@ public class ChargerEgg : MonoBehaviour
 {
     public ChargerBehavior toSpawn;
     public CollectorBehavior parent;
+    public bool arena;
     public float speed;
     public Transform destination;
     
@@ -29,6 +30,10 @@ public class ChargerEgg : MonoBehaviour
                 spawnedEnemy.parentEnemy = parent;
                 spawnedEnemy.spawnPositions = parent.spawnEnemyPos;
                 parent.children.Add(spawnedEnemy);
+                if (arena)
+                {
+                    parent.arena.currentEnemies.Add(spawnedEnemy);
+                }
                 Destroy(eggSound);
                 Destroy(gameObject);
             }));
