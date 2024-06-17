@@ -38,7 +38,7 @@ namespace Mechanics
         public bool ending;
 
         [SerializeField] private AudioMixerSnapshot cutMusic;
-        [SerializeField] private AudioMixerSnapshot cutHeartBeat;
+        [SerializeField] private AudioSource heartBeat;
         [SerializeField] private RectTransform credits;
         [SerializeField] private CanvasGroup endingBlackScreen;
     
@@ -183,7 +183,8 @@ namespace Mechanics
         
         public void PlayerDeath()
         {
-            Debug.Log(Time.timeScale);
+            if (credits.gameObject.activeInHierarchy) return;
+            
             PlayerController.instance.isControled = true;
             PlayerController.instance.enabled = false;
             gameOver.DOFade(1f, 1f);
@@ -321,10 +322,10 @@ namespace Mechanics
 
         IEnumerator EndingCredits()
         {
-            yield return new WaitForSeconds(1f);
-            cutHeartBeat.TransitionTo(4f);
-
             credits.gameObject.SetActive(true);
+            
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(StopHeartBeat());
             
             yield return new WaitForSeconds(3f);
 
@@ -335,11 +336,28 @@ namespace Mechanics
             var t = 0f;
             Vector2 basePos = credits.anchoredPosition;
 
-            while (t < 25f)
+            while (t < 70f)
             {
                 t += Time.unscaledDeltaTime;
 
-                credits.anchoredPosition = Vector2.Lerp(basePos, new Vector2(basePos.x, 0), t / 25f);
+                credits.anchoredPosition = Vector2.Lerp(basePos, new Vector2(basePos.x, 0), t / 70f);
+                
+                yield return null;
+            }
+        }
+
+        IEnumerator StopHeartBeat()
+        {
+            Debug.Log("oui");
+            
+            var t = 0f;
+            var vol = heartBeat.volume;
+            
+            while (t < 4f)
+            {
+                t += Time.unscaledDeltaTime;
+
+                heartBeat.volume = Mathf.Lerp(vol, 0f, t / 4f);
                 
                 yield return null;
             }
@@ -347,13 +365,13 @@ namespace Mechanics
 
         IEnumerator BlackScreen()
         {
-            yield return new WaitForSeconds(18);
+            yield return new WaitForSeconds(70);
             endingBlackScreen.DOFade(1f, 3f);
         }
 
         IEnumerator LoadMainMenu()
         {
-            yield return new WaitForSeconds(23);
+            yield return new WaitForSeconds(80);
             SceneManager.LoadScene("MainMenu");
         }
 
