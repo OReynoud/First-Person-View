@@ -246,10 +246,14 @@ namespace Mechanics
                 currentState = States.Paralysed;
                 body.constraints = RigidbodyConstraints.FreezeAll;
                 InterruptAttack();
+                anim.Play("TEMP_StunStart");
             }
             else
             {
                 body.constraints = RigidbodyConstraints.FreezeRotation;
+                
+                anim.Stop();
+                anim.Play("TEMP_StunEnd");
             }
         }
 
