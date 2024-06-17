@@ -56,6 +56,7 @@ public class InGamePause : MonoBehaviour
     {
         if (PlayerController.instance.isControled) return;
         
+        PlayerController.instance.LockCam();
         ExtendBlackArea(1400);
         
         AudioManager.instance.MuffleSound();
@@ -80,6 +81,7 @@ public class InGamePause : MonoBehaviour
         
         ReduceBlackArea();
 
+        PlayerController.instance.LockCam();
         pauseCanva.DOFade(0f, 0.1f).OnComplete(() => pauseCanva.gameObject.SetActive(false));
         
         AudioManager.instance.PlayUISound(0, 1, 0f);

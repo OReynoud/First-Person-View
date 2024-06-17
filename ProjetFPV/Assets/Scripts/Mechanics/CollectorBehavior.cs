@@ -373,6 +373,7 @@ public class CollectorBehavior : Enemy
             egg.parent = this;
             egg.speed = spawnBulletSpeed;
             egg.destination = spawn;
+            egg.arena = true;
             egg.LayEgg();
 
             spawnedEnemies++;
@@ -546,6 +547,10 @@ public class CollectorBehavior : Enemy
         {
             arena.currentEnemies.Remove(this);
         }
-        base.Die();
+
+        transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InOutBounce).OnComplete(() =>
+        {
+            base.Die();
+        });
     }
 }
