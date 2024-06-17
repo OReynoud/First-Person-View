@@ -135,6 +135,8 @@ public class CollectorBehavior : Enemy
 #endif
 
 
+    private float attackTimer;
+    private const float attackTime = 5;
     // Update is called once per frame
     public override void Awake()
     {
@@ -173,6 +175,20 @@ public class CollectorBehavior : Enemy
     public override void Update()
     {
         base.Update();
+
+        if (recentlyAttacked)
+        {
+            attackTimer += Time.deltaTime;
+            if (attackTimer > attackTime)
+            {
+                attackTimer = 0;
+                recentlyAttacked = false;
+            }
+        }
+        else
+        {
+            attackTimer = 0;
+        }
         if (seenPlayer)
         {
             agent.speed = aggressiveFlySpeed;

@@ -33,6 +33,8 @@ public class ChargerEgg : MonoBehaviour
                 if (arena)
                 {
                     parent.arena.currentEnemies.Add(spawnedEnemy);
+                    spawnedEnemy.arena = parent.arena;
+                    spawnedEnemy.arenaSpawn = true;
                 }
                 Destroy(eggSound);
                 Destroy(gameObject);

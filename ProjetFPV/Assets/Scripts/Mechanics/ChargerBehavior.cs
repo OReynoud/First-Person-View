@@ -145,17 +145,17 @@ namespace Mechanics
             //agent.stoppingDistance = atkRange;
             agent.speed = wanderSpeed;
             
+            if (collectorSpawn)
+            {
+                CollectorSpawn();
+                return;
+            }
             if (arenaSpawn)
             {
                 ArenaSpawn();
                 return;
             }
 
-            if (collectorSpawn)
-            {
-                CollectorSpawn();
-                return;
-            }
             agent.enabled = true;
 
             currentState = States.Neutral;
@@ -445,9 +445,9 @@ namespace Mechanics
         #endregion
 
         #region SpawnTypes
-        [HideInInspector] public bool arenaSpawn;
-        [HideInInspector] public bool collectorSpawn;
-        [HideInInspector] public Arena arena;
+         public bool arenaSpawn;
+         public bool collectorSpawn;
+         public Arena arena;
         [HideInInspector] public CollectorBehavior parentEnemy;
         void ArenaSpawn()
         {
