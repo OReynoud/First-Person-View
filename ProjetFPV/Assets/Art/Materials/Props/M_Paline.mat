@@ -7,14 +7,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Preau01
+  m_Name: M_Paline
   m_Shader: {fileID: -6465566751694194690, guid: 34cd26a1ee2bbc54c9c06afa543cfe6b,
     type: 3}
-  m_Parent: {fileID: 2100000, guid: 78aef203154c11b4bbf3a61a9d8987a9, type: 2}
+  m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -24,26 +24,48 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AO:
+        m_Texture: {fileID: 2800000, guid: 21066705f6a46094c978c5b9b7f95a35, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Base_Color:
-        m_Texture: {fileID: 2800000, guid: 90ad06cb8ab49364f95c4a0b0dedb245, type: 3}
+        m_Texture: {fileID: 2800000, guid: 20689615123957346a4f45adc838c0af, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emissive:
+        m_Texture: {fileID: 2800000, guid: 9c07ba2c6cb7b19409c113b7943b4172, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Metallic:
-        m_Texture: {fileID: 2800000, guid: dafa2dd1195c3a14799ef6f0f54bd0e9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5a5ca370f4e1ed641aa560a067f42563, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 2800000, guid: c29508e519a71bc43a79e2f281424dda, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6f1b0966ab9b8d44d8d8966d560af521, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Roughness:
-        m_Texture: {fileID: 2800000, guid: 77abcce7b366b67489e19ab078dc68b9, type: 3}
+        m_Texture: {fileID: 2800000, guid: da0f6fa3b79798643bdfdb20b3cee78a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _QueueControl: 0
+    - _QueueOffset: 0
     m_Colors:
-    - _Remap_Roughness: {r: 0, g: 0.68, b: 0, a: 0}
+    - _Remap_Roughness: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &8001872730648296458
 MonoBehaviour:
