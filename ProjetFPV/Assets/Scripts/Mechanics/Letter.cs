@@ -18,10 +18,10 @@ public class Letter : MonoBehaviour, ICanInteract
     private void Start()
     {
         cam = Camera.main;
-        collectibleCamera.GetComponent<Camera>().clearFlags = CameraClearFlags.SolidColor;
         uiObject = transform.GetChild(1).gameObject;
         uiObject.SetActive(false);
         baseRot = uiObject.transform.rotation;
+        collectibleCamera.GetComponent<Camera>().clearFlags = CameraClearFlags.SolidColor;
     }
 
     public void Interact(Vector3 dir)
