@@ -37,6 +37,9 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+        
         baseAnchorPos = blackArea.anchoredPosition;
         
         if (continueGame == null) return;

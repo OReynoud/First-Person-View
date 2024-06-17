@@ -310,7 +310,7 @@ MonoBehaviour:
   - maskName: 
     origin: {x: 0, y: 0, z: 0}
     baseHealth: 0
-    maskHealth: 20
+    maskHealth: 2
     maskCollider: {fileID: 5109507503331717283}
     tr: {fileID: 0}
     meshRenderer: {fileID: 0}
@@ -339,6 +339,7 @@ MonoBehaviour:
   - {fileID: 644514895823707085}
   body_VFX:
   - {fileID: 4565014453980344255}
+  - {fileID: 8123856728936589748}
   - {fileID: 2666337644990135901}
   - {fileID: 1180687496639630951}
   body_Trail:
@@ -349,8 +350,8 @@ MonoBehaviour:
   inkCrown: {fileID: 3639015704816168057}
   arena: {fileID: 0}
   arenaSpawn: 0
-  flyAreaRange: 20.12
-  aggroRange: 20
+  flyAreaRange: 18
+  aggroRange: 24
   aggressiveAggroRange: 15
   minFlyRange: 4
   flySpeed: 5
@@ -424,6 +425,8 @@ Animation:
   m_Animation: {fileID: 7400000, guid: 2cc7b322e021fac459ab6386aba9f289, type: 2}
   m_Animations:
   - {fileID: 7400000, guid: 2cc7b322e021fac459ab6386aba9f289, type: 2}
+  - {fileID: 7400000, guid: aed350dcef0c3b645b96f9529d88bc5d, type: 2}
+  - {fileID: 7400000, guid: ad708eb90ecfea54c931194f636cb848, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
@@ -6276,10 +6279,35 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2170677025950309010, guid: 91e94bec49209c1419581b457a1ccb21,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2313948861884219180, guid: 91e94bec49209c1419581b457a1ccb21,
         type: 3}
       propertyPath: m_Name
       value: VFX_EnemyBullet
+      objectReference: {fileID: 0}
+    - target: {fileID: 2313948861884219180, guid: 91e94bec49209c1419581b457a1ccb21,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3104879613643169769, guid: 91e94bec49209c1419581b457a1ccb21,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3969181607594773231, guid: 91e94bec49209c1419581b457a1ccb21,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579984307121949400, guid: 91e94bec49209c1419581b457a1ccb21,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4758514646606146325, guid: 91e94bec49209c1419581b457a1ccb21,
         type: 3}
@@ -6335,6 +6363,21 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startSpeed.scalar
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6182742510671836222, guid: 91e94bec49209c1419581b457a1ccb21,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312974907664162864, guid: 91e94bec49209c1419581b457a1ccb21,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7154460866955405876, guid: 91e94bec49209c1419581b457a1ccb21,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7340160324146333351, guid: 91e94bec49209c1419581b457a1ccb21,
         type: 3}
@@ -7301,10 +7344,55 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2333706630442321173}
     m_Modifications:
+    - target: {fileID: 357307385622097867, guid: 8f02890f7b69b0244b9d69e5853f35ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1884243558930218973, guid: 8f02890f7b69b0244b9d69e5853f35ac,
         type: 3}
       propertyPath: m_Name
       value: TrailENEMY
+      objectReference: {fileID: 0}
+    - target: {fileID: 1884243558930218973, guid: 8f02890f7b69b0244b9d69e5853f35ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2007313780463891899, guid: 8f02890f7b69b0244b9d69e5853f35ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480006420778292801, guid: 8f02890f7b69b0244b9d69e5853f35ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4131651386733782792, guid: 8f02890f7b69b0244b9d69e5853f35ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4473648479416521546, guid: 8f02890f7b69b0244b9d69e5853f35ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5294702702646456336, guid: 8f02890f7b69b0244b9d69e5853f35ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704631200776517685, guid: 8f02890f7b69b0244b9d69e5853f35ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180328018381726896, guid: 8f02890f7b69b0244b9d69e5853f35ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8276550139929656280, guid: 8f02890f7b69b0244b9d69e5853f35ac,
         type: 3}
@@ -7376,6 +7464,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8492343151567168095, guid: 8f02890f7b69b0244b9d69e5853f35ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7414,6 +7507,12 @@ ParticleSystem:
 --- !u!96 &7013998719609511761 stripped
 TrailRenderer:
   m_CorrespondingSourceObject: {fileID: 4575753299386211079, guid: 8f02890f7b69b0244b9d69e5853f35ac,
+    type: 3}
+  m_PrefabInstance: {fileID: 6833910951937442902}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8123856728936589748 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3344856667090890210, guid: 8f02890f7b69b0244b9d69e5853f35ac,
     type: 3}
   m_PrefabInstance: {fileID: 6833910951937442902}
   m_PrefabAsset: {fileID: 0}

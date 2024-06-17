@@ -413,6 +413,7 @@ public class CollectorBehavior : Enemy
 
         agent.SetDestination(PlayerController.instance.transform.position);
         currentState = States.Repositioning;
+        transitionState.Stop();
         transitionState.Play("A_CollectorStunEnd");
         //SON
     }
@@ -496,6 +497,7 @@ public class CollectorBehavior : Enemy
         }
 
         body_VFX[0].transform.localScale = Vector3.Lerp(Vector3.one * bodySize,Vector3.zero, timer/transitionTime);
+        body_VFX[1].transform.localScale = Vector3.Lerp(Vector3.one * bodySize,Vector3.zero, timer/transitionTime);
         
         mesh.localScale = Vector3.Lerp(Vector3.one * 0.1f,Vector3.one * baseMeshSize, timer/transitionTime);
         transitionState.clip.SampleAnimation(gameObject, transitionCurve.Evaluate(timer));
@@ -513,6 +515,8 @@ public class CollectorBehavior : Enemy
             currentState = States.Paralysed;
             body.constraints = RigidbodyConstraints.FreezeAll;
             agent.enabled = false;
+            
+            transitionState.Play("A_CollectorStunStart");
         }
         else
         {
@@ -522,6 +526,8 @@ public class CollectorBehavior : Enemy
             recentlyAttacked = true;
             repositioning = false;
             agent.enabled = true;
+            transitionState.Stop();
+            transitionState.Play("A_CollectorStunEnd");
         }
     }
     

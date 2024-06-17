@@ -4,6 +4,7 @@ using DG.Tweening;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -35,6 +36,11 @@ namespace Mechanics
 
         public bool canStartEndingCinematic;
         public bool ending;
+
+        [SerializeField] private AudioMixerSnapshot cutMusic;
+        [SerializeField] private AudioSource heartBeat;
+        [SerializeField] private RectTransform credits;
+        [SerializeField] private CanvasGroup endingBlackScreen;
     
         // Start is called before the first frame update
         public override void Awake()
@@ -177,14 +183,15 @@ namespace Mechanics
         
         public void PlayerDeath()
         {
-            Debug.Log(Time.timeScale);
+            if (credits.gameObject.activeInHierarchy) return;
+            
             PlayerController.instance.isControled = true;
             PlayerController.instance.enabled = false;
             gameOver.DOFade(1f, 1f);
 
             if (canStartEndingCinematic)
             {
-                //Roll credits
+                StartCoroutine(EndingCredits());
             }
             else
             {
@@ -279,9 +286,25 @@ namespace Mechanics
             PlayerController.instance.ImmobilizePlayer();
             ending = true;
             StartCoroutine(PlayerController.instance.ResetDamageShader(false));
-            PlayerController.instance.playerCam.LookAt(PlayerController.instance.tkManager.controlledProp.transform);
+
+            var currentRot = PlayerController.instance.playerCam.rotation;
+            PlayerController.instance.playerCam.LookAt(PlayerController.instance.tkManager.controlledProp.transform.position + Vector3.up * 50f);
+            var targetRot = PlayerController.instance.playerCam.rotation;
+            PlayerController.instance.playerCam.rotation = currentRot;
+
+            var t = 0f;
+
+            while (t <= 3f)
+            {
+                t += Time.deltaTime;
+                PlayerController.instance.playerCam.rotation = Quaternion.Lerp(currentRot, targetRot, t / 3f);
+                yield return null;
+            }
             PlayerController.instance.rotationX = 0;
             PlayerController.instance.tkManager.inkAbsorbSpeed = absorbSpeed;
+
+            cutMusic.TransitionTo(8f);
+            
             StartCoroutine(TakeDamageOverTime());
             
             
@@ -295,7 +318,68 @@ namespace Mechanics
             gameOver.alpha = 1 - (PlayerController.instance.currentHealth / PlayerController.instance.maxHealth);
             PlayerController.instance.TakeDamage(damageAmount);
             StartCoroutine(TakeDamageOverTime());
+        }
 
+        IEnumerator EndingCredits()
+        {
+            credits.gameObject.SetActive(true);
+            
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(StopHeartBeat());
+            
+            yield return new WaitForSeconds(3f);
+
+            StartCoroutine(BlackScreen());
+            StartCoroutine(LoadMainMenu());
+            StartCoroutine(SoundOutro());
+
+            var t = 0f;
+            Vector2 basePos = credits.anchoredPosition;
+
+            while (t < 70f)
+            {
+                t += Time.unscaledDeltaTime;
+
+                credits.anchoredPosition = Vector2.Lerp(basePos, new Vector2(basePos.x, 0), t / 70f);
+                
+                yield return null;
+            }
+        }
+
+        IEnumerator StopHeartBeat()
+        {
+            Debug.Log("oui");
+            
+            var t = 0f;
+            var vol = heartBeat.volume;
+            
+            while (t < 4f)
+            {
+                t += Time.unscaledDeltaTime;
+
+                heartBeat.volume = Mathf.Lerp(vol, 0f, t / 4f);
+                
+                yield return null;
+            }
+        }
+
+        IEnumerator BlackScreen()
+        {
+            yield return new WaitForSeconds(70);
+            endingBlackScreen.DOFade(1f, 3f);
+        }
+
+        IEnumerator LoadMainMenu()
+        {
+            yield return new WaitForSeconds(80);
+            SceneManager.LoadScene("MainMenu");
+        }
+
+        IEnumerator SoundOutro()
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            AudioManager.instance.PlayUISound(5, 3, 0f);
         }
     }
 }
