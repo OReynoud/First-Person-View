@@ -63,11 +63,5 @@ public class CinematicManager : Singleton<CinematicManager>
         yield return null;
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            StartIntroCinematic();
-        }
-    }
+
 }

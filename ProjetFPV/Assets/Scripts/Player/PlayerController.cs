@@ -315,7 +315,6 @@ public class PlayerController : Singleton<PlayerController>
 
         if (currentHealth <= 0)
         {
-            Debug.Log("Je suis mort");
             GameManager.instance.PlayerDeath();
         }
     }
@@ -479,13 +478,11 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (currentControls.FindAction("Shoot", true).bindings[0].path == "<Mouse>/leftButton")
         {
-            Debug.Log("Shooting with left hand");
             shootingHand = rightHand;
             restingPosOffset = new Vector3(-restingPosOffset.x, restingPosOffset.y, restingPosOffset.z);
         }
         else
         {
-            Debug.Log("Shooting with right hand");
             shootingHand = leftHand;
         }
 
@@ -655,7 +652,6 @@ public class PlayerController : Singleton<PlayerController>
 
         var time = reloadSpeed * numberOfReloads;
         var cost = numberOfReloads * socketManager.reloadCostPerBullet;
-        Debug.Log("Cost: " + cost);
         reloadTimer = 0;
 
         while (reloadTimer < time)
@@ -892,8 +888,6 @@ public class PlayerController : Singleton<PlayerController>
                 throw new ArgumentOutOfRangeException();
         }
 
-        // float magnitude = inputVelocity.magnitude;
-        // Debug.Log(Vector3.Cross(transform.up,inputVelocity.normalized));
         rb.velocity = new Vector3(inputVelocity.x, rb.velocity.y, inputVelocity.z);
     }
 
@@ -963,8 +957,6 @@ public class PlayerController : Singleton<PlayerController>
     void Rotate()
     {
         if (lockedCam) return;
-        // Debug.Log(Input.GetAxis("Mouse Y"));
-        // Debug.Log(Input.GetAxis("Mouse X"));
         rotationX += -Input.GetAxis("Mouse Y") * lookSpeed * sensitivity;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCam.localEulerAngles = new Vector3(rotationX, playerCam.localEulerAngles.y, playerCam.localEulerAngles.z);
