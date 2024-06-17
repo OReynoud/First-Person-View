@@ -402,15 +402,17 @@ public class CollectorBehavior : Enemy
     IEnumerator Stun()
     {
 
+        transitionState.Play("A_CollectorStunStart");
         agent.enabled = false;
         transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
+        
         yield return new WaitForSeconds(stunDuration);
 
         agent.enabled = true;
 
         agent.SetDestination(PlayerController.instance.transform.position);
         currentState = States.Repositioning;
-        
+        transitionState.Play("A_CollectorStunEnd");
         //SON
     }
 

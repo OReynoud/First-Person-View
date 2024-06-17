@@ -269,10 +269,6 @@ namespace Mechanics
 
         IEnumerator Stun()
         {
-            foreach (var part in allMasks)
-            {
-
-            }
             body.constraints = RigidbodyConstraints.FreezeRotation;
             InterruptAttack();
             transform.DOShakeScale(0.2f, Vector3.one * 0.2f);
@@ -432,7 +428,7 @@ namespace Mechanics
             
             jumpTween = transform.DOJump(actualDestination + transform.forward * jumpOverShoot, jumpHeight, 1, calcJumpTime);
             AudioManager.instance.PlaySound(8, 0, gameObject, 0.1f, false);
-            transform.rotation = Quaternion.Euler(40,transform.eulerAngles.y,transform.eulerAngles.z);
+            transform.rotation = Quaternion.Euler(60,transform.eulerAngles.y,transform.eulerAngles.z);
             jumpRotationTween = transform.DORotate(new Vector3(0,transform.eulerAngles.y,transform.eulerAngles.z) , calcJumpTime);
             yield return new WaitForSeconds(calcJumpTime);
 
