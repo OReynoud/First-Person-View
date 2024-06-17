@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class IntroCinematic : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class IntroCinematic : MonoBehaviour
     [SerializeField] private AudioSource rainSound;
     [SerializeField] private AudioSubtitles subtitlesScript;
     private bool canLoadTheScene;
+
+    [SerializeField] private RectTransform[] blackLines;
 
     void Start()
     {
@@ -81,6 +84,11 @@ public class IntroCinematic : MonoBehaviour
 
         StartCoroutine(Fade());
         StartCoroutine(LightsOut());
+
+        foreach (var line in blackLines)
+        {
+            line.DOAnchorPosY(0, 3f);
+        }
         
         yield return new WaitForSeconds(0.2f);
         

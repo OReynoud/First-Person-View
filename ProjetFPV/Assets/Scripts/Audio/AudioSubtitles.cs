@@ -50,7 +50,7 @@ public class AudioSubtitles : MonoBehaviour
         
         if (!hasToCount) return;
         
-        timer += Time.deltaTime;
+        timer += Time.unscaledDeltaTime;
 
         if (currentIndex >= subtitles[currentList].subtitlesList.Count)
         {
