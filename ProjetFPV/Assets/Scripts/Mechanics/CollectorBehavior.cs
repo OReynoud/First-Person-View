@@ -413,6 +413,7 @@ public class CollectorBehavior : Enemy
 
         agent.SetDestination(PlayerController.instance.transform.position);
         currentState = States.Repositioning;
+        transitionState.Stop();
         transitionState.Play("A_CollectorStunEnd");
         //SON
     }
@@ -514,6 +515,8 @@ public class CollectorBehavior : Enemy
             currentState = States.Paralysed;
             body.constraints = RigidbodyConstraints.FreezeAll;
             agent.enabled = false;
+            
+            transitionState.Play("A_CollectorStunStart");
         }
         else
         {
@@ -523,6 +526,8 @@ public class CollectorBehavior : Enemy
             recentlyAttacked = true;
             repositioning = false;
             agent.enabled = true;
+            transitionState.Stop();
+            transitionState.Play("A_CollectorStunEnd");
         }
     }
     
