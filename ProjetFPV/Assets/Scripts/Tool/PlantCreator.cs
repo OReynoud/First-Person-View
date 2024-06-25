@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,9 +6,37 @@ using Random = UnityEngine.Random;
 using UnityEditor;
 #endif
 
+// READ ME 
+
+// Bonjour, voici quelques explications pour utiliser ce tool. Il sert à ajouter du feuillage sur des meshes, pour créer des plantes ou ajouter un peu de végétation sur des murs par exemple.
+// Pour l'utiliser, il suffit de placer le script sur un gameobject sur lequel vous voulez avoir du feuillage. Le gameobject doit avoir un collider.
+
+// Son fonctionnement est simple : Vous paramétrez les différentes options possibles et appuyez sur Generate Plant pour créer du feuillage. Vous pouvez générer plusieurs couches de feuilles
+// ou undo. Lorsque vous êtes satisfaits, appuyez sur Merge Plant pour créer un seul gameobject avec un seul mesh (pour des raisons d'optimisation).
+
+// Il dispose de nombreux paramètres mais tous sont simples : Tout d'abord, une petite partie sert à gérer les performances en affichant le nombre de tris du feuillage. Passé un certain stade
+// (qui peut être paramétré (ligne 250), par défaut 30'000), le tool cesse de fonctionner. Il faut ensuite spécifier un chemin d'accès pour stocker le feuillage au moment de fusionner les
+// meshs. La première ligne sert à spécifier la série de dossiers, séparés par des "/", la deuxième ligne sert à donner un nom au feuillage. Viennent ensuite les paramètres généraux :
+// - Size détermine la taille des planes instantiés
+// - Density détermine le nombre de planes instantiés
+// - Depth détermine la distance par rapport au mesh. Elle permet de générer plusieurs couches de feuillages
+// - La rotation aléatoire des planes peut être déterminée selon les 3 axes indépendamment. Par des défaut, les planes ne tournent pas. Il faut cocher la case pour permettre la rotation aléatoire
+// dans cet axe, puis spécifier la valeur de rotation (une valeur de 30 donne une rotation aléatoire entre -30 et 30).
+// - Il est possible de générer du feuillage uniquement sur certaines faces grâce à l'onglet Faces. En cochant par exemple Front, les feuilles n'apparaîtront que sur la face avant de l'objet
+// (son forward). En cochant Front et Left, les feuilles apparaîtront sur la tranche avant gauche de l'objet.
+// - Material sert à choisir quel material appliquer aux planes. Un material transparent en forme de feuille est le plus adapté.
+
+// ATTENTION : Au moment de merge, toutes les feuilles fusionneront en un seul mesh. Il n'y aura donc qu'un seul material à la fin. Pour faire un buisson avec plusieurs materials, il faut
+// merge au fur et à mesure, en changeant le material entre chaque merge (et idéalement en changeant la depth pour éviter le clipping).
+
+// N'hésitez pas à venir me voir en cas de doute, à modifier le script selon vos besoins, c'est complètement libre ! :D 
+
 public class PlantCreator : MonoBehaviour
 {
     private Material material;
+    
+    private string pathName;
+    private string fileName;
     
     float rotationX;
     float rotationY;
@@ -98,6 +123,21 @@ public class PlantCreator : MonoBehaviour
             EditorGUILayout.LabelField("Number of Tris : " + plantCreator.numberOfTris);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space(20);
+            
+            GUIStyle italic = new GUIStyle(GUI.skin.label);
+            italic.fontStyle = FontStyle.Italic;
+        
+            GUILayout.Label("Save Path : ");
+            GUILayout.Label("Example : Assets/Art/Plants", italic);
+            plantCreator.pathName = GUILayout.TextField(plantCreator.pathName);
+        
+            GUILayout.Space(5);
+        
+            GUILayout.Label("File name : ");
+            GUILayout.Label("Example : Bush_01", italic);
+            plantCreator.fileName = GUILayout.TextField(plantCreator.fileName);
+            
+            GUILayout.Space(10);
             
             EditorGUILayout.LabelField("General Parameters", EditorStyles.boldLabel);
             EditorGUILayout.BeginHorizontal();
@@ -237,21 +277,6 @@ public class PlantCreator : MonoBehaviour
                 newPlane.transform.forward = hit.normal;
                 Vector3[] vectors = VectorCalculator(newPlane);
                 
-                // if (plantCreator.lockX)
-                // {
-                //     newPlane.transform.Rotate(vectors[0], Random.Range(0f, plantCreator.rotationX));
-                // }
-                //
-                // if (plantCreator.lockY)
-                // {
-                //     newPlane.transform.Rotate(vectors[1], Random.Range(0f, plantCreator.rotationY));
-                // }
-                //
-                // if (plantCreator.lockZ)
-                // {
-                //     newPlane.transform.Rotate(vectors[2], Random.Range(0f, plantCreator.rotationZ));
-                // }
-                
                 newPlane.transform.eulerAngles = new Vector3
                     (plantCreator.lockX ? newPlane.transform.localEulerAngles.x + Random.Range(-plantCreator.rotationX, plantCreator.rotationX): newPlane.transform.localEulerAngles.x, 
                     plantCreator.lockY ? newPlane.transform.localEulerAngles.y + Random.Range(-plantCreator.rotationY, plantCreator.rotationY): newPlane.transform.localEulerAngles.y, 
@@ -383,6 +408,11 @@ public class PlantCreator : MonoBehaviour
                     plantCreator.numberOfGameObjects++;
                 }
             }
+            
+            var path = plantCreator.pathName + "/" + plantCreator.fileName + ".asset";
+            
+            AssetDatabase.CreateAsset(meshFilter.sharedMesh, path);
+            AssetDatabase.SaveAssets();
         }
     }
     #endif
