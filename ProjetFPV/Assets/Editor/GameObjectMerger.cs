@@ -1,6 +1,28 @@
 using UnityEditor;
 using UnityEngine;
 
+// READ ME 
+
+// Bonjour, voici quelques explications pour utiliser ce tool. Il sert à fusionner plusieurs meshes ensemble dans le but de réduire le nombre de GameObjects présents dans la scène.
+// Pour l'utiliser, il suffit tout d'abord de le placer dans un dossier nommé Editor. Ensuite, le script peut être trouvé en haut dans Tools > GameObject Merger.
+
+// Son fonctionnement est simple : Il récupère tous les objets présents dans votre sélection et les fusionne en un seul mesh.
+
+// Il est facile à prendre en main. Il suffit de remplir les deux emplacements prévus pour : Le premier sert à spécifier le dossier dans lequel les meshes nouvellement créés seront stockés.
+// Le deuxième sert à référencer le nom du mesh crée. Après avoir cliqué sur le bouton, tous les game objects séléectionnés seront détruits et un nouvel objet avec un seul mesh combiné
+// les remplacera. Ce mesh sera stocké selon le path indiqué et peut donc être réutilisé sur d'autres objets.
+
+// ATTENTION : Le tool est loin d'être parfait et doit être utilisé avec précaution. Il est recommandé de push tous ses changements avant de commencer à utiliser le tool, pour être sûr
+// de ne rien perdre, notamment car il supprime des game objects.
+
+// D'un point de vue optimisation et ergonomie, les points suivants sont à prendre en compte : Au moment de fusionner les meshes, le nouveau gameObject créé aura un point de pivot centré
+// en (0,0,0). Le tool n'est donc pas conçu pour les éléments qui doivent être déplacés ou tournés, et cela doit être pris en compte pour instancier un gameobject avec un mesh combiné. Les 
+// gameobjects sont supprimés, donc tous leurs scripts et components vont disparaître également. Le nouveau mesh ne pourra accueillir qu'un seul material, et le dépliage UV est fait par Unity
+// automatiquement. Il faut donc garder le tool pour des objets partageant un même material ou utilisant du triplanaire. Enfin, question optimisation, attention à ne pas fusionner des game
+// objects trop éloignés, sinon la camera devra les render continuellement. Mieux vaut packer les merge dans des zones plus restreintes.
+
+// N'hésitez pas à venir me voir en cas de doute, à modifier le script selon vos besoins, c'est complètement libre ! :D 
+
 public class GameObjectMerger : EditorWindow
 {
     [MenuItem("Tools/GameObject Merger")]
@@ -9,25 +31,28 @@ public class GameObjectMerger : EditorWindow
         GetWindow(typeof(GameObjectMerger));
     }
 
+    private string pathName;
     private string fileName;
-    private string savePath = "Assets/Art/Meshes/Modulaire/Prefab/CombinedMeshes";
 
     private void OnGUI()
     {
-        GUILayout.Space(30);
-
-        GUILayout.Label(
-            "Instructions : \n\nCe tool permet de merge plusieurs mesh en un seul. \nLors de la fusion, les materials sont perdus. Un seul material \nne peut être assigné au nouveau mesh, " +
-            "il ne faut donc fusionner \nque les gameobject qui ont le même material. Avant de merge, il faut \nspécifier un nom pour le mesh qui va ainsi être crée. Si ce nom est déjà pris, une \n" +
-            "erreur va apparaître dans la console. Les meshs générés sont stockés dans \nAssets/Art/Meshes/Modulaire/Prefab/CombinedMeshes.");
-
-        GUILayout.Space(30);
+        GUILayout.Space(10);
 
         GUILayout.Label("Number of selected objects : " + Selection.count);
 
         GUILayout.Space(15);
 
+        GUIStyle italic = new GUIStyle(GUI.skin.label);
+        italic.fontStyle = FontStyle.Italic;
+        
+        GUILayout.Label("Save Path : ");
+        GUILayout.Label("Example : Assets/Art/CombinedMeshes", italic);
+        pathName = GUILayout.TextField(pathName);
+        
+        GUILayout.Space(5);
+        
         GUILayout.Label("File name : ");
+        GUILayout.Label("Example : House1_Walls", italic);
         fileName = GUILayout.TextField(fileName);
 
         GUILayout.Space(15);
@@ -35,13 +60,12 @@ public class GameObjectMerger : EditorWindow
         if (GUILayout.Button("Click here to merge game objects", GUILayout.Height(50f)))
         {
             Merge();
-
         }
     }
 
     private void Merge()
     {
-        var path = savePath + "/" + fileName + ".asset";
+        var path = pathName + "/" + fileName + ".asset";
 
         if (string.IsNullOrEmpty(fileName))
         {
@@ -104,7 +128,7 @@ public class GameObjectMerger : EditorWindow
         // Supprime les GameObjects d'origine
         foreach (GameObject go in Selection.gameObjects)
         {
-            DestroyImmediate(go);
+            Undo.DestroyObjectImmediate(go);
         }
 
         AssetDatabase.CreateAsset(combinedMeshFilter.sharedMesh, path);
